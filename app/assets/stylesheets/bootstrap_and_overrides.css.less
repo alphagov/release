@@ -1,0 +1,64 @@
+@import "twitter/bootstrap/bootstrap";
+
+body { padding-top: 40px; }
+
+@import "twitter/bootstrap/responsive";
+
+// Your custom LESS stylesheets goes here
+//
+// Since bootstrap was imported above you have access to its mixins which
+// you may use and inherit here
+//
+// If you'd like to override bootstrap's own variables, you can do so here as well
+// See http://twitter.github.com/bootstrap/less.html for their names and documentation
+//
+// Example:
+// @linkColor: #ff0000;
+
+/* Pagination tweaks copied from Migratorator */
+.pagination span.current, .pagination span.gap {
+  float: left;
+  padding: 0 14px;
+  line-height: 34px;
+  text-decoration: none;
+  border: 1px solid #DDD;
+  border-left-width: 0;
+}
+.pagination span.current { background: #eee; }
+.pagination span:first-child, .pagination span:first-child a {
+  border-left-width: 1px;
+}
+
+.navbar .brand {
+  background-image: url("/assets/header-crown.png");
+  background-position: 0 0.25em;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-family: "GillSans", "Gill Sans", "Helvetica Neue", Helvetica, sans-serif;
+  margin-left: 0;
+  padding-left: 2em;
+}
+
+.sidebar-nav {
+  padding: 9px 0;
+}
+
+.navbar-fixed-bottom {
+  text-align: center;
+}
+
+td.icon {
+  /* change alignment of publication table cells that just have icons in them  */
+  text-align: center;
+}
+
+.modal textarea.span5,
+.modal input.span5 {
+  width: 520px;
+}
+
+/* override the font-size for main textareas */
+form.formtastic .controls textarea {
+  font-size: 17px;
+  line-height: 21px;
+}
