@@ -11,13 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121126104541) do
+ActiveRecord::Schema.define(:version => 20121126111834) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
     t.string   "repo"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "deploys", :force => true do |t|
+    t.integer  "release"
+    t.integer  "application_id"
+    t.string   "version"
+    t.text     "description"
+    t.text     "application_changes"
+    t.text     "notes"
+    t.boolean  "additional_support_required", :default => false
+    t.boolean  "extended_support_required",   :default => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.integer  "applications_id"
   end
 
 end
