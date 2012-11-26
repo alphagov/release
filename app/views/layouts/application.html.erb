@@ -24,8 +24,10 @@
         </a>
         <%= link_to 'GOV.UK Release', {:controller => "applications"}, :class => "brand" %>
         <nav role="navigation" class="nav-collapse">
-          <ul class="nav"><%= nav_link 'Applications', '/applications' %>
+          <ul class="nav">
+            <%= nav_link 'Applications', '/applications' %>
             <li class="divider-vertical"></li>
+            <%= nav_link 'Deploys', '/deploys' %>
           </ul>
           <ul class="nav pull-right">
             <li class="dropdown">
