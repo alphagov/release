@@ -1,0 +1,5 @@
+<% content_for :title, @application.name %>
+
+<h1><%= @application.name %></h1>
+
+<%= render partial: "form", locals: { application: @application } %>
