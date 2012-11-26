@@ -8,6 +8,9 @@ gem 'unicorn', '4.4.0'
 gem 'jquery-rails', '2.1.3'
 gem 'less-rails-bootstrap', '2.2.0'
 
+gem 'formtastic', '2.2.1'
+gem 'formtastic-bootstrap', '2.0.0'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
