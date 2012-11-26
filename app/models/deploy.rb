@@ -6,4 +6,6 @@ class Deploy < ActiveRecord::Base
 
   validates_uniqueness_of :release
   validates_presence_of :version, :application
+
+  default_scope order("created_at DESC")
 end
