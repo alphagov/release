@@ -1,3 +1,22 @@
 <% content_for :page_title, "Deploys" %>
 
 <h1>Deploys</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Application</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @deploys.each do |deploy| %>
+    <tr>
+      <td><%= deploy.created_at %></td>
+      <td><%= link_to deploy.application.name, controller: "applications", action: "show", id: deploy.application %></td>
+      <td><%= deploy.version %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
