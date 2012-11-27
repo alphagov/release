@@ -6,14 +6,19 @@ describe "applications/show.html.erb" do
     render
   end
 
-  it "should display the application" do
+  it "should display the application name" do
     rendered.should include("rails")
   end
 
-  it "should have a form with the relevant fields filled out" do
-    rendered.should have_selector("form") do |form|
-      form.should have_selector("input", name: "application[name]", value: "rails")
-      form.should have_selector("input", name: "application[repo]", value: "https://github.com/rails/rails")
-    end
+  it "should display the application repo" do
+    rendered.should include("https://github.com/rails/rails")
+  end
+
+  it "should have an 'edit' link" do
+    rendered.should have_link("Edit")
+  end
+
+  it "should have an 'create deploy' link" do
+    rendered.should have_link("Create Deploy")
   end
 end

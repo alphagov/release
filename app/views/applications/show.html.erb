@@ -2,4 +2,13 @@
 
 <h1><%= @application.name %></h1>
 
-<%= render partial: "form", locals: { application: @application } %>
+<dl>
+  <dt>Repo:</dt>
+  <dd><%= link_to @application.repo, @application.repo %></dd>
+</dl>
+
+<div class="btn-group">
+  <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
+  <%= link_to "Create Deploy", { controller: "deploys", action: "new", application_id: @application.id },
+                               class: "btn" %>
+</div>
