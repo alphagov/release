@@ -4,7 +4,7 @@ class Deploy < ActiveRecord::Base
 
   belongs_to :application
 
-  validates_uniqueness_of :release
+  validates_uniqueness_of :release, allow_nil: true
   validates_presence_of :version, :application
 
   default_scope order("created_at DESC")

@@ -1,0 +1,16 @@
+<% content_for :page_title, "Create new Deploy" %>
+
+<h1>Create new Deploy task</h1>
+
+<%= semantic_form_for @deploy, url: deploys_path(application_id: @deploy.application.id) do |f| %>
+  <%= f.semantic_errors %>
+
+  <%= f.inputs do %>
+    <%= f.input :version, label: "Version" %>
+    <%= f.input :description, label: "Description" %>
+  <% end %>
+
+  <%= f.actions do %>
+      <%= f.action :submit, :as => :button %>
+  <% end %>
+<% end %>

@@ -1,0 +1,18 @@
+<% content_for :page_title, "#{@deploy.application.name} - #{@deploy.version}"  %>
+
+<h1><%= @deploy.application.name %> - <%= @deploy.version %></h1>
+
+<dl>
+  <dt>Version:</dt>
+  <dd><%= @deploy.version %></dd>
+
+  <dt>Description:</dt>
+  <dd><%= @deploy.description %></dd>
+
+  <dt>Release:</dt>
+  <dd><%= @deploy.release %></dd>
+</dl>
+
+<div class="btn-group">
+  <%= link_to "Edit", { action: "edit", id: @deploy.id }, class: "btn" %>
+</div>
