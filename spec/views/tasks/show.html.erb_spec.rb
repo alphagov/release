@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "deploys/show.html.erb" do
+describe "tasks/show.html.erb" do
   before do
-    assign(:deploy, stub_model(Deploy, application: Application.new(name: "dead app"),
-                                       version: "a_milli", description: "bleh"))
+    assign(:task, stub_model(Task, application: Application.new(name: "dead app"),
+                                   version: "a_milli", description: "bleh"))
     render
   end
 
@@ -11,7 +11,7 @@ describe "deploys/show.html.erb" do
     rendered.should include("dead app")
   end
 
-  it "should display the deploy version" do
+  it "should display the task version" do
     rendered.should include("a_milli")
   end
 

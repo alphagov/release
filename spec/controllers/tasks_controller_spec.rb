@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe DeploysController do
+describe TasksController do
   let(:application) { Application.new(name: "dummy", repo: "somerepo.com") }
-  let(:deploy) { application.deploys.build(version: "release_101") }
+  let(:task) { application.tasks.build(version: "release_101") }
 
   before do
     application.save
-    deploy.save
+    task.save
   end
 
   describe "index" do
@@ -25,7 +25,7 @@ describe DeploysController do
 
   describe "show" do
     before(:each) do
-      get :show, id: deploy.id
+      get :show, id: task.id
     end
 
     it "should load successfully" do
@@ -52,7 +52,7 @@ describe DeploysController do
   end
 
   describe "edit" do
-    describe "a non-existant Deploy record" do
+    describe "a non-existant Task record" do
       before(:each) do
         get :edit, id: 10000000000
       end
@@ -62,9 +62,9 @@ describe DeploysController do
       end
     end
 
-    describe "an existing Deploy record" do
+    describe "an existing Task record" do
       before(:each) do
-        get :edit, id: deploy.id
+        get :edit, id: task.id
       end
 
       it "should have a status of 200" do
@@ -90,7 +90,7 @@ describe DeploysController do
 
     describe "post request with a body" do
       before(:each) do
-        post :create, { application_id: deploy.application.id, deploy: { version: "release_a_bajillion" }}
+        post :create, { application_id: task.application.id, task: { version: "release_a_bajillion" }}
       end
 
       it "should redirect to the 'show' action" do
@@ -103,7 +103,7 @@ describe DeploysController do
   describe "update" do
     describe "post request with a non-existent id" do
       before(:each) do
-        put :update, id: 1000000000, deploy: { version: "do_not_read_me" }
+        put :update, id: 1000000000, task: { version: "do_not_read_me" }
       end
 
       it "should show a 404" do
@@ -113,12 +113,12 @@ describe DeploysController do
 
     describe "post request with a specific id" do
       before(:each) do
-        put :update, id: deploy.id, deploy: { release: "release_some_version" }
+        put :update, id: task.id, task: { release: "release_some_version" }
       end
 
       it "should redirect to the show page" do
         response.code.should eq("302")
-        response.should redirect_to(action: "show", id: deploy.id)
+        response.should redirect_to(action: "show", id: task.id)
       end
     end
   end

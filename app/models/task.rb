@@ -1,4 +1,4 @@
-class Deploy < ActiveRecord::Base
+class Task < ActiveRecord::Base
   attr_accessible :additional_support_required, :application_changes, :description,
                   :extended_support_required, :notes, :release, :version
 

@@ -1,0 +1,22 @@
+<% content_for :page_title, "Release Tasks" %>
+
+<h1>Release Tasks</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Application</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @tasks.each do |task| %>
+    <tr>
+      <td><%= task.created_at %></td>
+      <td><%= link_to task.application.name, controller: "applications", action: "show", id: task.application %></td>
+      <td><%= task.version %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

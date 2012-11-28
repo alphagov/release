@@ -1,8 +1,8 @@
-<% content_for :page_title, "#{@deploy.application.name} - #{@deploy.version}"  %>
+<% content_for :page_title, "#{@task.application.name} - #{@task.version}"  %>
 
-<h1><%= @deploy.application.name %> - <%= @deploy.version %></h1>
+<h1><%= @task.application.name %> - <%= @task.version %></h1>
 
-<%= semantic_form_for @deploy do |f| %>
+<%= semantic_form_for @task do |f| %>
   <%= f.semantic_errors %>
 
   <%= f.inputs do %>

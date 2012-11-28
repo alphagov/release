@@ -9,6 +9,6 @@
 
 <div class="btn-group">
   <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
-  <%= link_to "Create Deploy", { controller: "deploys", action: "new", application_id: @application.id },
+  <%= link_to "Create Deploy Task", { controller: "tasks", action: "new", application_id: @application.id },
                                class: "btn" %>
 </div>

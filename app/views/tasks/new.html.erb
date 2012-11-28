@@ -1,8 +1,8 @@
-<% content_for :page_title, "Create new Deploy" %>
+<% content_for :page_title, "Create new Release task" %>
 
-<h1>Create new Deploy task</h1>
+<h1>Create new Release task</h1>
 
-<%= semantic_form_for @deploy, url: deploys_path(application_id: @deploy.application.id) do |f| %>
+<%= semantic_form_for @task, url: tasks_path(application_id: @task.application.id) do |f| %>
   <%= f.semantic_errors %>
 
   <%= f.inputs do %>
