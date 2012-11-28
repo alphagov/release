@@ -1,4 +1,4 @@
-Release::Application.routes.draw do
+ReleaseApp::Application.routes.draw do
   resources :applications
   resources :deploys
 
