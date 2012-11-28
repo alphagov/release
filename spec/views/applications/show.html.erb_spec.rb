@@ -18,7 +18,7 @@ describe "applications/show.html.erb" do
     rendered.should have_link("Edit")
   end
 
-  it "should have an 'create deploy' link" do
+  it "should have a 'create deploy' link" do
     rendered.should have_link("Create Deploy")
   end
 end
