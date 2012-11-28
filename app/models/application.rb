@@ -1,9 +1,9 @@
 class Application < ActiveRecord::Base
   attr_accessible :name, :repo
 
-  validates_presence_of :name, :message => 'is required'
+  validates_presence_of :name, message: 'is required'
 
-  has_many :deploys, :dependent => :destroy
+  has_many :deploys, dependent: :destroy
 
   default_scope order("name ASC")
 end
