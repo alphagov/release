@@ -25,5 +25,14 @@ describe Release do
       release.should be_valid
       release.errors.should be_empty
     end
+
+    it "should update the task release_id when appending to a release" do
+      release = Release.new
+      release.tasks << task
+      release.save
+
+      task.release.should_not be_nil
+      task.release_id.should eq(release.id)
+    end
   end
 end

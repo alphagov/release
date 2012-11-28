@@ -2,6 +2,9 @@ class Release < ActiveRecord::Base
   attr_accessible :notes
 
   has_many :tasks
+  has_many :applications, through: :tasks
+
+  accepts_nested_attributes_for :tasks
 
   validate :validate_tasks
 

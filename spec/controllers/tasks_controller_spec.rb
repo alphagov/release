@@ -113,7 +113,7 @@ describe TasksController do
 
     describe "post request with a specific id" do
       before(:each) do
-        put :update, id: task.id, task: { release: "release_some_version" }
+        put :update, id: task.id, task: { version: "release_some_version" }
       end
 
       it "should redirect to the show page" do
