@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121128160832) do
+ActiveRecord::Schema.define(:version => 20121129160004) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -19,6 +19,9 @@ ActiveRecord::Schema.define(:version => 20121128160832) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "applications", ["name"], :name => "index_applications_on_name", :unique => true
+  add_index "applications", ["repo"], :name => "index_applications_on_repo", :unique => true
 
   create_table "releases", :force => true do |t|
     t.text     "notes"

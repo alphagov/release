@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe "releases/index.html.erb" do
-  let(:application) { Application.new(name: "Dummy App") }
-  let(:application_2) { Application.new(name: "Dummy App 2") }
+  let(:application) { Application.new(name: "Dummy App", repo: "dummyapp.com") }
+  let(:application_2) { Application.new(name: "Dummy App 2", repo: "dummyapp2.com") }
 
   let(:task) { application.tasks.build(version: "456") }
   let(:task_2) { application_2.tasks.build(version: "789") }

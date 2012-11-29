@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe "tasks/index.html.erb" do
-  let(:slicer) { Application.new(name: "slicer") }
-  let(:dicer) { Application.new(name: "dicer") }
+  let(:slicer) { Application.new(name: "slicer", repo: "slicer.com") }
+  let(:dicer) { Application.new(name: "dicer", repo: "dicer.com") }
   let(:three_days) { 3.days.from_now }
   let(:four_days) { 4.days.from_now }
 

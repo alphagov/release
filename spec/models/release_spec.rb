@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Release do
-  let(:application) { Application.new(name: "app for release test") }
+  let(:application) { Application.new(name: "app for release test", repo: "appreleasetest.com") }
   let(:task) { application.tasks.build(version: "release 101") }
 
   before do
@@ -36,7 +36,7 @@ describe Release do
     end
 
     it "should contain many applications" do
-      application_2 = Application.new(name: "Second App")
+      application_2 = Application.new(name: "Second App", repo: "secondapp.com")
       application_2.save
 
       task_2 = application_2.tasks.build(version: "1234567")
