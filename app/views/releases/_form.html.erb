@@ -1,0 +1,11 @@
+<%= semantic_form_for @release do |f| %>
+  <%= f.semantic_errors %>
+
+  <%= f.inputs do %>
+    <%= f.input :notes, label: "Notes" %>
+  <% end %>
+
+  <%= f.actions do %>
+      <%= f.action :submit, :as => :button %>
+  <% end %>
+<% end %>
