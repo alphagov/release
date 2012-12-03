@@ -2,8 +2,9 @@
   <%= f.semantic_errors %>
 
   <%= f.inputs do %>
-    <%= f.input :name, label: "Name" %>
-    <%= f.input :repo, label: "Repository", hint: "The location of the git repository" %>
+    <%= f.input :name, label: "Name", input_html: { class: "input-xxlarge" } %>
+    <%= f.input :repo, label: "Repository", hint: "The location of the git repository",
+                       input_html: { class: "input-xxlarge" } %>
   <% end %>
 
   <%= f.actions do %>

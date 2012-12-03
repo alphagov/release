@@ -3,9 +3,10 @@
 
   <%= f.inputs do %>
     <%= f.input :application, as: :select, label: "Application",
-                 prompt: "Select an Application", include_blank: false %>
-    <%= f.input :version, label: "Version" %>
-    <%= f.input :description, label: "Description" %>
+                 prompt: "Select an Application", include_blank: false,
+                 input_html: { class: "input-xxlarge" } %>
+    <%= f.input :version, label: "Version", input_html: { class: "input-xxlarge" } %>
+    <%= f.input :description, label: "Description", input_html: { class: "input-xxlarge" } %>
   <% end %>
 
   <%= f.actions do %>
