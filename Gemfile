@@ -25,4 +25,6 @@ group :test, :development do
   gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '0.9.1'
   gem 'rspec-rails', '2.12.0'
+  gem 'simplecov', '0.6.4'
+  gem 'simplecov-rcov', '0.2.3'
 end
