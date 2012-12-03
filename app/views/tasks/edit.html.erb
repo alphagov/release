@@ -2,15 +2,4 @@
 
 <h1><%= @task.application.name %> - <%= @task.version %></h1>
 
-<%= semantic_form_for @task do |f| %>
-  <%= f.semantic_errors %>
-
-  <%= f.inputs do %>
-    <%= f.input :version, label: "Version" %>
-    <%= f.input :description, label: "Description" %>
-  <% end %>
-
-  <%= f.actions do %>
-      <%= f.action :submit, :as => :button %>
-  <% end %>
-<% end %>
+<%= render partial: "form", locals: { task: @task } %>

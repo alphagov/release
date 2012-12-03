@@ -2,17 +2,4 @@
 
 <h1>Create new Deploy task</h1>
 
-<%= semantic_form_for @task do |f| %>
-  <%= f.semantic_errors %>
-
-  <%= f.inputs do %>
-    <%= f.input :application, as: :select, label: "Application",
-                 prompt: "Select an Application", include_blank: false %>
-    <%= f.input :version, label: "Version" %>
-    <%= f.input :description, label: "Description" %>
-  <% end %>
-
-  <%= f.actions do %>
-      <%= f.action :submit, :as => :button %>
-  <% end %>
-<% end %>
+<%= render partial: "form", locals: { task: @task } %>
