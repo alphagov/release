@@ -14,5 +14,8 @@
 /log/*.log
 /tmp
 
-# Ignore JUnit formatted test output.
+# JUnit formatted test output.
 /spec/reports
+
+# Coverage output from SimpleCov.
+/coverage
