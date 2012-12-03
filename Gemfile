@@ -22,6 +22,7 @@ end
 group :test, :development do
   gem 'brakeman', '1.7.0'
   gem 'capybara', '2.0.1'
+  gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '0.9.1'
   gem 'rspec-rails', '2.12.0'
 end
