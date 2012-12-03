@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
-gem 'sqlite3', '1.3.6'
+gem 'mysql2', '0.3.11'
 
 # Use unicorn as the app server
 gem 'unicorn', '4.4.0'
