@@ -8,8 +8,11 @@ class TasksController < ApplicationController
   end
 
   def new
-    application = Application.find(params[:application_id])
-    @task = application.tasks.build
+    unless params[:application_id].nil?
+      @task = Application.find(params[:application_id]).tasks.build
+    else
+      @task = Task.new
+    end
   end
 
   def edit

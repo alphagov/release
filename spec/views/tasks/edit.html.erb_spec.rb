@@ -11,6 +11,7 @@ describe "tasks/edit.html.erb" do
     rendered.should have_selector("form") do |form|
       form.should have_selector("input", name: "task[version]", value: "a milli")
       form.should have_selector("input", name: "task[description]", value: "bleh")
+      form.should have_select("application", selected: "dead app")
     end
   end
 end

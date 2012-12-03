@@ -1,11 +1,13 @@
-<% content_for :page_title, "Create new Release task" %>
+<% content_for :page_title, "Create new Deploy task" %>
 
-<h1>Create new Release task</h1>
+<h1>Create new Deploy task</h1>
 
-<%= semantic_form_for @task, url: tasks_path(application_id: @task.application.id) do |f| %>
+<%= semantic_form_for @task do |f| %>
   <%= f.semantic_errors %>
 
   <%= f.inputs do %>
+    <%= f.input :application, as: :select, label: "Application",
+                 prompt: "Select an Application", include_blank: false %>
     <%= f.input :version, label: "Version" %>
     <%= f.input :description, label: "Description" %>
   <% end %>
