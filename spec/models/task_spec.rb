@@ -31,5 +31,10 @@ describe Task do
       application.tasks.create(version: "release_101")
       application.tasks.size.should == 1
     end
+
+    it "should have a human-readable String form" do
+      task = application.tasks.create(version: "release_203")
+      task.to_s.should eq("Release - release_203")
+    end
   end
 end

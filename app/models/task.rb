@@ -8,4 +8,8 @@ class Task < ActiveRecord::Base
   validates_presence_of :version, :application
 
   default_scope order("created_at DESC")
+
+  def to_s
+    "#{application.name} - #{version}"
+  end
 end
