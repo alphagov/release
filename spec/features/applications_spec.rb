@@ -37,6 +37,11 @@ describe "Application management" do
       page.should have_content("There are some problems with the application")
     end
 
+    it "should validate the model upon submission" do
+      Application.any_instance.should_receive(:valid?)
+      click_on "Create Application"
+    end
+
     describe "duplicating exisiting applications" do
       let(:existing) { Application.new(name: "An existing app", repo: "thisexists.com") }
 
