@@ -78,26 +78,10 @@ describe TasksController do
   end
 
   describe "create" do
-    describe "post request without a body" do
-      before(:each) do
-        post :create
-      end
-
-      it "should 404" do
-        response.body.should eq("404 error")
-      end
-    end
-
     describe "post request with a body" do
       describe "does not contain an application id" do
         before(:each) do
           post :create, {task: { version: "release_203", application_id: application.id}}
-        end
-      end
-
-      describe "contains an application id" do
-        before(:each) do
-          post :create, { application_id: task.application.id, task: { version: "release_a_bajillion" }}
         end
 
         it "should redirect to the 'show' action" do

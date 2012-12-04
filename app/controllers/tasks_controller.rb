@@ -20,16 +20,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    return error_404 if params[:application_id].nil? and params[:task].nil?
-
-    if not params[:application_id].nil?
-      application_id = params[:application_id]
-    else
-      application_id = params[:task][:application_id]
-    end
-
-    application = Application.find(application_id)
-    @task = application.tasks.build(params[:task])
+    @task = Task.new(params[:task])
 
     if @task.valid? && @task.save
       redirect_to @task, flash: { notice: "Successfully created new deploy task" }
