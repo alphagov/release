@@ -76,5 +76,26 @@ describe "Application management" do
         page.should have_content("There are some problems with the application")
       end
     end
+
+    describe "saving a valid Application record" do
+      it "should validate and save the submission" do
+        Application.any_instance.should_receive(:valid?).once.and_return(true)
+        Application.any_instance.should_receive(:save).once.and_return(true)
+
+        fill_in :application_name, with: "chess master"
+        fill_in :application_repo, with: "chessmaster.com"
+
+        click_on "Create Application"
+      end
+
+      it "should show a success message to the user" do
+        fill_in :application_name, with: "zen master"
+        fill_in :application_repo, with: "zenmaster.com"
+
+        click_on "Create Application"
+
+        page.should have_content("Successfully created new application")
+      end
+    end
   end
 end
