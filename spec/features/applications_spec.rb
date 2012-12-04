@@ -32,47 +32,49 @@ describe "Application management" do
       click_on "Create Application"
     end
 
-    it "should error when the form is submitted with empty fields" do
-      click_on "Create Application"
-      page.should have_content("There are some problems with the application")
-    end
-
-    it "should validate the model upon submission" do
-      Application.any_instance.should_receive(:valid?)
-      click_on "Create Application"
-    end
-
-    describe "duplicating exisiting applications" do
-      let(:existing) { Application.new(name: "An existing app", repo: "thisexists.com") }
-
-      before do
-        existing.save
+    describe "error cases" do
+      it "should error when the form is submitted with empty fields" do
+        click_on "Create Application"
+        page.should have_content("There are some problems with the application")
       end
 
-      it "should error when fields are filled with details of an existing application" do
-        fill_in :application_name, with: existing.name
-        fill_in :application_repo, with: existing.repo
+      it "should validate the model upon submission" do
+        Application.any_instance.should_receive(:valid?).once
+        click_on "Create Application"
+      end
+
+      describe "duplicating exisiting applications" do
+        let(:existing) { Application.new(name: "An existing app", repo: "thisexists.com") }
+
+        before do
+          existing.save
+        end
+
+        it "should error when fields are filled with details of an existing application" do
+          fill_in :application_name, with: existing.name
+          fill_in :application_repo, with: existing.repo
+
+          click_on "Create Application"
+
+          page.should have_content("There are some problems with the application")
+        end
+      end
+
+      it "should error if only the 'name' field is filled out" do
+        fill_in :application_name, with: "some name that doesn't exist yet"
 
         click_on "Create Application"
 
         page.should have_content("There are some problems with the application")
       end
-    end
 
-    it "should error if only the 'name' field is filled out" do
-      fill_in :application_name, with: "some name that doesn't exist yet"
+      it "should error if only the 'repo' field is filled out" do
+        fill_in :application_repo, with: "somerepothatdoesntexistyet.com"
 
-      click_on "Create Application"
+        click_on "Create Application"
 
-      page.should have_content("There are some problems with the application")
-    end
-
-    it "should error if only the 'repo' field is filled out" do
-      fill_in :application_repo, with: "somerepothatdoesntexistyet.com"
-
-      click_on "Create Application"
-
-      page.should have_content("There are some problems with the application")
+        page.should have_content("There are some problems with the application")
+      end
     end
   end
 end
