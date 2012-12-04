@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121129160004) do
+ActiveRecord::Schema.define(:version => 20121204120703) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(:version => 20121129160004) do
     t.boolean  "extended_support_required",   :default => false
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
-    t.integer  "applications_id"
     t.integer  "release_id"
   end
 
