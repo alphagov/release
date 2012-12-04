@@ -53,5 +53,21 @@ describe "Application management" do
         page.should have_content("There are some problems with the application")
       end
     end
+
+    it "should error if only the 'name' field is filled out" do
+      fill_in :application_name, with: "some name that doesn't exist yet"
+
+      click_on "Create Application"
+
+      page.should have_content("There are some problems with the application")
+    end
+
+    it "should error if only the 'repo' field is filled out" do
+      fill_in :application_repo, with: "somerepothatdoesntexistyet.com"
+
+      click_on "Create Application"
+
+      page.should have_content("There are some problems with the application")
+    end
   end
 end
