@@ -34,4 +34,8 @@ describe "releases/index.html.erb" do
     rendered.should have_content(application.name)
     rendered.should have_content(application_2.name)
   end
+
+  it "should have a link to create 'new' Releases" do
+    rendered.should have_link("Create Release", href: new_release_path)
+  end
 end
