@@ -32,4 +32,8 @@ describe "tasks/index.html.erb" do
     rendered.should have_content("release_101")
     rendered.should have_content("build-3522")
   end
+
+  it "should have a link to create 'new' Deploy Tasks" do
+    rendered.should have_link("Create Deploy Task", href: new_task_path)
+  end
 end
