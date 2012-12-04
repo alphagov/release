@@ -25,7 +25,8 @@ class TasksController < ApplicationController
     if @task.valid? && @task.save
       redirect_to @task, flash: { notice: "Successfully created new deploy task" }
     else
-      render action: "new", flash: { alert: "There are some problems with the deploy task" }
+      flash[:alert] = "There are some problems with the deploy task"
+      render action: "new"
     end
   end
 

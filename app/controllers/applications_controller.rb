@@ -21,7 +21,8 @@ class ApplicationsController < ApplicationController
     if @application.valid? && @application.save
       redirect_to @application, flash: { notice: "Successfully created new application" }
     else
-      render action: "new", flash: { alert: "There are some problems with the application" }
+      flash[:alert] = "There are some problems with the application"
+      render action: "new"
     end
   end
 

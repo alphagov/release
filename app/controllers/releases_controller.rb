@@ -23,7 +23,8 @@ class ReleasesController < ApplicationController
     if @release.valid? && @release.save
       redirect_to @release, flash: { notice: "Successfully created new release" }
     else
-      render action: "new", flash: { alert: "There are some problems with the release" }
+      flash[:alert] = "There are some problems with the release"
+      render action: "new"
     end
   end
 
