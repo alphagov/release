@@ -9,10 +9,12 @@ class ReleasesController < ApplicationController
 
   def new
     @release = Release.new
+    @tasks = Task.where(release_id: nil)
   end
 
   def edit
     @release = Release.find(params[:id])
+    @tasks = Task.where("release_id = ? OR release_id = ?", @release.id, nil)
   end
 
   def create
