@@ -1,0 +1,109 @@
+businesssupportfinder:
+  name: Business support finder
+  repo: https://github.com/alphagov/business-support-finder/
+calendars:
+  name: Calendars
+  repo: https://github.com/alphagov/calendars/
+content-api:
+  name: GOV.UK content API
+  repo: https://github.com/alphagov/govuk_content_api/
+designprinciples:
+  name: Design principles
+  repo: https://github.com/alphagov/design-principles/
+EFG:
+  name: Enterprise finance guarantee
+  repo: https://github.com/alphagov/EFG/
+feedback:
+  name: Feedback
+  repo: https://github.com/alphagov/feedback/
+frontend:
+  name: Frontend
+  repo: https://github.com/alphagov/frontend/
+imminence:
+  name: Imminence
+  repo: https://github.com/alphagov/imminence/
+licencefinder:
+  name: Licence finder
+  repo: https://github.com/alphagov/licence-finder/
+licensify:
+  name: Licensify
+  repo: https://github.com/alphagov/licensify/
+migratorator:
+  name: Migratorator
+  repo: https://github.com/alphagov/migratorator/
+need-o-tron:
+  name: Need-o-tron
+  repo: https://github.com/alphagov/need-o-tron/
+panopticon:
+  name: Panopticon
+  repo: https://github.com/alphagov/panopticon/
+publisher:
+  name: Publisher
+  repo: https://github.com/alphagov/publisher/
+puppet:
+  name: Puppet
+  repo: https://github.com/alphagov/puppet/
+recommended-links:
+  name: Recommended links
+  repo: https://github.com/alphagov/recommended-links/
+redirector:
+  name: Redirector
+  repo: https://github.com/alphagov/redirector/
+rummager:
+  name: Rummager
+  repo: https://github.com/alphagov/rummager/
+signonotron2:
+  name: Signon-o-tron 2
+  repo: https://github.com/alphagov/signonotron2/
+smartanswers:
+  name: Smart answers
+  repo: https://github.com/alphagov/smart-answers/
+smokey:
+  name: Smokey
+  repo: https://github.com/alphagov/smokey/
+static:
+  name: Static
+  repo: https://github.com/alphagov/static/
+support:
+  name: Support
+  repo: https://github.com/alphagov/support/
+tariff-api:
+  name: Trade tariff backend
+  repo: https://github.com/alphagov/trade-tariff-backend/
+tariff:
+  name: Trade tariff frontend
+  repo: https://github.com/alphagov/trade-tariff-frontend/
+whitehall:
+  name: Whitehall
+  repo: https://github.com/alphagov/whitehall/
+
+datainsight-frontend:
+  name: Data insight frontend
+  repo: https://github.com/alphagov/datainsight-frontend/
+datainsight-akamai-scanner:
+  name: Data insight Akamai scanner
+  repo: https://github.com/alphagov/datainsight-akamai-scanner/
+datainsight-narrative-collector:
+  name: Data insight narrative collector
+  repo: https://github.com/alphagov/datainsight-narrative-collector/
+datainsight-ga-collector:
+  name: Data insight GA collector
+  repo: https://github.com/alphagov/datainsight-ga-collector/
+datainsight-nongovuk-reach-collector:
+  name: Data insight non-govuk reach collector
+  repo: https://github.com/alphagov/datainsight-nongovuk-reach-collector/
+datainsight-everything-recorder:
+  name: Data insight everything recorder
+  repo: https://github.com/alphagov/datainsight-everything-recorder/
+datainsight-narrative-recorder:
+  name: Data insight narrative recorder
+  repo: https://github.com/alphagov/datainsight-narrative-recorder/
+datainsight-todays-activity-recorder:
+  name: Data insight rodays activity recorder
+  repo: https://github.com/alphagov/datainsight-todays-activity-recorder/
+datainsight-weekly-reach-recorder:
+  name: Data insight weekly reach recorder
+  repo: https://github.com/alphagov/datainsight-weekly-reach-recorder/
+datainsight-format-success-recorder:
+  name: Data insight format success recorder
+  repo: https://github.com/alphagov/datainsight-format-success-recorder/
