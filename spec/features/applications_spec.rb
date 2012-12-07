@@ -43,7 +43,7 @@ describe "Application management" do
         click_on "Create Application"
       end
 
-      describe "duplicating exisiting applications" do
+      describe "duplicating existing applications" do
         let(:existing) { Application.new(name: "An existing app", repo: "thisexists.com") }
 
         before do
