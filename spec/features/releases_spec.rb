@@ -77,8 +77,6 @@ describe "Release management" do
 
         page.should have_content("There are some problems with the release")
       end
-
-      it "should fail if more than one task for the same application is selected"
     end
 
     describe "saving a valid release record" do
