@@ -1,3 +1,5 @@
+require "github"
+
 class ApplicationsController < ApplicationController
   def index
     @applications = Application.all
@@ -34,5 +36,13 @@ class ApplicationsController < ApplicationController
     else
       redirect_to @application, flash: { alert: "There are some problems with the application" }
     end
+  end
+
+  def tags
+    @application = Application.find(params[:id])
+
+    client = Github.create_from_config(Rails.root.join("config", "github-credentials.yml"))
+
+    render json: client.tags(@application.repo, params[:term] || "")
   end
 end

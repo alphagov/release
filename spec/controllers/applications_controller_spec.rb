@@ -118,4 +118,27 @@ describe ApplicationsController do
       end
     end
   end
+
+  describe "tags" do
+    describe "retrieve matching tags" do
+      before(:each) do
+        @github = mock()
+        Github.should_receive(:new)
+              .and_return(@github)
+        @github.should_receive(:tags)
+              .with("somerepo.com", "some term")
+              .and_return(%w(release_1 release_2))
+
+        get :tags, id: 1, term: "some term"
+      end
+
+      it "should load successfully" do
+        response.code.should == "200"
+      end
+
+      it "should render json" do
+        JSON.parse(response.body).should == %w(release_1 release_2)
+      end
+    end
+  end
 end

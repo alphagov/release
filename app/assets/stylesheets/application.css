@@ -1,2 +1,5 @@
-//= require bootstrap_and_overrides
-//= require formtastic-bootstrap
+/*
+ *= require bootstrap_and_overrides
+ *= require formtastic-bootstrap
+ *= require vendor
+ */
