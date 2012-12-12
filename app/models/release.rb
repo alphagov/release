@@ -14,10 +14,13 @@ class Release < ActiveRecord::Base
 
   validate :validate_tasks
 
+  def unique_applications
+    applications.uniq
+  end
+
   private
 
   def validate_tasks
     errors.add(:tasks, "requires at least one task") if tasks.length < 1
   end
 end
-
