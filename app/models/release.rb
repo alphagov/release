@@ -1,5 +1,5 @@
 class Release < ActiveRecord::Base
-  attr_accessible :notes, :task_ids, :deploy_at
+  attr_accessible :notes, :task_ids, :deploy_at, :tasks_attributes
 
   has_many :tasks
   has_many :applications, through: :tasks
