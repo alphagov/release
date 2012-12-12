@@ -5,5 +5,5 @@ ReleaseApp::Application.routes.draw do
 
   match "applications/:id/tags" => "applications#tags"
 
-  root :to => redirect("/applications", :status => 302)
+  root :to => redirect("/releases", :status => 302)
 end
