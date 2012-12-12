@@ -10,9 +10,9 @@ You will need a SQL database and may have to create an app-specific SQL user - c
     rake db:create db:migrate
     rake spec
 
-Install applications from fixture file.
+Create applications in db/seeds.rb
     
-    bundle exec rake db:fixtures:load
+    rake db:seed
 
 ## Github API
 
