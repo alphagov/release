@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://gems.gemfury.com/vo6ZrmjBQu5szyywDszE/'
 
 gem 'formtastic', '2.2.1'
 gem 'formtastic-bootstrap', '2.0.0'
