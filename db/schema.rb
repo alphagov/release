@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121212140938) do
+ActiveRecord::Schema.define(:version => 20121212151647) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -25,11 +25,18 @@ ActiveRecord::Schema.define(:version => 20121212140938) do
 
   create_table "releases", :force => true do |t|
     t.text     "notes"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.datetime "deploy_at"
-    t.boolean  "released",    :default => false
+    t.boolean  "released",                   :default => false
     t.datetime "released_at"
+    t.integer  "user_id"
+    t.text     "product_team_members"
+    t.text     "summary"
+    t.text     "description_of_changes"
+    t.text     "additional_support_notes"
+    t.text     "extended_test_period_notes"
+    t.text     "additional_notes"
   end
 
   create_table "tasks", :force => true do |t|
