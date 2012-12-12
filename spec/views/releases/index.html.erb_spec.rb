@@ -7,8 +7,8 @@ describe "releases/index.html.erb" do
   let(:task) { application.tasks.build(version: "456") }
   let(:task_2) { application_2.tasks.build(version: "789") }
 
-  let(:three_days) { 3.days.from_now }
-  let(:four_days) { 4.days.from_now }
+  let(:three_days) { 3.days.from_now.strftime('%l:%M%P - %A %e %B') }
+  let(:four_days) { 4.days.from_now.strftime('%l:%M%P - %A %e %B') }
 
   before do
     application.save
