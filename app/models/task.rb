@@ -7,7 +7,9 @@ class Task < ActiveRecord::Base
 
   validates_presence_of :version, :application
 
-  default_scope order("created_at DESC")
+  # default_scope order("created_at DESC")
+
+  scope :recent_first, includes(:releases).order("releases.deploy_at DESC")
 
   def to_s
     "#{application.name} - #{version}"
