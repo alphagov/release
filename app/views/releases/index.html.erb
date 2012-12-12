@@ -11,7 +11,7 @@
   <% @todays_releases.each do |release| %>
     <tr>
       <td><%= link_to release.applications.map(&:name).join(", "), release_path(release) %></td>
-      <td><%= release.created_at.strftime('%l:%M%P') %></td>
+      <td><%= release.deploy_at.strftime('%l:%M%P') %></td>
     </tr>
   <% end %>
   </tbody>
@@ -24,7 +24,7 @@
   <% @future_releases.each do |release| %>
     <tr>
       <td><%= link_to release.applications.map(&:name).join(", "), release_path(release) %></td>
-      <td><%= release.created_at.strftime('%l:%M%P - %A %e %B') %></td>
+      <td><%= release.deploy_at.strftime('%l:%M%P - %A %e %B') %></td>
     </tr>
   <% end %>
   </tbody>
