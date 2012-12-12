@@ -11,6 +11,7 @@ gem 'plek', '0.5.0'
 gem 'octokit', '1.19.0'
 gem 'rails', '3.2.8'
 gem 'unicorn', '4.4.0'
+gem "nested_form", '0.3.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
