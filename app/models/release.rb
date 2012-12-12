@@ -6,6 +6,8 @@ class Release < ActiveRecord::Base
 
   accepts_nested_attributes_for :tasks
 
+  default_scope order("deploy_at ASC")
+
   scope :previous_releases, lambda { where("deploy_at < ?", Date.today.beginning_of_day) }
   scope :todays_releases, lambda { where("deploy_at >= ? and deploy_at <= ?", Date.today.beginning_of_day, Date.today.end_of_day) }
   scope :future_releases, lambda { where("deploy_at > ?", Date.today.end_of_day) }
