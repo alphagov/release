@@ -1,12 +1,12 @@
 require "github"
 
 class ApplicationsController < ApplicationController
+  before_filter :find_application, only: [:show, :edit, :update]
   def index
     @applications = Application.all
   end
 
   def show
-    @application = Application.find(params[:id])
   end
 
   def new
@@ -14,7 +14,6 @@ class ApplicationsController < ApplicationController
   end
 
   def edit
-    @application = Application.find(params[:id])
   end
 
   def create
@@ -29,12 +28,15 @@ class ApplicationsController < ApplicationController
   end
 
   def update
-    @application = Application.find(params[:id])
-
     if @application.update_attributes(params[:application])
       redirect_to @application, flash: { notice: "Successfully updated the application" }
     else
       redirect_to edit_application_path(@application), flash: { alert: "There are some problems with the application" }
     end
   end
+
+  private
+    def find_application
+      @application = Application.find(params[:id])
+    end
 end
