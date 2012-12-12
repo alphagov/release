@@ -5,6 +5,8 @@ describe "Deployment task management" do
   let(:application2) { Application.new(name: "butthead", repo: "butthead.com") }
 
   before(:each) do
+    login_as_warden_user
+
     application1.save
     application2.save
   end

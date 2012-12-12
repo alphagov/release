@@ -16,9 +16,23 @@ require 'capybara/rails'
 
 require 'database_cleaner'
 
+require 'factory_girl'
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+include Warden::Test::Helpers
+
+def login_as_stub_user
+  @user = FactoryGirl.create(:user)
+  @request.env['warden'] = stub(:authenticate! => true, :authenticated? => true, :user => @user)
+end
+
+def login_as_warden_user
+  @current_user = FactoryGirl.create(:user)
+  login_as(@current_user, :scope => :user)
+end
 
 RSpec.configure do |config|
   # ## Mock Framework

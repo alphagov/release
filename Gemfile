@@ -27,4 +27,6 @@ group :test, :development do
   gem 'rspec-rails', '2.12.0'
   gem 'simplecov', '0.6.4'
   gem 'simplecov-rcov', '0.2.3'
+  gem 'factory_girl_rails', '4.1.0'
+  gem 'timecop', '0.4.5'
 end

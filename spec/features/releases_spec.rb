@@ -9,6 +9,8 @@ describe "Release management" do
   let(:task3) { application2.tasks.create(version: "release_3") }
 
   before(:each) do
+    login_as_warden_user
+
     application1.save
     application2.save
 

@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe "Application management" do
+  before(:each) do
+    login_as_warden_user
+  end
+
   describe "showing application information" do
     let(:application_1) { Application.new(name: "beavis", repo: "beavis.com") }
     let(:application_2) { Application.new(name: "butthead", repo: "butthead.com") }

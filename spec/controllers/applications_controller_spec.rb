@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe ApplicationsController do
-  before do
+  before(:each) do
+    login_as_stub_user
     Application.new(name: "dummy", repo: "somerepo.com").save
   end
 

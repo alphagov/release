@@ -5,6 +5,8 @@ describe TasksController do
   let(:task) { application.tasks.build(version: "release_101") }
 
   before do
+    login_as_stub_user
+
     application.save
     task.save
   end

@@ -6,6 +6,8 @@ describe ReleasesController do
   let(:release) { Release.new }
 
   before do
+    login_as_stub_user
+
     application.save
     task.save
 

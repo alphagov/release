@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe ApplicationController do
+  before(:each) do
+    login_as_stub_user
+  end
+
   describe "behaviour for all subclasses" do
     controller do
       def index
