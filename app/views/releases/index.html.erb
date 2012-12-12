@@ -4,9 +4,24 @@
 
 <p><%= link_to "Create Release", new_release_path, class: "btn btn-success" %></p>
 
-<table class="table">
+<h2>Today's Releases</h2>
+
+<table class="table" id="today">
   <tbody>
-  <% @releases.each do |release| %>
+  <% @todays_releases.each do |release| %>
+    <tr>
+      <td><%= link_to release.applications.map(&:name).join(", "), release_path(release) %></td>
+      <td><%= release.created_at.strftime('%l:%M%P') %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h2>Future Releases</h2>
+
+<table class="table" id="future">
+  <tbody>
+  <% @future_releases.each do |release| %>
     <tr>
       <td><%= link_to release.applications.map(&:name).join(", "), release_path(release) %></td>
       <td><%= release.created_at.strftime('%l:%M%P - %A %e %B') %></td>

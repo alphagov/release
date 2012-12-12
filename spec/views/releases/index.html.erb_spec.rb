@@ -17,7 +17,11 @@ describe "releases/index.html.erb" do
     task.save
     task_2.save
 
-    assign(:releases, [
+    assign(:todays_releases, [
+      stub_model(Release, id: 1, tasks: [task], notes: "notes 1", created_at: three_days),
+      stub_model(Release, id: 2, tasks: [task_2], notes: "notes 2", created_at: four_days)
+    ])
+    assign(:future_releases, [
       stub_model(Release, id: 1, tasks: [task], notes: "notes 1", created_at: three_days),
       stub_model(Release, id: 2, tasks: [task_2], notes: "notes 2", created_at: four_days)
     ])

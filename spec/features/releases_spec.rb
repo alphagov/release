@@ -20,8 +20,8 @@ describe "Release management" do
   end
 
   describe "showing release information" do
-    let(:release1) { Release.new }
-    let(:release2) { Release.new }
+    let(:release1) { FactoryGirl.build(:release) }
+    let(:release2) { FactoryGirl.build(:release) }
 
     before(:each) do
       release1.tasks << task1
@@ -85,7 +85,16 @@ describe "Release management" do
       before do
         find("#release_task_ids_#{task1.id}").set(true)
         fill_in :release_notes, with: "New description"
-        click_on "Create Release"
+
+        select("2012", :from => "release[deploy_at(1i)]")
+        select("December", :from => "release[deploy_at(2i)]")
+        select("25", :from => "release[deploy_at(3i)]")
+        select("10", :from => "release[deploy_at(4i)]")
+        select("00", :from => "release[deploy_at(5i)]")
+
+        Timecop.freeze(Date.parse('25 December 2012')) do
+          click_on "Create Release"
+        end
       end
 
       it "should show a success message" do
@@ -93,10 +102,12 @@ describe "Release management" do
       end
 
       it "should appear in the list page" do
-        visit "/releases"
-        within("table tbody") do
-          page.should have_content(task1.application.name)
-          page.should_not have_content(task2.application.name)
+        Timecop.freeze(Date.parse('25 December 2012')) do
+          visit "/releases"
+          within("table#today tbody") do
+            page.should have_content(task1.application.name)
+            page.should_not have_content(task2.application.name)
+          end
         end
       end
     end

@@ -1,6 +1,8 @@
 class ReleasesController < ApplicationController
   def index
     @releases = Release.all
+    @todays_releases = Release.todays_releases.all
+    @future_releases = Release.future_releases.all
   end
 
   def show
