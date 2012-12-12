@@ -1,4 +1,9 @@
 FactoryGirl.define do
+  factory :application do
+    sequence(:name) { |n| "Johnny #{n}" }
+    sequence(:repo) { |n| "org/app#{n}" }
+  end
+
   factory :release do
     notes "release notes"
     deploy_at { Date.today }

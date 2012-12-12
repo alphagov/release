@@ -10,4 +10,12 @@ class Application < ActiveRecord::Base
   has_many :releases, through: :tasks
 
   default_scope order("name ASC")
+
+  def tags
+    github_client.tags(repo, "")
+  end
+
+  def github_client
+    @github_client ||= Github.create_from_config(Rails.root.join("config", "github-credentials.yml"))
+  end
 end
