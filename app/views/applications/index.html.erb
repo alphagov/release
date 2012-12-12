@@ -13,7 +13,7 @@
   <% @applications.each do |application| %>
     <tr>
       <td><%= link_to application.name, application %></td>
-      <td><%= link_to application.repo, application.repo %></td>
+      <td><%= link_to application.repo, "https://github.com/#{application.repo}" %></td>
     </tr>
   <% end %>
   </tbody>
