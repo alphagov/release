@@ -28,7 +28,7 @@ group :test, :development do
   gem 'database_cleaner', '0.9.1'
   gem 'mocha', '0.13.1', require: false
   gem 'rspec-rails', '2.12.0'
-  gem 'shoulda-context', '1.0.1'
+  gem 'shoulda-context', '1.0.1', require: false
   gem 'simplecov', '0.6.4'
   gem 'simplecov-rcov', '0.2.3'
   gem 'factory_girl_rails', '4.1.0'
