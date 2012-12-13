@@ -2,7 +2,7 @@ require "test_helper"
 
 class ReleaseTest < ActiveSupport::TestCase
   context "loading releases" do
-    should "load upcoming tasks" do
+    should "load previous releases, upcoming releases, and releases for today" do
       release_yesterday = FactoryGirl.create(:release, deploy_at: Time.parse('24-12-2012 13:30'), notes: "Yesterday")
       release_today = FactoryGirl.create(:release, deploy_at: Time.parse('25-12-2012 14:00'), notes: "Right now")
       release_tomorrow = FactoryGirl.create(:release, deploy_at: Time.parse('26-12-2012 13:30'), notes: "Tomorrow")
@@ -20,46 +20,59 @@ class ReleaseTest < ActiveSupport::TestCase
   end
 
   context "creating a release" do
+    context "given valid attributes" do
+      setup do
+        @application_one = FactoryGirl.create(:application, name: "Smart Answers")
+        @application_two = FactoryGirl.create(:application, name: "Frontend")
+
+        @atts = {
+          notes: "Major new feature",
+          deploy_at: Time.parse("25-12-2012 13:00"),
+          tasks_attributes: {
+            "0" => { description: "Deploy new smart answer", version: "123", application_id: @application_one.id },
+            "1" => { description: "Redirect old quick answer", version: "101", application_id: @application_two.id }
+          },
+        }
+      end
+
+      should "be created successfully" do
+        release = Release.new(@atts)
+        assert release.valid?
+
+        release.save
+        assert release.persisted?
+      end
+
+      should "have tasks" do
+        release = Release.create!(@atts)
+
+        assert_equal 2, release.tasks.size
+
+        assert release.tasks.map(&:description).include?("Deploy new smart answer")
+        assert release.tasks.map(&:description).include?("Redirect old quick answer")
+      end
+
+      should "have applications" do
+        release = Release.create!(@atts)
+
+        assert_equal 2, release.applications.size
+
+        assert release.applications.map(&:name).include?("Frontend")
+        assert release.applications.map(&:name).include?("Smart Answers")
+      end
+
+      should "not be 'released' by default" do
+        release = Release.create!(@atts)
+
+        refute release.released?
+      end
+    end
+
     should "not be valid if there are no tasks" do
       release = Release.new
 
       refute release.valid?
       assert release.errors.full_messages.include?("Tasks requires at least one task")
-    end
-
-    should "be valid with a single task" do
-      release = Release.new
-
-      release.tasks << FactoryGirl.build(:task)
-
-      assert release.valid?
-      assert release.errors.empty?
-    end
-
-    should "update the task release_id when appended to a release" do
-      release = Release.new
-      task = FactoryGirl.build(:task)
-
-      release.tasks << task
-      release.save
-
-      assert_not_nil task.release
-      assert_equal release.id, task.release_id
-    end
-
-    should "contain many applications" do
-      application_one = FactoryGirl.create(:application)
-      application_two = FactoryGirl.create(:application)
-
-      task_one = FactoryGirl.build(:task, application: application_one)
-      task_two = FactoryGirl.build(:task, application: application_two)
-
-      release = Release.new
-      release.tasks = [task_one, task_two]
-      release.save
-
-      refute release.applications.empty?
-      assert_equal [application_one, application_two], release.applications.to_a
     end
   end
 end
