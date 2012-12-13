@@ -12,10 +12,10 @@ class ActiveSupport::TestCase
   end
 
   def login_as_stub_user
-    login_as stub_user
+    stub_warden_as stub_user
   end
 
-  def login_as(user)
+  def stub_warden_as(user)
     request.env['warden'] = stub(
       :authenticate! => true,
       :authenticated? => true,

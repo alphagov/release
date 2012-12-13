@@ -33,4 +33,5 @@ group :test, :development do
   gem 'simplecov-rcov', '0.2.3'
   gem 'factory_girl_rails', '4.1.0'
   gem 'timecop', '0.4.5'
+  gem 'webmock', '1.9.0', require: false
 end
