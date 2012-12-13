@@ -48,6 +48,18 @@ class ManagingReleasesTest < ActionDispatch::IntegrationTest
         assert page.has_content?(@release.notes)
       end
     end
+
+    should "list associated tasks" do
+      visit "/releases/#{@release.id}"
+
+      within_table "tasks" do
+        @release.tasks.each do |task|
+          assert page.has_content?(task.description)
+          assert page.has_content?("v#{task.version}")
+          assert page.has_link?(task.application.name, :href => "/applications/#{task.application.id}")
+        end
+      end
+    end
   end
 
 end

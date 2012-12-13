@@ -7,6 +7,19 @@
   <dd><%= @release.notes %></dd>
 </dl>
 
+<h3>Tasks</h3>
+
+<table class="table" id="tasks">
+  <tbody>
+    <% @release.tasks.each do |task| %>
+      <tr>
+        <td><%= link_to task.application.name, application_path(task.application) %> v<%= task.version %></td>
+        <td><%= task.description %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <div class="btn-group">
   <%= link_to "Edit", { action: "edit", id: @release.id }, class: "btn" %>
 </div>
