@@ -9,7 +9,7 @@ class Task < ActiveRecord::Base
 
   # default_scope order("created_at DESC")
 
-  scope :recent_first, includes(:releases).order("releases.deploy_at DESC")
+  scope :recent_first, includes(:release).order("releases.deploy_at DESC")
 
   def to_s
     "#{application.name} - #{version}"
