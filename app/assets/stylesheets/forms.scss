@@ -1,0 +1,11 @@
+form.formtastic {
+  .btn.new-task { margin-top: 20px; }
+  .btn.remove-task { float: right; }
+
+  fieldset.task {
+    background: #eee;
+    padding: 20px;
+
+    legend { display: block; border: none; }
+  }
+}

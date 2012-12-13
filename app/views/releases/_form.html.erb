@@ -8,15 +8,17 @@
     <%= f.input :deploy_at, :label => "Deploy at" %>
   <% end %>
 
+  <div class="controls">
   <%= f.semantic_fields_for :tasks do |task| %>
     <%= task.inputs "Task", :class => "task" do %>
+    <%= task.link_to_remove "Remove this task", :class => "btn btn-danger remove-task" %>
       <%= task.input :application_id, :as => :select, :collection => Application.all %>
       <%= task.input :description, :as => :string %>
       <%= task.input :version %>
-      <li><%= task.link_to_remove "Remove this task" %></li>
     <% end %>
   <% end %>
-  <p><%= f.link_to_add "Add a task", :tasks %></p>
+  <%= f.link_to_add "Add a task", :tasks, :class => "btn new-task" %>
+  </div>
 
   <%= f.actions do %>
       <%= f.action :submit, :as => :button %>
