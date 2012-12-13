@@ -3,6 +3,7 @@ require 'capybara/rails'
 require 'webmock'
 
 DatabaseCleaner.strategy = :transaction
+WebMock.disable_net_connect!
 
 class ActionDispatch::IntegrationTest
   include Capybara::DSL
