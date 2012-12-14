@@ -3,6 +3,7 @@ FactoryGirl.define do
     summary "release summary"
     notes "release notes"
     deploy_at { Time.now }
+    user
 
     after(:build) do |release|
       release.tasks << FactoryGirl.build(:task, :release_id => release.id)
@@ -21,7 +22,7 @@ FactoryGirl.define do
   end
 
   factory :user do
-    name "Winston Smith-Churchill"
+    name "Stub User"
     sequence(:email) {|n| "winston-#{n}@gov.uk" }
     permissions { Hash[GDS::SSO::Config.default_scope => ["signin"]] }
   end

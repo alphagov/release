@@ -4,6 +4,7 @@ class Release < ActiveRecord::Base
 
   has_many :tasks
   has_many :applications, through: :tasks
+  belongs_to :user
 
   accepts_nested_attributes_for :tasks
 
@@ -16,6 +17,11 @@ class Release < ActiveRecord::Base
   validates :summary, :deploy_at, presence: true
 
   validate :validate_tasks
+
+  def save_as(user)
+    self.user = user
+    save
+  end
 
   def unique_applications
     applications.uniq

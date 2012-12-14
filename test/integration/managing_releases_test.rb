@@ -93,12 +93,15 @@ class ManagingReleasesTest < JavascriptIntegrationTest
 
       click_on "Create Release"
 
+      save_page
+
       assert page.has_content?('created new release')
 
       assert page.has_content?('Deploy a new smart answer')
       assert page.has_content?('This release must take place today')
       assert page.has_content?("Winston Smith-Churchill")
       assert page.has_content?("We may expect an increased number of support requests")
+      assert page.has_content?("Stub User")
 
       within_table 'tasks' do
         assert page.has_content?('Smart Answers')

@@ -21,7 +21,7 @@ class ReleasesController < ApplicationController
   def create
     @release = Release.new(params[:release])
 
-    if @release.valid? && @release.save
+    if @release.valid? && @release.save_as(current_user)
       redirect_to @release, flash: { notice: "Successfully created new release" }
     else
       flash[:alert] = "There are some problems with the release"
