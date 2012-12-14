@@ -13,6 +13,8 @@ class Release < ActiveRecord::Base
   scope :todays_releases, lambda { where("deploy_at >= ? and deploy_at <= ?", Date.today.beginning_of_day, Date.today.end_of_day) }
   scope :future_releases, lambda { where("deploy_at > ?", Date.today.end_of_day) }
 
+  validates :summary, :deploy_at, presence: true
+
   validate :validate_tasks
 
   def unique_applications

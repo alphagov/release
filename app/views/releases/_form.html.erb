@@ -1,7 +1,5 @@
-<p>Enter release details.</p>
-
 <%= semantic_bootstrap_nested_form_for @release, :html => {:class => "form-horizontal"} do |f| %>
-  <%= f.semantic_errors %>
+  <%= f.semantic_errors :tasks, :summary, :notes, :deploy_at, :class => "alert alert-error" %>
 
   <%= f.inputs do %>
     <%= f.input :summary, input_html: { class: "input-xxlarge", :rows => 5 } %>

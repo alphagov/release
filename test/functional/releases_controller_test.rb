@@ -31,8 +31,8 @@ class ReleasesControllerTest < ActionController::TestCase
 
     should "create an release" do
       assert_difference "Release.count", 1 do
-        post :create, release: { notes: "My First App", tasks_attributes: { "0" => { description: "Description", version: "123", application_id: @app.id } } }
-      end    
+        post :create, release: { summary: "My First App", deploy_at: Time.now, tasks_attributes: { "0" => { description: "Description", version: "123", application_id: @app.id } } }
+      end
     end
   end
 

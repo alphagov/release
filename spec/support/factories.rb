@@ -1,7 +1,8 @@
 FactoryGirl.define do
   factory :release do
+    summary "release summary"
     notes "release notes"
-    deploy_at { Date.today }
+    deploy_at { Time.now }
 
     after(:build) do |release|
       release.tasks << FactoryGirl.build(:task, :release_id => release.id)

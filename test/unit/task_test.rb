@@ -27,11 +27,11 @@ class TaskTest < ActiveSupport::TestCase
         end
       end
 
-      should "be invalid without a version" do
-        task = @application.tasks.build(:description => "Deploy some of the things")
+      should "be invalid without an description" do
+        task = @application.tasks.build(version: "12345")
 
         refute task.valid?
-        assert task.errors[:version].include?("can't be blank")
+        assert task.errors[:description].include?("can't be blank")
       end
     end
 

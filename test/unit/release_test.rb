@@ -20,21 +20,22 @@ class ReleaseTest < ActiveSupport::TestCase
   end
 
   context "creating a release" do
+    setup do
+      @application_one = FactoryGirl.create(:application, name: "Smart Answers")
+      @application_two = FactoryGirl.create(:application, name: "Frontend")
+
+      @atts = {
+        summary: "Major new feature",
+        notes: "A few notes about this release",
+        deploy_at: Time.parse("25-12-2012 13:00"),
+        tasks_attributes: {
+          "0" => { description: "Deploy new smart answer", version: "123", application_id: @application_one.id },
+          "1" => { description: "Redirect old quick answer", version: "101", application_id: @application_two.id }
+        },
+      }
+    end
+
     context "given valid attributes" do
-      setup do
-        @application_one = FactoryGirl.create(:application, name: "Smart Answers")
-        @application_two = FactoryGirl.create(:application, name: "Frontend")
-
-        @atts = {
-          notes: "Major new feature",
-          deploy_at: Time.parse("25-12-2012 13:00"),
-          tasks_attributes: {
-            "0" => { description: "Deploy new smart answer", version: "123", application_id: @application_one.id },
-            "1" => { description: "Redirect old quick answer", version: "101", application_id: @application_two.id }
-          },
-        }
-      end
-
       should "be created successfully" do
         release = Release.new(@atts)
         assert release.valid?
@@ -73,6 +74,27 @@ class ReleaseTest < ActiveSupport::TestCase
 
       refute release.valid?
       assert release.errors.full_messages.include?("Tasks requires at least one task")
+    end
+
+    should "not be valid without a summary" do
+      release = Release.new(@atts.merge(summary: ''))
+
+      refute release.valid?
+      assert release.errors.full_messages.include?("Summary can't be blank")
+    end
+
+    should "not be valid without a deploy_at time" do
+      release = Release.new(@atts.merge(deploy_at: nil))
+
+      refute release.valid?
+      assert release.errors.full_messages.include?("Deploy at can't be blank")
+    end
+
+    should "not be valid when deploy_at has an invalid timestamp" do
+      release = Release.new(@atts.merge(deploy_at: 'No time should be parsed from this'))
+
+      refute release.valid?
+      assert release.errors.keys.include?(:deploy_at)
     end
   end
 end
