@@ -9,9 +9,10 @@ You will need a SQL database and may have to create an app-specific SQL user - c
     bundle install
     rake db:create db:migrate
     rake spec
+    rake test
 
 Create applications in db/seeds.rb
-    
+
     rake db:seed
 
 ## Github API
