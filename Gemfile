@@ -23,7 +23,8 @@ end
 
 group :test, :development do
   gem 'brakeman', '1.7.0'
-  gem 'capybara', '2.0.1'
+  gem 'capybara', '~> 1.1.0'
+  gem "capybara-webkit"
   gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '0.9.1'
   gem 'mocha', '0.13.1', require: false
