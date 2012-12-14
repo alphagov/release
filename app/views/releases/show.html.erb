@@ -2,9 +2,15 @@
 
 <h1><%= "Release #{@release.id}" %></h1>
 
+<blockquote class="summary"><%= @release.summary %></blockquote>
+
 <dl>
   <dt>Notes:</dt>
   <dd><%= @release.notes %></dd>
+  <dt>Product team members:</dt>
+  <dd><%= @release.product_team_members %></dd>
+  <dt>Additional support notes:</dt>
+  <dd><%= @release.additional_support_notes %></dd>
 </dl>
 
 <h3>Tasks</h3>
@@ -13,7 +19,7 @@
   <tbody>
     <% @release.tasks.each do |task| %>
       <tr>
-        <td><%= link_to task.application.name, application_path(task.application) %> v<%= task.version %></td>
+        <td><%= link_to task.application.name, application_path(task.application) %> <span class='label'><%= task.version %></span></td>
         <td><%= task.description %></td>
       </tr>
     <% end %>

@@ -1,6 +1,6 @@
 require 'integration_test_helper'
 
-class ManagingReleasesTest < ActionDispatch::IntegrationTest
+class ManagingReleasesTest < JavascriptIntegrationTest
 
   setup do
     login_as_stub_user
@@ -54,10 +54,56 @@ class ManagingReleasesTest < ActionDispatch::IntegrationTest
 
       within_table "tasks" do
         @release.tasks.each do |task|
-          assert page.has_content?(task.description)
-          assert page.has_content?("v#{task.version}")
+          assert page.has_content?(task.description.to_s)
+          assert page.has_content?("#{task.version}")
           assert page.has_link?(task.application.name, :href => "/applications/#{task.application.id}")
         end
+      end
+    end
+  end
+
+  context "booking a release" do
+    setup do
+      @application_one = FactoryGirl.create(:application, name: "Smart Answers")
+      @application_two = FactoryGirl.create(:application, name: "Migratorator")
+    end
+
+    should "create a release given valid attributes" do
+      visit '/releases'
+      click_on 'Book a release'
+
+      fill_in "Summary", :with => "Deploy a new smart answer, changes to an existing smart answer and bug fixes for Migratorator"
+      fill_in "Additional notes", :with => "This release must take place today to prepare for the introduction of new tax rules tomorrow."
+      fill_in "Product team members", :with => "Winston Smith-Churchill\nHiro Protagonist\nBug Barbecue"
+      fill_in "Additional support notes", :with => "We may expect an increased number of support requests from users due to the smart answer amends"
+
+      select Date.today.year.to_s, :from => "release_deploy_at_1i"
+      select Date.today.strftime('%B'), :from => "release_deploy_at_2i"
+      select Date.today.day.to_s, :from => "release_deploy_at_3i"
+      select "12", :from => "release_deploy_at_4i"
+      select "00", :from => "release_deploy_at_5i"
+
+      click_link "Add a task"
+
+      within(".tasks-group fieldset") do
+        select "Smart Answers", :from => "Application"
+        fill_in "Version", :with => "release_123"
+        fill_in "Description", :with => "Deploy Child Benefit Tax Calculator"
+      end
+
+      click_on "Create Release"
+
+      assert page.has_content?('created new release')
+
+      assert page.has_content?('Deploy a new smart answer')
+      assert page.has_content?('This release must take place today')
+      assert page.has_content?("Winston Smith-Churchill")
+      assert page.has_content?("We may expect an increased number of support requests")
+
+      within_table 'tasks' do
+        assert page.has_content?('Smart Answers')
+        assert page.has_content?('release_123')
+        assert page.has_content?('Deploy Child Benefit Tax Calculator')
       end
     end
   end

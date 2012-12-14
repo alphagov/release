@@ -11,7 +11,7 @@ FactoryGirl.define do
   factory :task do
     application
     sequence :version
-    notes "deploy this"
+    description "deploy this"
   end
 
   factory :application do
