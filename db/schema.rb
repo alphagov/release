@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121217145255) do
+ActiveRecord::Schema.define(:version => 20121217155536) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(:version => 20121217145255) do
   add_index "applications", ["repo"], :name => "index_applications_on_repo", :unique => true
 
   create_table "deployments", :force => true do |t|
-    t.string   "tag"
+    t.string   "version"
     t.string   "environment"
     t.integer  "application_id"
     t.datetime "created_at",     :null => false
