@@ -7,6 +7,10 @@
   <dd><%= link_to @application.repo, "https://github.com/#{@application.repo}" %></dd>
 </dl>
 
+<div class="btn-group">
+  <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
+</div>
+
 <h2>Recent activity</h2>
 
 <table class="table">
@@ -21,6 +25,4 @@
   </tbody>
 </table>
 
-<div class="btn-group">
-  <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
-</div>
+
