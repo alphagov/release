@@ -8,6 +8,7 @@ class Application < ActiveRecord::Base
 
   has_many :tasks, dependent: :destroy
   has_many :releases, through: :tasks
+  has_many :deployments
 
   default_scope order("name ASC")
 
