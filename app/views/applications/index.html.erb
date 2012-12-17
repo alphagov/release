@@ -7,15 +7,30 @@
     <tr>
       <th>Name</th>
       <th>Repo</th>
+      <th>Staging</th>
+      <th>Production</th>
     </tr>
   </thead>
   <tbody>
-  <% @applications.each do |application| %>
-    <tr>
-      <td><%= link_to application.name, application %></td>
-      <td><%= link_to application.repo, "https://github.com/#{application.repo}" %></td>
-    </tr>
-  <% end %>
+    <% @applications.each do |application| %>
+      <tr>
+        <td><%= link_to application.name, application %></td>
+        <td><%= link_to application.repo, "https://github.com/#{application.repo}" %></td>
+        <% ["staging", "production"].each do |environment| %>
+          <td>
+            <% latest_deploy = application.deployments.last_deploy_to(environment) %>
+            <% if latest_deploy %>
+              <%= latest_deploy.version %>
+              <small><%= link_to("see tag on GitHub", "https://github.com/#{application.repo}/tree/#{latest_deploy.version}") %></small>
+              <br>
+              <%= latest_deploy.created_at.strftime('%l:%M%P - %A %e %B') %>
+            <% else %>
+              N/A
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
