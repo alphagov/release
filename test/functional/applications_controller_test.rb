@@ -15,6 +15,14 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :index
       assert_select "table tbody tr", count: 2
     end
+
+    should "show the latest deploy to staging and production" do
+      deploy = FactoryGirl.create(:deployment, 
+                                   application: @app1,
+                                   version: "release_123")
+      get :index
+      assert_select "td", /release_123/
+    end
   end
 
   context "GET new" do
