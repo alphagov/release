@@ -7,8 +7,9 @@
     <tr>
       <th>Name</th>
       <th>Repo</th>
-      <th>Staging</th>
-      <th>Production</th>
+      <% @environments.each do |environment| %>
+        <th><%= environment.humanize %></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -16,7 +17,7 @@
       <tr>
         <td><%= link_to application.name, application %></td>
         <td><%= link_to application.repo, "https://github.com/#{application.repo}" %></td>
-        <% ["staging", "production"].each do |environment| %>
+        <% @environments.each do |environment| %>
           <td>
             <% latest_deploy = application.deployments.last_deploy_to(environment) %>
             <% if latest_deploy %>

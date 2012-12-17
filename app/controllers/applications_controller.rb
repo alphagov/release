@@ -3,6 +3,7 @@ require "github"
 class ApplicationsController < ApplicationController
   before_filter :find_application, only: [:show, :edit, :update]
   def index
+    @environments = ordered_environments
     @applications = Application.all
   end
 
@@ -38,5 +39,17 @@ class ApplicationsController < ApplicationController
   private
     def find_application
       @application = Application.find(params[:id])
+    end
+
+    def ordered_environments
+      environments = Deployment.environments
+      # Ensure they come out in the human order: preview, then staging then production
+      ["preview", "staging", "production"].reverse_each do |environment|
+        if environments.include?(environment)
+          environments.delete(environment)
+          environments.unshift(environment) # prepend it
+        end
+      end
+      environments
     end
 end
