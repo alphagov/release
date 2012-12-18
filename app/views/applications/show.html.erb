@@ -11,6 +11,7 @@
       <th>Version</th>
       <th>Previous Version</th>
     </tr>
+  </thead>
   <tbody>
     <% @application.latest_deploy_to_each_environment.each do |environment, deployment| %>
       <tr>
