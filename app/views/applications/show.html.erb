@@ -23,10 +23,14 @@
           <%= human_datetime(deployment.created_at) %>
         </td>
         <td>
-          <%= deployment.previous_deployment.nil? ? "N/A" : deployment.previous_deployment.version %>
-          <small><%= github_tag_link_to(@application.repo, deployment.previous_deployment.version) %></small>
-          <br>
-          <%= human_datetime(deployment.previous_deployment.created_at) %>
+          <% if deployment.previous_deployment %>
+            <%= deployment.previous_deployment.version %>
+            <small><%= github_tag_link_to(@application.repo, deployment.previous_deployment.version) %></small>
+            <br>
+            <%= human_datetime(deployment.previous_deployment.created_at) %>
+          <% else %>
+            N/A
+          <% end %>
         </td>
       </tr>
     <% end %>
