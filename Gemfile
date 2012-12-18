@@ -13,6 +13,9 @@ gem 'rails', '3.2.8'
 gem 'unicorn', '4.4.0'
 gem "nested_form", '0.3.1'
 
+gem 'aws-ses', require: 'aws/ses'
+gem 'exception_notification'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
