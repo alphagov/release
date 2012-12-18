@@ -12,6 +12,13 @@ class Application < ActiveRecord::Base
 
   default_scope order("name ASC")
 
+  def latest_deploy_to_each_environment
+    environments = deployments.select('DISTINCT environment').map(&:environment)
+    environments.each_with_object({}) do |environment, hash|
+      hash[environment] = deployments.last_deploy_to(environment)
+    end
+  end
+
   def tags
     github_client.tags(repo, "")
   end

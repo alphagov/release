@@ -22,9 +22,9 @@
             <% latest_deploy = application.deployments.last_deploy_to(environment) %>
             <% if latest_deploy %>
               <%= latest_deploy.version %>
-              <small><%= link_to("see tag on GitHub", "https://github.com/#{application.repo}/tree/#{latest_deploy.version}") %></small>
+              <small><%= github_tag_link_to(application.repo, latest_deploy.version) %></small>
               <br>
-              <%= latest_deploy.created_at.strftime('%l:%M%P - %A %e %B') %>
+              <%= human_datetime(latest_deploy.created_at) %>
             <% else %>
               N/A
             <% end %>

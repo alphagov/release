@@ -26,7 +26,7 @@
     <tr>
       <td><%= link_to "##{release.id}", release_path(release) %></td>
       <td><%= link_to release.unique_applications.map(&:name).join(", "), release_path(release) %></td>
-      <td><%= release.deploy_at.strftime('%l:%M%P - %A %e %B') %></td>
+      <td><%= human_datetime(release.deploy_at) %></td>
     </tr>
   <% end %>
   </tbody>

@@ -11,4 +11,16 @@ module ApplicationHelper
       end
     end
   end
+
+  def human_datetime(date)
+    if date
+      date.strftime("%l:%M%P - %A %e %B")
+    else
+      ""
+    end
+  end
+
+  def github_tag_link_to(repo, might_be_a_tag)
+    link_to("see tag on GitHub", "https://github.com/#{repo}/tree/#{might_be_a_tag}")
+  end
 end

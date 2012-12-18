@@ -2,6 +2,37 @@
 
 <h1><%= @application.name %></h1>
 
+<h2>What's where?</h2>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Environment</th>
+      <th>Version</th>
+      <th>Previous Version</th>
+    </tr>
+  <tbody>
+    <% @application.latest_deploy_to_each_environment.each do |environment, deployment| %>
+      <tr>
+        <td><%= environment.humanize %></td>
+        <td>
+          <%= deployment.version %>
+          <small><%= github_tag_link_to(@application.repo, deployment.version) %></small>
+          <br>
+          <%= human_datetime(deployment.created_at) %>
+        </td>
+        <td>
+          <%= deployment.previous_deployment.nil? ? "N/A" : deployment.previous_deployment.version %>
+          <small><%= github_tag_link_to(@application.repo, deployment.previous_deployment.version) %></small>
+          <br>
+          <%= human_datetime(deployment.previous_deployment.created_at) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
 <dl>
   <dt>Repo:</dt>
   <dd><%= link_to @application.repo, "https://github.com/#{@application.repo}" %></dd>
@@ -19,7 +50,7 @@
       <tr>
         <td><%= link_to "##{task.release.id}", release_path(task.release) %></td>
         <td><%= link_to task.description, release_path(task.release) %> v<%= task.version %></td>
-        <td><%= task.release.deploy_at.strftime("%l:%M%P - %A %e %B") %></td>
+        <td><%= human_datetime(task.release.deploy_at) %></td>
       </tr>
     <% end %>
   </tbody>
