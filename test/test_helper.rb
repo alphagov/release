@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'shoulda-context'
+require 'minitest/autorun'
 require 'mocha/setup'
 
 require_relative '../spec/support/factories'
