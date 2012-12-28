@@ -16,6 +16,7 @@
 
 # JUnit formatted test output.
 /spec/reports
+/test/reports
 
 # Coverage output from SimpleCov.
 /coverage
