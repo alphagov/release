@@ -11,7 +11,7 @@ gem 'plek', '0.5.0'
 gem 'octokit', '1.19.0'
 gem 'rails', '3.2.8'
 gem 'unicorn', '4.4.0'
-gem "nested_form", '0.3.1'
+gem 'nested_form', '0.3.1'
 gem 'airbrake', '3.1.5'
 
 gem 'aws-ses', require: 'aws/ses'
@@ -28,7 +28,7 @@ end
 group :test, :development do
   gem 'brakeman', '1.7.0'
   gem 'capybara', '~> 1.1.0'
-  gem "capybara-webkit"
+  gem 'capybara-webkit', '0.12.1'
   gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '0.9.1'
   gem 'mocha', '0.13.1', require: false

@@ -281,7 +281,7 @@ DEPENDENCIES
   aws-ses
   brakeman (= 1.7.0)
   capybara (~> 1.1.0)
-  capybara-webkit
+  capybara-webkit (= 0.12.1)
   ci_reporter (= 1.8.0)
   database_cleaner (= 0.9.1)
   exception_notification
