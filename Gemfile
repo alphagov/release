@@ -12,6 +12,7 @@ gem 'octokit', '1.19.0'
 gem 'rails', '3.2.8'
 gem 'unicorn', '4.4.0'
 gem "nested_form", '0.3.1'
+gem 'airbrake', '3.1.5'
 
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
