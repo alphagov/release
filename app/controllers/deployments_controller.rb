@@ -16,6 +16,8 @@ class DeploymentsController < ApplicationController
     def repo_path
       if params[:repo].start_with?("http")
         URI.parse(params[:repo]).path.gsub(%r{^/}, "")
+      elsif params[:repo].start_with?("git@")
+        params[:repo].split(":")[-1].gsub(/.git$/, "")
       else
         params[:repo]
       end
