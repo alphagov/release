@@ -41,6 +41,12 @@ class DeploymentsControllerTest < ActionController::TestCase
             end
           end
         end
+
+        should "generate a friendly name" do
+          post :create, { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
+          app = Application.last
+          assert_equal "New app", app.name
+        end
       end
     end
   end
