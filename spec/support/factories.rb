@@ -29,6 +29,6 @@ FactoryGirl.define do
   factory :user do
     name "Stub User"
     sequence(:email) {|n| "winston-#{n}@gov.uk" }
-    permissions { Hash[GDS::SSO::Config.default_scope => ["signin"]] }
+    permissions { ["signin"] }
   end
 end
