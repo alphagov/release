@@ -24,6 +24,6 @@ class DeploymentsController < ApplicationController
     end
 
     def app_name
-      repo_path.split("/")[-1].humanize
+      repo_path.split("/")[-1].gsub("-", " ").humanize
     end
 end
