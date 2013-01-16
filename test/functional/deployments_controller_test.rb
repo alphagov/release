@@ -45,13 +45,13 @@ class DeploymentsControllerTest < ActionController::TestCase
         should "generate a friendly name" do
           post :create, { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
           app = Application.last
-          assert_equal "New app", app.name
+          assert_equal "New App", app.name
         end
 
         should "generate a friendly name from a name with a dash in it" do
           post :create, { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
           app = Application.last
-          assert_equal "New app", app.name
+          assert_equal "New App", app.name
         end
       end
     end
