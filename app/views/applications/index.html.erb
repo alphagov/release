@@ -21,8 +21,11 @@
           <td>
             <% latest_deploy = application.deployments.last_deploy_to(environment) %>
             <% if latest_deploy %>
-              <%= github_tag_link_to(application.repo, latest_deploy.version) %> at
-              <%= human_datetime(latest_deploy.created_at) %>
+              <%= github_tag_link_to(application.repo, latest_deploy.version) %> 
+              <span class="muted">
+                at
+                <%= human_datetime(latest_deploy.created_at) %>
+              </span>
             <% else %>
               N/A
             <% end %>
