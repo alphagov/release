@@ -4,7 +4,7 @@
 
 <h2>What's where?</h2>
 
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover table-condensed">
   <thead>
     <tr>
       <th>Environment</th>
@@ -17,16 +17,14 @@
       <tr>
         <td><%= environment.humanize %></td>
         <td>
-          <%= deployment.version %>
-          <small><%= github_tag_link_to(@application.repo, deployment.version) %></small>
-          <br>
+          <%= github_tag_link_to(@application.repo, deployment.version) %>
+          at
           <%= human_datetime(deployment.created_at) %>
         </td>
         <td>
           <% if deployment.previous_deployment %>
-            <%= deployment.previous_deployment.version %>
-            <small><%= github_tag_link_to(@application.repo, deployment.previous_deployment.version) %></small>
-            <br>
+            <%= github_tag_link_to(@application.repo, deployment.previous_deployment.version) %>
+            at
             <%= human_datetime(deployment.previous_deployment.created_at) %>
           <% else %>
             N/A

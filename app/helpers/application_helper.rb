@@ -21,6 +21,6 @@ module ApplicationHelper
   end
 
   def github_tag_link_to(repo, might_be_a_tag)
-    link_to("see tag on GitHub", "https://github.com/#{repo}/tree/#{might_be_a_tag}", target: "_blank")
+    link_to(might_be_a_tag, "https://github.com/#{repo}/tree/#{might_be_a_tag}", target: "_blank")
   end
 end
