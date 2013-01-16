@@ -3,5 +3,5 @@ ReleaseApp::Application.routes.draw do
   resources :deployments
   resources :releases
 
-  root :to => redirect("/releases", :status => 302)
+  root :to => redirect("/applications", :status => 302)
 end
