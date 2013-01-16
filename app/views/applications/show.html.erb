@@ -2,6 +2,14 @@
 
 <h1><%= @application.name %></h1>
 
+<p>
+  <%= link_to "https://github.com/#{@application.repo}", "https://github.com/#{@application.repo}", target: "_blank" %>
+</p>
+
+<div class="btn-group">
+  <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
+</div>
+
 <h2>What's where?</h2>
 
 <table class="table table-striped table-bordered table-hover table-condensed">
@@ -34,13 +42,3 @@
     <% end %>
   </tbody>
 </table>
-
-
-<dl>
-  <dt>Repo:</dt>
-  <dd><%= link_to @application.repo, "https://github.com/#{@application.repo}", target: "_blank" %></dd>
-</dl>
-
-<div class="btn-group">
-  <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
-</div>
