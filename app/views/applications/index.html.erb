@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>In sync?</th>
       <% @environments.each do |environment| %>
         <th><%= environment.humanize %></th>
       <% end %>
@@ -16,6 +17,9 @@
       <tr>
         <td>
           <%= link_to application.name, application %>
+        </td>
+        <td class="<%= application.staging_and_production_in_sync? ? "in-sync" : "not-in-sync" %>">
+          <%= application.staging_and_production_in_sync? ? "Yes" : "No" %>
         </td>
         <% @environments.each do |environment| %>
           <td>

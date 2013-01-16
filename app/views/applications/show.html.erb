@@ -44,19 +44,3 @@
 <div class="btn-group">
   <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
 </div>
-
-<h2>Recent activity</h2>
-
-<table class="table">
-  <tbody>
-    <% @application.tasks.recent_first.each do |task| %>
-      <tr>
-        <td><%= link_to "##{task.release.id}", release_path(task.release) %></td>
-        <td><%= link_to task.description, release_path(task.release) %> v<%= task.version %></td>
-        <td><%= human_datetime(task.release.deploy_at) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-

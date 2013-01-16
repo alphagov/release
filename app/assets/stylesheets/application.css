@@ -3,3 +3,16 @@
  *= require formtastic-bootstrap
  *= require_tree .
  */
+
+.table-striped tbody tr td.in-sync, .table-striped tbody tr td.in-sync:hover {
+  background-color: #468847;
+}
+
+.table-striped tbody tr td.not-in-sync, .table-striped tbody tr td.not-in-sync:hover {
+  background-color: #b94a48;
+}
+
+.table-striped tbody tr td.in-sync,
+.table-striped tbody tr td.not-in-sync {
+  color: white;
+}

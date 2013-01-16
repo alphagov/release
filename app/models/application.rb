@@ -19,6 +19,14 @@ class Application < ActiveRecord::Base
     end
   end
 
+  def staging_and_production_in_sync?
+    staging = latest_deploy_to_each_environment["staging"]
+    production = latest_deploy_to_each_environment["production"]
+    staging_version = staging.nil? ? nil : staging.version
+    production_version = production.nil? ? nil : production.version
+    staging_version == production_version
+  end
+
   def tags
     github_client.tags(repo, "")
   end
