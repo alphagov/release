@@ -10,6 +10,7 @@
       <% @environments.each do |environment| %>
         <th scope="col"><%= environment.humanize %></th>
       <% end %>
+      <th>Notes</th>
     </tr>
   </thead>
   <tbody>
@@ -35,6 +36,12 @@
             <% end %>
           </td>
         <% end %>
+        <td>
+          <%= form_for application, url: update_notes_application_path(application), html: { class: "form-inline" } do |f| %>
+            <%= f.text_area :status_notes, rows: 1, cols: 20 %>
+            <%= f.submit "Save", class: "btn" %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

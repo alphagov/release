@@ -1,7 +1,7 @@
 require "github"
 
 class ApplicationsController < ApplicationController
-  before_filter :find_application, only: [:show, :edit, :update]
+  before_filter :find_application, only: [:show, :edit, :update, :update_notes]
   def index
     @environments = ["staging", "production"]
     @applications = Application.all
@@ -33,6 +33,14 @@ class ApplicationsController < ApplicationController
       redirect_to @application, flash: { notice: "Successfully updated the application" }
     else
       redirect_to edit_application_path(@application), flash: { alert: "There are some problems with the application" }
+    end
+  end
+
+  def update_notes
+    if @application.update_attributes(params[:application])
+      redirect_to applications_path, flash: { notice: "Successfully updated notes" }
+    else
+      redirect_to applications_path, flash: { alert: "Failed to update notes" }
     end
   end
 

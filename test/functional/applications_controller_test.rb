@@ -89,4 +89,17 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  context "PUT update_notes" do
+    setup do
+      @app = FactoryGirl.create(:application)
+    end
+
+    should "update the application, redirect to /applications" do
+      put :update_notes, id: @app.id, application: { status_notes: "Rolled back deploy because science." }
+      @app.reload
+      assert_equal "Rolled back deploy because science.", @app.status_notes
+      assert_redirected_to "/applications"
+    end
+  end
 end

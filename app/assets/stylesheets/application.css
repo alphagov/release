@@ -20,3 +20,7 @@
 .table-striped tbody tr td.deployed-recently {
   background-color: rgb(252, 252, 188);
 }
+
+table form.form-inline {
+  margin: 0;
+}
