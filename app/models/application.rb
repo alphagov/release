@@ -19,6 +19,10 @@ class Application < ActiveRecord::Base
     end
   end
 
+  def latest_deploy_to(*environments)
+    latest_deploy_to_each_environment.select { |env, deploy| environments.include?(env) }
+  end
+
   def staging_and_production_in_sync?
     staging = latest_deploy_to_each_environment["staging"]
     production = latest_deploy_to_each_environment["production"]
