@@ -14,7 +14,11 @@ module ApplicationHelper
 
   def human_datetime(date)
     if date
-      date.strftime("%l:%M%P - %A %e %B")
+      if date.today?
+        date.strftime("%l:%M%P - today")
+      else
+        date.strftime("%l:%M%P - %A %e %B")
+      end
     else
       ""
     end
