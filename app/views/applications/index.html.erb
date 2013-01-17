@@ -22,8 +22,8 @@
           <%= application.staging_and_production_in_sync? ? "Yes" : "No" %>
         </td>
         <% @environments.each do |environment| %>
-          <td>
-            <% latest_deploy = application.deployments.last_deploy_to(environment) %>
+          <% latest_deploy = application.deployments.last_deploy_to(environment) %>
+          <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>">  
             <% if latest_deploy %>
               <%= github_tag_link_to(application.repo, latest_deploy.version) %> 
               <span class="muted">

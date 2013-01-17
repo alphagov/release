@@ -22,4 +22,8 @@ class Deployment < ActiveRecord::Base
       .offset(1)
       .first
   end
+
+  def recent?
+    created_at > 2.hours.ago
+  end
 end
