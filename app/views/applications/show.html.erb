@@ -21,7 +21,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @application.latest_deploy_to("staging", "production").each do |environment, deployment| %>
+    <% @application.latest_deploy_to_each_environment.each do |environment, deployment| %>
       <tr>
         <td><%= environment.humanize %></td>
         <td>
