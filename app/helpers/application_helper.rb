@@ -17,7 +17,7 @@ module ApplicationHelper
       if date.today?
         date.strftime("%l:%M%P - today")
       else
-        date.strftime("%l:%M%P - %A %e %B")
+        date.strftime("%l:%M%P - %e %b")
       end
     else
       ""
