@@ -9,7 +9,7 @@
     <%= f.select :application_id, options_from_collection_for_select(Application.all, 'id', 'name', f.object.application_id) %>
 
     <%= f.label :environment %>
-    <%= f.text_field :environment, required: "required" %>
+    <%= f.text_field :environment, required: "required", class: "environment-typeahead" %>
 
     <%= f.label :version %>
     <%= f.text_field :version, required: "required" %>

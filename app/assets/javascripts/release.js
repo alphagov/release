@@ -6,4 +6,6 @@ $(function () {
   $('#datetimepicker1').datetimepicker({
     language: 'en'
   });
+
+  $('.environment-typeahead').typeahead({ source: ['staging', 'production'] })
 });
