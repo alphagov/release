@@ -1,7 +1,23 @@
 class DeploymentsController < ApplicationController
+  def new
+    default_deploy_time = Time.now.strftime("%e/%m/%Y %H:%M")
+    @deployment = Deployment.new(application_id: params[:application_id], environment: params[:environment], created_at: default_deploy_time)
+  end
+
   def create
-    Deployment.create!(params[:deployment].merge(application: application))
-    head 200
+    if push_notification?
+      Deployment.create!(params[:deployment].merge(application: application))
+      head 200
+    else
+      @deployment = Deployment.new(params[:deployment])
+      if @deployment.save
+        application = Application.find(params[:deployment][:application_id])
+        redirect_to applications_path, notice: "Deployment created for #{application.name}"
+      else
+        flash[:alert] = "Failed to create deployment"
+        render :new
+      end
+    end
   end
 
   private
@@ -25,5 +41,9 @@ class DeploymentsController < ApplicationController
 
     def app_name
       repo_path.split("/")[-1].gsub("-", " ").humanize.titlecase
+    end
+
+    def push_notification?
+      params[:repo].present?
     end
 end

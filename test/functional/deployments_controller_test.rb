@@ -6,6 +6,25 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "POST create" do
+    context "manually recording a deployment" do
+      should "create a deployment record" do
+        app = FactoryGirl.create(:application, repo: "org/app")
+        post :create, { deployment: { application_id: app.id, version: "release_123", environment: "staging", created_at: "18/01/2013 11:57" } }
+
+        deployment = app.reload.deployments.last
+        refute_nil deployment
+        assert_equal "release_123", deployment.version
+        assert_equal "staging", deployment.environment
+        assert_equal "2013-01-18 11:57:00 UTC", deployment.created_at.to_s
+      end
+
+      should "redisplay the form on error" do
+        app = FactoryGirl.create(:application, repo: "org/app")
+        post :create, { deployment: { application_id: app.id, version: "", environment: "staging", created_at: "18/01/2013 11:57" } }
+        assert_template :new
+      end
+    end
+
     context "notification API" do
       should "create a deployment record" do
         app = FactoryGirl.create(:application, repo: "org/app")

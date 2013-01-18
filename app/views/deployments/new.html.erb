@@ -1,0 +1,29 @@
+<% content_for :page_title, "Manually record a deployment" %>
+
+<h1>Manually record a deployment</h1>
+<p>All deployments should be automatically recorded from a push notification, but if that fails, use this form.</p>
+
+<div class="well">
+  <%= form_for @deployment do |f| %>
+    <%= f.label :application_id %>
+    <%= f.select :application_id, options_from_collection_for_select(Application.all, 'id', 'name', f.object.application_id) %>
+
+    <%= f.label :environment %>
+    <%= f.text_field :environment, required: "required" %>
+
+    <%= f.label :version %>
+    <%= f.text_field :version, required: "required" %>
+
+    <%= f.label :created_at, "Deployed at" %>
+    <div id="datetimepicker1" class="input-append date">
+      <%= f.text_field :created_at, required: "required", data: { format: "dd/MM/yyyy hh:mm" } %>
+      <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+      </span>
+    </div>
+
+    <hr>
+    
+    <%= f.submit class: "btn btn-primary" %>
+  <% end %>
+</div>

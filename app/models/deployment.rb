@@ -1,7 +1,7 @@
 class Deployment < ActiveRecord::Base
   belongs_to :application
 
-  attr_accessible :version, :environment, :application
+  attr_accessible :version, :environment, :application, :application_id, :created_at
 
   validates_presence_of :version, :environment, :application_id
 

@@ -3,6 +3,7 @@ ReleaseApp::Application.routes.draw do
     member do
       put :update_notes
     end
+    resources :deployments
   end
   resources :deployments
   resources :releases

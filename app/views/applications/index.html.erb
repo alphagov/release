@@ -34,6 +34,9 @@
             <% else %>
               N/A
             <% end %>
+            <%= link_to(new_application_deployment_path(application, environment: environment)) do %>
+              <i class="icon-edit pull-right" title="Add a missing deployment"></i>
+            <% end %>
           </td>
         <% end %>
         <td>

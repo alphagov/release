@@ -1,6 +1,7 @@
 /*
  *= require bootstrap_and_overrides
  *= require formtastic-bootstrap
+ *= require bootstrap-datetimepicker.min
  *= require_tree .
  */
 
@@ -23,4 +24,8 @@
 
 table form.form-inline {
   margin: 0;
+}
+
+table#application-list .icon-edit {
+  opacity: 0.7;
 }
