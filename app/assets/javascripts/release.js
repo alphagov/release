@@ -7,5 +7,7 @@ $(function () {
     language: 'en'
   });
 
-  $('.environment-typeahead').typeahead({ source: ['staging', 'production'] })
+  $('.environment-typeahead').typeahead({ source: ['staging', 'production'] });
+
+  $('.version-typeahead').typeahead({ source: ['release_', 'build-'] });
 });
