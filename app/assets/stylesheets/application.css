@@ -22,10 +22,6 @@ table#application-list tbody tr td.deployed-recently {
   background-color: rgb(252, 252, 188);
 }
 
-table form.form-inline {
-  margin: 0;
-}
-
 table#application-list .icon-edit {
   opacity: 0.7;
 }
