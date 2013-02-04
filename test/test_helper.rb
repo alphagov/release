@@ -6,8 +6,6 @@ require 'shoulda-context'
 require 'minitest/autorun'
 require 'mocha/setup'
 
-require_relative '../spec/support/factories'
-
 class ActiveSupport::TestCase
   def stub_user
     @stub_user ||= FactoryGirl.create(:user, :name => 'Stub User')
