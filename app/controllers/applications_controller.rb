@@ -1,5 +1,3 @@
-require "github"
-
 class ApplicationsController < ApplicationController
   before_filter :find_application, only: [:show, :edit, :update, :update_notes]
   def index

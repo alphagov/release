@@ -30,12 +30,4 @@ class Application < ActiveRecord::Base
     production_version = production.nil? ? nil : production.version
     staging_version == production_version
   end
-
-  def tags
-    github_client.tags(repo, "")
-  end
-
-  def github_client
-    @github_client ||= Github.create_from_config(Rails.root.join("config", "github-credentials.yml"))
-  end
 end
