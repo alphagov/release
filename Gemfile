@@ -9,7 +9,7 @@ gem 'less-rails-bootstrap', '2.2.0'
 gem 'mysql2', '0.3.11'
 gem 'nested_form', '0.3.1'
 gem 'octokit', '1.23.0'
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.12'
 gem 'unicorn', '4.4.0'
 
 # GDS gems.
