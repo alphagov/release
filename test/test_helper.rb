@@ -5,6 +5,7 @@ require 'rails/test_help'
 require 'shoulda-context'
 require 'minitest/autorun'
 require 'mocha/setup'
+require 'webmock/test_unit'
 
 class ActiveSupport::TestCase
   def stub_user
