@@ -59,6 +59,7 @@ class ApplicationsController < ApplicationController
     end
 
     def github
-      @client ||= Octokit::Client.new(GITHUB_CREDENTIALS)
+      credentials = defined?(GITHUB_CREDENTIALS) ? GITHUB_CREDENTIALS : {}
+      @client ||= Octokit::Client.new()
     end
 end
