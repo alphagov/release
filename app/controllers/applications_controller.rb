@@ -6,6 +6,17 @@ class ApplicationsController < ApplicationController
   end
 
   def show
+    @tags_by_commit = github.tags(@application.repo).each_with_object({}) do |tag, hash|
+      sha = tag[:commit][:sha];
+      hash[sha] ||= [];
+      hash[sha] << tag
+    end
+    # where version == git tag, which it isn't for licensify
+    @latest_deploy_to_each_environment_by_version = {}
+    @application.latest_deploy_to_each_environment.each do |_environment, deployment|
+      @latest_deploy_to_each_environment_by_version[deployment.version] = deployment
+    end
+    @commits = github.commits(@application.repo)
   end
 
   def new
@@ -45,5 +56,9 @@ class ApplicationsController < ApplicationController
   private
     def find_application
       @application = Application.find(params[:id])
+    end
+
+    def github
+      @client ||= Octokit::Client.new(GITHUB_CREDENTIALS)
     end
 end

@@ -10,6 +10,54 @@
   <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
 </div>
 
+
+<h2>Commit Log</h2>
+
+<table class="table table-striped table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Deployed to</th>
+      <th>Tags</th>
+      <th>Commit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @commits.each do |commit| %>
+      <tr>
+        <% if tags = @tags_by_commit[commit[:sha]] %>
+          <td>
+            <% tags.each do |tag| %>
+              <% if deployment = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
+                <%= deployment.environment %>
+                at
+                <%= human_datetime(deployment.created_at) %>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% tags.each do |tag| %>
+              <span class="label label-info"><%= tag[:name] %></span>
+            <% end %>
+          </td>
+        <% else %>
+          <td></td>
+          <td></td>
+        <% end %>
+        <td>
+          <%= commit[:commit][:message].split(/\n/)[0] %>
+          <span class="muted">
+            <%= commit[:login] %>
+          </span>
+          <small>
+          <%= link_to commit[:sha], "https://github.com/#{@application.repo}/commit/#{commit[:sha]}", target: "_blank", class: "pull-right" %>
+          </small>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
 <h2>What's where?</h2>
 
 <p>
