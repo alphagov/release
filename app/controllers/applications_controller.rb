@@ -17,6 +17,10 @@ class ApplicationsController < ApplicationController
       @latest_deploy_to_each_environment_by_version[deployment.version] = deployment
     end
     @commits = github.commits(@application.repo)
+    @github_available = true
+  rescue Octokit::NotFound => e
+    @github_available = false
+    @github_error = e
   end
 
   def new
