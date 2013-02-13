@@ -27,10 +27,13 @@
           <% if tags = @tags_by_commit[commit[:sha]] %>
             <td>
               <% tags.each do |tag| %>
-                <% if deployment = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
-                  <%= deployment.environment %>
-                  at
-                  <%= human_datetime(deployment.created_at) %>
+                <% if deployments = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
+                  <% deployments.each do |deployment| %>
+                    <%= deployment.environment %>
+                    at
+                    <%= human_datetime(deployment.created_at) %>
+                    <br>
+                  <% end %>
                 <% end %>
               <% end %>
             </td>

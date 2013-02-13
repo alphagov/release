@@ -14,7 +14,8 @@ class ApplicationsController < ApplicationController
     # where version == git tag, which it isn't for licensify
     @latest_deploy_to_each_environment_by_version = {}
     @application.latest_deploy_to_each_environment.each do |_environment, deployment|
-      @latest_deploy_to_each_environment_by_version[deployment.version] = deployment
+      @latest_deploy_to_each_environment_by_version[deployment.version] ||= []
+      @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
     end
     @commits = github.commits(@application.repo)
     @github_available = true
