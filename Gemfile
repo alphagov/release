@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'https://gems.gemfury.com/vo6ZrmjBQu5szyywDszE/'
 
 gem 'airbrake', '3.1.5'
 gem 'formtastic', '2.2.1'
