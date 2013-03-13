@@ -16,7 +16,7 @@ applications = [
   { "name" => "Need-o-tron",                            "repo"=>"alphagov/need-o-tron"},
   { "name" => "Panopticon",                             "repo"=>"alphagov/panopticon"},
   { "name" => "Publisher",                              "repo"=>"alphagov/publisher"},
-  { "name" => "Puppet",                                 "repo"=>"alphagov/puppet"},
+  { "name" => "Puppet",                                 "repo"=>"gds/puppet"},
   { "name" => "Recommended links",                      "repo"=>"alphagov/recommended-links"},
   { "name" => "Redirector",                             "repo"=>"alphagov/redirector"},
   { "name" => "Rummager",                               "repo"=>"alphagov/rummager"},
