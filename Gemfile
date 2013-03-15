@@ -13,7 +13,7 @@ gem 'unicorn', '4.4.0'
 
 # GDS gems.
 gem 'gds-sso', '3.0.2'
-gem 'plek', '0.5.0'
+gem 'plek', '1.3.1'
 
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
