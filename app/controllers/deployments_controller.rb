@@ -1,6 +1,6 @@
 class DeploymentsController < ApplicationController
   def new
-    default_deploy_time = Time.now.strftime("%e/%m/%Y %H:%M")
+    default_deploy_time = Time.zone.now.strftime("%e/%m/%Y %H:%M")
     @deployment = Deployment.new(application_id: params[:application_id], environment: params[:environment], created_at: default_deploy_time)
   end
 
