@@ -12,7 +12,7 @@ gem 'rails', '3.2.13'
 gem 'unicorn', '4.4.0'
 
 # GDS gems.
-gem 'gds-sso', '3.0.2'
+gem 'gds-sso', '3.0.3'
 gem 'plek', '1.3.1'
 
 gem 'aws-ses', require: 'aws/ses'
