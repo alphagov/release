@@ -3,9 +3,9 @@ require "test_helper"
 class ReleaseTest < ActiveSupport::TestCase
   context "loading releases" do
     should "load previous releases, upcoming releases, and releases for today" do
-      release_yesterday = FactoryGirl.create(:release, deploy_at: Time.parse('24-12-2012 13:30'), notes: "Yesterday")
-      release_today = FactoryGirl.create(:release, deploy_at: Time.parse('25-12-2012 14:00'), notes: "Right now")
-      release_tomorrow = FactoryGirl.create(:release, deploy_at: Time.parse('26-12-2012 13:30'), notes: "Tomorrow")
+      release_yesterday = FactoryGirl.create(:release, deploy_at: Time.zone.parse('24-12-2012 13:30'), notes: "Yesterday")
+      release_today = FactoryGirl.create(:release, deploy_at: Time.zone.parse('25-12-2012 14:00'), notes: "Right now")
+      release_tomorrow = FactoryGirl.create(:release, deploy_at: Time.zone.parse('26-12-2012 13:30'), notes: "Tomorrow")
 
       Timecop.freeze(Date.parse('25 December 2012')) do
         assert_equal 1, Release.previous_releases.count
@@ -27,7 +27,7 @@ class ReleaseTest < ActiveSupport::TestCase
       @atts = {
         summary: "Major new feature",
         notes: "A few notes about this release",
-        deploy_at: Time.parse("25-12-2012 13:00"),
+        deploy_at: Time.zone.parse("25-12-2012 13:00"),
         tasks_attributes: {
           "0" => { description: "Deploy new smart answer", version: "123", application_id: @application_one.id },
           "1" => { description: "Redirect old quick answer", version: "101", application_id: @application_two.id }

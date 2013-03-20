@@ -7,3 +7,5 @@ require File.expand_path('../config/application', __FILE__)
 require 'ci/reporter/rake/minitest' if Rails.env.test?
 
 ReleaseApp::Application.load_tasks
+
+task :default => [:test, :check_for_bad_time_handling]

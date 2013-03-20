@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :release do
     summary "release summary"
     notes "release notes"
-    deploy_at { Time.now }
+    deploy_at { Time.zone.now }
     user
 
     after(:build) do |release|
