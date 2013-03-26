@@ -31,8 +31,8 @@
                 at
                 <%= human_datetime(latest_deploy.created_at) %>
               </span>
-              <%= link_to(github_compare_to_head(latest_deploy), target: "_blank", class: "compare") do %>
-                <i class="icon-random" title="Compare to HEAD"></i>
+              <%= link_to(github_compare_to_master(latest_deploy), target: "_blank", class: "compare") do %>
+                <i class="icon-random" title="Compare to master"></i>
               <% end %>
             <% else %>
               N/A

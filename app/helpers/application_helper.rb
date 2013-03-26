@@ -28,7 +28,7 @@ module ApplicationHelper
     link_to(might_be_a_tag, "https://github.com/#{repo}/tree/#{might_be_a_tag}", target: "_blank")
   end
 
-  def github_compare_to_head(deploy)
-    "https://github.com/#{deploy.application.repo}/compare/#{deploy.version}...HEAD"
+  def github_compare_to_master(deploy)
+    "https://github.com/#{deploy.application.repo}/compare/#{deploy.version}...master"
   end
 end
