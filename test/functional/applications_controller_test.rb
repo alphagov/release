@@ -23,6 +23,16 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :index
       assert_select "td", /release_123/
     end
+
+    should "provide a link to compare with master" do
+      deploy = FactoryGirl.create(:deployment,
+                                  application: @app1,
+                                  version: "release_123")
+      get :index
+      assert_select "td a.compare",
+                    :href => "https://github.com/alphagov/app1/compare/release_123...master"
+    end
+
   end
 
   context "GET new" do
