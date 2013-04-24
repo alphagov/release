@@ -34,9 +34,13 @@ class Application < ActiveRecord::Base
   def shortname
     sn = self.read_attribute(:shortname)
     if sn.nil? or sn.empty?
-      self.repo.split('/')[-1]
+      self.fallback_shortname
     else
       sn
     end
+  end
+
+  def fallback_shortname
+    self.repo.split('/')[-1] unless self.repo.nil?
   end
 end

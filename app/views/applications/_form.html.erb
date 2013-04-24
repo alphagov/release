@@ -5,6 +5,9 @@
     <%= f.input :name, label: "Name", input_html: { class: "input-xxlarge" } %>
     <%= f.input :repo, label: "GitHub Repository path", hint: "e.g. alphagov/publisher",
                        input_html: { class: "input-xxlarge" } %>
+    <%= f.input :shortname, label: "Short name", hint: "For use in graphite metrics: e.g. whitehall",
+                            input_html: { class: "input-large",
+                                          placeholder: @application.fallback_shortname } %>
   <% end %>
 
   <%= f.actions do %>
