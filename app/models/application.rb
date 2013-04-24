@@ -4,6 +4,8 @@ class Application < ActiveRecord::Base
   validates_presence_of :name, message: 'is required'
   validates_presence_of :repo, message: 'is required'
 
+  validates_format_of :repo, with: /\A[^\s\/]+\/[^\s\/]+\Z/i
+
   validates_uniqueness_of :name, :repo
 
   has_many :tasks, dependent: :destroy
