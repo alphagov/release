@@ -1,4 +1,5 @@
 class Deployment < ActiveRecord::Base
+  after_create :record_to_statsd
   belongs_to :application
 
   attr_accessible :version, :environment, :application, :application_id, :created_at
@@ -26,4 +27,15 @@ class Deployment < ActiveRecord::Base
   def recent?
     created_at > 2.hours.ago
   end
+
+  private
+
+    # Record the deployment to statsd and thence to graphite
+    def record_to_statsd
+      # Only record production deployments in production graphite
+      if self.environment == "production"
+        key = "deploys.#{self.application.shortname}"
+        STATSD.increment(key)
+      end
+    end
 end
