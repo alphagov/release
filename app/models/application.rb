@@ -1,5 +1,5 @@
 class Application < ActiveRecord::Base
-  attr_accessible :name, :repo, :status_notes
+  attr_accessible :name, :repo, :shortname, :status_notes
 
   validates_presence_of :name, message: 'is required'
   validates_presence_of :repo, message: 'is required'
@@ -29,5 +29,14 @@ class Application < ActiveRecord::Base
     staging_version = staging.nil? ? nil : staging.version
     production_version = production.nil? ? nil : production.version
     staging_version == production_version
+  end
+
+  def shortname
+    sn = self.read_attribute(:shortname)
+    if sn.nil? or sn.empty?
+      self.repo.split('/')[-1]
+    else
+      sn
+    end
   end
 end

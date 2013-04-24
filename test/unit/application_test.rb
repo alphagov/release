@@ -37,6 +37,19 @@ class ApplicationTest < ActiveSupport::TestCase
       refute application.valid?
       assert application.errors[:repo].include?("has already been taken")
     end
+
+    should "use the second half of the repo name as shortname if shortname not provided or empty" do
+      application = Application.new(@atts)
+      assert_equal "tron-o-matic", application.shortname
+
+      application.shortname = ""
+      assert_equal "tron-o-matic", application.shortname
+    end
+
+    should "use the provided shortname if not empty" do
+      application = Application.new(@atts.merge(:shortname => "giraffe"))
+      assert_equal "giraffe", application.shortname
+    end
   end
 
   context "application releases" do
