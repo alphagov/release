@@ -67,18 +67,23 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the application" do
       get :show, id: @app.id
-      assert_select "h1", @app.name
+      assert_select "h1 span.name", @app.name
     end
   end
 
   context "GET edit" do
     setup do
-      @app = FactoryGirl.create(:application)
+      @app = FactoryGirl.create(:application, name: "monkeys", repo: "org/monkeys")
     end
 
     should "show the form" do
       get :edit, id: @app.id
       assert_select "form input#application_name[value='#{@app.name}']"
+    end
+
+    should "allow editing of the shortname in the form" do
+      get :edit, id: @app.id
+      assert_select "form input#application_shortname[placeholder='#{@app.shortname}']"
     end
   end
 

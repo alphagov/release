@@ -25,3 +25,9 @@ table#application-list tbody tr td.deployed-recently {
 table#application-list .icon-edit, table#application-list .icon-random {
   opacity: 0.7;
 }
+
+h1 span.shortname {
+  font-family: monospace;
+  font-size: 0.8em;
+  color: #aaa;
+}
