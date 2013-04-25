@@ -1,6 +1,9 @@
 <% content_for :page_title, @application.name %>
 
-<h1><%= @application.name %></h1>
+<h1>
+  <span class="name"><%= @application.name %></span>
+  <span class="shortname">(<%= @application.shortname %>)</span>
+</h1>
 
 <p>
   <%= link_to "https://github.com/#{@application.repo}", "https://github.com/#{@application.repo}", target: "_blank" %>

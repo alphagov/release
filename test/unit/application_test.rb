@@ -37,6 +37,39 @@ class ApplicationTest < ActiveSupport::TestCase
       refute application.valid?
       assert application.errors[:repo].include?("has already been taken")
     end
+
+    should "be invalid with an invalid repo" do
+      application = Application.new(@atts)
+
+      application.repo = "noslashes"
+      refute application.valid?
+      assert application.errors[:repo].include?("is invalid")
+
+      application.repo = "too/many/slashes"
+      refute application.valid?
+      assert application.errors[:repo].include?("is invalid")
+
+      application.repo = "/slashatfront"
+      refute application.valid?
+      assert application.errors[:repo].include?("is invalid")
+
+      application.repo = "slashatback/"
+      refute application.valid?
+      assert application.errors[:repo].include?("is invalid")
+    end
+
+    should "use the second half of the repo name as shortname if shortname not provided or empty" do
+      application = Application.new(@atts)
+      assert_equal "tron-o-matic", application.shortname
+
+      application.shortname = ""
+      assert_equal "tron-o-matic", application.shortname
+    end
+
+    should "use the provided shortname if not empty" do
+      application = Application.new(@atts.merge(:shortname => "giraffe"))
+      assert_equal "giraffe", application.shortname
+    end
   end
 
   context "application releases" do

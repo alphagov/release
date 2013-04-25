@@ -1,8 +1,10 @@
 class Application < ActiveRecord::Base
-  attr_accessible :name, :repo, :status_notes
+  attr_accessible :name, :repo, :shortname, :status_notes
 
   validates_presence_of :name, message: 'is required'
   validates_presence_of :repo, message: 'is required'
+
+  validates_format_of :repo, with: /\A[^\s\/]+\/[^\s\/]+\Z/i
 
   validates_uniqueness_of :name, :repo
 
@@ -29,5 +31,18 @@ class Application < ActiveRecord::Base
     staging_version = staging.nil? ? nil : staging.version
     production_version = production.nil? ? nil : production.version
     staging_version == production_version
+  end
+
+  def shortname
+    sn = self.read_attribute(:shortname)
+    if sn.blank?
+      self.fallback_shortname
+    else
+      sn
+    end
+  end
+
+  def fallback_shortname
+    self.repo.split('/')[-1] unless self.repo.nil?
   end
 end
