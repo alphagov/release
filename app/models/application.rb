@@ -35,7 +35,7 @@ class Application < ActiveRecord::Base
 
   def shortname
     sn = self.read_attribute(:shortname)
-    if sn.nil? or sn.empty?
+    if sn.blank?
       self.fallback_shortname
     else
       sn
