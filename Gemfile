@@ -11,6 +11,7 @@ gem 'octokit', '1.23.0'
 gem 'rails', '3.2.13'
 gem 'statsd-ruby', '1.0.0', require: "statsd"
 gem 'unicorn', '4.4.0'
+gem 'tinder', '1.9.2'
 
 # GDS gems.
 gem 'gds-sso', '3.0.3'
