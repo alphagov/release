@@ -21,3 +21,6 @@
 
 # Coverage output from SimpleCov.
 /coverage
+
+# Zeus config
+/custom_plan.rb
