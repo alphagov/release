@@ -5,7 +5,7 @@ class ReleaseCandidateAnnouncer
   end
 
   def announce!
-    date = (Date.today + 1).strftime("%A %d/%-m")
+    date = candidate_date.strftime("%A %d/%-m")
     speak "Release candidate for #{date}: #{release_url}"
   end
 
@@ -30,6 +30,14 @@ class ReleaseCandidateAnnouncer
   def speak(message)
     Rails.logger.info "Campfire: #{message}"
     room.speak(message)
+  end
+
+  def candidate_date
+    if Date.today.friday?
+      Date.today + 3
+    else
+      Date.today + 1
+    end
   end
 
 private

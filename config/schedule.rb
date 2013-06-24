@@ -8,6 +8,6 @@ job_type :rake, "cd :path && govuk_setenv release bundle exec rake :task --silen
 
 ## 14:45 is during our regular release slot, this may have to change
 ## post-April. 2am is our regular time for this.
-every :day, at: ['12:00'], roles: [:admin] do
+every "0 12 * * 1-5", roles: [:admin] do
   rake 'whitehall_release_candidate:announce'
 end
