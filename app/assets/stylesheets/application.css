@@ -22,6 +22,10 @@ table#application-list tbody tr td.deployed-recently {
   background-color: rgb(252, 252, 188);
 }
 
+table#application-list tbody tr td.notes {
+    max-width: 320px;
+}
+
 table#application-list .icon-edit, table#application-list .icon-random {
   opacity: 0.7;
 }
