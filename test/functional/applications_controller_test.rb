@@ -46,7 +46,11 @@ class ApplicationsControllerTest < ActionController::TestCase
   context "POST create" do
     should "create an application" do
       assert_difference "Application.count", 1 do
-        post :create, application: { name: "My First App", repo: "org/my_first_app" }
+        post :create, application: {
+          name: "My First App",
+          repo: "org/my_first_app",
+          domain: "github.baz"
+        }
       end
     end
 

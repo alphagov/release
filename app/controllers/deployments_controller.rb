@@ -25,7 +25,7 @@ class DeploymentsController < ApplicationController
       if existing_app = Application.find_by_repo(repo_path)
         existing_app
       else
-        Application.create!(name: app_name, repo: repo_path)
+        Application.create!(name: app_name, repo: repo_path, domain: domain)
       end
     end
 
@@ -41,6 +41,11 @@ class DeploymentsController < ApplicationController
 
     def app_name
       repo_path.split("/")[-1].gsub("-", " ").humanize.titlecase
+    end
+
+    def domain
+      # Deployments created from push notifications will default to github.com
+      "github.com"
     end
 
     def push_notification?

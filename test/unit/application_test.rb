@@ -5,7 +5,11 @@ class ApplicationTest < ActiveSupport::TestCase
 
   context "creating an application" do
     setup do
-      @atts = { :name => "Tron-o-matic", repo: "alphagov/tron-o-matic" }
+      @atts = {
+        name: "Tron-o-matic",
+        repo: "alphagov/tron-o-matic",
+        domain: "github.foo"
+      }
     end
 
     context "given valid attributes" do
@@ -76,7 +80,7 @@ class ApplicationTest < ActiveSupport::TestCase
     should "know its location on the internet" do
       application = Application.new(@atts)
 
-      assert_equal "https://github.com/alphagov/tron-o-matic", application.repo_url
+      assert_equal "https://github.foo/alphagov/tron-o-matic", application.repo_url
     end
   end
 

@@ -3,11 +3,11 @@
 
   <%= f.inputs do %>
     <%= f.input :name, label: "Name", input_html: { class: "input-xxlarge" } %>
-    <%= f.input :repo, label: "GitHub Repository path", hint: "e.g. alphagov/publisher",
+    <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher",
                        input_html: { class: "input-xxlarge" } %>
-    <%= f.input :shortname, label: "Short name", hint: "For use in graphite metrics: e.g. whitehall",
-                            input_html: { class: "input-large",
-                                          placeholder: @application.fallback_shortname } %>
+    <%= f.input :domain, label: "GitHub domain", hint: "eg github.gds" %>
+    <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
+                            input_html: { placeholder: @application.fallback_shortname } %>
   <% end %>
 
   <%= f.actions do %>
