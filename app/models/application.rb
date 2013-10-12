@@ -45,4 +45,8 @@ class Application < ActiveRecord::Base
   def fallback_shortname
     self.repo.split('/')[-1] unless self.repo.nil?
   end
+
+  def repo_url
+    "https://github.com/#{repo}"
+  end
 end

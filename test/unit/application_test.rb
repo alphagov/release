@@ -72,6 +72,12 @@ class ApplicationTest < ActiveSupport::TestCase
       application = Application.new(@atts.merge(:shortname => "giraffe"))
       assert_equal "giraffe", application.shortname
     end
+
+    should "know its location on the internet" do
+      application = Application.new(@atts)
+
+      assert_equal "https://github.com/alphagov/tron-o-matic", application.repo_url
+    end
   end
 
   context "display datetimes" do
