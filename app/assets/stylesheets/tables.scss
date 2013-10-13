@@ -1,0 +1,46 @@
+table#application-list {
+  thead {
+    tr {
+      th {
+        cursor: pointer;
+
+        &.header {
+          padding-right: 20px;
+          background: url(bg.gif) no-repeat right 75%;
+
+          &.headerSortUp {
+            background: url(asc.gif) no-repeat right 75%;
+          }
+
+          &.headerSortDown {
+            background: url(desc.gif) no-repeat right 75%;
+          }
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        &.in-sync, &.not-in-sync {
+          color: white;
+        }
+        &.in-sync {
+          background-color: #468847;
+        }
+        &.not-in-sync {
+          background-color: #b94a48;
+        }
+        &.deployed-recently {
+          background-color: #fcfcbc;
+        }
+        &.notes {
+          width: 320px;
+        }
+      }
+    }
+  }
+  .icon-edit, .icon-random {
+    opacity: 0.7;
+  }
+}
