@@ -2,6 +2,7 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
 applications = [
+  { "name" => "Bouncer",                                "repo"=>"alphagov/bouncer"},
   { "name" => "Business support finder",                "repo"=>"alphagov/business-support-finder",               "shortname" => "businesssupportfinder"},
   { "name" => "Calendars",                              "repo"=>"alphagov/calendars"},
   { "name" => "GOV.UK content API",                     "repo"=>"alphagov/govuk_content_api",                     "shortname" => "contentapi"},
@@ -27,6 +28,7 @@ applications = [
   { "name" => "Support",                                "repo"=>"alphagov/support"},
   { "name" => "Trade tariff backend",                   "repo"=>"alphagov/trade-tariff-backend",                  "shortname" => "tariff-api"},
   { "name" => "Trade tariff frontend",                  "repo"=>"alphagov/trade-tariff-frontend",                 "shortname" => "tariff"},
+  { "name" => "Transition",                             "repo"=>"alphagov/transition"},
   { "name" => "Whitehall",                              "repo"=>"alphagov/whitehall"},
   { "name" => "Data insight frontend",                  "repo"=>"alphagov/datainsight-frontend"},
   { "name" => "Data insight Akamai scanner",            "repo"=>"alphagov/datainsight-akamai-scanner"},
