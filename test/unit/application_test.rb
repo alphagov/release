@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ApplicationTest < ActiveSupport::TestCase
+  include ApplicationHelper
+
   context "creating an application" do
     setup do
       @atts = { :name => "Tron-o-matic", repo: "alphagov/tron-o-matic" }
@@ -69,6 +71,18 @@ class ApplicationTest < ActiveSupport::TestCase
     should "use the provided shortname if not empty" do
       application = Application.new(@atts.merge(:shortname => "giraffe"))
       assert_equal "giraffe", application.shortname
+    end
+  end
+
+  context "display datetimes" do
+    should "use the word today if the release was today" do
+      assert_equal "10:02am today",
+                   human_datetime(DateTime.now.change(hour: 10, min: 2))
+    end
+
+    should "show a year if the date is old" do
+      assert_equal "2pm on 3 Jul 2010",
+                   human_datetime(DateTime.now.change(year: 2010, month: 7, day: 3, hour: 14))
     end
   end
 
