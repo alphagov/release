@@ -15,24 +15,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :index
       assert_select "table tbody tr", count: 2
     end
-
-    should "show the latest deploy to staging and production" do
-      deploy = FactoryGirl.create(:deployment, 
-                                   application: @app1,
-                                   version: "release_123")
-      get :index
-      assert_select "td", /release_123/
-    end
-
-    should "provide a link to compare with master" do
-      deploy = FactoryGirl.create(:deployment,
-                                  application: @app1,
-                                  version: "release_123")
-      get :index
-      assert_select "td a.compare",
-                    :href => "https://github.com/alphagov/app1/compare/release_123...master"
-    end
-
   end
 
   context "GET new" do
@@ -46,10 +28,10 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "create an application" do
       assert_difference "Application.count", 1 do
         post :create, application: { name: "My First App", repo: "org/my_first_app" }
-      end    
+      end
     end
 
-    context "invalid request" do 
+    context "invalid request" do
       should "rerender the form" do
         post :create, application: { name: "", repo: "org/my_first_app" }
         assert_select "form input#application_name"
