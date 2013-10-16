@@ -26,11 +26,11 @@ module ApplicationHelper
     end
   end
 
-  def github_tag_link_to(repo, might_be_a_tag)
-    link_to(might_be_a_tag, "https://github.com/#{repo}/tree/#{might_be_a_tag}", target: "_blank")
+  def github_tag_link_to(app, git_ref)
+    link_to(git_ref, "#{app.repo_url}/tree/#{git_ref}", target: "_blank")
   end
 
   def github_compare_to_master(deploy)
-    "https://github.com/#{deploy.application.repo}/compare/#{deploy.version}...master"
+    "#{deploy.application.repo_url}/compare/#{deploy.version}...master"
   end
 end

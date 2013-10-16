@@ -26,7 +26,7 @@
           <% latest_deploy = application.deployments.last_deploy_to(environment) %>
           <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
             <% if latest_deploy %>
-              <%= github_tag_link_to(application.repo, latest_deploy.version) %> 
+              <%= github_tag_link_to(application, latest_deploy.version) %>
               <span class="muted">
                 at
                 <%= human_datetime(latest_deploy.created_at) %>
