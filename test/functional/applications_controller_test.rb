@@ -7,13 +7,32 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET index" do
     setup do
-      @app1 = FactoryGirl.create(:application, name: "app1")
-      @app2 = FactoryGirl.create(:application, name: "app2")
+      @app1 = FactoryGirl.create(:application, name: "app1", repo: "user/app1")
+      @app2 = FactoryGirl.create(:application, name: "app2", repo: "user/app2")
+      @deploy1 = FactoryGirl.create(:deployment,
+        application: @app1,
+        environment: "staging",
+        version: "release_x")
     end
 
     should "list applications" do
       get :index
       assert_select "table tbody tr", count: 2
+    end
+
+    should "show the latest deploy to an environment" do
+      get :index
+      assert_select "table tbody tr td:nth-child(3)", /release_x/
+    end
+
+    should "provide a link to compare with master" do
+      get :index
+      assert_select "table a[href=?]", "https://github.com/user/app1/compare/release_x...master"
+    end
+
+    should "provide a title attribute to sort environment columns by date" do
+      get :index
+      assert_select "table td[title=?]", @deploy1.created_at
     end
   end
 
