@@ -24,7 +24,7 @@
         </td>
         <% @environments.each do |environment| %>
           <% latest_deploy = application.deployments.last_deploy_to(environment) %>
-          <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>">  
+          <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
             <% if latest_deploy %>
               <%= github_tag_link_to(application.repo, latest_deploy.version) %> 
               <span class="muted">
@@ -72,4 +72,4 @@
   </tbody>
 </table>
 
-<%= link_to 'Create Application', new_application_path, class: "btn btn-success" %>
+<%= link_to 'Create application', new_application_path, class: "btn btn-success" %>

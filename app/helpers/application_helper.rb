@@ -15,9 +15,11 @@ module ApplicationHelper
   def human_datetime(date)
     if date
       if date.today?
-        date.strftime("%l:%M%P - today")
+        date.strftime("%-l:%M%P today")
+      elsif (11.months.ago < date)
+        date.strftime("%-l:%M%P on %-e %b")
       else
-        date.strftime("%l:%M%P - %e %b")
+        date.strftime("%-l%P on %-e %b %Y")
       end
     else
       ""
