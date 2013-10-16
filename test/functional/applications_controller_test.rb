@@ -27,7 +27,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "provide a link to compare with master" do
       get :index
-      assert_select "table a[href=?]", "https://github.com/user/app1/compare/release_x...master"
+      assert_select "table a[href=?]", "https://mygithub.tld/user/app1/compare/release_x...master"
     end
 
     should "provide a title attribute to sort environment columns by date" do
