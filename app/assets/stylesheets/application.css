@@ -5,31 +5,6 @@
  *= require_tree .
  */
 
-table#application-list tbody tr td.in-sync, table#application-list tbody tr td.in-sync:hover {
-  background-color: #468847;
-}
-
-table#application-list tbody tr td.not-in-sync, table#application-list tbody tr td.not-in-sync:hover {
-  background-color: #b94a48;
-}
-
-table#application-list tbody tr td.in-sync,
-table#application-list tbody tr td.not-in-sync {
-  color: white;
-}
-
-table#application-list tbody tr td.deployed-recently {
-  background-color: rgb(252, 252, 188);
-}
-
-table#application-list tbody tr td.notes {
-    max-width: 320px;
-}
-
-table#application-list .icon-edit, table#application-list .icon-random {
-  opacity: 0.7;
-}
-
 h1 span.shortname {
   font-family: monospace;
   font-size: 0.8em;
