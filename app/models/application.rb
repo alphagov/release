@@ -1,8 +1,9 @@
 class Application < ActiveRecord::Base
-  attr_accessible :name, :repo, :shortname, :status_notes
+  attr_accessible :name, :repo, :shortname, :status_notes, :domain
 
   validates_presence_of :name, message: 'is required'
   validates_presence_of :repo, message: 'is required'
+  validates_presence_of :domain, message: 'is required'
 
   validates_format_of :repo, with: /\A[^\s\/]+\/[^\s\/]+\Z/i
 
@@ -44,5 +45,9 @@ class Application < ActiveRecord::Base
 
   def fallback_shortname
     self.repo.split('/')[-1] unless self.repo.nil?
+  end
+
+  def repo_url
+    "https://#{domain}/#{repo}"
   end
 end
