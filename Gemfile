@@ -30,7 +30,7 @@ group :assets do
 end
 
 group :test, :development do
-  gem 'brakeman', '1.7.0'
+  gem 'brakeman', '2.2.0'
   gem 'capybara', '~> 1.1.0'
   gem 'capybara-webkit', '0.12.1'
   gem 'ci_reporter', '1.8.0'
@@ -42,5 +42,5 @@ group :test, :development do
   gem 'simplecov', '0.6.4'
   gem 'simplecov-rcov', '0.2.3'
   gem 'timecop', '0.4.5'
-  gem 'webmock', '1.9.0', require: false
+  gem 'webmock', '1.15.2', require: false
 end
