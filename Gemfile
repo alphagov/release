@@ -16,7 +16,6 @@ gem 'whenever', '0.8.2'
 
 # GDS gems.
 gem 'gds-sso', '3.0.3'
-gem 'plek', '1.3.1'
 
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
