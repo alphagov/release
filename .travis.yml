@@ -1,9 +1,17 @@
 language: ruby
+services:
+  - mysql
 rvm:
   - 1.9.3-p392
 script:
-  - bundle exec rake
+  - bundle exec rake db:migrate test
 bundler_args: --without=development
+before_install:
+  - mysql -u root -e "CREATE USER 'release'@'localhost' IDENTIFIED BY 'release'"
+  - mysql -u root -e 'CREATE DATABASE release_test'
+  - mysql -u root -e "GRANT ALL ON release_test.* TO 'release'@'localhost'"
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 branches:
   except:
     - release
