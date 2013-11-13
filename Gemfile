@@ -19,7 +19,7 @@ gem 'gds-sso', '7.0.0'
 gem 'plek', '1.3.1'
 
 gem 'aws-ses', require: 'aws/ses'
-gem 'exception_notification'
+gem 'exception_notification', '4.0.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
