@@ -30,7 +30,6 @@ group :assets do
 end
 
 group :test, :development do
-  gem 'brakeman', '2.2.0'
   gem 'capybara', '~> 1.1.0'
   gem 'capybara-webkit', '0.12.1'
   gem 'ci_reporter', '1.8.0'
