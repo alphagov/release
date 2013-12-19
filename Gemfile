@@ -21,6 +21,8 @@ gem 'plek', '1.3.1'
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
 
+gem 'logstasher', '0.4.0'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
