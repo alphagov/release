@@ -1,5 +1,5 @@
 class Application < ActiveRecord::Base
-  attr_accessible :name, :repo, :shortname, :status_notes, :domain
+  attr_accessible :name, :repo, :shortname, :status_notes, :domain, :archived
 
   validates_presence_of :name, message: 'is required'
   validates_presence_of :repo, message: 'is required'

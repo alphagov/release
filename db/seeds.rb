@@ -33,10 +33,10 @@ applications = [
   { name: "Data insight frontend",                  repo: "alphagov/datainsight-frontend" },
   { name: "Data insight narrative collector",       repo: "alphagov/datainsight-narrative-collector" },
   { name: "Data insight GA collector",              repo: "alphagov/datainsight-ga-collector" },
-  { name: "Data insight non-govuk reach collector", repo: "alphagov/datainsight-nongovuk-reach-collector" },
+  { name: "Data insight non-govuk reach collector", repo: "alphagov/datainsight-nongovuk-reach-collector",  archived: true },
   { name: "Data insight everything recorder",       repo: "alphagov/datainsight-everything-recorder" },
   { name: "Data insight narrative recorder",        repo: "alphagov/datainsight-narrative-recorder" },
-  { name: "Data insight rodays activity recorder",  repo: "alphagov/datainsight-todays-activity-recorder" },
+  { name: "Data insight todays activity recorder",  repo: "alphagov/datainsight-todays-activity-recorder" },
   { name: "Data insight weekly reach recorder",     repo: "alphagov/datainsight-weekly-reach-recorder" },
   { name: "Data insight format success recorder",   repo: "alphagov/datainsight-format-success-recorder" }
 ]
@@ -46,7 +46,7 @@ applications.each do |application_hash|
     app_defaults = { domain: 'github.com' }
     Application.create!(app_defaults.merge(application_hash))
   rescue ActiveRecord::RecordInvalid => e
-    puts "Skipping #{application_hash['name']}"
+    puts "Skipping #{application_hash[:name]}"
   end
 end
 
