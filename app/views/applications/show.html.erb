@@ -5,6 +5,10 @@
   <span class="shortname">(<%= @application.shortname %>)</span>
 </h1>
 
+<% if @application.archived %>
+  <p>This application has been marked as archived.</p>
+<% end %>
+
 <p>
   <%= link_to @application.repo_url, @application.repo_url, target: "_blank" %>
 </p>
