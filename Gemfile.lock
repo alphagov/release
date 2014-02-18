@@ -29,9 +29,9 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.2)
-    airbrake (3.1.5)
+    airbrake (3.1.15)
       builder
-      girl_friday
+      multi_json
     arel (3.0.3)
     aws-ses (0.4.4)
       builder
@@ -55,7 +55,6 @@ GEM
     ci_reporter (1.8.0)
       builder (>= 2.1.2)
     commonjs (0.2.6)
-    connection_pool (0.9.2)
     crack (0.4.1)
       safe_yaml (~> 0.9.0)
     database_cleaner (0.9.1)
@@ -86,8 +85,6 @@ GEM
       rack-accept (~> 0.4.4)
       rails (>= 3.0.0)
       warden (~> 1.2)
-    girl_friday (0.10.0)
-      connection_pool (~> 0.9.0)
     hashie (1.2.0)
     hike (1.2.3)
     http_parser.rb (0.5.3)
@@ -252,7 +249,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  airbrake (= 3.1.5)
+  airbrake (= 3.1.15)
   aws-ses
   capybara (~> 1.1.0)
   capybara-webkit (= 0.12.1)

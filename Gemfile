@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'airbrake', '3.1.5'
 gem 'formtastic', '2.2.1'
 gem 'formtastic-bootstrap', '2.0.0'
 gem 'jquery-rails', '2.1.3'
@@ -18,6 +17,7 @@ gem 'whenever', '0.8.2'
 gem 'gds-sso', '3.0.3'
 gem 'plek', '1.3.1'
 
+gem 'airbrake', '3.1.15'
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
 
