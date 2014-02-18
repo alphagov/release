@@ -21,7 +21,7 @@ gem 'airbrake', '3.1.15'
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
 
-gem 'logstasher', '0.4.1'
+gem 'logstasher', '0.4.8'
 
 # Gems used only for assets and not required
 # in production environments by default.

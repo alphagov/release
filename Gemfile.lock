@@ -110,7 +110,7 @@ GEM
       addressable
       websocket
     logstash-event (1.1.5)
-    logstasher (0.4.1)
+    logstasher (0.4.8)
       logstash-event (~> 1.1.0)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -262,7 +262,7 @@ DEPENDENCIES
   gds-sso (= 3.0.3)
   jquery-rails (= 2.1.3)
   less-rails-bootstrap (= 2.2.0)
-  logstasher (= 0.4.1)
+  logstasher (= 0.4.8)
   minitest (= 4.3.3)
   mocha (= 0.13.1)
   mysql2 (= 0.3.11)
