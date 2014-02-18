@@ -2,7 +2,7 @@ language: ruby
 services:
   - mysql
 rvm:
-  - 1.9.3-p392
+  - 1.9.3
 script:
   - bundle exec rake db:migrate test
 bundler_args: --without=development

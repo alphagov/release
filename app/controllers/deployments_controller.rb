@@ -6,12 +6,17 @@ class DeploymentsController < ApplicationController
 
   def create
     if push_notification?
+      application = application_by_repo
+      application.archived = false
+      application.save!
       Deployment.create!(params[:deployment].merge(application: application))
       head 200
     else
       @deployment = Deployment.new(params[:deployment])
       if @deployment.save
         application = Application.find(params[:deployment][:application_id])
+        application.archived = false
+        application.save!
         redirect_to applications_path, notice: "Deployment created for #{application.name}"
       else
         flash[:alert] = "Failed to create deployment"
@@ -21,7 +26,7 @@ class DeploymentsController < ApplicationController
   end
 
   private
-    def application
+    def application_by_repo
       if existing_app = Application.find_by_repo(repo_path)
         existing_app
       else

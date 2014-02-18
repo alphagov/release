@@ -82,6 +82,13 @@ class ApplicationTest < ActiveSupport::TestCase
 
       assert_equal "https://github.foo/alphagov/tron-o-matic", application.repo_url
     end
+
+    should "default to not being archived" do
+      @atts.delete :archived
+      application = Application.new(@atts)
+
+      assert_equal false, application.archived
+    end
   end
 
   context "display datetimes" do

@@ -1,0 +1,5 @@
+<% content_for :page_title, "Archived applications" %>
+
+<h1>Archived applications</h1>
+
+<%= render partial: "applications_table", locals: { applications: @applications, environments: @environments } %>

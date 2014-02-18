@@ -8,6 +8,7 @@
     <%= f.input :domain, label: "GitHub domain", hint: "eg github.gds" %>
     <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
                             input_html: { placeholder: @application.fallback_shortname } %>
+    <%= f.input :archived, label: "Archived?" %>
   <% end %>
 
   <%= f.actions do %>

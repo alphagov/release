@@ -9,13 +9,14 @@ class ApplicationsControllerTest < ActionController::TestCase
     setup do
       @app1 = FactoryGirl.create(:application, name: "app1", repo: "user/app1")
       @app2 = FactoryGirl.create(:application, name: "app2", repo: "user/app2")
+      @app3 = FactoryGirl.create(:application, name: "app3", repo: "user/app3", archived: true)
       @deploy1 = FactoryGirl.create(:deployment,
         application: @app1,
         environment: "staging",
         version: "release_x")
     end
 
-    should "list applications" do
+    should "list unarchived applications" do
       get :index
       assert_select "table tbody tr", count: 2
     end
@@ -122,6 +123,19 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app.reload
       assert_equal "Rolled back deploy because science.", @app.status_notes
       assert_redirected_to "/applications"
+    end
+  end
+
+  context "GET archived" do
+    setup do
+      @app1 = FactoryGirl.create(:application, name: "app1", repo: "user/app1")
+      @app2 = FactoryGirl.create(:application, name: "app2", repo: "user/app2")
+      @app3 = FactoryGirl.create(:application, name: "app3", repo: "user/app3", archived: true)
+    end
+
+    should "show only archived applications" do
+      get :archived
+      assert_select "table tbody tr", count: 1
     end
   end
 end

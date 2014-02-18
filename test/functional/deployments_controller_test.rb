@@ -23,6 +23,13 @@ class DeploymentsControllerTest < ActionController::TestCase
         post :create, { deployment: { application_id: app.id, version: "", environment: "staging", created_at: "18/01/2013 11:57" } }
         assert_template :new
       end
+
+      should "unarchive an archived application" do
+        app = FactoryGirl.create(:application, repo: "org/app", archived: true)
+        post :create, { deployment: { application_id: app.id, version: "release_345", environment: "staging", created_at: "18/01/2013 11:57" } }
+        app.reload
+        assert_equal false, app.archived
+      end
     end
 
     context "notification API" do
@@ -34,6 +41,13 @@ class DeploymentsControllerTest < ActionController::TestCase
         refute_nil deployment
         assert_equal "release_123", deployment.version
         assert_equal "staging", deployment.environment
+      end
+
+      should "unarchive an archived application" do
+        app = FactoryGirl.create(:application, repo: "org/app", archived: true)
+        post :create, { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
+        app.reload
+        assert_equal false, app.archived
       end
 
       context "accepting different 'repo' formats" do

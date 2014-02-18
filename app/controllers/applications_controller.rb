@@ -1,8 +1,14 @@
 class ApplicationsController < ApplicationController
   before_filter :find_application, only: [:show, :edit, :update, :update_notes]
+
   def index
     @environments = ["staging", "production"]
-    @applications = Application.all
+    @applications = Application.where(archived: false)
+  end
+
+  def archived
+    @environments = ["staging", "production"]
+    @applications = Application.where(archived: true)
   end
 
   def show
