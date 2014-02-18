@@ -87,12 +87,12 @@ class ApplicationTest < ActiveSupport::TestCase
   context "display datetimes" do
     should "use the word today if the release was today" do
       assert_equal "10:02am today",
-                   human_datetime(DateTime.now.change(hour: 10, min: 2))
+                   human_datetime(Time.zone.now.change(hour: 10, min: 2))
     end
 
     should "show a year if the date is old" do
       assert_equal "2pm on 3 Jul 2010",
-                   human_datetime(DateTime.now.change(year: 2010, month: 7, day: 3, hour: 14))
+                   human_datetime(Time.zone.now.change(year: 2010, month: 7, day: 3, hour: 14))
     end
   end
 
