@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'rails', '3.2.17'
+
 gem 'formtastic', '2.2.1'
 gem 'formtastic-bootstrap', '2.0.0'
 gem 'jquery-rails', '2.1.3'
@@ -7,7 +9,6 @@ gem 'less-rails-bootstrap', '2.2.0'
 gem 'mysql2', '0.3.11'
 gem 'nested_form', '0.3.1'
 gem 'octokit', '1.23.0'
-gem 'rails', '3.2.16'
 gem 'statsd-ruby', '1.0.0', require: "statsd"
 gem 'unicorn', '4.4.0'
 gem 'tinder', '1.9.2'
