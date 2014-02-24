@@ -1,0 +1,14 @@
+<% content_for :page_title, "Deployment activity" %>
+
+<section>
+  <h1>Recent deployments</h1>
+
+  <ul class="activity-list">
+    <% @deployments.each do |deployment| %>
+      <li class="deployment to_<%= deployment.environment %>">
+        <h2><em><%= deployment.application.name %></em> <%= deployment.version %> to <em><%= deployment.environment %></em></h2>
+        <p><%= human_datetime deployment.created_at %></p>
+      </li>
+    <% end %>
+  </ul>
+</section>
