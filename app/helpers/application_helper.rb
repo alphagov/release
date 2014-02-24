@@ -30,7 +30,7 @@ module ApplicationHelper
     link_to(git_ref, "#{app.repo_url}/tree/#{git_ref}", target: "_blank")
   end
 
-  def github_compare_to_master(deploy)
-    "#{deploy.application.repo_url}/compare/#{deploy.version}...master"
+  def github_compare_to_master(application, deploy)
+    "#{application.repo_url}/compare/#{deploy.version}...master"
   end
 end

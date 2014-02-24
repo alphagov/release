@@ -16,8 +16,9 @@ class Application < ActiveRecord::Base
   default_scope order("name ASC")
 
   def latest_deploy_to_each_environment
+    return @latest_deploy_to_each_environment unless @latest_deploy_to_each_environment.nil?
     environments = deployments.select('DISTINCT environment').map(&:environment)
-    environments.each_with_object({}) do |environment, hash|
+    @latest_deploy_to_each_environment = environments.each_with_object({}) do |environment, hash|
       hash[environment] = deployments.last_deploy_to(environment)
     end
   end
@@ -27,11 +28,12 @@ class Application < ActiveRecord::Base
   end
 
   def staging_and_production_in_sync?
+    return @staging_and_production_in_sync unless @staging_and_production_in_sync.nil?
     staging = latest_deploy_to_each_environment["staging"]
     production = latest_deploy_to_each_environment["production"]
     staging_version = staging.nil? ? nil : staging.version
     production_version = production.nil? ? nil : production.version
-    staging_version == production_version
+    @staging_and_production_in_sync = (staging_version == production_version)
   end
 
   def shortname
