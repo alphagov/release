@@ -7,6 +7,8 @@ require 'minitest/autorun'
 require 'mocha/setup'
 require 'webmock/test_unit'
 
+DatabaseCleaner.clean
+
 class ActiveSupport::TestCase
   def stub_user
     @stub_user ||= FactoryGirl.create(:user, :name => 'Stub User')
@@ -22,5 +24,9 @@ class ActiveSupport::TestCase
       :authenticated? => true,
       :user => user
     )
+  end
+
+  teardown do
+    DatabaseCleaner.clean
   end
 end
