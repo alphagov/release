@@ -10,3 +10,8 @@ h1 span.shortname {
   font-size: 0.8em;
   color: #aaa;
 }
+
+h1 {
+  line-height: 46px;
+  margin: 22px 0;
+}
