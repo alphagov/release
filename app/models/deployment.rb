@@ -18,7 +18,7 @@ class Deployment < ActiveRecord::Base
 
   def previous_deployment
     @previous_deployment ||= Deployment
-      .where(application_id: self.application.id, environment: self.environment)
+      .where(application_id: self.application_id, environment: self.environment)
       .order("created_at DESC")
       .offset(1)
       .first

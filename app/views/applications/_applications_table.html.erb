@@ -19,7 +19,7 @@
           <%= application.staging_and_production_in_sync? ? "Yes" : "No" %>
         </td>
         <% @environments.each do |environment| %>
-          <% latest_deploy = application.deployments.last_deploy_to(environment) %>
+          <% latest_deploy = application.latest_deploy_to_each_environment[environment] %>
           <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
             <% if latest_deploy %>
               <%= github_tag_link_to(application, latest_deploy.version) %>
@@ -27,7 +27,7 @@
                 at
                 <%= human_datetime(latest_deploy.created_at) %>
               </span>
-              <%= link_to(github_compare_to_master(latest_deploy), target: "_blank", class: "compare") do %>
+              <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare") do %>
                 <i class="icon-random" title="Compare to master"></i>
               <% end %>
             <% else %>
