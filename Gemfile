@@ -41,8 +41,8 @@ group :test, :development do
   gem 'minitest', '4.3.3'
   gem 'mocha', '0.13.1', require: false
   gem 'shoulda-context', '1.0.1', require: false
-  gem 'simplecov', '0.6.4'
-  gem 'simplecov-rcov', '0.2.3'
+  gem 'simplecov', '0.6.4', :require => false
+  gem 'simplecov-rcov', '0.2.3', :require => false
   gem 'timecop', '0.4.5'
   gem 'webmock', '1.15.2', require: false
 end
