@@ -9,12 +9,23 @@ ul.activity-list {
 
     &.to_staging {
       background: #2c91cf;
-      color: #fff;
     }
 
     &.to_production {
       background: #cf303c;
+    }
+
+    &.to_staging, &.to_production {
       color: #fff;
+
+      a {
+        color: #fff;
+        text-decoration: underline;
+
+        &:hover, &:active {
+          color: #bbb;
+        }
+      }
     }
 
     h2 {
