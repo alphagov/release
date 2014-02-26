@@ -5,6 +5,26 @@ class DeploymentsControllerTest < ActionController::TestCase
     login_as_stub_user
   end
 
+  context "GET recent" do
+    setup do
+      @application = FactoryGirl.create(:application, name: "Foo")
+      @deployments = FactoryGirl.create_list(:deployment, 10, application_id: @application.id)
+    end
+
+    should "render the recent template" do
+      get :recent
+
+      assert_template "recent"
+      assert response.ok?
+    end
+
+    should "assign deployments to the template" do
+      get :recent
+
+      assert_equal 10, assigns(:deployments).size
+    end
+  end
+
   context "POST create" do
     context "manually recording a deployment" do
       should "create a deployment record" do

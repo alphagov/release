@@ -6,6 +6,8 @@ class Deployment < ActiveRecord::Base
 
   validates_presence_of :version, :environment, :application_id
 
+  scope :recent, order("created_at DESC").limit(25)
+
   def self.environments
     Deployment.select('DISTINCT environment').map(&:environment)
   end
