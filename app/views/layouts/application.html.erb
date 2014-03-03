@@ -40,9 +40,11 @@
               </ul>
             </li>
           </ul>
-          <p class="navbar-text pull-right">
-            Signed in as <%= link_to current_user.name, Plek.current.find('signon') %>
-          </p>
+          <% if current_user %>
+            <p class="navbar-text pull-right">
+              Signed in as <%= link_to current_user.name, Plek.current.find('signon') %>
+            </p>
+          <% end %>
         </nav><!--/.nav-collapse -->
       </div>
     </div>
