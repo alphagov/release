@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ApplicationsControllerTest < ActionController::TestCase
+  include ApplicationHelper
+
   setup do
     login_as_stub_user
   end
@@ -34,6 +36,15 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "provide a title attribute to sort environment columns by date" do
       get :index
       assert_select "table td[title=?]", @deploy1.created_at
+    end
+
+    should "produce a JSON formatted list of applications" do
+      get :index, format: :json
+
+      applications = [@app1, @app2]
+
+      assert_equal 200, @response.status
+      assert_equal application_metadata(applications, ["staging", "production"]).to_json, @response.body
     end
   end
 

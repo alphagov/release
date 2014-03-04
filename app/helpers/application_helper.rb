@@ -33,4 +33,21 @@ module ApplicationHelper
   def github_compare_to_master(application, deploy)
     "#{application.repo_url}/compare/#{deploy.version}...master"
   end
+
+  def application_metadata(applications, environments)
+    applications.map do |application|
+      versions = environments.map { |env|
+        env_deploy = application.deployments.last_deploy_to(env)
+        {env => env_deploy.version} unless env_deploy.nil?
+      }.reject!(&:nil?)
+
+      {
+        name: application.name,
+        repo: application.repo,
+        domain: application.domain,
+        staging_and_production_in_sync: application.staging_and_production_in_sync?,
+        deployed_versions: versions,
+      }
+    end
+  end
 end
