@@ -10,9 +10,9 @@ An application to make managing releases to specific environments easier.
 You will need a SQL database and may have to create an app-specific SQL user - check `config/database.yml` for user details.
 
     bundle install
-    rake db:create db:migrate
-    rake test
+    bundle exec rake db:create db:migrate
+    bundle exec rake test
 
 Create applications in db/seeds.rb
 
-    rake db:seed
+    bundle exec rake db:seed
