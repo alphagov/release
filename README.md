@@ -7,7 +7,7 @@ An application to make managing releases to specific environments easier.
 
 ## Getting started
 
-1. Add mysql databases with an app-specific user (check `config/database.yml` for user details):
+1. Add mysql databases with an app-specific user (check [config/database.yml](config/database.yml) for user details):
 
     ```
     mysql.server start
@@ -31,7 +31,7 @@ An application to make managing releases to specific environments easier.
     bundle exec rake db:create db:migrate
     bundle exec rake test
     ```
-3. Create applications in db/seeds.rb:
+3. Create applications in [db/seeds.rb](db/seeds.rb):
 
     ```
     bundle exec rake db:seed
