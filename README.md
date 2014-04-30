@@ -7,28 +7,25 @@ An application to make managing releases to specific environments easier.
 
 ## Getting started
 
-1. Add mysql databases with an app-specific user (check [config/database.yml](config/database.yml) for user details):
+1. Create app-specific mysql user (check [config/database.yml](config/database.yml) for user details):
 
     ```
     mysql.server start
     mysql -u root
 
-    # development db
-    CREATE DATABASE release_development;
-    # test db
-    CREATE DATABASE release_test;
-    # create user and give it access to dbs
+    # Create release user
     CREATE USER 'release'@'localhost' IDENTIFIED BY 'release';
     GRANT SELECT,INSERT,UPDATE,DELETE,CREATE
     ON `release_%`.*
     TO 'release'@'localhost';
     FLUSH PRIVILEGES;
+    exit
     ```
 
-2. Install dependencies, run initial migrations, test:
+2. Install dependencies, create databases and run initial migrations, test:
     ```
     bundle install
-    bundle exec rake db:create db:migrate
+    bundle exec rake db:create:all db:migrate
     bundle exec rake test
     ```
 3. Create applications in [db/seeds.rb](db/seeds.rb):
