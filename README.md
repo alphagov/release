@@ -15,9 +15,10 @@ An application to make managing releases to specific environments easier.
 
     # Create release user
     CREATE USER 'release'@'localhost' IDENTIFIED BY 'release';
-    GRANT SELECT,INSERT,UPDATE,DELETE,CREATE
+    GRANT ALL PRIVILEGES
     ON `release_%`.*
-    TO 'release'@'localhost';
+    TO 'release'@'localhost'
+    WITH GRANT OPTION;
     FLUSH PRIVILEGES;
     exit
     ```
