@@ -23,7 +23,19 @@ class ApplicationsController < ApplicationController
       @latest_deploy_to_each_environment_by_version[deployment.version] ||= []
       @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
     end
-    @commits = github.commits(@application.repo)
+
+    production_deploy = @application.deployments.last_deploy_to "production"
+    if production_deploy
+      comparison = github.compare(
+        @application.repo,
+        production_deploy.version,
+        "master"
+      )
+      @commits = comparison.commits
+    else
+      @commits = github.commits(@application.repo)
+    end
+
     @github_available = true
   rescue Octokit::NotFound => e
     @github_available = false

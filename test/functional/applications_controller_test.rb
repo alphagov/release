@@ -75,6 +75,26 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :show, id: @app.id
       assert_select "h1 span.name", @app.name
     end
+
+    context "GET show with a production deployment" do
+      setup do
+        version = "release_42"
+        FactoryGirl.create(:deployment, application: @app, version: version)
+        Octokit::Client.any_instance.stubs(:compare)
+          .with(@app.repo, version, "master")
+          .returns(stub("comparison", commits: []))
+      end
+
+      should "show the application" do
+        get :show, id: @app.id
+        assert_select "h1 span.name", @app.name
+      end
+
+      should "set the commit history" do
+        get :show, id: @app.id
+        assert_equal [], assigns[:commits]
+      end
+    end
   end
 
   context "GET edit" do
