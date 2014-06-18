@@ -68,7 +68,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     setup do
       @app = FactoryGirl.create(:application)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: {})
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits?per_page=35&sha=master").to_return(body: {})
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: {})
     end
 
     should "show the application" do
