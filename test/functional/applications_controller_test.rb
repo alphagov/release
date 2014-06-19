@@ -98,9 +98,12 @@ class ApplicationsControllerTest < ActionController::TestCase
         version = "release_42"
         FactoryGirl.create(:deployment, application: @app, version: version)
         @first_commit, @second_commit = stub_commit, stub_commit
+        @base_commit = stub_commit
         Octokit::Client.any_instance.stubs(:compare)
           .with(@app.repo, version, "master")
-          .returns(stub("comparison", commits: [@first_commit, @second_commit]))
+          .returns(stub("comparison",
+                        commits: [@first_commit, @second_commit],
+                        base_commit: @base_commit))
       end
 
       should "show the application" do
@@ -116,8 +119,14 @@ class ApplicationsControllerTest < ActionController::TestCase
         # equality on the objects themselves
         assert_equal(
           [@second_commit[:sha], @first_commit[:sha]],
-          assigns[:commits].map { |commit| commit[:sha] }
+          assigns[:commits].take(2).map { |commit| commit[:sha] }
         )
+      end
+
+      should "include the base commit" do
+        get :show, id: @app.id
+
+        assert_equal @base_commit[:sha], assigns[:commits].last[:sha]
       end
     end
   end

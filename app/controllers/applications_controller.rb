@@ -32,7 +32,7 @@ class ApplicationsController < ApplicationController
         "master"
       )
       # The `compare` API shows commits in forward chronological order
-      @commits = comparison.commits.reverse
+      @commits = comparison.commits.reverse + [comparison.base_commit]
     else
       # the `commits` API shows commits in reverse chronological order
       @commits = github.commits(@application.repo)
