@@ -31,8 +31,10 @@ class ApplicationsController < ApplicationController
         production_deploy.version,
         "master"
       )
-      @commits = comparison.commits
+      # The `compare` API shows commits in forward chronological order
+      @commits = comparison.commits.reverse
     else
+      # the `commits` API shows commits in reverse chronological order
       @commits = github.commits(@application.repo)
     end
 

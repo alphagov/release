@@ -77,12 +77,30 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     context "GET show with a production deployment" do
+      def random_sha
+        hex_chars = Enumerator.new do |yielder|
+          loop { yielder << "0123456789abcdef".chars.to_a.sample }
+        end
+        hex_chars.take(40).join
+      end
+
+      def stub_commit
+        {
+          sha: random_sha,
+          login: "winston",
+          commit: {
+            message: "Hi"
+          }
+        }
+      end
+
       setup do
         version = "release_42"
         FactoryGirl.create(:deployment, application: @app, version: version)
+        @first_commit, @second_commit = stub_commit, stub_commit
         Octokit::Client.any_instance.stubs(:compare)
           .with(@app.repo, version, "master")
-          .returns(stub("comparison", commits: []))
+          .returns(stub("comparison", commits: [@first_commit, @second_commit]))
       end
 
       should "show the application" do
@@ -90,9 +108,16 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_select "h1 span.name", @app.name
       end
 
-      should "set the commit history" do
+      should "set the commit history in reverse order" do
         get :show, id: @app.id
-        assert_equal [], assigns[:commits]
+
+        # `assigns` in Rails silently converts hashes to
+        # HashWithIndifferentAccess instances, so we can't simply compare for
+        # equality on the objects themselves
+        assert_equal(
+          [@second_commit[:sha], @first_commit[:sha]],
+          assigns[:commits].map { |commit| commit[:sha] }
+        )
       end
     end
   end
