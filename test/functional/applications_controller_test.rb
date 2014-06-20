@@ -68,12 +68,66 @@ class ApplicationsControllerTest < ActionController::TestCase
     setup do
       @app = FactoryGirl.create(:application)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: {})
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits?per_page=35&sha=master").to_return(body: {})
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: {})
     end
 
     should "show the application" do
       get :show, id: @app.id
       assert_select "h1 span.name", @app.name
+    end
+
+    context "GET show with a production deployment" do
+      def random_sha
+        hex_chars = Enumerator.new do |yielder|
+          loop { yielder << "0123456789abcdef".chars.to_a.sample }
+        end
+        hex_chars.take(40).join
+      end
+
+      def stub_commit
+        {
+          sha: random_sha,
+          login: "winston",
+          commit: {
+            message: "Hi"
+          }
+        }
+      end
+
+      setup do
+        version = "release_42"
+        FactoryGirl.create(:deployment, application: @app, version: version)
+        @first_commit, @second_commit = stub_commit, stub_commit
+        @base_commit = stub_commit
+        Octokit::Client.any_instance.stubs(:compare)
+          .with(@app.repo, version, "master")
+          .returns(stub("comparison",
+                        commits: [@first_commit, @second_commit],
+                        base_commit: @base_commit))
+      end
+
+      should "show the application" do
+        get :show, id: @app.id
+        assert_select "h1 span.name", @app.name
+      end
+
+      should "set the commit history in reverse order" do
+        get :show, id: @app.id
+
+        # `assigns` in Rails silently converts hashes to
+        # HashWithIndifferentAccess instances, so we can't simply compare for
+        # equality on the objects themselves
+        assert_equal(
+          [@second_commit[:sha], @first_commit[:sha]],
+          assigns[:commits].take(2).map { |commit| commit[:sha] }
+        )
+      end
+
+      should "include the base commit" do
+        get :show, id: @app.id
+
+        assert_equal @base_commit[:sha], assigns[:commits].last[:sha]
+      end
     end
   end
 

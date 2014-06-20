@@ -8,7 +8,7 @@ gem 'jquery-rails', '2.1.3'
 gem 'less-rails-bootstrap', '2.2.0'
 gem 'mysql2', '0.3.11'
 gem 'nested_form', '0.3.1'
-gem 'octokit', '1.23.0'
+gem 'octokit', '3.1.2'
 gem 'statsd-ruby', '1.0.0', require: "statsd"
 gem 'unicorn', '4.4.0'
 gem 'tinder', '1.9.2'
