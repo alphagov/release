@@ -6,6 +6,6 @@ class User < ActiveRecord::Base
   attr_accessible :uid, :email, :name, :permissions, as: :oauth
 
   def may_deploy?
-    false
+    permissions.include? "deploy"
   end
 end
