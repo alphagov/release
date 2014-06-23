@@ -7,19 +7,19 @@ describe User do
     context "when the user has deploy permissions" do
       let(:user_permissions) {["signin", "deploy"]}
       before do
-        subject.stub(:permissions).and_return user_permissions
+        allow(subject).to receive(:permissions).and_return user_permissions
       end
       it "returns true when may_deploy? called" do 
-        subject.may_deploy?.should == true
+        expect(subject.may_deploy?).to be true
       end
     end
     context "when the user has deploy permissions" do
       let(:user_permissions) {["signin"]}
       before do
-        subject.stub(:permissions).and_return user_permissions
+        allow(subject).to receive(:permissions).and_return user_permissions
       end
       it "returns false when may_deploy? called" do 
-        subject.may_deploy?.should == false 
+        expect(subject.may_deploy?).to be false
       end
     end
      
