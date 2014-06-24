@@ -1,4 +1,6 @@
 class ReleasesController < ApplicationController
+  before_filter :redirect_if_read_only_user, only: [:new, :edit, :create, :update]
+
   def index
     @releases = Release.all
     @todays_releases = Release.todays_releases.all
