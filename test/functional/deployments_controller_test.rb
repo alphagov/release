@@ -25,7 +25,26 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
   end
 
+  context "GET new" do
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'new', 
+                  :get, 
+                  :new)
+                  
+    end
+  end
+
   context "POST create" do
+    #TODO hmmm... will break api?
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'create', 
+                  :post, 
+                  :create, 
+                  { deployment: { application_id: 123, version: "", environment: "staging", created_at: "18/01/2013 11:57" } })
+    end
+
     context "manually recording a deployment" do
       should "create a deployment record" do
         app = FactoryGirl.create(:application, repo: "org/app")
