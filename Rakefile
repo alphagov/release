@@ -8,4 +8,4 @@ require 'ci/reporter/rake/minitest' if Rails.env.test?
 
 ReleaseApp::Application.load_tasks
 
-task :default => [:test, :check_for_bad_time_handling]
+task :default => [:spec, :test, :check_for_bad_time_handling]
