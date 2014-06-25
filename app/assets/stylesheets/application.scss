@@ -1,0 +1,23 @@
+@import "bootstrap_and_overrides";
+@import "formtastic-bootstrap";
+@import "bootstrap-datetimepicker.min";
+
+@import "activity";
+@import "forms";
+@import "tables";
+
+h1 span.shortname {
+  font-family: monospace;
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+h1 {
+  line-height: 46px;
+  margin: 22px 0;
+}
+
+.author {
+  @extend .muted;
+  padding-left: 1em;
+}
