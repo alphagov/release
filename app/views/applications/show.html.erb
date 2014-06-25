@@ -55,9 +55,11 @@
           <% end %>
           <td>
             <%= commit[:commit][:message].split(/\n/)[0] %>
-            <span class="muted">
-              <%= commit[:login] %>
+            <% if commit[:commit][:author] %>
+            <span class="author">
+              <%= commit[:commit][:author][:name] %>
             </span>
+            <% end %>
             <small>
             <%= link_to commit[:sha], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank", class: "pull-right" %>
             </small>
