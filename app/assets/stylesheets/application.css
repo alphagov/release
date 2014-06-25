@@ -15,3 +15,8 @@ h1 {
   line-height: 46px;
   margin: 22px 0;
 }
+
+.author {
+  color: #999; /* To match the '.muted' rule */
+  padding-left: 1em;
+}
