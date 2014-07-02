@@ -27,7 +27,7 @@ An application to make managing releases to specific environments easier.
     ```
     bundle install
     bundle exec rake db:create:all db:migrate
-    bundle exec rake test
+    bundle exec rake
     ```
 3. Create applications in [db/seeds.rb](db/seeds.rb):
 
