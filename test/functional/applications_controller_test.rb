@@ -145,6 +145,21 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_equal @base_commit[:sha], assigns[:commits].last[:sha]
       end
     end
+
+    context "when the user has no deploy permissions" do
+      setup do
+        login_as_read_only_stub_user
+        get :show, id: @app.id
+      end
+
+      should "not show the edit button" do
+        assert_select "a[href='/applications/#{@app.id}/edit']", false
+      end
+
+      should "not show the button to record a missing deployment" do
+        assert_select "a[href='/applications/#{@app.id}/deployments/new']", false
+      end
+    end
   end
 
   context "GET edit" do
