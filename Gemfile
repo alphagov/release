@@ -34,7 +34,6 @@ end
 
 group :test, :development do
   gem 'capybara', '~> 2.2.0'
-  gem 'rspec-rails', '~> 3.0.1'
   gem 'capybara-webkit', '~> 1.1.0'
   gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '0.9.1'
