@@ -36,6 +36,25 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :index
       assert_select "table td[title=?]", @deploy1.created_at
     end
+
+    context "when the user has no deploy permissions" do
+      setup do
+        login_as_read_only_stub_user
+        get :index
+      end
+
+      should "not show buttons to add missing deployments" do
+        assert_no_tag "a", attributes: { href: %r"/applications/\d+/deployments/new.*" }
+      end
+
+      should "not show buttons to edit application notes" do
+        assert_no_tag "a", attributes: { href: %r"#edit-notes-app-\d+" }
+      end
+
+      should "not show button to create application" do
+        assert_select "a[href='/applications/new']", false
+      end
+    end
   end
 
   context "GET new" do
@@ -245,6 +264,21 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "show only archived applications" do
       get :archived
       assert_select "table tbody tr", count: 1
+    end
+
+    context "when the user has no deploy permissions" do
+      setup do
+        login_as_read_only_stub_user
+        get :archived
+      end
+
+      should "not show buttons to add missing deployments" do
+        assert_no_tag "a", attributes: { href: %r"/applications/\d+/deployments/new.*" }
+      end
+
+      should "not show buttons to edit application notes" do
+        assert_no_tag "a", attributes: { href: %r"#edit-notes-app-\d+" }
+      end
     end
   end
 end
