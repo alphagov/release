@@ -4,6 +4,8 @@ gem 'rails', '3.2.17'
 
 gem 'formtastic', '2.3.0.rc3'
 gem 'formtastic-bootstrap', '3.0.0'
+gem 'momentjs-rails', '~> 2.5.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 gem 'govuk_admin_template', '1.0.2'
 gem 'mysql2', '0.3.11'
 gem 'nested_form', '0.3.1'
