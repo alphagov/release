@@ -36,7 +36,6 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "POST create" do
-    #TODO hmmm... will break api?
     context "when the user has no deploy permissions" do
       shared_test("actions_requiring_deploy_permission_redirect", 
                   'create', 
