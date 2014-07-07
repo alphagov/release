@@ -42,4 +42,10 @@ $(function () {
   });
   version.initialize();
   $('.version-typeahead').typeahead(null, { source: version.ttAdapter()});
+
+  // Also initialize typeahead when nested forms are added.
+  $(document).on('nested:fieldAdded', function(event){
+    var field = event.field; 
+    field.find('.version-typeahead').typeahead(null, { source: version.ttAdapter()});
+  });
 });
