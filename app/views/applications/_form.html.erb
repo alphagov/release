@@ -1,22 +1,18 @@
 <div class="well">
-  <div class="row">
-    <div class="col-md-6">
-      <%= semantic_form_for @application do |f| %>
-        <%= f.semantic_errors %>
+  <%= semantic_form_for @application do |f| %>
+    <%= f.semantic_errors %>
 
-        <%= f.inputs do %>
-          <%= f.input :name, label: "Name" %>
-          <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher" %>
-          <%= f.input :domain, label: "GitHub domain", hint: "eg github.gds" %>
-          <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
-                                  input_html: { placeholder: @application.fallback_shortname } %>
-          <%= f.input :archived, label: "Archived?" %>
-        <% end %>
+    <%= f.inputs do %>
+      <%= f.input :name, label: "Name", input_html: { class: 'input-md-6' } %>
+      <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher", input_html: { class: 'input-md-6' } %>
+      <%= f.input :domain, label: "GitHub domain", hint: "eg github.gds", input_html: { class: 'input-md-6' } %>
+      <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
+                              input_html: { placeholder: @application.fallback_shortname, class: 'input-md-6' } %>
+      <%= f.input :archived, label: "Archived?" %>
+    <% end %>
 
-        <%= f.actions do %>
-          <%= f.action :submit, :as => :button, button_html: { class: 'btn btn-default' } %>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+    <%= f.actions do %>
+      <%= f.action :submit, :as => :button, button_html: { class: 'btn btn-default' } %>
+    <% end %>
+  <% end %>
 </div>
