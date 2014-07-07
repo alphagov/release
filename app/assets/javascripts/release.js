@@ -27,7 +27,19 @@ $(function () {
     language: 'en'
   });
 
-  $('.environment-typeahead').typeahead({ source: ['staging', 'production'] });
+  var environment = new Bloodhound({
+    local: [{value: 'staging'}, {value: 'production'}],
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  });
+  environment.initialize();
+  $('.environment-typeahead').typeahead(null, { source: environment.ttAdapter()});
 
-  $('.version-typeahead').typeahead({ source: ['release_', 'build-'] });
+  var version = new Bloodhound({
+    local: [{value: 'release_'}, {value: 'build-'}],
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  });
+  version.initialize();
+  $('.version-typeahead').typeahead(null, { source: version.ttAdapter()});
 });

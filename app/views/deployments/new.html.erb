@@ -4,26 +4,17 @@
 <p>All deployments should be automatically recorded from a push notification, but if that fails, use this form.</p>
 
 <div class="well">
-  <%= form_for @deployment do |f| %>
-    <%= f.label :application_id %>
-    <%= f.select :application_id, options_from_collection_for_select(Application.all, 'id', 'name', f.object.application_id) %>
+  <%= semantic_form_for @deployment do |f| %>
+    <%= f.inputs do %>
+      <%= f.input :application_id, as: :select, input_html: { class: "input-md-4" }, collection: options_from_collection_for_select(Application.all, 'id', 'name', f.object.application_id) %>
 
-    <%= f.label :environment %>
-    <%= f.text_field :environment, required: "required", class: "environment-typeahead" %>
+      <%= f.input :environment, required: "required", input_html: { class: "environment-typeahead input-md-4" }%>
 
-    <%= f.label :version %>
-    <%= f.text_field :version, required: "required", class: "version-typeahead" %>
+      <%= f.input :version, required: "required", input_html: { class: "version-typeahead input-md-4" } %>
 
-    <%= f.label :created_at, "Deployed at" %>
-    <div id="datetimepicker1" class="input-append date">
-      <%= f.text_field :created_at, required: "required", data: { format: "dd/MM/yyyy hh:mm" } %>
-      <span class="add-on">
-        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-      </span>
-    </div>
+      <%= f.input :created_at, label: "Deployed at", as: "js_datetime_picker", wrapper_options: { class: 'date input-md-4', 'data-date-format' => 'DD/MM/YYYY HH:mm', id: 'datetimepicker1' }, append: content_tag(:span, '', class: "glyphicon glyphicon-calendar") %>
+    <% end %>
 
-    <hr>
-    
     <%= f.submit class: "btn btn-primary" %>
   <% end %>
 </div>
