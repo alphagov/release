@@ -20,7 +20,7 @@ gem 'plek', '1.3.1'
 
 gem 'airbrake', '3.1.15'
 gem 'aws-ses', require: 'aws/ses'
-gem 'exception_notification'
+gem 'exception_notification', '3.0.0'
 
 gem 'logstasher', '0.4.8'
 
