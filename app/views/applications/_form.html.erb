@@ -1,17 +1,18 @@
-<%= semantic_form_for @application do |f| %>
-  <%= f.semantic_errors %>
+<div class="well">
+  <%= semantic_form_for @application do |f| %>
+    <%= f.semantic_errors %>
 
-  <%= f.inputs do %>
-    <%= f.input :name, label: "Name", input_html: { class: "input-xxlarge" } %>
-    <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher",
-                       input_html: { class: "input-xxlarge" } %>
-    <%= f.input :domain, label: "GitHub domain", hint: "eg github.gds" %>
-    <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
-                            input_html: { placeholder: @application.fallback_shortname } %>
-    <%= f.input :archived, label: "Archived?" %>
+    <%= f.inputs do %>
+      <%= f.input :name, label: "Name", input_html: { class: 'input-md-6' } %>
+      <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher", input_html: { class: 'input-md-6' } %>
+      <%= f.input :domain, label: "GitHub domain", hint: "eg github.gds", input_html: { class: 'input-md-6' } %>
+      <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
+                              input_html: { placeholder: @application.fallback_shortname, class: 'input-md-6' } %>
+      <%= f.input :archived, label: "Archived?" %>
+    <% end %>
+    <hr/>
+    <%= f.actions do %>
+      <%= f.action :submit, :as => :button, button_html: { class: 'btn btn-success' } %>
+    <% end %>
   <% end %>
-
-  <%= f.actions do %>
-      <%= f.action :submit, :as => :button %>
-  <% end %>
-<% end %>
+</div>

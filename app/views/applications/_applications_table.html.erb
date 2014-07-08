@@ -1,6 +1,6 @@
-<table id="application-list" class="table table-striped table-bordered table-hover table-condensed">
+<table id="application-list" class="table table-striped table-bordered table-hover">
   <thead>
-    <tr>
+    <tr class='table-header'>
       <th scope="col" class="headerSortDown">Name</th>
       <th scope="col">In sync?</th>
       <% @environments.each do |environment| %>
@@ -23,18 +23,17 @@
           <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
             <% if latest_deploy %>
               <%= github_tag_link_to(application, latest_deploy.version) %>
-              <span class="muted">
-                at
+              <br/><span class="text-muted">
                 <%= human_datetime(latest_deploy.created_at) %>
               </span>
               <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare") do %>
-                <i class="icon-random" title="Compare to master"></i>
+                <i class="glyphicon glyphicon-random" title="Compare to master"></i>
               <% end %>
             <% else %>
               N/A
             <% end %>
             <%= link_to(new_application_deployment_path(application, environment: environment)) do %>
-              <i class="icon-edit pull-right" title="Add a missing deployment"></i>
+              <i class="glyphicon glyphicon-plus pull-right" title="Add a missing deployment"></i>
             <% end %>
           </td>
         <% end %>
@@ -42,25 +41,29 @@
           <%= application.status_notes %>
           <!-- Button to trigger modal -->
           <a href="#edit-notes-app-<%= application.id %>" role="button" data-toggle="modal">
-            <i class="icon-edit pull-right" title="Edit notes"></i>
+            <i class="glyphicon glyphicon-edit pull-right" title="Edit notes"></i>
           </a>
 
           <!-- Modal -->
-          <div id="edit-notes-app-<%= application.id %>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="edit-notes-app-<%= application.id %>Label" aria-hidden="true">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h3 id="edit-notes-app-<%= application.id %>Label">Edit notes for <%= application.name %></h3>
+          <div id="edit-notes-app-<%= application.id %>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="edit-notes-app-<%= application.id %>Label" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h3 id="edit-notes-app-<%= application.id %>Label">Edit notes for <%= application.name %></h3>
+                </div>
+                <%= form_for application, url: update_notes_application_path(application) do |f| %>
+                  <div class="modal-body">
+                    <%= f.label :status_notes, "Notes" %>
+                    <%= f.text_area :status_notes, rows: 5, cols: 50, class: "col-md-12" %>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <%= f.submit "Save", class: "btn btn-primary" %>
+                  </div>
+                <% end %>
+              </div>
             </div>
-            <%= form_for application, url: update_notes_application_path(application) do |f| %>
-              <div class="modal-body">
-                <%= f.label :status_notes, "Notes" %>
-                <%= f.text_area :status_notes, rows: 5, cols: 50, class: "span12" %>
-              </div>
-              <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                <%= f.submit "Save", class: "btn btn-primary" %>
-              </div>
-            <% end %>
           </div>
         </td>
       </tr>

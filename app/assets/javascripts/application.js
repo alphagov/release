@@ -1,9 +1,7 @@
-//= require jquery
-//= require jquery-ui
-//= require jquery_ujs
-//= require twitter/bootstrap
 //= require jquery_nested_form
 //= require jquery.tablesorter.min
 //= require jquery.autogrowtextarea
-//= require bootstrap-datetimepicker.min
+//= require moment
+//= require bootstrap-datetimepicker
+//= require typeahead.bundle.min
 //= require_tree .

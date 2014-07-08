@@ -14,15 +14,15 @@
 </p>
 
 <div class="btn-group">
-  <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn" %>
+  <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn btn-default" %>
 </div>
 
 
 <h2>Commit log</h2>
 <% if @github_available %>
-  <table class="table table-striped table-bordered table-hover table-condensed">
+  <table class="table table-striped table-bordered table-hover">
     <thead>
-      <tr>
+      <tr class="table-header">
         <th>Deployed to</th>
         <th>Tags</th>
         <th>Commit</th>
@@ -82,8 +82,8 @@
 <%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "btn btn-success" %>
 </p>
 
-<table class="table table-striped table-bordered table-hover table-condensed">
-  <thead>
+<table class="table table-striped table-bordered table-hover">
+  <thead class="table-header">
     <tr>
       <th>Environment</th>
       <th>Version</th>

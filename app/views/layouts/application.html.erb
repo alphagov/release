@@ -1,73 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title><%= yield :page_title %> | GOV.UK Release</title>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+<% content_for :app_title, 'GOV.UK Release' %>
+<% content_for :page_title, ' | GOV.UK Release' %>
+<% content_for :favicon do %>
+  <% environment_style = GovukAdminTemplate.environment_style %>
+  <%= favicon_link_tag environment_style ?
+        "govuk_admin_template/favicon-#{environment_style}.png" : "govuk_admin_template/favicon.png" %>
+<% end %>
+<% content_for :head do %>
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= csrf_meta_tag %>
   <%= yield :extra_headers %>
-</head>
-<body>
-  <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
-    <div class="navbar-inner">
-      <div class="container-fluid">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <%= link_to 'GOV.UK Release', {:controller => "applications"}, :class => "brand" %>
-        <nav role="navigation" class="nav-collapse">
-          <ul class="nav">
-            <%= nav_link 'Applications', applications_path %>
-            <%= nav_link 'Activity', activity_path %>
-            <%= nav_link 'Archived', archived_applications_path %>
-          </ul>
-          <ul class="nav pull-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Services<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="http://digital.cabinetoffice.gov.uk/">GDS blog</a></li>
-                <li><a href="http://wiki.digital.cabinet-office.gov.uk/">GDS wiki</a></li>
-                <li class="divider"></li>
-                <li><%= link_to 'Sign out', gds_sign_out_path %></li>
-              </ul>
-            </li>
-          </ul>
-          <% if current_user %>
-            <p class="navbar-text pull-right">
-              Signed in as <%= link_to current_user.name, Plek.current.find('signon') %>
-            </p>
-          <% end %>
-        </nav><!--/.nav-collapse -->
-      </div>
+<% end %>
+
+<% content_for :navbar_items do %>
+  <%= nav_link 'Applications', applications_path %>
+  <%= nav_link 'Activity', activity_path %>
+  <%= nav_link 'Archived', archived_applications_path %>
+<% end %>
+
+<% content_for :navbar_right do %>
+  <% if current_user %>
+    <%= link_to current_user.name, Plek.current.find('signon') %>
+    &bull; <%= link_to 'Sign out', gds_sign_out_path %>
+  <% end %>
+<% end %>
+
+<% content_for :content do %>
+  <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
+    <div class="alert alert-<%= k %>">
+      <%= flash[k] %>
     </div>
-  </header>
+  <% end %>
+  <%= yield %>
+<% end %>
 
-  <section class="container-fluid" role="main">
-    <% [:notice, :alert].select { |k| flash[k].present? }.each do |k| %>
-      <div class="alert <%= k %>">
-        <%= flash[k] %>
-      </div>
-    <% end %>
+<% content_for :footer_version, CURRENT_RELEASE_SHA %>
 
-    <div class="row-fluid">
-      <%= yield %>
-    </div>
-
-    <hr>
-
-    <footer>
-      <p>&copy; GDS. <span class="pull-right">Release version: <%= CURRENT_RELEASE_SHA %></span></p>
-    </footer>
-
-  </section><!--/.container-fluid -->
+<% content_for :body_end do %>
   <%= javascript_include_tag "application" %>
-</body>
-</html>
+  <%= yield :extra_javascript %>
+<% end %>
+
+<%# use the govuk_admin_template layout %>
+<%= render :template => 'layouts/govuk_admin_template' %>
