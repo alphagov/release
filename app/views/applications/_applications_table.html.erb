@@ -1,6 +1,6 @@
-<table id="application-list" class="table table-striped table-bordered table-hover table-condensed">
+<table id="application-list" class="table table-striped table-bordered table-hover">
   <thead>
-    <tr>
+    <tr class='table-header'>
       <th scope="col" class="headerSortDown">Name</th>
       <th scope="col">In sync?</th>
       <% @environments.each do |environment| %>
@@ -23,8 +23,7 @@
           <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
             <% if latest_deploy %>
               <%= github_tag_link_to(application, latest_deploy.version) %>
-              <span class="text-muted">
-                at
+              <br/><span class="text-muted">
                 <%= human_datetime(latest_deploy.created_at) %>
               </span>
               <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare") do %>
@@ -34,7 +33,7 @@
               N/A
             <% end %>
             <%= link_to(new_application_deployment_path(application, environment: environment)) do %>
-              <i class="glyphicon glyphicon-edit pull-right" title="Add a missing deployment"></i>
+              <i class="glyphicon glyphicon-plus pull-right" title="Add a missing deployment"></i>
             <% end %>
           </td>
         <% end %>
