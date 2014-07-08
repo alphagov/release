@@ -77,7 +77,7 @@ class ManagingReleasesTest < JavascriptIntegrationTest
       fill_in "Product team members", :with => "Winston Smith-Churchill\nHiro Protagonist\nBug Barbecue"
       fill_in "Additional support notes", :with => "We may expect an increased number of support requests from users due to the smart answer amends"
 
-      fill_in "Deploy at", :with => DateTime.now.strftime('%d/%m/%Y %H:%M')
+      fill_in "Deploy at", :with => Time.zone.now.strftime('%d/%m/%Y %H:%M')
 
       click_link "Add a task"
 
