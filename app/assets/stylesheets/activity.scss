@@ -1,12 +1,6 @@
 ul.activity-list {
-  margin: 0;
 
   li {
-    list-style: none;
-    padding: 1em;
-    background: #eee;
-    margin: 0.25em;
-
     &.to_staging {
       background: #2c91cf;
     }

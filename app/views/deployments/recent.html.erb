@@ -3,9 +3,9 @@
 <section>
   <h1>Recent deployments</h1>
 
-  <ul class="activity-list">
+  <ul class="list-group activity-list">
     <% @deployments.each do |deployment| %>
-      <li class="deployment to_<%= deployment.environment %>">
+      <li class="list-group-item deployment to_<%= deployment.environment %>">
         <h2>
           <em><%= link_to deployment.application.name, application_path(deployment.application) %></em>
           <%= deployment.version %> to <em><%= deployment.environment %></em>
