@@ -30,6 +30,6 @@ FactoryGirl.define do
   factory :user do
     name "Stub User"
     sequence(:email) {|n| "winston-#{n}@gov.uk" }
-    permissions { ["signin"] }
+    permissions { ["signin", "deploy"] }
   end
 end

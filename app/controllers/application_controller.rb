@@ -15,4 +15,8 @@ class ApplicationController < ActionController::Base
   def error(status_code)
     render status: status_code, text: "#{status_code} error"
   end
+
+  def redirect_if_read_only_user
+    redirect_to applications_path unless current_user.may_deploy? 
+  end
 end

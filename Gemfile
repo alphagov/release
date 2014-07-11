@@ -34,8 +34,8 @@ group :assets do
 end
 
 group :test, :development do
-  gem 'capybara', '~> 1.1.0'
-  gem 'capybara-webkit', '0.12.1'
+  gem 'capybara', '~> 2.2.0'
+  gem 'capybara-webkit', '~> 1.1.0'
   gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '0.9.1'
   gem 'factory_girl_rails', '4.1.0'
@@ -46,4 +46,5 @@ group :test, :development do
   gem 'simplecov-rcov', '0.2.3', :require => false
   gem 'timecop', '0.4.5'
   gem 'webmock', '1.15.2', require: false
+  gem 'pry', '0.10.0'
 end

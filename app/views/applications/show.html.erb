@@ -13,9 +13,11 @@
   <%= link_to @application.repo_url, @application.repo_url, target: "_blank" %>
 </p>
 
+<% if current_user.may_deploy? %>
 <div class="btn-group">
   <%= link_to "Edit", { action: "edit", id: @application.id }, class: "btn btn-default" %>
 </div>
+<% end %>
 
 
 <h2>Commit log</h2>
@@ -78,9 +80,11 @@
 
 <h2>What's where?</h2>
 
+<% if current_user.may_deploy? %>
 <p>
 <%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "btn btn-success" %>
 </p>
+<% end %>
 
 <table class="table table-striped table-bordered table-hover">
   <thead class="table-header">

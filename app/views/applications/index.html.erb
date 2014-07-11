@@ -4,4 +4,6 @@
 
 <%= render partial: "applications_table", locals: { applications: @applications, environments: @environments } %>
 
-<%= link_to 'Create application', new_application_path, class: "btn btn-success" %>
+<% if current_user.may_deploy? %>
+  <%= link_to 'Create application', new_application_path, class: "btn btn-success" %>
+<% end %>

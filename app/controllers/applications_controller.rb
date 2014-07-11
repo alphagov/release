@@ -1,4 +1,5 @@
 class ApplicationsController < ApplicationController
+  before_filter :redirect_if_read_only_user, only: [:new, :edit, :create, :update, :update_notes]
   before_filter :find_application, only: [:show, :edit, :update, :update_notes]
 
   def index
@@ -85,6 +86,6 @@ class ApplicationsController < ApplicationController
 
     def github
       credentials = defined?(GITHUB_CREDENTIALS) ? GITHUB_CREDENTIALS : {}
-      @client ||= Octokit::Client.new()
+      @client ||= Octokit::Client.new(credentials)
     end
 end

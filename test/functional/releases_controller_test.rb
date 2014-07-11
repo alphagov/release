@@ -29,6 +29,20 @@ class ReleasesControllerTest < ActionController::TestCase
       @app = FactoryGirl.create(:application)
     end
 
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'create', 
+                  :post, 
+                  :create, 
+                  {release: 
+                    { summary: "My First App", deploy_at: Time.zone.now, tasks_attributes: 
+                      { "0" => 
+                        { description: "Description", version: "123", application_id: 456 } 
+                      } 
+                    }
+                  })
+    end
+
     should "create a release" do
       assert_difference "Release.count", 1 do
         post :create, release: { summary: "My First App", deploy_at: Time.zone.now, tasks_attributes: { "0" => { description: "Description", version: "123", application_id: @app.id } } }
@@ -61,6 +75,10 @@ class ReleasesControllerTest < ActionController::TestCase
       @release = FactoryGirl.create(:release)
     end
 
+    context "when the user has no deploy permissions" do
+      shared_test "actions_requiring_deploy_permission_redirect", 'edit', :get, :edit, {id: 123}
+    end
+
     should "show the form" do
       get :edit, id: @release.id
       assert_template "releases/edit"
@@ -70,6 +88,14 @@ class ReleasesControllerTest < ActionController::TestCase
   context "PUT update" do
     setup do
       @release = FactoryGirl.create(:release)
+    end
+
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'update', 
+                  :put, 
+                  :update, 
+                  {id: 890, release: { notes: "New notes" }})
     end
 
     should "update the release" do

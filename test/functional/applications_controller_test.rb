@@ -1,6 +1,7 @@
 require "test_helper"
 
 class ApplicationsControllerTest < ActionController::TestCase
+
   setup do
     login_as_stub_user
   end
@@ -35,6 +36,25 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :index
       assert_select "table td[title=?]", @deploy1.created_at
     end
+
+    context "when the user has no deploy permissions" do
+      setup do
+        login_as_read_only_stub_user
+        get :index
+      end
+
+      should "not show buttons to add missing deployments" do
+        assert_no_tag "a", attributes: { href: %r"/applications/\d+/deployments/new.*" }
+      end
+
+      should "not show buttons to edit application notes" do
+        assert_no_tag "a", attributes: { href: %r"#edit-notes-app-\d+" }
+      end
+
+      should "not show button to create application" do
+        assert_select "a[href='/applications/new']", false
+      end
+    end
   end
 
   context "GET new" do
@@ -42,9 +62,24 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :new
       assert_select "form input#application_name"
     end
+    context "when the user has no deploy permissions" do
+      shared_test "actions_requiring_deploy_permission_redirect", 'new', :get, :new
+    end
   end
 
   context "POST create" do
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'create', 
+                  :post, 
+                  :create, 
+                  {
+                    name: "My First App",
+                    repo: "org/my_first_app",
+                    domain: "github.baz"
+                  })
+    end
+
     should "create an application" do
       assert_difference "Application.count", 1 do
         post :create, application: {
@@ -129,11 +164,34 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_equal @base_commit[:sha], assigns[:commits].last[:sha]
       end
     end
+
+    context "when the user has no deploy permissions" do
+      setup do
+        login_as_read_only_stub_user
+        get :show, id: @app.id
+      end
+
+      should "not show the edit button" do
+        assert_select "a[href='/applications/#{@app.id}/edit']", false
+      end
+
+      should "not show the button to record a missing deployment" do
+        assert_select "a[href='/applications/#{@app.id}/deployments/new']", false
+      end
+    end
   end
 
   context "GET edit" do
     setup do
       @app = FactoryGirl.create(:application, name: "monkeys", repo: "org/monkeys")
+    end
+
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'edit', 
+                  :get, 
+                  :edit, 
+                  {id: 123})
     end
 
     should "show the form" do
@@ -148,6 +206,14 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update" do
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'update', 
+                  :get, 
+                  :update, 
+                  {id: 456, application: { name: "new name", repo: "new/repo" }})
+    end
+
     setup do
       @app = FactoryGirl.create(:application)
     end
@@ -168,6 +234,14 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update_notes" do
+    context "when the user has no deploy permissions" do
+      shared_test("actions_requiring_deploy_permission_redirect", 
+                  'update_notes', 
+                  :put, 
+                  :update_notes, 
+                  {id: 789, application: { status_notes: "Rolled back deploy because science." }})
+    end
+
     setup do
       @app = FactoryGirl.create(:application)
     end
@@ -190,6 +264,21 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "show only archived applications" do
       get :archived
       assert_select "table tbody tr", count: 1
+    end
+
+    context "when the user has no deploy permissions" do
+      setup do
+        login_as_read_only_stub_user
+        get :archived
+      end
+
+      should "not show buttons to add missing deployments" do
+        assert_no_tag "a", attributes: { href: %r"/applications/\d+/deployments/new.*" }
+      end
+
+      should "not show buttons to edit application notes" do
+        assert_no_tag "a", attributes: { href: %r"#edit-notes-app-\d+" }
+      end
     end
   end
 end
