@@ -1,6 +1,6 @@
-@import "bootstrap_and_overrides";
-@import "formtastic-bootstrap";
-@import "bootstrap-datetimepicker.min";
+@import "govuk_admin_template";
+@import 'bootstrap-datetimepicker';
+@import 'typeahead';
 
 @import "activity";
 @import "forms";
@@ -18,6 +18,6 @@ h1 {
 }
 
 .author {
-  @extend .muted;
+  @extend .text-muted;
   padding-left: 1em;
 }
