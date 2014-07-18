@@ -16,7 +16,7 @@ gem 'tinder', '1.9.2'
 gem 'whenever', '0.8.2'
 
 # GDS gems.
-gem 'gds-sso', '3.0.3'
+gem 'gds-sso', '9.3.0'
 gem 'plek', '1.3.1'
 
 gem 'airbrake', '3.1.15'

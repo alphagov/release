@@ -3,8 +3,6 @@ class User < ActiveRecord::Base
   
   serialize :permissions, Array
 
-  attr_accessible :uid, :email, :name, :permissions, as: :oauth
-
   def may_deploy?
     permissions.include? "deploy"
   end
