@@ -102,6 +102,20 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal "10:02am yesterday", human_datetime(deploy_time)
     end
 
+    should "use the day of the week for the current week" do
+      Timecop.freeze(Time.zone.parse("2014-07-04 12:44")) do  # Friday
+        deploy_time = Time.zone.parse("2014-06-30 10:02")
+        assert_equal "10:02am on Monday", human_datetime(deploy_time)
+      end
+    end
+
+    should "display the date for last Sunday" do
+      Timecop.freeze(Time.zone.parse("2014-07-04 12:44")) do  # Friday
+        deploy_time = Time.zone.parse("2014-06-29 10:02")
+        assert_equal "10:02am on 29 Jun", human_datetime(deploy_time)
+      end
+    end
+
     should "show a year if the date is old" do
       assert_equal "2pm on 3 Jul 2010",
                    human_datetime(Time.zone.now.change(year: 2010, month: 7, day: 3, hour: 14))
