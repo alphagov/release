@@ -97,6 +97,11 @@ class ApplicationTest < ActiveSupport::TestCase
                    human_datetime(Time.zone.now.change(hour: 10, min: 2))
     end
 
+    should "use the word yesterday if the release was yesterday" do
+      deploy_time = Time.zone.now.change(hour: 10, min: 2) - 1.day
+      assert_equal "10:02am yesterday", human_datetime(deploy_time)
+    end
+
     should "show a year if the date is old" do
       assert_equal "2pm on 3 Jul 2010",
                    human_datetime(Time.zone.now.change(year: 2010, month: 7, day: 3, hour: 14))
