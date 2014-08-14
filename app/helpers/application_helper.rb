@@ -16,6 +16,10 @@ module ApplicationHelper
     if date
       if date.today?
         date.strftime("%-l:%M%P today")
+      elsif yesterday.cover?(date)
+        date.strftime("%-l:%M%P yesterday")
+      elsif this_week.cover?(date)
+        date.strftime("%-l:%M%P on %A")
       elsif (11.months.ago < date)
         date.strftime("%-l:%M%P on %-e %b")
       else
@@ -32,5 +36,15 @@ module ApplicationHelper
 
   def github_compare_to_master(application, deploy)
     "#{application.repo_url}/compare/#{deploy.version}...master"
+  end
+
+private
+
+  def yesterday
+    (Time.zone.now - 1.day).all_day
+  end
+
+  def this_week
+    Time.zone.now.all_week
   end
 end
