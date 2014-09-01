@@ -48,20 +48,20 @@
             </a>
 
             <!-- Modal -->
-            <div id="edit-notes-app-<%= application.id %>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="edit-notes-app-<%= application.id %>Label" aria-hidden="true">
+            <div id="edit-notes-app-<%= application.id %>" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit-notes-app-<%= application.id %>Label" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="edit-notes-app-<%= application.id %>Label">Edit notes for <%= application.name %></h3>
+                    <h3 class="modal-title" id="edit-notes-app-<%= application.id %>Label">Edit notes for <%= application.name %></h3>
                   </div>
                   <%= form_for application, url: update_notes_application_path(application) do |f| %>
                     <div class="modal-body">
                       <%= f.label :status_notes, "Notes" %>
-                      <%= f.text_area :status_notes, rows: 5, cols: 50, class: "col-md-12" %>
+                      <%= f.text_area :status_notes, rows: 5, cols: 50, class: "form-control" %>
                     </div>
                     <div class="modal-footer">
-                      <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                      <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
                       <%= f.submit "Save", class: "btn btn-primary" %>
                     </div>
                   <% end %>
