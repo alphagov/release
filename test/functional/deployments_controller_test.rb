@@ -119,6 +119,12 @@ class DeploymentsControllerTest < ActionController::TestCase
           assert_equal "New App", app.name
         end
 
+        should "inflect API correctly" do
+          post :create, { repo: "org/devops_api", deployment: { version: "release_1", environment: "staging" } }
+          app = Application.last
+          assert_equal "Devops API", app.name
+        end
+
         should "generate a friendly name from a name with a dash in it" do
           post :create, { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
           app = Application.last
