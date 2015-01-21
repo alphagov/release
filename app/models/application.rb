@@ -52,4 +52,12 @@ class Application < ActiveRecord::Base
   def repo_url
     "https://#{domain}/#{repo}"
   end
+
+  def repo_compare_url(from, to)
+    "https://#{domain}/#{repo}/compare/#{from}...#{to}"
+  end
+
+  def repo_tag_url(tag)
+    "https://#{domain}/#{repo}/releases/tag/#{tag}"
+  end
 end

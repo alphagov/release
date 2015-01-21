@@ -22,6 +22,7 @@ h1 {
   padding-left: 1em;
 }
 
+table.commits td.hash,
 .commit-hash {
   font-family: monospace;
 }
@@ -42,5 +43,11 @@ h1 {
     .env {
       background: $production-color
     }
+  }
+}
+
+.release-tag  {
+  &.label a {
+    color: #fff;
   }
 }

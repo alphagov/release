@@ -1,6 +1,6 @@
 class ApplicationsController < ApplicationController
   before_filter :redirect_if_read_only_user, only: [:new, :edit, :create, :update, :update_notes]
-  before_filter :find_application, only: [:show, :edit, :update, :update_notes]
+  before_filter :find_application, only: [:show, :edit, :update, :update_notes, :deploy]
 
   def index
     @environments = ["staging", "production"]
@@ -25,11 +25,11 @@ class ApplicationsController < ApplicationController
       @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
     end
 
-    production_deploy = @application.deployments.last_deploy_to "production"
-    if production_deploy
+    @production_deploy = @application.deployments.last_deploy_to "production"
+    if @production_deploy
       comparison = github.compare(
         @application.repo,
-        production_deploy.version,
+        @production_deploy.version,
         "master"
       )
       # The `compare` API shows commits in forward chronological order
@@ -50,6 +50,25 @@ class ApplicationsController < ApplicationController
   end
 
   def edit
+  end
+
+  def deploy
+    @release_tag = params[:tag]
+
+    @production_deploy = @application.deployments.last_deploy_to "production"
+    if @production_deploy
+      comparison = github.compare(
+        @application.repo,
+        @production_deploy.version,
+        @release_tag
+      )
+      # The `compare` API shows commits in forward chronological order
+      @commits = comparison.commits.reverse
+    end
+    @github_available = true
+  rescue Octokit::NotFound => e
+    @github_available = false
+    @github_error = e
   end
 
   def create
