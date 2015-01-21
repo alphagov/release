@@ -34,6 +34,8 @@ group :assets do
 end
 
 group :test, :development do
+  gem 'better_errors', '2.1.0'
+  gem 'binding_of_caller', '0.7.2'
   gem 'capybara', '~> 2.2.0'
   gem 'capybara-webkit', '~> 1.1.0'
   gem 'ci_reporter', '1.8.0'
