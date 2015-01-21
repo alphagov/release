@@ -37,10 +37,11 @@
               <% tags.each do |tag| %>
                 <% if deployments = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
                   <% deployments.each do |deployment| %>
-                    <%= deployment.environment %>
-                    at
-                    <%= human_datetime(deployment.created_at) %>
-                    <br>
+                  <p class="deployment <%= 'production' if deployment.environment == 'production' %>">
+                    <strong class="label label-default env"><%= deployment.environment.humanize %></strong>
+                    <span class="rm">at</span>
+                    <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %>
+                  </p>
                   <% end %>
                 <% end %>
               <% end %>

@@ -25,3 +25,22 @@ h1 {
 .commit-hash {
   font-family: monospace;
 }
+
+.deployment {
+  margin: 0 0 10px 0;
+
+  .env {
+    min-width: 8em;
+  }
+
+  time {
+    // to match `.label`
+    font-size: 75%;
+  }
+
+  &.production {
+    .env {
+      background: $production-color
+    }
+  }
+}
