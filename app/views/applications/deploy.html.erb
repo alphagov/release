@@ -28,13 +28,21 @@
   <p class="lead"><%= @commits.length %> <%= 'commit'.pluralize(@commits.length) %></p>
 
   <% if @github_available %>
-  <table class="table table-striped table-bordered table-hover commits">
+  <table class="table table-striped table-bordered table-hover commits" data-module="filterable-table">
     <thead>
       <tr class="table-header">
-        <th>Hash</th>
-        <th>Commit</th>
-        <th>Author</th>
+        <th width="10%">Hash</th>
+        <th width="70%">Commit</th>
+        <th width="20%">Author</th>
       </tr>
+      <tr class="if-no-js-hide table-header-secondary">
+          <td colspan="3">
+            <form>
+              <label for="table-filter" class="rm">Filter commits</label>
+              <input id="table-filter" type="text" class="form-control normal js-filter-table-input" placeholder="Filter commits">
+            </form>
+          </td>
+        </tr>
     </thead>
     <tbody>
       <% @commits.each do |commit| %>
@@ -43,7 +51,7 @@
             <%= link_to commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank" %>
           </td>
           <td>
-              <p><%= commit[:commit][:message].split(/\n/)[0] %></p>
+              <%= commit[:commit][:message].split(/\n/)[0] %>
           </td>
           <td>
             <% if commit[:commit][:author] %>
