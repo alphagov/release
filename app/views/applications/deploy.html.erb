@@ -51,7 +51,11 @@
             <%= link_to commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank" %>
           </td>
           <td>
-              <%= commit[:commit][:message].split(/\n/)[0] %>
+              <% summary, body = commit[:commit][:message].split(/\n/, 2) %>
+              <p><strong><%= summary %></strong></p>
+              <% if body %>
+                <%= simple_format(body.strip) %>
+              <% end %>
           </td>
           <td>
             <% if commit[:commit][:author] %>
