@@ -10,7 +10,7 @@
 
 <main>
   <h2>Candidate Release <span class="label label-info"><%= @release_tag %></span></h2>
-  <p class="lead add-top-margin">Production was deployed to <span class="label label-danger"><%= @production_deploy.version %></span><%= time_ago_in_words(@production_deploy.created_at) %> ago</p>
+  <p class="lead add-top-margin">Production is <span class="label label-danger"><%= @production_deploy.version %></span> &mdash; deployed at <%= human_datetime(@production_deploy.created_at) %></p>
 
   <% unless @application.staging_and_production_in_sync? %>
   <div class="callout callout-danger">
