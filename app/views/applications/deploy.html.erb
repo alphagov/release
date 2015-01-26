@@ -32,11 +32,12 @@
     <thead>
       <tr class="table-header">
         <th width="10%">Hash</th>
-        <th width="70%">Commit</th>
+        <th width="55%">Message</th>
         <th width="20%">Author</th>
+        <th width="15%">Date</th>
       </tr>
       <tr class="if-no-js-hide table-header-secondary">
-          <td colspan="3">
+          <td colspan="4">
             <form>
               <label for="table-filter" class="rm">Filter commits</label>
               <input id="table-filter" type="text" class="form-control normal js-filter-table-input" placeholder="Filter commits">
@@ -50,20 +51,29 @@
           <td class="hash">
             <%= link_to commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank" %>
           </td>
-          <td>
+          <td class="message">
               <% summary, body = commit[:commit][:message].split(/\n/, 2) %>
-              <p><strong><%= summary %></strong></p>
+              <p class="summary"><a href="<%= "#{@application.repo_url}/commit/#{commit[:sha]}" %>" target="_blank"><%= summary %></a></p>
               <% if body %>
-                <%= simple_format(body.strip) %>
+                <div class="body">
+                  <%= simple_format(body.strip) %>
+                </div>
               <% end %>
           </td>
-          <td>
+          <td class="">
             <% if commit[:commit][:author] %>
             <img height="20" width="20" class="avatar" src="<%= commit[:author][:avatar_url] %>" alt="" />
             <span class="name">
               <%= commit[:commit][:author][:name] %>
             </span>
             <% end %>
+          </td>
+          <td calss="date">
+          <% if commit[:commit][:author] %>
+            <% commit_date = commit[:commit][:author][:date] %>
+            <span class="date"><%= commit_date.to_date.to_s(:govuk_date) =%></span>
+            <span class="time"><%= commit_date.to_s(:govuk_time) =%></span>
+          <% end %>
           </td>
         </tr>
       <% end %>
