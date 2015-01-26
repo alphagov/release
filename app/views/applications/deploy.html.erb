@@ -62,7 +62,7 @@
           </td>
           <td class="">
             <% if commit[:commit][:author] %>
-            <img height="20" width="20" class="avatar" src="<%= commit[:author][:avatar_url] %>" alt="" />
+            <img height="20" width="20" class="avatar" src="<%= commit[:commit][:author][:avatar_url] %>" alt="" />
             <span class="name">
               <%= commit[:commit][:author][:name] %>
             </span>
