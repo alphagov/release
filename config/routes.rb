@@ -8,6 +8,10 @@ ReleaseApp::Application.routes.draw do
       put :update_notes
     end
 
+    member do
+      get :deploy
+    end
+
     resources :deployments
   end
 

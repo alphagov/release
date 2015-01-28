@@ -37,17 +37,18 @@
               <% tags.each do |tag| %>
                 <% if deployments = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
                   <% deployments.each do |deployment| %>
-                    <%= deployment.environment %>
-                    at
-                    <%= human_datetime(deployment.created_at) %>
-                    <br>
+                  <p class="deployment <%= 'production' if deployment.environment == 'production' %>">
+                    <strong class="label label-default env"><%= deployment.environment.humanize %></strong>
+                    <span class="rm">at</span>
+                    <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %>
+                  </p>
                   <% end %>
                 <% end %>
               <% end %>
             </td>
             <td>
               <% tags.each do |tag| %>
-                <span class="label label-info"><%= tag[:name] %></span>
+                <span class="release-tag label label-info"><a href="<%= deploy_application_path(@application) %>?tag=<%= tag[:name] %>"><%= tag[:name] %></a></span>
               <% end %>
             </td>
           <% else %>
@@ -62,7 +63,7 @@
             </span>
             <% end %>
             <small>
-            <%= link_to commit[:sha], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank", class: "pull-right" %>
+            <%= link_to commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank", class: "commit-hash pull-right" %>
             </small>
           </td>
         </tr>
