@@ -49,4 +49,5 @@ group :test, :development do
   gem 'timecop', '0.4.5'
   gem 'webmock', '1.15.2', require: false
   gem 'pry', '0.10.0'
+  gem 'quiet_assets', '1.1.0'
 end
