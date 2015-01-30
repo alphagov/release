@@ -1,4 +1,4 @@
-<table id="application-list" class="table table-striped table-bordered table-hover">
+<table id="application-list" class="table table-striped table-bordered table-hover" data-module="filterable-table">
   <thead>
     <tr class='table-header'>
       <th scope="col" class="headerSortDown">Name</th>
@@ -7,6 +7,14 @@
         <th scope="col"><%= environment.humanize %></th>
       <% end %>
       <th>Notes</th>
+    </tr>
+    <tr class="if-no-js-hide table-header-secondary">
+      <td colspan="5">
+        <form>
+          <label for="applications-filter" class="rm">Filter applications</label>
+          <input id="applications-filter" type="text" class="form-control normal js-filter-table-input" placeholder="Filter applications">
+        </form>
+      </td>
     </tr>
   </thead>
   <tbody>
