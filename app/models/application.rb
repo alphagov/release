@@ -13,7 +13,7 @@ class Application < ActiveRecord::Base
   has_many :releases, through: :tasks
   has_many :deployments
 
-  default_scope order("name ASC")
+  default_scope { order("name ASC") }
 
   def latest_deploy_to_each_environment
     return @latest_deploy_to_each_environment unless @latest_deploy_to_each_environment.nil?
