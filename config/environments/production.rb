@@ -1,23 +1,30 @@
-ReleaseApp::Application.configure do
-  # Settings specified here will take precedence over those in config/application.rb
+Rails.application.configure do
+  # Settings specified here will take precedence over those in config/application.rb.
 
-  # Code is not reloaded between requests
+  # Code is not reloaded between requests.
   config.cache_classes = true
+  #
+  # Eager load code on boot. This eager loads most of Rails and
+  # your application in memory, allowing both threaded web servers
+  # and those relying on copy on write to perform better.
+  # Rake tasks automatically ignore this option for performance.
+  config.eager_load = true
 
-  # Full error reports are disabled and caching is turned on
+  # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.serve_static_files = false
 
   # Compress JavaScripts and CSS
-  config.assets.compress = true
+  config.assets.js_compressor = :uglifier
 
-  # Don't fallback to assets pipeline if a precompiled asset is missed
+  # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
-  # Generate digests for assets URLs
+  # Asset digests allow you to set far-future HTTP expiration dates on all assets,
+  # yet still be able to expire them through the digest params.
   config.assets.digest = true
 
   # Defaults to nil and saved in location specified by config.assets.prefix
@@ -59,7 +66,7 @@ ReleaseApp::Application.configure do
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
 
-  # Send deprecation notices to registered listeners
+  # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
   # Log the query plan for queries taking more than this (works
@@ -70,4 +77,7 @@ ReleaseApp::Application.configure do
   config.logstasher.enabled = true
   config.logstasher.logger = Logger.new("#{Rails.root}/log/#{Rails.env}.json.log")
   config.logstasher.supress_app_log = true
+
+  # Do not dump schema after migrations.
+  config.active_record.dump_schema_after_migration = false
 end
