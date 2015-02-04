@@ -34,7 +34,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "provide a title attribute to sort environment columns by date" do
       get :index
-      assert_select "table td[title=?]", @deploy1.created_at
+      assert_select "table td[title=?]", @deploy1.created_at.to_s
     end
 
     context "when the user has no deploy permissions" do
@@ -44,11 +44,11 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "not show buttons to add missing deployments" do
-        assert_no_tag "a", attributes: { href: %r"/applications/\d+/deployments/new.*" }
+        assert_select "a:match('href', ?)", %r"/applications/\d+/deployments/new.*",  count: 0
       end
 
       should "not show buttons to edit application notes" do
-        assert_no_tag "a", attributes: { href: %r"#edit-notes-app-\d+" }
+        assert_select "a:match('href', ?)", %r"#edit-notes-app-\d+", count: 0
       end
 
       should "not show button to create application" do
@@ -102,8 +102,8 @@ class ApplicationsControllerTest < ActionController::TestCase
   context "GET show" do
     setup do
       @app = FactoryGirl.create(:application)
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: {})
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: {})
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
     end
 
     should "show the application" do
@@ -112,22 +112,6 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     context "GET show with a production deployment" do
-      def random_sha
-        hex_chars = Enumerator.new do |yielder|
-          loop { yielder << "0123456789abcdef".chars.to_a.sample }
-        end
-        hex_chars.take(40).join
-      end
-
-      def stub_commit
-        {
-          sha: random_sha,
-          login: "winston",
-          commit: {
-            message: "Hi"
-          }
-        }
-      end
 
       setup do
         version = "release_42"
@@ -235,10 +219,10 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "PUT update_notes" do
     context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect", 
-                  'update_notes', 
+      shared_test("actions_requiring_deploy_permission_redirect",
+                  'update_notes',
                   :put, 
-                  :update_notes, 
+                  :update_notes,
                   {id: 789, application: { status_notes: "Rolled back deploy because science." }})
     end
 
@@ -273,12 +257,31 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "not show buttons to add missing deployments" do
-        assert_no_tag "a", attributes: { href: %r"/applications/\d+/deployments/new.*" }
+        assert_select "a:match('href', ?)", %r"/applications/\d+/deployments/new.*", count: 0
       end
 
       should "not show buttons to edit application notes" do
-        assert_no_tag "a", attributes: { href: %r"#edit-notes-app-\d+" }
+        assert_select "a:match('href', ?)", %r"#edit-notes-app-\d+", count: 0
       end
     end
+  end
+
+  private
+
+  def random_sha
+    hex_chars = Enumerator.new do |yielder|
+      loop { yielder << "0123456789abcdef".chars.to_a.sample }
+    end
+    hex_chars.take(40).join
+  end
+
+  def stub_commit
+    {
+      sha: random_sha,
+      login: "winston",
+      commit: {
+        message: "Hi"
+      }
+    }
   end
 end

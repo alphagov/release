@@ -11,9 +11,9 @@ require 'rails/test_help'
 require 'shoulda-context'
 require 'minitest/autorun'
 require 'mocha/setup'
-require 'webmock/test_unit'
+require 'webmock/minitest'
 
-DatabaseCleaner.clean
+DatabaseCleaner.strategy = :transaction
 
 module SharedTests
   def shared_test_for(test_name, &block)
@@ -30,6 +30,10 @@ end
 
 class ActiveSupport::TestCase
   extend SharedTests
+
+  setup do
+    DatabaseCleaner.start
+  end
 
   shared_test_for "actions_requiring_deploy_permission_redirect" do |method, action, params|
     params ||= {}

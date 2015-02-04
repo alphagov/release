@@ -3,7 +3,7 @@ require 'capybara/rails'
 require 'webmock'
 
 Capybara.javascript_driver = :webkit
-DatabaseCleaner.strategy = :transaction
+DatabaseCleaner.strategy = :truncation
 WebMock.disable_net_connect!(:allow_localhost => true)
 
 class ActionDispatch::IntegrationTest
@@ -12,7 +12,7 @@ class ActionDispatch::IntegrationTest
   include Warden::Test::Helpers
 
   setup do
-    DatabaseCleaner.clean
+    DatabaseCleaner.start
   end
 
   teardown do
@@ -27,7 +27,9 @@ class ActionDispatch::IntegrationTest
   end
 end
 
+
 class JavascriptIntegrationTest < ActionDispatch::IntegrationTest
+  self.use_transactional_fixtures = false
   setup do
     Capybara.current_driver = Capybara.javascript_driver
   end
