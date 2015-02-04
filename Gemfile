@@ -35,7 +35,7 @@ group :test, :development do
   gem 'binding_of_caller', '0.7.2'
   gem 'capybara', '~> 2.2.0'
   gem 'capybara-webkit', '~> 1.1.0'
-  gem 'ci_reporter', '1.8.0'
+  gem 'ci_reporter_minitest', '~> 1.0.0'
   gem 'database_cleaner', '1.4.0'
   gem 'factory_girl_rails', '4.5.0'
   gem 'minitest', '5.5.1'
