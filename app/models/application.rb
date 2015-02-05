@@ -1,4 +1,7 @@
 class Application < ActiveRecord::Base
+  extend FriendlyId
+
+  friendly_id :fallback_shortname, use: :slugged, slug_column: :shortname
   attr_accessible :name, :repo, :shortname, :status_notes, :domain, :archived
 
   validates_presence_of :name, message: 'is required'
@@ -34,15 +37,6 @@ class Application < ActiveRecord::Base
     staging_version = staging.nil? ? nil : staging.version
     production_version = production.nil? ? nil : production.version
     @staging_and_production_in_sync = (staging_version == production_version)
-  end
-
-  def shortname
-    sn = self.read_attribute(:shortname)
-    if sn.blank?
-      self.fallback_shortname
-    else
-      sn
-    end
   end
 
   def fallback_shortname

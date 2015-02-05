@@ -100,7 +100,7 @@ class ApplicationsController < ApplicationController
 
   private
     def find_application
-      @application = Application.find(params[:id])
+      @application = Application.friendly.find(params[:id])
     end
 
     def github

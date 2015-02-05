@@ -15,6 +15,7 @@ gem 'unicorn', '4.4.0'
 gem 'tinder', '1.9.2'
 gem 'whenever', '0.8.2'
 gem 'protected_attributes', '1.0.8'
+gem 'friendly_id', '5.1.0'
 
 # GDS gems.
 gem 'gds-sso', '9.3.0'
