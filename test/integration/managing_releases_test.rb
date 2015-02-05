@@ -56,7 +56,7 @@ class ManagingReleasesTest < JavascriptIntegrationTest
         @release.tasks.each do |task|
           assert page.has_content?(task.description.to_s)
           assert page.has_content?("#{task.version}")
-          assert page.has_link?(task.application.name, :href => "/applications/#{task.application.id}")
+          assert page.has_link?(task.application.name, :href => "/applications/#{task.application.friendly_id}")
         end
       end
     end
