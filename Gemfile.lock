@@ -67,8 +67,11 @@ GEM
       capybara (~> 2.0, >= 2.0.2)
       json
     chronic (0.10.2)
-    ci_reporter (1.8.0)
+    ci_reporter (2.0.0)
       builder (>= 2.1.2)
+    ci_reporter_minitest (1.0.0)
+      ci_reporter (~> 2.0)
+      minitest (~> 5.0)
     coderay (1.1.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
@@ -286,7 +289,7 @@ DEPENDENCIES
   bootstrap3-datetimepicker-rails (~> 3.0.0)
   capybara (~> 2.2.0)
   capybara-webkit (~> 1.1.0)
-  ci_reporter (= 1.8.0)
+  ci_reporter_minitest (~> 1.0.0)
   database_cleaner (= 1.4.0)
   exception_notification
   factory_girl_rails (= 4.5.0)
