@@ -33,7 +33,7 @@ $(function () {
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   });
   environment.initialize();
-  $('.environment-typeahead').typeahead(null, { source: environment.ttAdapter()});
+  $('input.environment-typeahead').typeahead(null, { source: environment.ttAdapter()});
 
   var version = new Bloodhound({
     local: [{value: 'release_'}, {value: 'build-'}],
@@ -41,7 +41,7 @@ $(function () {
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   });
   version.initialize();
-  $('.version-typeahead').typeahead(null, { source: version.ttAdapter()});
+  $('input.version-typeahead').typeahead(null, { source: version.ttAdapter()});
 
   // Also initialize typeahead when nested forms are added.
   $(document).on('nested:fieldAdded', function(event){
