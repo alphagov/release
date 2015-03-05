@@ -60,4 +60,8 @@ class Application < ActiveRecord::Base
   def repo_tag_url(tag)
     "https://#{domain}/#{repo}/releases/tag/#{tag}"
   end
+
+  def on_github_enterprise?
+    domain == "github.gds"
+  end
 end
