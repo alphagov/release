@@ -43,6 +43,10 @@ class ApplicationsController < ApplicationController
   rescue Octokit::NotFound => e
     @github_available = false
     @github_error = e
+  rescue Octokit::Error => e
+    Airbrake.notify(e)
+    @github_available = false
+    @github_error = e
   end
 
   def new
