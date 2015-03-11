@@ -51,7 +51,8 @@ class DeploymentsController < ApplicationController
     end
 
     def app_name
-      repo_path.split("/")[-1].gsub("-", " ").humanize.titlecase
+      repo_title = repo_path.split("/")[-1].gsub("-", " ").humanize.titlecase
+      repo_title.gsub(/\bApi\b/, "API")
     end
 
     def domain
