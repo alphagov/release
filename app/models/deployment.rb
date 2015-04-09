@@ -8,6 +8,9 @@ class Deployment < ActiveRecord::Base
 
   scope :recent, lambda { order("created_at DESC").limit(25) }
 
+  # Ignore automatic deployment of the release branch to preview
+  scope :interesting, lambda { where.not(environment: 'preview', version: 'release') }
+
   def self.environments
     Deployment.select('DISTINCT environment').map(&:environment)
   end
@@ -28,6 +31,10 @@ class Deployment < ActiveRecord::Base
 
   def recent?
     created_at > 2.hours.ago
+  end
+
+  def production?
+    environment == 'production'
   end
 
   private
