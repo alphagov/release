@@ -116,3 +116,22 @@
     <% end %>
   </tbody>
 </table>
+
+<% if @application.interesting_deployments.any? %>
+  <h2 class="add-bottom-margin">Deployments</h2>
+  <ol class="list-group">
+    <% @application.interesting_deployments.each do |deployment| %>
+      <li class="list-group-item">
+        <%= github_tag_link_to(@application, deployment.version) %>
+        deployed to
+        <% if deployment.production? %>
+          <span class="label label-danger"><%= deployment.environment %></span>
+        <% else %>
+          <span class="label label-default"><%= deployment.environment %></span>
+        <% end %>
+        at
+        <%= human_datetime(deployment.created_at) %>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
