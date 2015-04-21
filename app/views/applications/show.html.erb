@@ -48,7 +48,7 @@
             </td>
             <td>
               <% tags.each do |tag| %>
-                <span class="release-tag label label-info"><a href="<%= deploy_application_path(@application) %>?tag=<%= tag[:name] %>"><%= tag[:name] %></a></span>
+                <span class="release-tag"><a href="<%= deploy_application_path(@application) %>?tag=<%= tag[:name] %>"><%= tag[:name] %></a></span>
               <% end %>
             </td>
           <% else %>
