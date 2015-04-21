@@ -21,7 +21,7 @@
     <% @applications.each do |application| %>
       <tr>
         <td>
-          <%= link_to application.name, application %>
+          <%= link_to application.name, application, class: 'js-open-on-submit' %>
         </td>
         <td class="<%= application.staging_and_production_in_sync? ? "in-sync" : "not-in-sync" %>">
           <%= application.staging_and_production_in_sync? ? "Yes" : "No" %>
