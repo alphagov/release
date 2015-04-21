@@ -2,7 +2,7 @@
   <thead>
     <tr class='table-header'>
       <th scope="col" class="headerSortDown">Name</th>
-      <th scope="col">In sync?</th>
+      <th scope="col">In&nbsp;sync?</th>
       <% @environments.each do |environment| %>
         <th scope="col"><%= environment.humanize %></th>
       <% end %>
@@ -21,7 +21,7 @@
     <% @applications.each do |application| %>
       <tr>
         <td>
-          <%= link_to application.name, application %>
+          <%= link_to application.name, application, class: 'js-open-on-submit' %>
         </td>
         <td class="<%= application.staging_and_production_in_sync? ? "in-sync" : "not-in-sync" %>">
           <%= application.staging_and_production_in_sync? ? "Yes" : "No" %>
