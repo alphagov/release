@@ -5,7 +5,7 @@ ReleaseApp::Application.routes.draw do
     end
 
     member do
-      put :update_notes
+      patch :update_notes
     end
 
     member do
