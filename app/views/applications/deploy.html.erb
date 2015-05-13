@@ -85,20 +85,22 @@
 <% end %>
   </table>
 
+  <% if current_user.may_deploy? %>
   <h2>Deploy</h2>
-  <div class="row">
-    <div class="col-md-3">
-      <a href="https://www.flickr.com/photos/fatty/9158066939/"><img title="Obey the Badger of Deploy" src="https://farm3.staticflickr.com/2835/9158066939_374360ed56_n.jpg" alt="Obey the Badger of Deploy" width="229" height="320"></a>
-    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <a href="https://www.flickr.com/photos/fatty/9158066939/"><img title="Obey the Badger of Deploy" src="https://farm3.staticflickr.com/2835/9158066939_374360ed56_n.jpg" alt="Obey the Badger of Deploy" width="229" height="320"></a>
+      </div>
 
-    <div class="col-md-9">
+      <div class="col-md-9">
         <h3>Test on Staging</h3>
         <p>Make sure you're using the <code>govuk_select_organisation</code> script to test against the staging environment.</p>
         <p><a class="btn btn-primary add-bottom-margin" href="https://deploy.staging.alphagov.co.uk/job/Staging_Deploy/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Staging</a></p>
 
         <h3>Promote to Production</h3>
         <p><a class="btn btn-danger" href="https://deploy.production.alphagov.co.uk/job/Production_Deploy/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Production</a></p>
+      </div>
     </div>
-  </div>
+  <% end %>
 
 </main>
