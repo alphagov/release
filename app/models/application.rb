@@ -2,7 +2,6 @@ class Application < ActiveRecord::Base
   extend FriendlyId
 
   friendly_id :fallback_shortname, use: :slugged, slug_column: :shortname
-  attr_accessible :name, :repo, :shortname, :status_notes, :domain, :archived
 
   validates_presence_of :name, message: 'is required'
   validates_presence_of :repo, message: 'is required'

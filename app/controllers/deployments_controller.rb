@@ -7,7 +7,9 @@ class DeploymentsController < ApplicationController
 
   def new
     default_deploy_time = Time.zone.now.strftime("%e/%m/%Y %H:%M")
-    @deployment = Deployment.new(application_id: params[:application_id], environment: params[:environment], created_at: default_deploy_time)
+    @deployment = Deployment.new(application_id: deployment_params[:application_id],
+                                 environment: deployment_params[:environment],
+                                 created_at: default_deploy_time)
   end
 
   def create
@@ -15,12 +17,12 @@ class DeploymentsController < ApplicationController
       application = application_by_repo
       application.archived = false
       application.save!
-      Deployment.create!(params[:deployment].merge(application: application))
+      Deployment.create!(deployment_params.merge(application: application))
       head 200
     else
-      @deployment = Deployment.new(params[:deployment])
+      @deployment = Deployment.new(deployment_params)
       if @deployment.save
-        application = Application.find(params[:deployment][:application_id])
+        application = Application.find(deployment_params[:application_id])
         application.archived = false
         application.save!
         redirect_to applications_path, notice: "Deployment created for #{application.name}"
@@ -62,5 +64,17 @@ class DeploymentsController < ApplicationController
 
     def push_notification?
       params[:repo].present?
+    end
+
+    def deployment_params
+      params.require(:deployment).permit(
+        :application,
+        :application_id,
+        :created_at,
+        :environment,
+        :id,
+        :repo,
+        :version,
+      )
     end
 end
