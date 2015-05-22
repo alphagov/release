@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~>4.2'
+gem 'rails', '4.2.1'
 
 gem 'formtastic', '2.3.0'
 gem 'formtastic-bootstrap', '3.0.0'
@@ -14,7 +14,6 @@ gem 'statsd-ruby', '1.0.0', require: "statsd"
 gem 'unicorn', '4.4.0'
 gem 'tinder', '1.9.2'
 gem 'whenever', '0.8.2'
-gem 'protected_attributes', '1.0.8'
 gem 'friendly_id', '5.1.0'
 
 # GDS gems.

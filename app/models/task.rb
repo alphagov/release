@@ -1,7 +1,4 @@
 class Task < ActiveRecord::Base
-  attr_accessible :additional_support_required, :application_changes, :application_id,
-                  :description, :extended_support_required, :version
-
   belongs_to :application
   belongs_to :release
 
