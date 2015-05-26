@@ -12,7 +12,7 @@ gem 'nested_form', '0.3.1'
 gem 'octokit', '3.1.2'
 gem 'statsd-ruby', '1.0.0', require: "statsd"
 gem 'unicorn', '4.4.0'
-gem 'tinder', '1.9.2'
+gem 'tinder', '1.9.3'
 gem 'whenever', '0.8.2'
 gem 'friendly_id', '5.1.0'
 
@@ -27,7 +27,7 @@ gem 'exception_notification'
 gem 'logstasher', '0.4.8'
 
 gem 'sass-rails', '5.0.1'
-gem 'uglifier', '1.3.0'
+gem 'uglifier', '2.7.1'
 
 group :test, :development do
   gem 'better_errors', '2.1.0'
