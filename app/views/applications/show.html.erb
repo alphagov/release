@@ -118,20 +118,37 @@
 </table>
 
 <% if @application.interesting_deployments.any? %>
-  <h2 class="add-bottom-margin">Deployments</h2>
-  <ol class="list-group">
+  <h2>Recent deployments</h2>
+  <table class="table table-striped table-bordered table-hover" data-module="filterable-table">
+    <thead>
+      <tr class='table-header'>
+        <th scope="col" class="headerSortDown">Date</th>
+        <th scope="col">Environment</th>
+        <th>Release</th>
+      </tr>
+      <tr class="if-no-js-hide table-header-secondary">
+        <td colspan="3">
+          <form>
+            <label for="deployments-filter" class="rm">Filter Deployments</label>
+            <input id="deployments-filter" type="text" class="form-control normal js-filter-table-input" placeholder="Filter deployments">
+          </form>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
     <% @application.interesting_deployments.each do |deployment| %>
-      <li class="list-group-item">
-        <%= github_tag_link_to(@application, deployment.version) %>
-        deployed to
-        <% if deployment.production? %>
-          <span class="label label-danger"><%= deployment.environment %></span>
-        <% else %>
-          <span class="label label-default"><%= deployment.environment %></span>
-        <% end %>
-        at
-        <%= human_datetime(deployment.created_at) %>
-      </li>
+      <tr>
+        <td><%= human_datetime(deployment.created_at) %></td>
+        <td>
+          <% if deployment.production? %>
+            <span class="label label-danger"><%= deployment.environment %></span>
+          <% else %>
+            <span class="label label-default"><%= deployment.environment %></span>
+          <% end %>
+        </td>
+        <td><%= github_tag_link_to(@application, deployment.version) %></td>
+      </tr>
     <% end %>
-  </ol>
+    </tbody>
+  </table>
 <% end %>
