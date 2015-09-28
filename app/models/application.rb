@@ -11,8 +11,6 @@ class Application < ActiveRecord::Base
 
   validates_uniqueness_of :name, :repo
 
-  has_many :tasks, dependent: :destroy
-  has_many :releases, through: :tasks
   has_many :deployments
 
   default_scope { order("name ASC") }
