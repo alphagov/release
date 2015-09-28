@@ -16,7 +16,6 @@ ReleaseApp::Application.routes.draw do
   end
 
   resources :deployments
-  resources :releases
 
   get '/activity', to: 'deployments#recent', as: :activity
 

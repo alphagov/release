@@ -118,19 +118,4 @@ class ApplicationTest < ActiveSupport::TestCase
                    human_datetime(Time.zone.now.change(year: 2010, month: 7, day: 3, hour: 14))
     end
   end
-
-  context "application releases" do
-    setup do
-      @application = FactoryGirl.create(:application)
-    end
-
-    should "have a list of releases given a task" do
-      release = FactoryGirl.build(:release)
-      release.tasks << FactoryGirl.build(:task, :application => @application)
-      release.save!
-
-      assert_equal 1, @application.releases.size
-      assert_equal release.id, @application.releases.first.id
-    end
-  end
 end
