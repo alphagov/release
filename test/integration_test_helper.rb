@@ -2,7 +2,7 @@ require 'test_helper'
 require 'capybara/rails'
 require 'webmock'
 
-Capybara.javascript_driver = :webkit
+Capybara.javascript_driver = :poltergeist
 DatabaseCleaner.strategy = :truncation
 WebMock.disable_net_connect!(:allow_localhost => true)
 
