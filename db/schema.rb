@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928150313) do
+ActiveRecord::Schema.define(version: 20151214151156) do
 
   create_table "applications", force: :cascade do |t|
     t.string   "name",         limit: 255
@@ -39,14 +39,16 @@ ActiveRecord::Schema.define(version: 20150928150313) do
   add_index "deployments", ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.string   "email",               limit: 255
-    t.string   "uid",                 limit: 255
-    t.text     "permissions",         limit: 65535
-    t.boolean  "remotely_signed_out", limit: 1,     default: false
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
-    t.string   "organisation_slug",   limit: 255
+    t.string   "name",                    limit: 255
+    t.string   "email",                   limit: 255
+    t.string   "uid",                     limit: 255
+    t.text     "permissions",             limit: 65535
+    t.boolean  "remotely_signed_out",     limit: 1,     default: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.string   "organisation_slug",       limit: 255
+    t.boolean  "disabled",                limit: 1,     default: false
+    t.string   "organisation_content_id", limit: 255,   default: ""
   end
 
 end

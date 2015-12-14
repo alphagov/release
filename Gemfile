@@ -17,7 +17,7 @@ gem 'whenever', '0.8.2'
 gem 'friendly_id', '5.1.0'
 
 # GDS gems.
-gem 'gds-sso', '9.3.0'
+gem 'gds-sso', '11.2.1'
 gem 'plek', '1.3.1'
 
 gem 'airbrake', '3.1.15'
