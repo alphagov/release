@@ -7,11 +7,12 @@ gem 'formtastic-bootstrap', '3.0.0'
 gem 'momentjs-rails', '~> 2.5.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 gem 'govuk_admin_template', '4.1.1'
-gem 'mysql2', '0.3.18'
+gem 'pg', '~> 0.18.4'
 gem 'nested_form', '0.3.1'
 gem 'octokit', '3.1.2'
 gem 'statsd-ruby', '1.0.0', require: "statsd"
 gem 'unicorn', '4.4.0'
+gem 'rack-handlers', '~> 0.7.3'
 gem 'tinder', '1.9.3'
 gem 'whenever', '0.8.2'
 gem 'friendly_id', '5.1.0'
@@ -27,7 +28,7 @@ gem 'exception_notification'
 gem 'logstasher', '0.4.8'
 
 gem 'sprockets-rails', "2.3.3" # FIXME: Pin temporarily to upgrade rails to 4.2.5.1 without breaking asset requires
-gem 'sass-rails', '5.0.1'
+gem 'sass-rails', '5.0.6'
 gem 'uglifier', '2.7.1'
 
 group :test, :development do
