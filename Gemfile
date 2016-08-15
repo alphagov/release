@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.5.1'
+gem 'rails', '~> 4.0'
 
 gem 'formtastic', '2.3.0'
 gem 'formtastic-bootstrap', '3.0.0'
@@ -28,6 +28,7 @@ gem 'exception_notification'
 gem 'logstasher', '0.4.8'
 
 gem 'sprockets-rails', "2.3.3" # FIXME: Pin temporarily to upgrade rails to 4.2.5.1 without breaking asset requires
+
 gem 'sass-rails', '5.0.6'
 gem 'uglifier', '2.7.1'
 

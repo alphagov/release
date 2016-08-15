@@ -1,4 +1,5 @@
 require 'yaml'
+require 'aws-sdk'
 
 namespace :pg do
 
@@ -22,6 +23,16 @@ namespace :pg do
   task :load do
     Rake::Task['db:create:all'].invoke
     Rake::Task['db:migrate'].invoke
+  end
+
+  task :get_data do
+    data = Aws::S3::Resource.new(
+      region: 'eu-west-1',
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+    )
+
+    data.bucket('govuk-release-app-test').object('postgresql_backend/release_app_data.tar').get(response_target: './response.txt')
   end
 
 
