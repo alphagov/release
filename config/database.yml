@@ -1,5 +1,5 @@
 development:
-  adapter: mysql2
+  adapter: postgresql
   encoding: utf8
   database: release_development
   pool: 5
@@ -8,7 +8,7 @@ development:
   password: release
 
 test:
-  adapter: mysql2
+  adapter: postgresql
   encoding: utf8
   database: release_test
   pool: 5
