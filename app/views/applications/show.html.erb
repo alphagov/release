@@ -18,6 +18,11 @@
 </div>
 <% end %>
 
+<% if @application.status_notes.present? %>
+  <div class="alert alert-warning" role="alert">
+    <p><%= @application.status_notes %></p>
+  </div>
+<% end %>
 
 <h2 class="add-bottom-margin">Commit log</h2>
 <% if @github_available %>

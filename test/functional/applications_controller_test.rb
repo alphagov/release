@@ -111,6 +111,12 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select "h1 span.name", @app.name
     end
 
+    should "should include status notes as a warning" do
+      @app.update_attributes(status_notes: 'Do not deploy this without talking to core team first!')
+      get :show, id: @app.id
+      assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
+    end
+
     context "GET show with a production deployment" do
 
       setup do
@@ -263,6 +269,37 @@ class ApplicationsControllerTest < ActionController::TestCase
       should "not show buttons to edit application notes" do
         assert_select "a:match('href', ?)", %r"#edit-notes-app-\d+", count: 0
       end
+    end
+  end
+
+  context "GET deploy" do
+    setup do
+      @app = FactoryGirl.create(:application, status_notes: 'Do not deploy this without talking to core team first!')
+      @deployment = FactoryGirl.create(:deployment, application_id: @app.id)
+      @release_tag = 'hot_fix_1'
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
+      Octokit::Client.any_instance.stubs(:compare)
+        .with(@app.repo, @deployment.version, @release_tag)
+        .returns(stub("comparison",
+                      commits: [],
+                      base_commit: nil))
+    end
+
+    should "show that we are trying to deploy the application" do
+      get :deploy, id: @app.id, tag: @release_tag
+      assert_select "h1 span.name", "Deploy #{@app.name}"
+    end
+
+    should "indicate which releases are current and about to be deployed" do
+    get :deploy, id: @app.id, tag: @release_tag
+      assert_select "h2 .label-info", @release_tag
+      assert_select "p.lead .label-danger", @deployment.version
+    end
+
+    should "should include status notes as a warning" do
+      get :deploy, id: @app.id, tag: @release_tag
+      assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
     end
   end
 
