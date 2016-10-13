@@ -1,6 +1,6 @@
 class ApplicationsController < ApplicationController
-  before_filter :redirect_if_read_only_user, only: [:new, :edit, :create, :update, :update_notes]
-  before_filter :find_application, only: [:show, :edit, :update, :update_notes, :deploy]
+  before_action :redirect_if_read_only_user, only: [:new, :edit, :create, :update, :update_notes]
+  before_action :find_application, only: [:show, :edit, :update, :update_notes, :deploy]
 
   def index
     @environments = ["staging", "production"]
