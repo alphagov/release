@@ -1,4 +1,4 @@
-class Deployment < ActiveRecord::Base
+class Deployment < ApplicationRecord
   after_create :record_to_statsd
   belongs_to :application
 

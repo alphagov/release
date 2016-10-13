@@ -1,4 +1,4 @@
-class Application < ActiveRecord::Base
+class Application < ApplicationRecord
   extend FriendlyId
 
   friendly_id :fallback_shortname, use: :slugged, slug_column: :shortname
