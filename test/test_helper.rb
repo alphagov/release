@@ -38,7 +38,7 @@ class ActiveSupport::TestCase
   shared_test_for "actions_requiring_deploy_permission_redirect" do |method, action, params|
     params ||= {}
     login_as_read_only_stub_user
-    send(method, action, params)
+    send(method, action, params: params)
     assert_redirected_to "/applications"
   end
 
