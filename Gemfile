@@ -17,9 +17,10 @@ gem 'friendly_id', '5.1.0'
 
 # GDS gems.
 gem 'gds-sso', '13.0.0'
-gem 'plek', '1.3.1'
+gem 'plek', '1.10'
 
-gem 'airbrake', '3.1.15'
+gem 'airbrake', '~> 5.5'
+gem 'airbrake-ruby', '1.5'
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
 
