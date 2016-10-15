@@ -24,7 +24,7 @@ class Application < ApplicationRecord
   end
 
   def latest_deploy_to(*environments)
-    latest_deploy_to_each_environment.select { |env, deploy| environments.include?(env) }
+    latest_deploy_to_each_environment.select { |env, _deploy| environments.include?(env) }
   end
 
   def interesting_deployments

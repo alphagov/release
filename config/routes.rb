@@ -19,5 +19,5 @@ ReleaseApp::Application.routes.draw do
 
   get '/activity', to: 'deployments#recent', as: :activity
 
-  root :to => redirect("/applications", :status => 302)
+  root to: redirect("/applications", status: 302)
 end

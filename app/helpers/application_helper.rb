@@ -2,7 +2,7 @@ module ApplicationHelper
   def nav_link(text, link)
     recognized = Rails.application.routes.recognize_path(link)
     if recognized[:controller] == params[:controller] && recognized[:action] == params[:action]
-      content_tag(:li, :class => "active") do
+      content_tag(:li, class: "active") do
         link_to(text, link)
       end
     else
@@ -20,7 +20,7 @@ module ApplicationHelper
         date.strftime("%-l:%M%P yesterday")
       elsif this_week.cover?(date)
         date.strftime("%-l:%M%P on %A")
-      elsif (11.months.ago < date)
+      elsif 11.months.ago < date
         date.strftime("%-l:%M%P on %-e %b")
       else
         date.strftime("%-l%P on %-e %b %Y")

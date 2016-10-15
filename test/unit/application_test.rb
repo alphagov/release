@@ -23,13 +23,13 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "be invalid with an empty name" do
-      application = Application.new(@atts.merge(:name => ""))
+      application = Application.new(@atts.merge(name: ""))
 
       refute application.valid?
     end
 
     should "be invalid with a duplicate name" do
-      FactoryGirl.create(:application, :name => "Tron-o-matic")
+      FactoryGirl.create(:application, name: "Tron-o-matic")
       application = Application.new(@atts)
 
       refute application.valid?
@@ -37,7 +37,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "be invalid with a duplicate repo" do
-      FactoryGirl.create(:application, :repo => "alphagov/tron-o-matic")
+      FactoryGirl.create(:application, repo: "alphagov/tron-o-matic")
       application = Application.new(@atts)
 
       refute application.valid?
@@ -70,7 +70,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "use the provided shortname if not empty" do
-      application = Application.create(@atts.merge(:shortname => "giraffe"))
+      application = Application.create(@atts.merge(shortname: "giraffe"))
       assert_equal "giraffe", application.shortname
     end
 
