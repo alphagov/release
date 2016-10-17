@@ -26,21 +26,17 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "GET new" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect",
-                  'new',
-                  :get,
-                  :new)
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(:get, :new)
     end
   end
 
   context "POST create" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect",
-                  'create',
-                  :post,
-                  :create,
-                  deployment: { application_id: 123, version: "", environment: "staging", created_at: "18/01/2013 11:57" })
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :post,
+        :create,
+        deployment: { application_id: 123, version: "", environment: "staging", created_at: "18/01/2013 11:57" })
     end
 
     context "manually recording a deployment" do

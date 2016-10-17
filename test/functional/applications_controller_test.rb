@@ -61,20 +61,20 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :new
       assert_select "form input#application_name"
     end
-    context "when the user has no deploy permissions" do
-      shared_test "actions_requiring_deploy_permission_redirect", 'new', :get, :new
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(:get, :new)
     end
   end
 
   context "POST create" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect",
-                  'create',
-                  :post,
-                  :create,
-                                      name: "My First App",
-                    repo: "org/my_first_app",
-                    domain: "github.baz")
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :post,
+        :create,
+        name: "My First App",
+        repo: "org/my_first_app",
+        domain: "github.baz"
+      )
     end
 
     should "create an application" do
@@ -175,12 +175,12 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app = FactoryGirl.create(:application, name: "monkeys", repo: "org/monkeys")
     end
 
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect",
-                  'edit',
-                  :get,
-                  :edit,
-                  id: 123)
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :get,
+        :edit,
+        id: 123
+      )
     end
 
     should "show the form" do
@@ -195,12 +195,12 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect",
-                  'update',
-                  :get,
-                  :update,
-                  id: 456, application: { name: "new name", repo: "new/repo" })
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :get,
+        :update,
+        id: 456, application: { name: "new name", repo: "new/repo" }
+      )
     end
 
     setup do
@@ -223,12 +223,12 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update_notes" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect",
-                  'update_notes',
-                  :put,
-                  :update_notes,
-                  id: 789, application: { status_notes: "Rolled back deploy because science." })
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :put,
+        :update_notes,
+        id: 789, application: { status_notes: "Rolled back deploy because science." }
+      )
     end
 
     setup do
