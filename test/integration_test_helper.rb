@@ -29,7 +29,7 @@ end
 
 
 class JavascriptIntegrationTest < ActionDispatch::IntegrationTest
-  self.use_transactional_fixtures = false
+  self.use_transactional_tests = false
   setup do
     Capybara.current_driver = Capybara.javascript_driver
   end

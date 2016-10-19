@@ -6,8 +6,6 @@
 
 # Ignore bundler config
 /.bundle
-/config/initializers/github_credentials.rb
-/config/initializers/campfire_credentials.rb
 
 # Ignore the default SQLite database.
 /db/*.sqlite3

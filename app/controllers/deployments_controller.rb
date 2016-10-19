@@ -1,5 +1,5 @@
 class DeploymentsController < ApplicationController
-  before_filter :redirect_if_read_only_user, only: [:new, :create]
+  before_action :redirect_if_read_only_user, only: [:new, :create]
 
   def recent
     @deployments = Deployment.includes(:application).recent

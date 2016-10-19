@@ -82,17 +82,19 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "create an application" do
       assert_difference "Application.count", 1 do
-        post :create, application: {
-          name: "My First App",
-          repo: "org/my_first_app",
-          domain: "github.baz"
+        post :create, params: {
+          application: {
+            name: "My First App",
+            repo: "org/my_first_app",
+            domain: "github.baz"
+          }
         }
       end
     end
 
     context "invalid request" do
       should "rerender the form" do
-        post :create, application: { name: "", repo: "org/my_first_app" }
+        post :create, params: { application: { name: "", repo: "org/my_first_app" } }
         assert_select "form input#application_name"
         assert_select "form input#application_repo[value='org/my_first_app']"
       end
@@ -107,13 +109,13 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "show the application" do
-      get :show, id: @app.id
+      get :show, params: { id: @app.id }
       assert_select "h1 span.name", @app.name
     end
 
     should "should include status notes as a warning" do
       @app.update_attributes(status_notes: 'Do not deploy this without talking to core team first!')
-      get :show, id: @app.id
+      get :show, params: { id: @app.id }
       assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
     end
 
@@ -132,12 +134,12 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "show the application" do
-        get :show, id: @app.id
+        get :show, params: { id: @app.id }
         assert_select "h1 span.name", @app.name
       end
 
       should "set the commit history in reverse order" do
-        get :show, id: @app.id
+        get :show, params: { id: @app.id }
 
         # `assigns` in Rails silently converts hashes to
         # HashWithIndifferentAccess instances, so we can't simply compare for
@@ -149,7 +151,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "include the base commit" do
-        get :show, id: @app.id
+        get :show, params: { id: @app.id }
 
         assert_equal @base_commit[:sha], assigns[:commits].last[:sha]
       end
@@ -158,7 +160,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     context "when the user has no deploy permissions" do
       setup do
         login_as_read_only_stub_user
-        get :show, id: @app.id
+        get :show, params: { id: @app.id }
       end
 
       should "not show the edit button" do
@@ -185,12 +187,12 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "show the form" do
-      get :edit, id: @app.id
+      get :edit, params: { id: @app.id }
       assert_select "form input#application_name[value='#{@app.name}']"
     end
 
     should "allow editing of the shortname in the form" do
-      get :edit, id: @app.id
+      get :edit, params: { id: @app.id }
       assert_select "form input#application_shortname[placeholder='#{@app.shortname}']"
     end
   end
@@ -209,14 +211,14 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "update the application" do
-      put :update, id: @app.id, application: { name: "new name", repo: "new/repo" }
+      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo" } }
       @app.reload
       assert_equal "new name", @app.name
     end
 
     context "invalid request" do
       should "rerender the form" do
-        put :update, id: @app.id, application: { name: "", repo: "new/repo" }
+        put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
         @app.reload
         assert_redirected_to edit_application_path(@app)
       end
@@ -237,7 +239,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "update the application, redirect to /applications" do
-      put :update_notes, id: @app.id, application: { status_notes: "Rolled back deploy because science." }
+      put :update_notes, params: { id: @app.id, application: { status_notes: "Rolled back deploy because science." } }
       @app.reload
       assert_equal "Rolled back deploy because science.", @app.status_notes
       assert_redirected_to "/applications"
@@ -287,18 +289,18 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "show that we are trying to deploy the application" do
-      get :deploy, id: @app.id, tag: @release_tag
+      get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "h1 span.name", "Deploy #{@app.name}"
     end
 
     should "indicate which releases are current and about to be deployed" do
-    get :deploy, id: @app.id, tag: @release_tag
+    get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "h2 .label-info", @release_tag
       assert_select "p.lead .label-danger", @deployment.version
     end
 
     should "should include status notes as a warning" do
-      get :deploy, id: @app.id, tag: @release_tag
+      get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
     end
   end
