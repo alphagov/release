@@ -48,7 +48,7 @@ class DeploymentsControllerTest < ActionController::TestCase
         refute_nil deployment
         assert_equal "release_123", deployment.version
         assert_equal "staging", deployment.environment
-        assert_equal "2013-01-18 11:57:00 UTC", deployment.created_at.to_s
+        assert_equal "2013-01-18 11:57:00 +0000", deployment.created_at.to_s
       end
 
       should "redisplay the form on error" do
