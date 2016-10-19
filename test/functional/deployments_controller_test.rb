@@ -26,22 +26,17 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "GET new" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect", 
-                  'new', 
-                  :get, 
-                  :new)
-                  
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(:get, :new)
     end
   end
 
   context "POST create" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect", 
-                  'create', 
-                  :post, 
-                  :create, 
-                  { deployment: { application_id: 123, version: "", environment: "staging", created_at: "18/01/2013 11:57" } })
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :post,
+        :create,
+        deployment: { application_id: 123, version: "", environment: "staging", created_at: "18/01/2013 11:57" })
     end
 
     context "manually recording a deployment" do
@@ -53,7 +48,7 @@ class DeploymentsControllerTest < ActionController::TestCase
         refute_nil deployment
         assert_equal "release_123", deployment.version
         assert_equal "staging", deployment.environment
-        assert_equal "2013-01-18 11:57:00 UTC", deployment.created_at.to_s
+        assert_equal "2013-01-18 11:57:00 +0000", deployment.created_at.to_s
       end
 
       should "redisplay the form on error" do
@@ -91,14 +86,14 @@ class DeploymentsControllerTest < ActionController::TestCase
       context "accepting different 'repo' formats" do
         should "accept a repo specified as a full URL" do
           app = FactoryGirl.create(:application, repo: "org/app")
-          assert_difference "app.deployments.count", 1 do
+          assert_difference -> { app.deployments.count }, 1 do
             post :create, params: { repo: "https://github.com/org/app", deployment: { version: "release_123", environment: "staging" } }
           end
         end
 
         should "accept a repo specified as a git address" do
           app = FactoryGirl.create(:application, repo: "org/app")
-          assert_difference "app.deployments.count", 1 do
+          assert_difference -> { app.deployments.count }, 1 do
             post :create, params: { repo: "git@github.com:org/app.git", deployment: { version: "release_123", environment: "staging" } }
           end
         end
@@ -106,10 +101,8 @@ class DeploymentsControllerTest < ActionController::TestCase
 
       context "application doesn't exist" do
         should "create an application" do
-          assert_difference "Deployment.count", 1 do
-            assert_difference "Application.count", 1 do
-              post :create, params: { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
-            end
+          assert_difference [-> { Deployment.count }, -> { Application.count }], 1 do
+            post :create, params: { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
           end
         end
 

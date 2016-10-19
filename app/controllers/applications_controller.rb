@@ -3,12 +3,12 @@ class ApplicationsController < ApplicationController
   before_action :find_application, only: [:show, :edit, :update, :update_notes, :deploy]
 
   def index
-    @environments = ["staging", "production"]
+    @environments = %w(staging production)
     @applications = Application.where(archived: false)
   end
 
   def archived
-    @environments = ["staging", "production"]
+    @environments = %w(staging production)
     @applications = Application.where(archived: true)
   end
 
@@ -102,26 +102,27 @@ class ApplicationsController < ApplicationController
     end
   end
 
-  private
-    def find_application
-      @application = Application.friendly.find(params[:id])
-    end
+private
 
-    def github
-      credentials = defined?(GITHUB_CREDENTIALS) ? GITHUB_CREDENTIALS : {}
-      @client ||= Octokit::Client.new(credentials)
-    end
+  def find_application
+    @application = Application.friendly.find(params[:id])
+  end
 
-    def application_params
-      params.require(:application).permit(
-        :archived,
-        :domain,
-        :id,
-        :name,
-        :repo,
-        :shortname,
-        :status_notes,
-        :task,
-      )
-    end
+  def github
+    credentials = defined?(GITHUB_CREDENTIALS) ? GITHUB_CREDENTIALS : {}
+    @client ||= Octokit::Client.new(credentials)
+  end
+
+  def application_params
+    params.require(:application).permit(
+      :archived,
+      :domain,
+      :id,
+      :name,
+      :repo,
+      :shortname,
+      :status_notes,
+      :task,
+    )
+  end
 end

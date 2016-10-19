@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :application do
-    sequence(:name) {|n| "Application #{n}"}
-    sequence(:repo) {|n| "alphagov/application-#{n}" }
+    sequence(:name) { |n| "Application #{n}" }
+    sequence(:repo) { |n| "alphagov/application-#{n}" }
     domain "mygithub.tld"
   end
 
@@ -12,7 +12,7 @@ FactoryGirl.define do
 
   factory :user do
     name "Stub User"
-    sequence(:email) {|n| "winston-#{n}@gov.uk" }
-    permissions { ["signin", "deploy"] }
+    sequence(:email) { |n| "winston-#{n}@gov.uk" }
+    permissions { %w(signin deploy) }
   end
 end

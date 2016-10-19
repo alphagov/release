@@ -1,5 +1,5 @@
 class JsDatetimePickerInput < FormtasticBootstrap::Inputs::StringInput
-  def input_content(&block)
+  def input_content
     content = [
       add_on_content(options[:prepend]),
       options[:prepend_content],

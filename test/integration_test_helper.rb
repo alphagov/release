@@ -4,7 +4,7 @@ require 'webmock'
 
 Capybara.javascript_driver = :poltergeist
 DatabaseCleaner.strategy = :truncation
-WebMock.disable_net_connect!(:allow_localhost => true)
+WebMock.disable_net_connect!(allow_localhost: true)
 
 class ActionDispatch::IntegrationTest
   include Capybara::DSL
@@ -23,7 +23,7 @@ class ActionDispatch::IntegrationTest
 
   def login_as_stub_user
     @current_user = FactoryGirl.create(:user)
-    login_as(@current_user, :scope => :user)
+    login_as(@current_user, scope: :user)
   end
 end
 

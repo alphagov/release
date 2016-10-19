@@ -33,48 +33,49 @@ class DeploymentsController < ApplicationController
     end
   end
 
-  private
-    def application_by_repo
-      if existing_app = Application.find_by_repo(repo_path)
-        existing_app
-      else
-        Application.create!(name: app_name, repo: repo_path, domain: domain)
-      end
-    end
+private
 
-    def repo_path
-      if params[:repo].start_with?("http")
-        URI.parse(params[:repo]).path.gsub(%r{^/}, "")
-      elsif params[:repo].start_with?("git@")
-        params[:repo].split(":")[-1].gsub(/.git$/, "")
-      else
-        params[:repo]
-      end
+  def application_by_repo
+    if (existing_app = Application.find_by_repo(repo_path))
+      existing_app
+    else
+      Application.create!(name: app_name, repo: repo_path, domain: domain)
     end
+  end
 
-    def app_name
-      repo_title = repo_path.split("/")[-1].gsub("-", " ").humanize.titlecase
-      repo_title.gsub(/\bApi\b/, "API")
+  def repo_path
+    if params[:repo].start_with?("http")
+      URI.parse(params[:repo]).path.gsub(%r{^/}, "")
+    elsif params[:repo].start_with?("git@")
+      params[:repo].split(":")[-1].gsub(/.git$/, "")
+    else
+      params[:repo]
     end
+  end
 
-    def domain
-      # Deployments created from push notifications will default to github.com
-      "github.com"
-    end
+  def app_name
+    repo_title = repo_path.split("/")[-1].tr("-", " ").humanize.titlecase
+    repo_title.gsub(/\bApi\b/, "API")
+  end
 
-    def push_notification?
-      params[:repo].present?
-    end
+  def domain
+    # Deployments created from push notifications will default to github.com
+    "github.com"
+  end
 
-    def deployment_params
-      params.require(:deployment).permit(
-        :application,
-        :application_id,
-        :created_at,
-        :environment,
-        :id,
-        :repo,
-        :version,
-      )
-    end
+  def push_notification?
+    params[:repo].present?
+  end
+
+  def deployment_params
+    params.require(:deployment).permit(
+      :application,
+      :application_id,
+      :created_at,
+      :environment,
+      :id,
+      :repo,
+      :version,
+    )
+  end
 end

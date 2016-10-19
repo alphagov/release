@@ -1,7 +1,6 @@
 require "test_helper"
 
 class ApplicationsControllerTest < ActionController::TestCase
-
   setup do
     login_as_stub_user
   end
@@ -44,7 +43,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "not show buttons to add missing deployments" do
-        assert_select "a:match('href', ?)", %r"/applications/\d+/deployments/new.*",  count: 0
+        assert_select "a:match('href', ?)", %r"/applications/\d+/deployments/new.*", count: 0
       end
 
       should "not show buttons to edit application notes" do
@@ -62,22 +61,20 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :new
       assert_select "form input#application_name"
     end
-    context "when the user has no deploy permissions" do
-      shared_test "actions_requiring_deploy_permission_redirect", 'new', :get, :new
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(:get, :new)
     end
   end
 
   context "POST create" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect", 
-                  'create', 
-                  :post, 
-                  :create, 
-                  {
-                    name: "My First App",
-                    repo: "org/my_first_app",
-                    domain: "github.baz"
-                  })
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :post,
+        :create,
+        name: "My First App",
+        repo: "org/my_first_app",
+        domain: "github.baz"
+      )
     end
 
     should "create an application" do
@@ -120,11 +117,11 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     context "GET show with a production deployment" do
-
       setup do
         version = "release_42"
         FactoryGirl.create(:deployment, application: @app, version: version)
-        @first_commit, @second_commit = stub_commit, stub_commit
+        @first_commit = stub_commit
+        @second_commit = stub_commit
         @base_commit = stub_commit
         Octokit::Client.any_instance.stubs(:compare)
           .with(@app.repo, version, "master")
@@ -178,12 +175,12 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app = FactoryGirl.create(:application, name: "monkeys", repo: "org/monkeys")
     end
 
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect", 
-                  'edit', 
-                  :get, 
-                  :edit, 
-                  {id: 123})
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :get,
+        :edit,
+        id: 123
+      )
     end
 
     should "show the form" do
@@ -198,12 +195,12 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect", 
-                  'update', 
-                  :get, 
-                  :update, 
-                  {id: 456, application: { name: "new name", repo: "new/repo" }})
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :get,
+        :update,
+        id: 456, application: { name: "new name", repo: "new/repo" }
+      )
     end
 
     setup do
@@ -226,12 +223,12 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update_notes" do
-    context "when the user has no deploy permissions" do
-      shared_test("actions_requiring_deploy_permission_redirect",
-                  'update_notes',
-                  :put, 
-                  :update_notes,
-                  {id: 789, application: { status_notes: "Rolled back deploy because science." }})
+    should "redirect when the user has no deploy permissions" do
+      actions_requiring_deploy_permission_redirect(
+        :put,
+        :update_notes,
+        id: 789, application: { status_notes: "Rolled back deploy because science." }
+      )
     end
 
     setup do
@@ -294,7 +291,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "indicate which releases are current and about to be deployed" do
-    get :deploy, params: { id: @app.id, tag: @release_tag }
+      get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "h2 .label-info", @release_tag
       assert_select "p.lead .label-danger", @deployment.version
     end
@@ -305,7 +302,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
   end
 
-  private
+private
 
   def random_sha
     hex_chars = Enumerator.new do |yielder|

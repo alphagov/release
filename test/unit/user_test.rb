@@ -10,7 +10,7 @@ end
 class UserTest < ActiveSupport::TestCase
   context "#may_deploy?" do
     should "return true if the user has deploy permissions" do
-      user = FactoryGirl.create(:user, permissions: ["signin", "deploy"])
+      user = FactoryGirl.create(:user, permissions: %w(signin deploy))
 
       assert user.may_deploy?
     end
