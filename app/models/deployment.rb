@@ -4,7 +4,7 @@ class Deployment < ApplicationRecord
 
   validates_presence_of :version, :environment, :application_id
 
-  scope :recent, lambda { order("created_at DESC").limit(25) }
+  scope :newest_first, -> { order("created_at DESC") }
 
   def self.environments
     Deployment.select('DISTINCT environment').map(&:environment)
