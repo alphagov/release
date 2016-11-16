@@ -6,8 +6,8 @@ class Deployment < ApplicationRecord
 
   scope :recent, lambda { order("created_at DESC").limit(25) }
 
-  # Ignore automatic deployment of the release branch to preview
-  scope :interesting, lambda { where.not(environment: 'preview', version: 'release') }
+  # Ignore automatic deployments
+  scope :interesting, lambda { where.not(environment: %w[preview integration], version: 'release') }
 
   def self.environments
     Deployment.select('DISTINCT environment').map(&:environment)
