@@ -140,7 +140,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @application.deployments.each do |deployment| %>
+  <% @latest_deployments.each do |deployment| %>
     <tr>
       <td><%= human_datetime(deployment.created_at) %></td>
       <td>

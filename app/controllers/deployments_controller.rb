@@ -2,7 +2,7 @@ class DeploymentsController < ApplicationController
   before_action :redirect_if_read_only_user, only: [:new, :create]
 
   def recent
-    @deployments = Deployment.includes(:application).recent
+    @deployments = Deployment.includes(:application).newest_first.limit(25)
   end
 
   def new
