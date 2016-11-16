@@ -27,10 +27,6 @@ class Application < ApplicationRecord
     latest_deploy_to_each_environment.select { |env, _deploy| environments.include?(env) }
   end
 
-  def interesting_deployments
-    deployments.recent.interesting
-  end
-
   def staging_and_production_in_sync?
     return @staging_and_production_in_sync unless @staging_and_production_in_sync.nil?
     staging = latest_deploy_to_each_environment["staging"]
