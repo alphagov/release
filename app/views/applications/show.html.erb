@@ -124,6 +124,7 @@
 
 <% if @application.interesting_deployments.any? %>
   <h2>Recent deployments</h2>
+  <p>Excludes automatic deployments to integration.</p>
   <table class="table table-striped table-bordered table-hover" data-module="filterable-table">
     <thead>
       <tr class='table-header'>
