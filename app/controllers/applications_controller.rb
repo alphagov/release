@@ -97,7 +97,7 @@ class ApplicationsController < ApplicationController
   end
 
   def update_notes
-    if @application.update_attributes(application_params)
+    if @application.update_attributes(application_notes_params)
       redirect_to applications_path, flash: { notice: "Successfully updated notes" }
     else
       redirect_to applications_path, flash: { alert: "Failed to update notes" }
@@ -113,6 +113,10 @@ private
   def github
     credentials = defined?(GITHUB_CREDENTIALS) ? GITHUB_CREDENTIALS : {}
     @client ||= Octokit::Client.new(credentials)
+  end
+
+  def application_notes_params
+    params.require(:application).permit(:status_notes)
   end
 
   def application_params
