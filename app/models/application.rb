@@ -7,6 +7,8 @@ class Application < ApplicationRecord
   validates_presence_of :repo, message: 'is required'
   validates_presence_of :domain, message: 'is required'
 
+  validates :name, :repo, :domain, :status_notes, :shortname, length: { maximum: 255 }
+
   validates_format_of :repo, with: /\A[^\s\/]+\/[^\s\/]+\Z/i
 
   validates_uniqueness_of :name, :repo

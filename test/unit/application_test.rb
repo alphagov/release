@@ -86,6 +86,36 @@ class ApplicationTest < ActiveSupport::TestCase
 
       assert_equal false, application.archived
     end
+
+    should "be invalid with a name that is too long" do
+      application = Application.new(@atts.merge(name: ("a" * 256)))
+
+      refute application.valid?
+    end
+
+    should "be invalid with a domain that is too long" do
+      application = Application.new(@atts.merge(domain: ("gith" + ("u" * 247) + "b.com")))
+
+      refute application.valid?
+    end
+
+    should "be invalid with a repo that is too long" do
+      application = Application.new(@atts.merge(repo: ("alphagov/my-r" + ("e" * 243) + "po")))
+
+      refute application.valid?
+    end
+
+    should "be invalid with a shortname that is too long" do
+      application = Application.new(@atts.merge(shortname: ("a" * 256)))
+
+      refute application.valid?
+    end
+
+    should "be invalid with status_notes that are too long" do
+      application = Application.new(@atts.merge(status_notes: ("This app is n" + ("o" * 233) + "t working!")))
+
+      refute application.valid?
+    end
   end
 
   context "display datetimes" do
