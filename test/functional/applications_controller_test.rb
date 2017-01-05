@@ -217,7 +217,8 @@ class ApplicationsControllerTest < ActionController::TestCase
       should "rerender the form" do
         put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
         @app.reload
-        assert_redirected_to edit_application_path(@app)
+        assert_select "form input#application_name[value='']"
+        assert_select "form input#application_repo[value='new/repo']"
       end
     end
   end
