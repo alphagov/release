@@ -82,7 +82,7 @@ class ApplicationsController < ApplicationController
     if @application.valid? && @application.save
       redirect_to @application, flash: { notice: "Successfully created new application" }
     else
-      flash[:alert] = "There are some problems with the application"
+      flash.now[:error] = "There are some problems with the application"
       render action: "new"
     end
   end
@@ -91,15 +91,16 @@ class ApplicationsController < ApplicationController
     if @application.update_attributes(application_params)
       redirect_to @application, flash: { notice: "Successfully updated the application" }
     else
-      redirect_to edit_application_path(@application), flash: { alert: "There are some problems with the application" }
+      flash.now[:error] = "There are some problems with the application"
+      render :edit
     end
   end
 
   def update_notes
-    if @application.update_attributes(application_params)
+    if @application.update_attributes(application_notes_params)
       redirect_to applications_path, flash: { notice: "Successfully updated notes" }
     else
-      redirect_to applications_path, flash: { alert: "Failed to update notes" }
+      redirect_to applications_path, flash: { error: "Failed to update notes" }
     end
   end
 
@@ -112,6 +113,10 @@ private
   def github
     credentials = defined?(GITHUB_CREDENTIALS) ? GITHUB_CREDENTIALS : {}
     @client ||= Octokit::Client.new(credentials)
+  end
+
+  def application_notes_params
+    params.require(:application).permit(:status_notes)
   end
 
   def application_params
