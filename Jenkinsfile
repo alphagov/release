@@ -11,15 +11,6 @@ node {
         numToKeepStr: '50')
       ),
     [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false],
-    [$class: 'ThrottleJobProperty',
-      categories: [],
-      limitOneJobWithMatchingParams: true,
-      maxConcurrentPerNode: 1,
-      maxConcurrentTotal: 0,
-      paramsToUseForLimit: 'release',
-      throttleEnabled: true,
-      throttleOption: 'category'
-    ],
   ])
 
   try {
