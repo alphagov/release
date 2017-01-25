@@ -1,7 +1,6 @@
 #!/usr/bin/env groovy
 
 REPOSITORY = 'release'
-DEFAULT_SCHEMA_BRANCH = 'deployed-to-production'
 
 node {
   def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
@@ -19,30 +18,11 @@ node {
       maxConcurrentTotal: 0,
       paramsToUseForLimit: 'release',
       throttleEnabled: true,
-      throttleOption: 'category'],
-    [$class: 'ParametersDefinitionProperty',
-      parameterDefinitions: [
-        [$class: 'BooleanParameterDefinition',
-          name: 'IS_SCHEMA_TEST',
-          defaultValue: false,
-          description: 'Identifies whether this build is being triggered to test a change to the content schemas'],
-        [$class: 'StringParameterDefinition',
-          name: 'SCHEMA_BRANCH',
-          defaultValue: DEFAULT_SCHEMA_BRANCH,
-          description: 'The branch of govuk-content-schemas to test against']]
+      throttleOption: 'category'
     ],
   ])
 
   try {
-    govuk.initializeParameters([
-      'IS_SCHEMA_TEST': 'false',
-      'SCHEMA_BRANCH': DEFAULT_SCHEMA_BRANCH,
-    ])
-
-    if (!govuk.isAllowedBranchBuild(env.BRANCH_NAME)) {
-      return
-    }
-
     stage("Checkout") {
       checkout scm
     }
@@ -57,11 +37,6 @@ node {
 
     stage("Configure Rails environment") {
       govuk.setEnvar("RAILS_ENV", "test")
-    }
-
-    stage("Set up content schema dependency") {
-      govuk.contentSchemaDependency()
-      govuk.setEnvar("GOVUK_CONTENT_SCHEMAS_PATH", "tmp/govuk-content-schemas")
     }
 
     stage("bundle install") {
