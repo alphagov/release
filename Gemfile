@@ -47,4 +47,5 @@ group :test, :development do
   gem 'webmock', '1.20.4', require: false
   gem 'pry', '0.10.0'
   gem 'govuk-lint'
+  gem 'ci_reporter_rspec'
 end
