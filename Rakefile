@@ -4,8 +4,10 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-require 'ci/reporter/rake/minitest' if Rails.env.test?
-require 'ci/reporter/rake/rspec'
+if Rails.env.test?
+  require 'ci/reporter/rake/minitest'
+  require 'ci/reporter/rake/rspec'
+end
 
 ReleaseApp::Application.load_tasks
 
