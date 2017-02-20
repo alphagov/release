@@ -16,7 +16,6 @@ applications = [
   { name: "Licensify",                              repo: "alphagov/licensify" },
   { name: "Migratorator",                           repo: "alphagov/migratorator" },
   { name: "Need-o-tron",                            repo: "alphagov/need-o-tron",                           shortname: "needotron" },
-  { name: "Panopticon",                             repo: "alphagov/panopticon" },
   { name: "Publisher",                              repo: "alphagov/publisher" },
   { name: "Puppet",                                 repo: "gds/puppet",                                     domain: "github.gds" },
   { name: "Recommended links",                      repo: "alphagov/recommended-links" },
