@@ -168,6 +168,20 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_select "a[href='/applications/#{@app.id}/deployments/new']", false
       end
     end
+
+    context "when there is a github API error" do
+      setup do
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::TooManyRequests.new)
+        get :show, params: { id: @app.id }
+      end
+
+      should "show the error message" do
+        assert_select '.alert-error' do
+          assert_select 'div', "Couldn't get data from GitHub:"
+          assert_select 'div', "Octokit::TooManyRequests"
+        end
+      end
+    end
   end
 
   context "GET edit" do
