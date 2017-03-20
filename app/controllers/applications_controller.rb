@@ -2,6 +2,8 @@ class ApplicationsController < ApplicationController
   before_action :redirect_if_read_only_user, only: [:new, :edit, :create, :update, :update_notes]
   before_action :find_application, only: [:show, :edit, :update, :update_notes, :deploy]
 
+  include ActionView::Helpers::DateHelper
+
   def index
     @environments = %w(staging production)
     @applications = Application.where(archived: false)
@@ -41,13 +43,16 @@ class ApplicationsController < ApplicationController
 
     @github_available = true
     @latest_deployments = @application.deployments.newest_first.limit(25)
+  rescue Octokit::TooManyRequests
+    @github_available = false
+    @github_error = github_rate_limited_error_message
   rescue Octokit::NotFound => e
     @github_available = false
-    @github_error = e
+    @github_error = e.message
   rescue Octokit::Error => e
     Airbrake.notify(e)
     @github_available = false
-    @github_error = e
+    @github_error = e.message
   end
 
   def new
@@ -73,7 +78,7 @@ class ApplicationsController < ApplicationController
     @github_available = true
   rescue Octokit::NotFound => e
     @github_available = false
-    @github_error = e
+    @github_error = e.message
   end
 
   def create
@@ -105,6 +110,16 @@ class ApplicationsController < ApplicationController
   end
 
 private
+
+  def github_rate_limited_error_message
+    message = "Github API rate limit exceeded. "
+    resets_at = github.rate_limit.try(:resets_at)
+    if resets_at
+      time_until_reset = time_ago_in_words(resets_at)
+      message << "Rate limit will reset in #{time_until_reset}."
+    end
+    message
+  end
 
   def find_application
     @application = Application.friendly.find(params[:id])
