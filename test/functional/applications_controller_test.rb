@@ -169,16 +169,34 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
     end
 
-    context "when there is a github API error" do
+    context "when there is a github API 404 error" do
       setup do
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::TooManyRequests.new)
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::NotFound.new)
         get :show, params: { id: @app.id }
       end
 
       should "show the error message" do
         assert_select '.alert-error' do
           assert_select 'div', "Couldn't get data from GitHub:"
-          assert_select 'div', "Octokit::TooManyRequests"
+          assert_select 'div', "Octokit::NotFound"
+        end
+      end
+    end
+
+    context "when there is a github rate limit error" do
+      setup do
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::TooManyRequests.new)
+        stub_request(:get, "https://api.github.com/rate_limit").to_return(
+          headers: { "X-RateLimit-Reset" => 5.minutes.from_now.to_i },
+          body: ""
+        )
+        get :show, params: { id: @app.id }
+      end
+
+      should "show the rate limit message" do
+        assert_select '.alert-error' do
+          assert_select 'div', "Couldn't get data from GitHub:"
+          assert_select 'div', "Github API rate limit exceeded. Rate limit will reset in 5 minutes."
         end
       end
     end
