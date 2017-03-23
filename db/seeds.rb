@@ -4,7 +4,6 @@
 example_note = "Here is a note that will hopefully demonstrate how somebody might use the notes field to write a long note."
 
 applications = [
-  { name: "Business support finder",                repo: "alphagov/business-support-finder",               shortname: "businesssupportfinder" },
   { name: "Calendars",                              repo: "alphagov/calendars" },
   { name: "GOV.UK content API",                     repo: "alphagov/govuk_content_api",                     shortname: "contentapi" },
   { name: "Design principles",                      repo: "alphagov/design-principles",                     shortname: "designprinciples" },
@@ -14,14 +13,11 @@ applications = [
   { name: "Imminence",                              repo: "alphagov/imminence" },
   { name: "Licence finder",                         repo: "alphagov/licence-finder",                        shortname: "licencefinder" },
   { name: "Licensify",                              repo: "alphagov/licensify" },
-  { name: "Migratorator",                           repo: "alphagov/migratorator" },
-  { name: "Need-o-tron",                            repo: "alphagov/need-o-tron",                           shortname: "needotron" },
   { name: "Publisher",                              repo: "alphagov/publisher" },
   { name: "Puppet",                                 repo: "gds/puppet",                                     domain: "github.gds" },
-  { name: "Recommended links",                      repo: "alphagov/recommended-links" },
   { name: "Redirector",                             repo: "alphagov/redirector" },
   { name: "Rummager",                               repo: "alphagov/rummager" },
-  { name: "Signon-o-tron 2",                        repo: "alphagov/signonotron2",                          shortname: "signon" },
+  { name: "Signon",                                 repo: "alphagov/signon" },
   { name: "Smart answers",                          repo: "alphagov/smart-answers",                         shortname: "smartanswers" },
   { name: "Smokey",                                 repo: "alphagov/smokey" },
   { name: "Static",                                 repo: "alphagov/static" },
