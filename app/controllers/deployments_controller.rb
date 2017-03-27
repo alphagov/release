@@ -7,8 +7,13 @@ class DeploymentsController < ApplicationController
 
   def new
     default_deploy_time = Time.zone.now.strftime("%e/%m/%Y %H:%M")
-    @deployment = Deployment.new(application_id: deployment_params[:application_id],
-                                 environment: deployment_params[:environment],
+
+    shortname = new_deployment_params[:application_id]
+
+    application_id = Application.where(shortname: shortname).pluck(:id).first
+
+    @deployment = Deployment.new(application_id: application_id,
+                                 environment: new_deployment_params[:environment],
                                  created_at: default_deploy_time)
   end
 
@@ -76,6 +81,13 @@ private
       :id,
       :repo,
       :version,
+    )
+  end
+
+  def new_deployment_params
+    params.permit(
+      :application_id,
+      :environment
     )
   end
 end
