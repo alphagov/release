@@ -29,6 +29,18 @@ class DeploymentsControllerTest < ActionController::TestCase
     should "redirect when the user has no deploy permissions" do
       actions_requiring_deploy_permission_redirect(:get, :new)
     end
+
+    should "preselect the application" do
+      FactoryGirl.create(
+        :application,
+        repo: "org/app",
+        name: "Application"
+      )
+
+      get :new, params: { application_id: "app" }
+
+      assert_select '#deployment_application_id option[selected]', 'Application'
+    end
   end
 
   context "POST create" do
