@@ -333,6 +333,24 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
     end
+
+    should "show dashboard links when application is Whitehall" do
+      @app.shortname = "whitehall"
+      @app.save
+
+      get :deploy, params: { id: @app.id, tag: @release_tag }
+      assert_select "a[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/db/prototype-dashboard-whitehall"
+      assert_select "a[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/db/prototype-dashboard-whitehall"
+    end
+
+    should "not show dashboard links for other applications" do
+      @app.shortname = "test_application"
+      @app.save
+
+      get :deploy, params: { id: @app.id, tag: @release_tag }
+      assert_select "a:match('href', ?)", %r"grafana.publishing.service.gov.uk", count: 0
+      assert_select "a:match('href', ?)", %r"grafana.staging.publishing.service.gov.uk", count: 0
+    end
   end
 
 private
