@@ -329,7 +329,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select "p.lead .label-danger", @deployment.version
     end
 
-    should "should include status notes as a warning" do
+    should "include status notes as a warning" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
     end
