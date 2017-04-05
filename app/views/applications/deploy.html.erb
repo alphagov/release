@@ -98,9 +98,21 @@
 
       <div class="col-md-9">
         <h3>Test on Staging</h3>
+        <% if @application.shortname == 'whitehall' %>
+          <p>
+            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+            <a target="_blank" href="https://grafana.staging.publishing.service.gov.uk/dashboard/db/prototype-dashboard-whitehall">Staging dashboard</a>: monitor your deployment to check that it doesn't cause any problems
+          </p>
+        <% end %>
         <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Staging</a></p>
 
         <h3>Promote to Production</h3>
+        <% if @application.shortname == 'whitehall' %>
+          <p>
+            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+            <a target="_blank" href="https://grafana.publishing.service.gov.uk/dashboard/db/prototype-dashboard-whitehall">Production dashboard</a>: monitor your deployment to check that it doesn't cause any problems
+          </p>
+        <% end %>
         <p><a class="btn btn-danger" target="_blank" href="https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Production</a></p>
       </div>
     </div>
