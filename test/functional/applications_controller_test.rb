@@ -339,8 +339,8 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app.save
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "a[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/db/deployment-whitehall"
-      assert_select "a[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/db/deployment-whitehall"
+      assert_select "a[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/deployment_whitehall.json"
+      assert_select "a[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/file/deployment_whitehall.json"
     end
 
     should "not show dashboard links when application does not have a dashboard" do
