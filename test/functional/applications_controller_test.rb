@@ -309,6 +309,8 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app = FactoryGirl.create(:application, status_notes: 'Do not deploy this without talking to core team first!')
       @deployment = FactoryGirl.create(:deployment, application_id: @app.id)
       @release_tag = 'hot_fix_1'
+      stub_request(:get, %r{grafana.publishing.service.gov.uk/api/dashboards/file/deployment_#{@app.shortname}.json}).to_return(status: 404)
+      stub_request(:get, %r{grafana.staging.publishing.service.gov.uk/api/dashboards/file/deployment_#{@app.shortname}.json}).to_return(status: 404)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
       Octokit::Client.any_instance.stubs(:compare)
@@ -337,6 +339,8 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "show dashboard links when application has a dashboard" do
       @app.shortname = "whitehall"
       @app.save
+      stub_request(:get, 'https://grafana.publishing.service.gov.uk/api/dashboards/file/deployment_whitehall.json').to_return(status: '200')
+      stub_request(:get, 'https://grafana.staging.publishing.service.gov.uk/api/dashboards/file/deployment_whitehall.json').to_return(status: '200')
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "a[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/deployment_whitehall.json"
@@ -346,6 +350,8 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "not show dashboard links when application does not have a dashboard" do
       @app.shortname = "test_application"
       @app.save
+      stub_request(:get, 'https://grafana.publishing.service.gov.uk/api/dashboards/file/deployment_test_application.json').to_return(status: '404')
+      stub_request(:get, 'https://grafana.staging.publishing.service.gov.uk/api/dashboards/file/deployment_test_application.json').to_return(status: '404')
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "a:match('href', ?)", %r"grafana.publishing.service.gov.uk", count: 0

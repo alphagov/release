@@ -98,19 +98,19 @@
 
       <div class="col-md-9">
         <h3>Test on Staging</h3>
-        <% if @application.shortname == 'whitehall' %>
+        <% if @staging_dashboard_url %>
           <p>
             <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            <a target="_blank" href="https://grafana.staging.publishing.service.gov.uk/dashboard/file/deployment_whitehall.json">Staging dashboard</a>: monitor your deployment to check that it doesn't cause any problems
+            <a target="_blank" href="<%= @staging_dashboard_url %>">Staging dashboard</a>: monitor your deployment to check that it doesn't cause any problems
           </p>
         <% end %>
         <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Staging</a></p>
 
         <h3>Promote to Production</h3>
-        <% if @application.shortname == 'whitehall' %>
+        <% if @production_dashboard_url %>
           <p>
             <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            <a target="_blank" href="https://grafana.publishing.service.gov.uk/dashboard/file/deployment_whitehall.json">Production dashboard</a>: monitor your deployment to check that it doesn't cause any problems
+            <a target="_blank" href="<%= @production_dashboard_url %>">Production dashboard</a>: monitor your deployment to check that it doesn't cause any problems
           </p>
         <% end %>
         <p><a class="btn btn-danger" target="_blank" href="https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Production</a></p>

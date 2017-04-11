@@ -64,6 +64,8 @@ class ApplicationsController < ApplicationController
 
   def deploy
     @release_tag = params[:tag]
+    @staging_dashboard_url = dashboard_url('grafana.staging.publishing.service.gov.uk', @application.shortname)
+    @production_dashboard_url = dashboard_url('grafana.publishing.service.gov.uk', @application.shortname)
 
     @production_deploy = @application.deployments.last_deploy_to "production"
     if @production_deploy
@@ -145,5 +147,12 @@ private
       :status_notes,
       :task,
     )
+  end
+
+  def dashboard_url(host_name, application_name)
+    uri = URI("https://#{host_name}/api/dashboards/file/deployment_#{application_name}.json")
+    return nil unless Net::HTTP.get_response(uri).is_a?(Net::HTTPSuccess)
+
+    "https://#{host_name}/dashboard/file/deployment_#{application_name}.json"
   end
 end
