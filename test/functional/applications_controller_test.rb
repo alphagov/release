@@ -336,7 +336,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
     end
 
-    should "show dashboard links when application has a dashboard" do
+    should "show dashboard links to application's deployment dashboard" do
       @app.shortname = "whitehall"
       @app.save
       stub_request(:get, 'https://grafana.publishing.service.gov.uk/api/dashboards/file/deployment_whitehall.json').to_return(status: '200')
@@ -345,17 +345,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "a[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/deployment_whitehall.json"
       assert_select "a[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/file/deployment_whitehall.json"
-    end
-
-    should "not show dashboard links when application does not have a dashboard" do
-      @app.shortname = "test_application"
-      @app.save
-      stub_request(:get, 'https://grafana.publishing.service.gov.uk/api/dashboards/file/deployment_test_application.json').to_return(status: '404')
-      stub_request(:get, 'https://grafana.staging.publishing.service.gov.uk/api/dashboards/file/deployment_test_application.json').to_return(status: '404')
-
-      get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "a:match('href', ?)", %r"grafana.publishing.service.gov.uk", count: 0
-      assert_select "a:match('href', ?)", %r"grafana.staging.publishing.service.gov.uk", count: 0
     end
   end
 
