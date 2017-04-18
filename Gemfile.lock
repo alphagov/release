@@ -176,7 +176,7 @@ GEM
       omniauth (~> 1.2)
     parser (2.3.1.4)
       ast (~> 2.2)
-    plek (1.10.0)
+    plek (2.0.0)
     poltergeist (1.8.1)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -331,7 +331,7 @@ DEPENDENCIES
   mysql2 (= 0.3.18)
   nested_form (= 0.3.1)
   octokit (= 3.1.2)
-  plek (= 1.10)
+  plek (= 2.0)
   poltergeist (~> 1.8.1)
   pry (= 0.10.0)
   rails (~> 5.0)
@@ -348,4 +348,4 @@ DEPENDENCIES
   whenever (= 0.8.2)
 
 BUNDLED WITH
-   1.11.2
+   1.14.5
