@@ -17,7 +17,7 @@ gem 'friendly_id', '5.1.0'
 
 # GDS gems.
 gem 'gds-sso', '13.0.0'
-gem 'plek', '1.10'
+gem 'plek', '2.0'
 
 gem 'airbrake', '~> 5.5'
 gem 'airbrake-ruby', '1.5'
