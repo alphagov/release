@@ -158,7 +158,7 @@ private
     request = Net::HTTP::Get.new(uri.path)
 
     begin
-      grafana_api_response = Net::HTTP.start(uri.host, uri.port) { |http|
+      grafana_api_response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http|
         http.read_timeout = 2 # seconds
         http.request(request)
       }
