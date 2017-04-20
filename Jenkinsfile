@@ -9,5 +9,5 @@ node {
     stage("Run tests") {
       govuk.runRakeTask("ci:setup:rspec default")
     }
-  }, sassLint: false)
+  }, sassLint: false, newStyleDockerTags: true)
 }
