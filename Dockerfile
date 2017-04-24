@@ -14,6 +14,7 @@ RUN apt-get update && \
 COPY . .
 
 RUN bundle install
+RUN bundle exec rake assets:clean assets:precompile
 
 #HEALTHCHECK --interval=15s --timeout=3s\
 #  CMD curl -f http://localhost:3036/ || exit 1
