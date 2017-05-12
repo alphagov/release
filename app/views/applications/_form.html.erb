@@ -5,7 +5,7 @@
     <%= f.inputs do %>
       <%= f.input :name, label: "Name", input_html: { class: 'input-md-6' } %>
       <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher", input_html: { class: 'input-md-6' } %>
-      <%= f.input :domain, label: "GitHub domain", hint: "eg github.gds", input_html: { class: 'input-md-6' } %>
+      <%= f.input :domain, label: "GitHub domain", hint: "eg github.digital.cabinet-office.gov.uk", input_html: { class: 'input-md-6' } %>
       <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
                               input_html: { placeholder: @application.fallback_shortname, class: 'input-md-6' } %>
       <%= f.input :archived, label: "Archived?" %>
