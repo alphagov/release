@@ -5,7 +5,7 @@ example_note = "Here is a note that will hopefully demonstrate how somebody migh
 
 applications = [
   { name: "Calendars",                              repo: "alphagov/calendars" },
-  { name: "GOV.UK content API",                     repo: "alphagov/govuk_content_api",                     shortname: "contentapi" },
+  { name: "Content store",                          repo: "alphagov/content-store" },
   { name: "Design principles",                      repo: "alphagov/design-principles",                     shortname: "designprinciples" },
   { name: "Enterprise finance guarantee",           repo: "alphagov/EFG",                                   shortname: "efg" },
   { name: "Feedback",                               repo: "alphagov/feedback" },
