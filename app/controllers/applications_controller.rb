@@ -50,7 +50,7 @@ class ApplicationsController < ApplicationController
     @github_available = false
     @github_error = e.message
   rescue Octokit::Error => e
-    Airbrake.notify(e)
+    GovukError.notify(e.message)
     @github_available = false
     @github_error = e.message
   end
