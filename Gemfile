@@ -10,7 +10,7 @@ gem 'govuk_admin_template', '4.4.1'
 gem 'mysql2', '0.3.18'
 gem 'nested_form', '0.3.1'
 gem 'octokit', '3.1.2'
-gem 'statsd-ruby', '1.0.0', require: "statsd"
+gem 'statsd-ruby', '1.4.0', require: "statsd"
 gem 'unicorn', '4.4.0'
 gem 'whenever', '0.8.2'
 gem 'friendly_id', '5.1.0'
@@ -19,8 +19,7 @@ gem 'friendly_id', '5.1.0'
 gem 'gds-sso', '13.0.0'
 gem 'plek', '2.0'
 
-gem 'airbrake', '~> 5.5'
-gem 'airbrake-ruby', '1.5'
+gem 'govuk_app_config'
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
 
