@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151214151156) do
+ActiveRecord::Schema.define(version: 20171116165801) do
 
   create_table "applications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "name"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 20151214151156) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc"
+  end
+
+  create_table "sites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "status_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
