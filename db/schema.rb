@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -13,42 +12,40 @@
 
 ActiveRecord::Schema.define(version: 20151214151156) do
 
-  create_table "applications", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "repo",         limit: 255
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.string   "status_notes", limit: 255
-    t.string   "shortname",    limit: 255
-    t.string   "domain",       limit: 255
-    t.boolean  "archived",     limit: 1,   default: false, null: false
+  create_table "applications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "name"
+    t.string "repo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status_notes"
+    t.string "shortname"
+    t.string "domain"
+    t.boolean "archived", default: false, null: false
+    t.index ["name"], name: "index_applications_on_name", unique: true
+    t.index ["repo"], name: "index_applications_on_repo", unique: true
+    t.index ["shortname"], name: "index_applications_on_shortname"
   end
 
-  add_index "applications", ["name"], name: "index_applications_on_name", unique: true, using: :btree
-  add_index "applications", ["repo"], name: "index_applications_on_repo", unique: true, using: :btree
-  add_index "applications", ["shortname"], name: "index_applications_on_shortname", using: :btree
-
-  create_table "deployments", force: :cascade do |t|
-    t.string   "version",        limit: 255
-    t.string   "environment",    limit: 255
-    t.integer  "application_id", limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+  create_table "deployments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "version"
+    t.string "environment"
+    t.integer "application_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc"
   end
 
-  add_index "deployments", ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc", using: :btree
-
-  create_table "users", force: :cascade do |t|
-    t.string   "name",                    limit: 255
-    t.string   "email",                   limit: 255
-    t.string   "uid",                     limit: 255
-    t.text     "permissions",             limit: 65535
-    t.boolean  "remotely_signed_out",     limit: 1,     default: false
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
-    t.string   "organisation_slug",       limit: 255
-    t.boolean  "disabled",                limit: 1,     default: false
-    t.string   "organisation_content_id", limit: 255,   default: ""
+  create_table "users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "name"
+    t.string "email"
+    t.string "uid"
+    t.text "permissions"
+    t.boolean "remotely_signed_out", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "organisation_slug"
+    t.boolean "disabled", default: false
+    t.string "organisation_content_id", default: ""
   end
 
 end
