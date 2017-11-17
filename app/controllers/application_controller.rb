@@ -28,6 +28,6 @@ private
   end
 
   def redirect_if_read_only_user
-    redirect_to applications_path unless current_user.may_deploy?
+    redirect_to applications_path, notice: 'You do not have permission to do that' unless current_user.may_deploy?
   end
 end
