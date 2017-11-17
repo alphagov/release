@@ -65,7 +65,8 @@
                   </div>
                   <%= semantic_form_for application, url: update_notes_application_path(application) do |f| %>
                     <div class="modal-body">
-                      <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50 } %>
+                      <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50, data: { length_counting: 'on', count_message_threshold: 255, count_message_selector: "#notes-length-info-for-app-#{application.id}" } } %>
+                      <p id="notes-length-info-for-app-<%= application.id %>">Notes should be 255 characters or fewer. <span class="count"></span></p>
                     </div>
                     <div class="modal-footer">
                       <%= f.actions do %>

@@ -7,7 +7,8 @@
     <%= f.semantic_errors %>
 
     <%= f.inputs do %>
-      <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50 } %>
+      <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50, data: { length_counting: 'on', count_message_threshold: 255, count_message_selector: '.notes-length-info' } } %>
+      <p class="notes-length-info">Notes should be 255 characters or fewer. <span class="count"></span></p>
     <% end %>
     <hr/>
     <%= f.actions do %>
