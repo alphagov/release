@@ -22,4 +22,16 @@ class SiteTest < ActiveSupport::TestCase
       assert_equal ['There can only be one Site instance'], remake.errors[:base]
     end
   end
+
+  context '.settings' do
+    should "return an unsaved instance if no instance is persisted already" do
+      refute Site.settings.persisted?
+    end
+
+    should "return an the persisted instance if one has be saved already" do
+      site = FactoryGirl.create(:site)
+      assert Site.settings.persisted?
+      assert_equal site, Site.settings
+    end
+  end
 end

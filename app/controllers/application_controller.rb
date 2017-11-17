@@ -16,6 +16,11 @@ class ApplicationController < ActionController::Base
     render json: status
   end
 
+  def site_settings
+    @site_settings ||= Site.settings
+  end
+  helper_method :site_settings
+
 private
 
   def error(status_code)

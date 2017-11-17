@@ -2,6 +2,10 @@ class Site < ApplicationRecord
   validates :status_notes, length: { maximum: 255 }
   validate :there_can_be_only_one, on: :create
 
+  def self.settings
+    Site.first_or_initialize
+  end
+
 private
 
   def there_can_be_only_one
