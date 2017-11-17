@@ -9,11 +9,7 @@
 </div>
 
 <main>
-  <% if @application.status_notes.present? %>
-    <div class="alert alert-warning" role="alert">
-      <p><%= @application.status_notes %></p>
-    </div>
-  <% end %>
+  <%= render 'status_notes', application: @application %>
 
   <h2>Candidate Release <span class="label label-info"><%= @release_tag %></span></h2>
   <% if @production_deploy %>
