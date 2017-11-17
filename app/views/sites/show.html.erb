@@ -1,0 +1,17 @@
+<% content_for :page_title, 'Site settings' %>
+
+<h1>Site settings</h1>
+
+<div class="well">
+  <%= semantic_form_for site_settings, url: site_path, method: 'patch' do |f| %>
+    <%= f.semantic_errors %>
+
+    <%= f.inputs do %>
+      <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50 } %>
+    <% end %>
+    <hr/>
+    <%= f.actions do %>
+      <%= f.action :submit, as: :button, button_html: { class: 'btn btn-success' } %>
+    <% end %>
+  <% end %>
+</div>

@@ -17,6 +17,8 @@ ReleaseApp::Application.routes.draw do
 
   resources :deployments
 
+  resource :site, only: [:show, :update]
+
   get '/activity', to: 'deployments#recent', as: :activity
 
   get '/healthcheck', to: 'application#healthcheck'
