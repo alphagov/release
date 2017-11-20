@@ -6,3 +6,11 @@ en:
     attributes:
       deploy:
         release: "Release Number"
+  formtastic:
+    labels:
+      site:
+        status_notes: 'Notes'
+    actions:
+      site:
+        create: 'Save settings'
+        update: 'Save settings'

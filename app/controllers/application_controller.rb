@@ -16,6 +16,11 @@ class ApplicationController < ActionController::Base
     render json: status
   end
 
+  def site_settings
+    @site_settings ||= Site.settings
+  end
+  helper_method :site_settings
+
 private
 
   def error(status_code)
@@ -23,6 +28,6 @@ private
   end
 
   def redirect_if_read_only_user
-    redirect_to applications_path unless current_user.may_deploy?
+    redirect_to applications_path, notice: 'You do not have permission to do that' unless current_user.may_deploy?
   end
 end

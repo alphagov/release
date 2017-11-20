@@ -15,4 +15,8 @@ FactoryGirl.define do
     sequence(:email) { |n| "winston-#{n}@gov.uk" }
     permissions { %w(signin deploy) }
   end
+
+  factory :site do
+    status_notes "Don't deploy, we're all at a party!"
+  end
 end
