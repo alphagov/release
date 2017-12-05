@@ -43,7 +43,7 @@ group :test, :development do
   gem 'simplecov', '0.9.1', require: false
   gem 'simplecov-rcov', '0.2.3', require: false
   gem 'timecop', '0.4.5'
-  gem 'webmock', '1.20.4', require: false
+  gem 'webmock', '~> 2.3.0', require: false
   gem 'pry', '0.10.0'
   gem 'govuk-lint'
   gem 'ci_reporter_rspec'
