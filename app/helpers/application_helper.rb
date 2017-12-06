@@ -38,6 +38,15 @@ module ApplicationHelper
     "#{application.repo_url}/compare/#{deploy.version}...master"
   end
 
+  def jenkins_deploy_url(application, release_tag, environment)
+    job_name = "Deploy_App"
+    job_name = "Deploy_Puppet" if application.shortname == "puppet"
+    subdomain_prefix = "deploy.staging"
+    subdomain_prefix = "deploy" if environment == "production"
+    escaped_release_tag = CGI.escape(release_tag)
+    "https://#{subdomain_prefix}.publishing.service.gov.uk/job/#{job_name}/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe
+  end
+
 private
 
   def yesterday

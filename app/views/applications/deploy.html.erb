@@ -107,7 +107,7 @@
             monitor your deployment to check that it doesn't cause any problems.
           </p>
         <% end %>
-        <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Staging</a></p>
+        <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "staging") %>">Deploy to Staging</a></p>
 
         <h3>Promote to Production</h3>
         <% if @production_dashboard_url %>
@@ -117,7 +117,7 @@
             monitor your deployment to check that it doesn't cause any problems.
           </p>
         <% end %>
-        <p><a class="btn btn-danger" target="_blank" href="https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=<%= @application.shortname %>&amp;TAG=<%= @release_tag %>">Deploy to Production</a></p>
+        <p><a class="btn btn-danger" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "production") %>">Deploy to Production</a></p>
       </div>
     </div>
   <% end %>
