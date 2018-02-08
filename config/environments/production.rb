@@ -72,11 +72,6 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  # Enable JSON-style logging
-  config.logstasher.enabled = true
-  config.logstasher.logger = Logger.new("#{Rails.root}/log/#{Rails.env}.json.log")
-  config.logstasher.supress_app_log = true
-
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
