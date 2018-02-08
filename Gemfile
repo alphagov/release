@@ -16,7 +16,7 @@ gem 'whenever', '0.8.2'
 gem 'friendly_id', '5.1.0'
 
 # GDS gems.
-gem 'gds-sso', '13.0.0'
+gem 'gds-sso', '~> 13'
 gem 'plek', '~> 2'
 
 gem 'govuk_app_config'

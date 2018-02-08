@@ -106,7 +106,7 @@ GEM
       formtastic (>= 2.2)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
-    gds-sso (13.0.0)
+    gds-sso (13.6.0)
       multi_json (~> 1.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
@@ -343,7 +343,7 @@ DEPENDENCIES
   formtastic (= 2.3.0)
   formtastic-bootstrap (= 3.0.0)
   friendly_id (= 5.1.0)
-  gds-sso (= 13.0.0)
+  gds-sso (~> 13)
   govuk-lint
   govuk_admin_template (= 4.4.1)
   govuk_app_config
