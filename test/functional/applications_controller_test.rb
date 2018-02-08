@@ -317,7 +317,15 @@ class ApplicationsControllerTest < ActionController::TestCase
         .returns(stub("comparison",
                       commits: [],
                       base_commit: nil))
-      Plek.expects(:find).with("grafana").returns("https://grafana_hostname")
+      Plek.any_instance
+        .stubs(:external_url_for)
+        .with("signon")
+        .returns("https://signon_hostname")
+
+      Plek.any_instance
+        .stubs(:external_url_for)
+        .with("grafana")
+        .returns("https://grafana_hostname")
     end
 
     should "show that we are trying to deploy the application" do

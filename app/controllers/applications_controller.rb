@@ -153,7 +153,7 @@ private
   end
 
   def application_has_dashboard?(application_name)
-    grafana_base_url = Plek.find('grafana')
+    grafana_base_url = Plek.new.external_url_for('grafana')
     uri = URI("#{grafana_base_url}/api/dashboards/file/deployment_#{application_name}.json")
     request = Net::HTTP::Get.new(uri.path)
 
