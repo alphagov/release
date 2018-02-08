@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
 
-  before_action :require_signin_permission!, except: [:healthcheck]
+  before_action :authenticate_user!, except: [:healthcheck]
 
   protect_from_forgery
 
