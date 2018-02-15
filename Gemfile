@@ -26,7 +26,7 @@ gem 'exception_notification'
 gem 'logstasher', '0.4.8'
 
 gem 'sass-rails', '~> 5.0.6'
-gem 'uglifier', '2.7.1'
+gem 'uglifier', '4.1.6'
 
 group :test, :development do
   gem 'better_errors', '2.4.0'
