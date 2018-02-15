@@ -44,7 +44,7 @@ group :test, :development do
   gem 'simplecov-rcov', '0.2.3', require: false
   gem 'timecop', '0.4.5'
   gem 'webmock', '~> 2.3.0', require: false
-  gem 'pry', '0.10.0'
+  gem 'pry', '0.11.3'
   gem 'govuk-lint'
   gem 'ci_reporter_rspec'
 end
