@@ -34,7 +34,7 @@ group :test, :development do
   gem 'capybara', '~> 2.18.0'
   gem 'poltergeist', '~> 1.17.0'
   gem 'ci_reporter_minitest', '~> 1.0.0'
-  gem 'database_cleaner', '~> 1.5.3'
+  gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_girl_rails', '4.5.0'
   gem 'minitest', '5.5.1'
   gem 'mocha', '1.3.0', require: false
