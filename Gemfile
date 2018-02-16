@@ -8,7 +8,7 @@ gem 'momentjs-rails', '~> 2.5.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 gem 'govuk_admin_template', '4.4.1'
 gem 'mysql2', '0.3.18'
-gem 'nested_form', '0.3.1'
+gem 'nested_form', '0.3.2'
 gem 'octokit', '3.1.2'
 gem 'statsd-ruby', '1.4.0', require: "statsd"
 gem 'unicorn', '4.4.0'
