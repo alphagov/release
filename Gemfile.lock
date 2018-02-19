@@ -357,7 +357,7 @@ DEPENDENCIES
   plek (= 2.1.1)
   poltergeist (~> 1.17.0)
   pry (= 0.11.3)
-  rails (~> 5.1.1)
+  rails (~> 5.1.5)
   rails-controller-testing
   sass-rails (~> 5.0.6)
   shoulda-context (= 1.2.2)
