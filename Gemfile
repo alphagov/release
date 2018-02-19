@@ -23,7 +23,7 @@ gem 'govuk_app_config'
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
 
-gem 'logstasher', '0.4.8'
+gem 'logstasher', '1.2.2'
 
 gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '2.7.1'
