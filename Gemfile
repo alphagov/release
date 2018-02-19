@@ -11,19 +11,16 @@ gem 'mysql2', '0.3.18'
 gem 'nested_form', '0.3.1'
 gem 'octokit', '3.1.2'
 gem 'statsd-ruby', '1.4.0', require: "statsd"
-gem 'unicorn', '4.4.0'
 gem 'whenever', '0.8.2'
 gem 'friendly_id', '5.1.0'
 
 # GDS gems.
-gem 'gds-sso', '13.0.0'
-gem 'plek', '2.0'
+gem 'gds-sso', '~> 13'
+gem 'plek', '~> 2'
 
-gem 'govuk_app_config'
+gem 'govuk_app_config', '~> 1'
 gem 'aws-ses', require: 'aws/ses'
 gem 'exception_notification'
-
-gem 'logstasher', '0.4.8'
 
 gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '2.7.1'
