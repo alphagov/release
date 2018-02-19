@@ -31,7 +31,7 @@ gem 'uglifier', '2.7.1'
 group :test, :development do
   gem 'better_errors', '2.1.0'
   gem 'binding_of_caller', '0.7.2'
-  gem 'capybara', '~> 2.16.0'
+  gem 'capybara', '~> 2.18.0'
   gem 'poltergeist', '~> 1.8.1'
   gem 'ci_reporter_minitest', '~> 1.0.0'
   gem 'database_cleaner', '~> 1.5.3'
