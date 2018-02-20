@@ -101,8 +101,8 @@ GEM
     ffi (1.9.21)
     formtastic (3.1.5)
       actionpack (>= 3.2.13)
-    formtastic-bootstrap (3.0.0)
-      formtastic (>= 2.2)
+    formtastic-bootstrap (3.1.1)
+      formtastic (>= 3.0)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
     gds-sso (13.0.0)
@@ -335,7 +335,7 @@ DEPENDENCIES
   exception_notification
   factory_girl_rails (= 4.5.0)
   formtastic (= 3.1.5)
-  formtastic-bootstrap (= 3.0.0)
+  formtastic-bootstrap (= 3.1.1)
   friendly_id (= 5.1.0)
   gds-sso (= 13.0.0)
   govuk-lint
