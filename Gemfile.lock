@@ -48,9 +48,9 @@ GEM
       mail (> 2.2.5)
       mime-types
       xml-simple
-    better_errors (2.1.0)
+    better_errors (2.4.0)
       coderay (>= 1.0.0)
-      erubis (>= 2.6.6)
+      erubi (>= 1.0.0)
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
@@ -87,7 +87,6 @@ GEM
     diff-lcs (1.3)
     docile (1.1.5)
     erubi (1.7.0)
-    erubis (2.7.0)
     exception_notification (4.2.2)
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
@@ -327,7 +326,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-ses
-  better_errors (= 2.1.0)
+  better_errors (= 2.4.0)
   binding_of_caller (= 0.8.0)
   bootstrap3-datetimepicker-rails (~> 3.0.0)
   capybara (~> 2.18.0)

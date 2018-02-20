@@ -29,7 +29,7 @@ gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '2.7.1'
 
 group :test, :development do
-  gem 'better_errors', '2.1.0'
+  gem 'better_errors', '2.4.0'
   gem 'binding_of_caller', '0.8.0'
   gem 'capybara', '~> 2.18.0'
   gem 'poltergeist', '~> 1.17.0'
