@@ -9,7 +9,7 @@ gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 gem 'govuk_admin_template', '4.4.1'
 gem 'mysql2', '0.3.18'
 gem 'nested_form', '0.3.1'
-gem 'octokit', '3.1.2'
+gem 'octokit', '4.8.0'
 gem 'statsd-ruby', '1.4.0', require: "statsd"
 gem 'unicorn', '4.4.0'
 gem 'whenever', '0.8.2'
