@@ -39,7 +39,7 @@ private
     # Only record production deployments in production graphite
     if self.environment == "production"
       key = "deploys.#{self.application.shortname}"
-      STATSD.increment(key)
+      GovukStatsd.increment(key)
     end
   end
 end
