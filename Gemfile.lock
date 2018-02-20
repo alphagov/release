@@ -103,7 +103,7 @@ GEM
       actionpack (>= 3.2.13)
     formtastic-bootstrap (3.1.1)
       formtastic (>= 3.0)
-    friendly_id (5.1.0)
+    friendly_id (5.2.3)
       activerecord (>= 4.0.0)
     gds-sso (13.0.0)
       multi_json (~> 1.0)
@@ -336,7 +336,7 @@ DEPENDENCIES
   factory_girl_rails (= 4.5.0)
   formtastic (= 3.1.5)
   formtastic-bootstrap (= 3.1.1)
-  friendly_id (= 5.1.0)
+  friendly_id (= 5.2.3)
   gds-sso (= 13.0.0)
   govuk-lint
   govuk_admin_template (= 6.5.0)
