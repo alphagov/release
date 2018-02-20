@@ -12,7 +12,7 @@ gem 'nested_form', '0.3.1'
 gem 'octokit', '3.1.2'
 gem 'statsd-ruby', '1.4.0', require: "statsd"
 gem 'unicorn', '4.4.0'
-gem 'whenever', '0.8.2'
+gem 'whenever', '0.10.0'
 gem 'friendly_id', '5.1.0'
 
 # GDS gems.
