@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.1.1'
 
-gem 'formtastic', '2.3.0'
+gem 'formtastic', '3.1.5'
 gem 'formtastic-bootstrap', '3.0.0'
 gem 'momentjs-rails', '~> 2.5.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
