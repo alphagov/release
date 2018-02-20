@@ -18,8 +18,6 @@ gem 'gds-sso', '13.0.0'
 gem 'plek', '2.1.1'
 
 gem 'govuk_app_config'
-gem 'aws-ses', require: 'aws/ses'
-gem 'exception_notification'
 
 gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '4.1.6'
