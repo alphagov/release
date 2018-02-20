@@ -7,10 +7,10 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET index" do
     setup do
-      @app1 = FactoryGirl.create(:application, name: "app1", repo: "user/app1")
-      @app2 = FactoryGirl.create(:application, name: "app2", repo: "user/app2")
-      @app3 = FactoryGirl.create(:application, name: "app3", repo: "user/app3", archived: true)
-      @deploy1 = FactoryGirl.create(:deployment,
+      @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1")
+      @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
+      @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
+      @deploy1 = FactoryBot.create(:deployment,
         application: @app1,
         environment: "staging",
         version: "release_x")
@@ -100,7 +100,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET show" do
     setup do
-      @app = FactoryGirl.create(:application)
+      @app = FactoryBot.create(:application)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
     end
@@ -119,7 +119,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     context "GET show with a production deployment" do
       setup do
         version = "release_42"
-        FactoryGirl.create(:deployment, application: @app, version: version)
+        FactoryBot.create(:deployment, application: @app, version: version)
         @first_commit = stub_commit
         @second_commit = stub_commit
         @base_commit = stub_commit
@@ -204,7 +204,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET edit" do
     setup do
-      @app = FactoryGirl.create(:application, name: "monkeys", repo: "org/monkeys")
+      @app = FactoryBot.create(:application, name: "monkeys", repo: "org/monkeys")
     end
 
     should "redirect when the user has no deploy permissions" do
@@ -236,7 +236,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     setup do
-      @app = FactoryGirl.create(:application)
+      @app = FactoryBot.create(:application)
     end
 
     should "update the application" do
@@ -265,7 +265,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     setup do
-      @app = FactoryGirl.create(:application)
+      @app = FactoryBot.create(:application)
     end
 
     should "update the application, redirect to /applications" do
@@ -278,9 +278,9 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET archived" do
     setup do
-      @app1 = FactoryGirl.create(:application, name: "app1", repo: "user/app1")
-      @app2 = FactoryGirl.create(:application, name: "app2", repo: "user/app2")
-      @app3 = FactoryGirl.create(:application, name: "app3", repo: "user/app3", archived: true)
+      @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1")
+      @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
+      @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
     end
 
     should "show only archived applications" do
@@ -306,8 +306,8 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET deploy" do
     setup do
-      @app = FactoryGirl.create(:application, status_notes: 'Do not deploy this without talking to core team first!')
-      @deployment = FactoryGirl.create(:deployment, application_id: @app.id)
+      @app = FactoryBot.create(:application, status_notes: 'Do not deploy this without talking to core team first!')
+      @deployment = FactoryBot.create(:deployment, application_id: @app.id)
       @release_tag = 'hot_fix_1'
       stub_request(:get, %r{grafana_hostname/api/dashboards/file/deployment_#{@app.shortname}.json}).to_return(status: 404)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])

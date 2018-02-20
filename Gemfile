@@ -35,7 +35,7 @@ group :test, :development do
   gem 'poltergeist', '~> 1.17.0'
   gem 'ci_reporter_minitest', '~> 1.0.0'
   gem 'database_cleaner', '~> 1.6.2'
-  gem 'factory_girl_rails', '4.5.0'
+  gem 'factory_bot_rails'
   gem 'minitest', '5.5.1'
   gem 'mocha', '1.3.0', require: false
   gem 'rails-controller-testing'

@@ -29,7 +29,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "be invalid with a duplicate name" do
-      FactoryGirl.create(:application, name: "Tron-o-matic")
+      FactoryBot.create(:application, name: "Tron-o-matic")
       application = Application.new(@atts)
 
       refute application.valid?
@@ -37,7 +37,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "be invalid with a duplicate repo" do
-      FactoryGirl.create(:application, repo: "alphagov/tron-o-matic")
+      FactoryBot.create(:application, repo: "alphagov/tron-o-matic")
       application = Application.new(@atts)
 
       refute application.valid?

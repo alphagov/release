@@ -22,7 +22,7 @@ class ActionDispatch::IntegrationTest
   end
 
   def login_as_stub_user
-    @current_user = FactoryGirl.create(:user)
+    @current_user = FactoryBot.create(:user)
     login_as(@current_user, scope: :user)
   end
 end

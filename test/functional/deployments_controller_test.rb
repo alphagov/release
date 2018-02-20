@@ -7,8 +7,8 @@ class DeploymentsControllerTest < ActionController::TestCase
 
   context "GET recent" do
     setup do
-      @application = FactoryGirl.create(:application, name: "Foo")
-      @deployments = FactoryGirl.create_list(:deployment, 10, application_id: @application.id)
+      @application = FactoryBot.create(:application, name: "Foo")
+      @deployments = FactoryBot.create_list(:deployment, 10, application_id: @application.id)
     end
 
     should "render the recent template" do
@@ -31,7 +31,7 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
 
     should "preselect the application" do
-      FactoryGirl.create(
+      FactoryBot.create(
         :application,
         repo: "org/app",
         name: "Application"
@@ -53,7 +53,7 @@ class DeploymentsControllerTest < ActionController::TestCase
 
     context "manually recording a deployment" do
       should "create a deployment record" do
-        app = FactoryGirl.create(:application, repo: "org/app")
+        app = FactoryBot.create(:application, repo: "org/app")
         post :create, params: { deployment: { application_id: app.id, version: "release_123", environment: "staging", created_at: "18/01/2013 11:57" } }
 
         deployment = app.reload.deployments.last
@@ -64,13 +64,13 @@ class DeploymentsControllerTest < ActionController::TestCase
       end
 
       should "redisplay the form on error" do
-        app = FactoryGirl.create(:application, repo: "org/app")
+        app = FactoryBot.create(:application, repo: "org/app")
         post :create, params: { deployment: { application_id: app.id, version: "", environment: "staging", created_at: "18/01/2013 11:57" } }
         assert_template :new
       end
 
       should "unarchive an archived application" do
-        app = FactoryGirl.create(:application, repo: "org/app", archived: true)
+        app = FactoryBot.create(:application, repo: "org/app", archived: true)
         post :create, params: { deployment: { application_id: app.id, version: "release_345", environment: "staging", created_at: "18/01/2013 11:57" } }
         app.reload
         assert_equal false, app.archived
@@ -79,7 +79,7 @@ class DeploymentsControllerTest < ActionController::TestCase
 
     context "notification API" do
       should "create a deployment record" do
-        app = FactoryGirl.create(:application, repo: "org/app")
+        app = FactoryBot.create(:application, repo: "org/app")
         post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
 
         deployment = app.reload.deployments.last
@@ -89,7 +89,7 @@ class DeploymentsControllerTest < ActionController::TestCase
       end
 
       should "unarchive an archived application" do
-        app = FactoryGirl.create(:application, repo: "org/app", archived: true)
+        app = FactoryBot.create(:application, repo: "org/app", archived: true)
         post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
         app.reload
         assert_equal false, app.archived
@@ -97,14 +97,14 @@ class DeploymentsControllerTest < ActionController::TestCase
 
       context "accepting different 'repo' formats" do
         should "accept a repo specified as a full URL" do
-          app = FactoryGirl.create(:application, repo: "org/app")
+          app = FactoryBot.create(:application, repo: "org/app")
           assert_difference -> { app.deployments.count }, 1 do
             post :create, params: { repo: "https://github.com/org/app", deployment: { version: "release_123", environment: "staging" } }
           end
         end
 
         should "accept a repo specified as a git address" do
-          app = FactoryGirl.create(:application, repo: "org/app")
+          app = FactoryBot.create(:application, repo: "org/app")
           assert_difference -> { app.deployments.count }, 1 do
             post :create, params: { repo: "git@github.com:org/app.git", deployment: { version: "release_123", environment: "staging" } }
           end
