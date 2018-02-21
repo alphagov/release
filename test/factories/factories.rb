@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :application do
     sequence(:name) { |n| "Application #{n}" }
     sequence(:repo) { |n| "alphagov/application-#{n}" }

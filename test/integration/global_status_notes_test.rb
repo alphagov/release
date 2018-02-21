@@ -2,8 +2,8 @@ require 'integration_test_helper'
 
 class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
   setup do
-    @app1 = FactoryGirl.create(:application)
-    @app2 = FactoryGirl.create(:application)
+    @app1 = FactoryBot.create(:application)
+    @app2 = FactoryBot.create(:application)
     login_as_stub_user
     stub_deploy_and_release_page_api_requests_for(@app1, 'release_1000')
     stub_deploy_and_release_page_api_requests_for(@app2, 'release_200')

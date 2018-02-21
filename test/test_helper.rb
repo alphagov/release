@@ -27,11 +27,11 @@ class ActiveSupport::TestCase
   end
 
   def stub_user
-    @stub_user ||= FactoryGirl.create(:user, name: 'Stub User')
+    @stub_user ||= FactoryBot.create(:user, name: 'Stub User')
   end
 
   def read_only_stub_user
-    @read_only_stub_user ||= FactoryGirl.create(:user,
+    @read_only_stub_user ||= FactoryBot.create(:user,
                                                 name: 'Stub User',
                                                 permissions: ['signin'])
   end

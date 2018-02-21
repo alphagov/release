@@ -19,7 +19,7 @@ class SitesControllerTest < ActionController::TestCase
     end
 
     should 'render the show template with a form filled with the existing site settings' do
-      FactoryGirl.create(:site, status_notes: 'Deploy freeze in place.')
+      FactoryBot.create(:site, status_notes: 'Deploy freeze in place.')
       get :show
       assert_template :show
 
@@ -43,7 +43,7 @@ class SitesControllerTest < ActionController::TestCase
     end
 
     should "update the exiting site settings if they exist" do
-      site_settings = FactoryGirl.create(:site, status_notes: 'Deploys are frozen for now.')
+      site_settings = FactoryBot.create(:site, status_notes: 'Deploys are frozen for now.')
 
       patch :update, params: { site: { status_notes: 'Deploy freeze in place.' } }
 
