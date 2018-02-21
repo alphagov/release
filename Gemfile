@@ -27,7 +27,7 @@ group :test, :development do
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot_rails'
   gem 'govuk-lint'
-  gem 'minitest', '5.5.1'
+  gem 'minitest', '5.11.3'
   gem 'mocha', '1.3.0', require: false
   gem 'poltergeist', '~> 1.17.0'
   gem 'pry', '0.11.3'

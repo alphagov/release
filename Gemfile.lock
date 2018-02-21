@@ -137,7 +137,7 @@ GEM
     method_source (0.9.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.5.1)
+    minitest (5.11.3)
     mocha (1.3.0)
       metaclass (~> 0.0.1)
     momentjs-rails (2.17.1)
@@ -310,7 +310,7 @@ DEPENDENCIES
   govuk-lint
   govuk_admin_template (= 6.5.0)
   govuk_app_config
-  minitest (= 5.5.1)
+  minitest (= 5.11.3)
   mocha (= 1.3.0)
   momentjs-rails (~> 2.17.1)
   mysql2 (= 0.4.10)
