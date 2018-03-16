@@ -33,7 +33,7 @@ group :test, :development do
   gem 'pry', '0.11.3'
   gem 'rails-controller-testing'
   gem 'shoulda-context', '1.2.2', require: false
-  gem 'simplecov', '0.15.1', require: false
+  gem 'simplecov', '0.16.0', require: false
   gem 'simplecov-rcov', '0.2.3', require: false
   gem 'timecop', '0.9.1'
   gem 'webmock', '~> 3.3.0', require: false
