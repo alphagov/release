@@ -11,7 +11,7 @@ gem 'mysql2', '0.4.10'
 gem 'nested_form', '0.3.2'
 gem 'octokit', '4.8.0'
 gem 'sass-rails', '~> 5.0.6'
-gem 'uglifier', '4.1.7'
+gem 'uglifier', '4.1.8'
 gem 'whenever', '0.10.0'
 
 # GDS gems.
