@@ -138,7 +138,7 @@ GEM
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
-    mocha (1.4.0)
+    mocha (1.5.0)
       metaclass (~> 0.0.1)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
@@ -311,7 +311,7 @@ DEPENDENCIES
   govuk_admin_template (= 6.5.0)
   govuk_app_config
   minitest (= 5.11.3)
-  mocha (= 1.4.0)
+  mocha (= 1.5.0)
   momentjs-rails (~> 2.20.1)
   mysql2 (= 0.4.10)
   nested_form (= 0.3.2)
