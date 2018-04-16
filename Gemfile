@@ -17,7 +17,7 @@ gem 'whenever', '0.10.0'
 # GDS gems.
 gem 'gds-sso', '~> 13'
 gem 'plek', '2.1.1'
-gem 'govuk_admin_template', '6.5.0'
+gem 'govuk_admin_template', '6.6.0'
 gem 'govuk_app_config'
 
 group :test, :development do
