@@ -24,7 +24,7 @@ group :test, :development do
   gem 'better_errors', '2.4.0'
   gem 'binding_of_caller', '0.8.0'
   gem 'capybara', '~> 2.18.0'
-  gem 'database_cleaner', '~> 1.6.2'
+  gem 'database_cleaner', '~> 1.7.0'
   gem 'factory_bot_rails'
   gem 'govuk-lint'
   gem 'minitest', '5.11.3'
