@@ -6,14 +6,14 @@ table#application-list {
 
         &.header {
           padding-right: 20px;
-          background: url(bg.gif) no-repeat right;
+          background: url(asset-path('bg.gif')) no-repeat right;
 
           &.headerSortUp {
-            background: url(asc.gif) no-repeat right;
+            background: url(asset-path('asc.gif')) no-repeat right;
           }
 
           &.headerSortDown {
-            background: url(desc.gif) no-repeat right;
+            background: url(asset-path('desc.gif')) no-repeat right;
           }
         }
       }
