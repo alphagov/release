@@ -29,7 +29,7 @@ group :test, :development do
   gem 'govuk-lint'
   gem 'minitest', '5.11.3'
   gem 'mocha', '1.5.0', require: false
-  gem 'poltergeist', '~> 1.17.0'
+  gem 'poltergeist', '~> 1.18.0'
   gem 'pry', '0.11.3'
   gem 'rails-controller-testing'
   gem 'shoulda-context', '1.2.2', require: false
