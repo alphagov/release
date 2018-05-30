@@ -1,11 +1,11 @@
-FROM ruby:2.4.4
+FROM ruby:2.5.1
 MAINTAINER "govuk-role-platform-accounts-members@digital.cabinet-office.gov.uk"
 
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
       # base dependencies
-      ruby-dev build-essential libgmp3-dev libmysqlclient-dev \
+      ruby-dev build-essential libgmp3-dev default-libmysqlclient-dev \
       # for bundle exec rake -T and assets commands to work
       nodejs \
       # for healthcheck
