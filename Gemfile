@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.1.6'
+gem 'rails', '~> 5.2.0'
 
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 gem 'formtastic', '3.1.5'
