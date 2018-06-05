@@ -23,7 +23,7 @@ gem 'govuk_app_config'
 group :test, :development do
   gem 'better_errors', '2.4.0'
   gem 'binding_of_caller', '0.8.0'
-  gem 'capybara', '~> 3.1.0'
+  gem 'capybara', '~> 3.2.1'
   gem 'database_cleaner', '~> 1.7.0'
   gem 'factory_bot_rails'
   gem 'govuk-lint'
