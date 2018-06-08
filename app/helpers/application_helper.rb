@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def github_tag_link_to(app, git_ref)
-    link_to(git_ref, "#{app.repo_url}/tree/#{git_ref}", target: "_blank")
+    link_to(git_ref.truncate(12), "#{app.repo_url}/tree/#{git_ref}", target: "_blank")
   end
 
   def github_compare_to_master(application, deploy)
