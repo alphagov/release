@@ -5,6 +5,8 @@ default: &default
 development:
   <<: *default
   database: release_development
+  username: release
+  password: release
   url: <%= ENV['DATABASE_URL'] %>
 
 test: &test
