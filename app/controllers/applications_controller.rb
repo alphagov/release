@@ -1,6 +1,6 @@
 class ApplicationsController < ApplicationController
-  before_action :redirect_if_read_only_user, only: [:new, :edit, :create, :update, :update_notes]
-  before_action :find_application, only: [:show, :edit, :update, :update_notes, :deploy]
+  before_action :redirect_if_read_only_user, only: %i[new edit create update update_notes]
+  before_action :find_application, only: %i[show edit update update_notes deploy]
 
   include ActionView::Helpers::DateHelper
 
@@ -22,7 +22,7 @@ class ApplicationsController < ApplicationController
     end
     # where version == git tag, which it isn't for licensify
     @latest_deploy_to_each_environment_by_version = {}
-    @application.latest_deploy_to_each_environment.each do |_environment, deployment|
+    @application.latest_deploy_to_each_environment.each_value do |deployment|
       @latest_deploy_to_each_environment_by_version[deployment.version] ||= []
       @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
     end
@@ -59,8 +59,7 @@ class ApplicationsController < ApplicationController
     @application = Application.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def deploy
     @release_tag = params[:tag]

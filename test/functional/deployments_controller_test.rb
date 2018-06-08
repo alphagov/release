@@ -48,7 +48,13 @@ class DeploymentsControllerTest < ActionController::TestCase
       actions_requiring_deploy_permission_redirect(
         :post,
         :create,
-        deployment: { application_id: 123, version: "", environment: "staging", created_at: "18/01/2013 11:57" })
+        deployment: {
+          application_id: 123,
+          version: "",
+          environment: "staging",
+          created_at: "18/01/2013 11:57"
+        }
+      )
     end
 
     context "manually recording a deployment" do
