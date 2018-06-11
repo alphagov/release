@@ -1,5 +1,23 @@
 <% content_for :page_title, @application.name %>
 
-<h1><%= @application.name %></h1>
+<div class="page-header">
+  <h1 class="remove-bottom-margin">
+    <span class="name">Edit <%= @application.name %></span>
+    <span class="shortname">(<%= @application.shortname %>)</span>
+  </h1>
+</div>
+
+<ul class="tabs">
+  <li>
+    <%= link_to "Deploy status", @application %>
+  </li>
+  <li class="active">
+    <%= link_to "Edit", edit_application_path(@application) %>
+  </li>
+  <li>
+    <%= link_to "Recent deployments", application_deployments_path(@application) %>
+  </li>
+</ul>
+
 
 <%= render partial: "form", locals: { application: @application } %>

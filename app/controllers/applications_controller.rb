@@ -42,7 +42,6 @@ class ApplicationsController < ApplicationController
     end
 
     @github_available = true
-    @latest_deployments = @application.deployments.newest_first.limit(25)
   rescue Octokit::TooManyRequests
     @github_available = false
     @github_error = github_rate_limited_error_message
