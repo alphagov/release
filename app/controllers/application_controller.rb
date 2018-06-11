@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :error_404
 
   def healthcheck
-    status = {status: 'ok'}
+    status = { status: 'ok' }
     render json: status
   end
 

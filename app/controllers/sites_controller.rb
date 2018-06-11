@@ -1,8 +1,7 @@
 class SitesController < ApplicationController
   before_action :redirect_if_read_only_user
 
-  def show
-  end
+  def show; end
 
   def update
     if site_settings.update_attributes(site_params)

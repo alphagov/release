@@ -66,8 +66,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
             "url": "https://api.github.com/repos/#{application.repo}/commits/f45771538251b6ec0d2cc88982797f28916a7878"
           }
         }
-      ]
-    )
+      ])
     stub_request(:get, "https://api.github.com/repos/#{application.repo}/commits").to_return(body:
       [
         {
@@ -86,8 +85,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
           "html_url": "https://github.com/alphagov/#{application.repo}/1234567890",
           "comments_url": "https://api.github.com/repos/#{application.repo}/commits/1234567890/comments"
         }
-      ]
-    )
+      ])
     stub_request(:get, "https://grafana.dev.gov.uk:80/api/dashboards/file/deployment_#{application.shortname}.json").to_return(status: 200, body: "")
   end
 end
