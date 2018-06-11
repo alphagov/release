@@ -5,16 +5,15 @@ default: &default
 development:
   <<: *default
   database: release_development
+  url: <%= ENV['DATABASE_URL'] %>
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test: &test
   <<: *default
-  database: release_test<%= ENV['TEST_ENV_NUMBER'] %>
+  database: release_test
   username: release
   password: release
+  url: <%= ENV["DATABASE_URL"].try(:sub, /([-_]development)?$/, '_test') %>
 
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  # Rails reads values from DATABASE_URL env var.
