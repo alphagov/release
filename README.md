@@ -1,7 +1,5 @@
 # Release
 
-[![Build Status](https://travis-ci.org/alphagov/release.png)](https://travis-ci.org/alphagov/release)
-
 An application to make managing releases to specific environments easier.
 
 ## Getting started
