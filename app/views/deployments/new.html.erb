@@ -1,20 +1,16 @@
 <% content_for :page_title, "Manually record a deployment" %>
 
 <h1>Manually record a deployment</h1>
-<p class="lead">All deployments should be automatically recorded from a push notification, but if that fails, use this form.</p>
 
-<div class="well">
-  <%= semantic_form_for @deployment do |f| %>
-    <%= f.inputs do %>
-      <%= f.input :application_id, as: :select, input_html: { class: "input-md-4" }, collection: options_from_collection_for_select(Application.all, 'id', 'name', f.object.application_id) %>
+<p class="lead">
+  All deployments should be automatically recorded from a push notification,
+  but if that fails, use this form.
+</p>
 
-      <%= f.input :environment, required: "required", input_html: { class: "environment-typeahead input-md-4" }%>
-
-      <%= f.input :version, required: "required", input_html: { class: "version-typeahead input-md-4" } %>
-
-      <%= f.input :created_at, label: "Deployed at", as: "js_datetime_picker", wrapper_options: { class: 'date input-md-4', 'data-date-format' => 'DD/MM/YYYY HH:mm', id: 'datetimepicker1' }, append: content_tag(:span, '', class: "glyphicon glyphicon-calendar") %>
-    <% end %>
-
-    <%= f.submit class: "btn btn-success" %>
-  <% end %>
-</div>
+<%= simple_form_for @deployment do |f| %>
+  <%= f.input :application_id, as: :select, collection: Application.all %>
+  <%= f.input :environment, required: "required", input_html: { class: "form-control" }%>
+  <%= f.input :version, required: "required", input_html: { class: "form-control" } %>
+  <%= f.input :created_at, label: "Deployed at" %>
+  <%= f.submit class: "btn btn-success" %>
+<% end %>

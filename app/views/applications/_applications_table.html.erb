@@ -63,16 +63,13 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h3 class="modal-title" id="edit-notes-app-<%= application.id %>Label">Edit notes for <%= application.name %></h3>
                   </div>
-                  <%= semantic_form_for application, url: update_notes_application_path(application) do |f| %>
+                  <%= simple_form_for application, url: update_notes_application_path(application) do |f| %>
                     <div class="modal-body">
                       <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50, data: { length_counting: 'on', count_message_threshold: 255, count_message_selector: "#notes-length-info-for-app-#{application.id}" } } %>
                       <p id="notes-length-info-for-app-<%= application.id %>">Notes should be 255 characters or fewer. <span class="count"></span></p>
                     </div>
                     <div class="modal-footer">
-                      <%= f.actions do %>
-                        <%= f.action :cancel, label: 'Cancel', button_html: { class: 'btn btn-default', data: { dismiss: 'modal' }, aria_hidden: true } %>
-                        <%= f.action :submit, label: 'Save', as: :button, button_html: { class: 'btn btn-primary' } %>
-                      <% end %>
+                      <%= f.button :submit, label: 'Save', as: :button, button_html: { class: 'btn btn-primary' } %>
                     </div>
                   <% end %>
                 </div>

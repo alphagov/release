@@ -14,8 +14,8 @@ class SitesControllerTest < ActionController::TestCase
       get :show
       assert_template :show
 
-      assert_select 'form.site[action="/site"]'
-      assert_select 'form.site textarea[name="site[status_notes]"]', ''
+      assert_select 'form[action="/site"]'
+      assert_select 'form textarea[name="site[status_notes]"]', ''
     end
 
     should 'render the show template with a form filled with the existing site settings' do
@@ -23,8 +23,8 @@ class SitesControllerTest < ActionController::TestCase
       get :show
       assert_template :show
 
-      assert_select 'form.site[action="/site"]'
-      assert_select 'form.site textarea[name="site[status_notes]"]', 'Deploy freeze in place.'
+      assert_select 'form[action="/site"]'
+      assert_select 'form textarea[name="site[status_notes]"]', 'Deploy freeze in place.'
     end
   end
 
@@ -55,8 +55,8 @@ class SitesControllerTest < ActionController::TestCase
 
       refute Site.settings.persisted?
 
-      assert_select 'form.site[action="/site"]'
-      assert_select 'form.site textarea[name="site[status_notes]"]', 'a' * 256
+      assert_select 'form[action="/site"]'
+      assert_select 'form textarea[name="site[status_notes]"]', 'a' * 256
     end
   end
 end

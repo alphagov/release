@@ -2,11 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.0'
 
-gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
-gem 'formtastic', '3.1.5'
-gem 'formtastic-bootstrap', '3.1.1'
+gem 'simple_form', '~> 4.0'
 gem 'friendly_id', '5.2.4'
-gem 'momentjs-rails', '~> 2.20.1'
 gem 'mysql2', '0.4.10'
 gem 'nested_form', '0.3.2'
 gem 'octokit', '4.9.0'
