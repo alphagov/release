@@ -57,8 +57,6 @@ GEM
     bootstrap-sass (3.3.5.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.3.0)
-    bootstrap3-datetimepicker-rails (4.17.47)
-      momentjs-rails (>= 2.8.1)
     builder (3.2.3)
     capybara (3.2.1)
       addressable
@@ -87,10 +85,6 @@ GEM
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.23)
-    formtastic (3.1.5)
-      actionpack (>= 3.2.13)
-    formtastic-bootstrap (3.1.1)
-      formtastic (>= 3.0)
     friendly_id (5.2.4)
       activerecord (>= 4.0.0)
     gds-sso (13.6.0)
@@ -148,8 +142,6 @@ GEM
     minitest (5.11.3)
     mocha (1.5.0)
       metaclass (~> 0.0.1)
-    momentjs-rails (2.20.1)
-      railties (>= 3.1)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -258,6 +250,9 @@ GEM
     sentry-raven (2.7.3)
       faraday (>= 0.7.6, < 1.0)
     shoulda-context (1.2.2)
+    simple_form (4.0.1)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -307,12 +302,9 @@ PLATFORMS
 DEPENDENCIES
   better_errors (= 2.4.0)
   binding_of_caller (= 0.8.0)
-  bootstrap3-datetimepicker-rails (~> 4.17.47)
   capybara (~> 3.2.1)
   database_cleaner (~> 1.7.0)
   factory_bot_rails
-  formtastic (= 3.1.5)
-  formtastic-bootstrap (= 3.1.1)
   friendly_id (= 5.2.4)
   gds-sso (~> 13)
   govuk-lint
@@ -320,7 +312,6 @@ DEPENDENCIES
   govuk_app_config
   minitest (= 5.11.3)
   mocha (= 1.5.0)
-  momentjs-rails (~> 2.20.1)
   mysql2 (= 0.4.10)
   nested_form (= 0.3.2)
   octokit (= 4.9.0)
@@ -331,6 +322,7 @@ DEPENDENCIES
   rails-controller-testing
   sass-rails (~> 5.0.6)
   shoulda-context (= 1.2.2)
+  simple_form (~> 4.0)
   simplecov (= 0.16.1)
   simplecov-rcov (= 0.2.3)
   timecop (= 0.9.1)

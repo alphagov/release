@@ -1,18 +1,9 @@
-<div class="well">
-  <%= semantic_form_for @application do |f| %>
-    <%= f.semantic_errors %>
-
-    <%= f.inputs do %>
-      <%= f.input :name, label: "Name", input_html: { class: 'input-md-6' } %>
-      <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher", input_html: { class: 'input-md-6' } %>
-      <%= f.input :domain, label: "GitHub domain", hint: "eg github.digital.cabinet-office.gov.uk", input_html: { class: 'input-md-6' } %>
-      <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
-                              input_html: { placeholder: @application.fallback_shortname, class: 'input-md-6' } %>
-      <%= f.input :archived, label: "Archived?" %>
-    <% end %>
-    <hr/>
-    <%= f.actions do %>
-      <%= f.action :submit, :as => :button, button_html: { class: 'btn btn-success' } %>
-    <% end %>
-  <% end %>
-</div>
+<%= simple_form_for @application do |f| %>
+  <%= f.input :name, label: "Name", input_html: { class: 'form-control input-md-6' } %>
+  <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher", input_html: { class: 'form-control input-md-6' } %>
+  <%= f.input :domain, label: "GitHub domain", hint: "eg github.digital.cabinet-office.gov.uk", input_html: { class: 'form-control input-md-6' } %>
+  <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
+                          input_html: { placeholder: @application.fallback_shortname, class: 'form-control input-md-6' } %>
+  <%= f.input :archived, label: "Archived?" %>
+  <%= f.button :submit, class: 'btn btn-success' %>
+<% end %>
