@@ -23,7 +23,7 @@ class ActionDispatch::IntegrationTest
 
   def login_as_stub_user
     @current_user = FactoryBot.create(:user)
-    login_as(@current_user, scope: :user)
+    GDS::SSO.test_user = @current_user
   end
 end
 

@@ -120,19 +120,19 @@ class DeploymentsControllerTest < ActionController::TestCase
 
         should "generate a friendly name" do
           post :create, params: { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
-          app = Application.last
+          app = Application.unscoped.last
           assert_equal "New App", app.name
         end
 
         should "inflect API correctly" do
           post :create, params: { repo: "org/devops_api", deployment: { version: "release_1", environment: "staging" } }
-          app = Application.last
+          app = Application.unscoped.last
           assert_equal "Devops API", app.name
         end
 
         should "generate a friendly name from a name with a dash in it" do
           post :create, params: { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
-          app = Application.last
+          app = Application.unscoped.last
           assert_equal "New App", app.name
         end
       end
