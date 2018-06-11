@@ -1,0 +1,30 @@
+// https://github.com/alphagov/whitehall-prototype/blob/da490af05e4a88a32101a64a8a8257f7e624fb34/app/assets/sass/application.scss
+$govuk-border-colour: #ccc;
+$govuk-text-colour: #000;
+
+.tabs {
+  padding-left: 0;
+  border-bottom: 1px solid $govuk-border-colour;
+  font-size: 19px;
+
+  li {
+    margin-bottom: -1px;
+    display: inline-block;
+  }
+
+  a {
+    display: block;
+    padding: 15px 20px;
+  }
+
+  .active a {
+    border: 1px solid $govuk-border-colour;
+    border-bottom-color: #fff;
+    text-decoration: none;
+
+    &:link,
+    &:visited {
+      color: $govuk-text-colour;
+    }
+  }
+}

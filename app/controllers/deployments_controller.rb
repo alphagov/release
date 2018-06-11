@@ -1,6 +1,11 @@
 class DeploymentsController < ApplicationController
   before_action :redirect_if_read_only_user, only: %i[new create]
 
+  def index
+    @application = Application.friendly.find(params[:application_id])
+    @deployments = @application.deployments.newest_first.limit(100)
+  end
+
   def recent
     @deployments = Deployment.includes(:application).newest_first.limit(25)
   end
