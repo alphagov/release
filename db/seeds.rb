@@ -6,8 +6,6 @@ example_note = "Here is a note that will hopefully demonstrate how somebody migh
 applications = [
   { name: "Calendars",                              repo: "alphagov/calendars" },
   { name: "Content store",                          repo: "alphagov/content-store" },
-  { name: "Design principles",                      repo: "alphagov/design-principles",                     shortname: "designprinciples" },
-  { name: "Enterprise finance guarantee",           repo: "alphagov/EFG",                                   shortname: "efg" },
   { name: "Feedback",                               repo: "alphagov/feedback" },
   { name: "Frontend",                               repo: "alphagov/frontend",                              status_notes: example_note },
   { name: "Imminence",                              repo: "alphagov/imminence" },
@@ -15,25 +13,13 @@ applications = [
   { name: "Licensify",                              repo: "alphagov/licensify" },
   { name: "Publisher",                              repo: "alphagov/publisher" },
   { name: "Puppet",                                 repo: "gds/puppet",                                     domain: "github.gds" },
-  { name: "Redirector",                             repo: "alphagov/redirector" },
   { name: "Rummager",                               repo: "alphagov/rummager" },
   { name: "Signon",                                 repo: "alphagov/signon" },
   { name: "Smart answers",                          repo: "alphagov/smart-answers",                         shortname: "smartanswers" },
-  { name: "Smokey",                                 repo: "alphagov/smokey" },
   { name: "Static",                                 repo: "alphagov/static" },
   { name: "Support",                                repo: "alphagov/support" },
-  { name: "Trade tariff backend",                   repo: "alphagov/trade-tariff-backend",                  shortname: "tariff-api" },
-  { name: "Trade tariff frontend",                  repo: "alphagov/trade-tariff-frontend",                 shortname: "tariff" },
   { name: "Whitehall",                              repo: "alphagov/whitehall" },
-  { name: "Data insight frontend",                  repo: "alphagov/datainsight-frontend" },
-  { name: "Data insight narrative collector",       repo: "alphagov/datainsight-narrative-collector" },
-  { name: "Data insight GA collector",              repo: "alphagov/datainsight-ga-collector" },
   { name: "Data insight non-govuk reach collector", repo: "alphagov/datainsight-nongovuk-reach-collector",  archived: true },
-  { name: "Data insight everything recorder",       repo: "alphagov/datainsight-everything-recorder" },
-  { name: "Data insight narrative recorder",        repo: "alphagov/datainsight-narrative-recorder" },
-  { name: "Data insight todays activity recorder",  repo: "alphagov/datainsight-todays-activity-recorder" },
-  { name: "Data insight weekly reach recorder",     repo: "alphagov/datainsight-weekly-reach-recorder" },
-  { name: "Data insight format success recorder",   repo: "alphagov/datainsight-format-success-recorder" }
 ]
 
 applications.each do |application_hash|
