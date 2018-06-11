@@ -1,7 +1,6 @@
 # Release
 
 [![Build Status](https://travis-ci.org/alphagov/release.png)](https://travis-ci.org/alphagov/release)
-[![Dependency Status](https://gemnasium.com/alphagov/release.png)](https://gemnasium.com/alphagov/release)
 
 An application to make managing releases to specific environments easier.
 
