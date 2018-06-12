@@ -42,9 +42,14 @@ module ApplicationHelper
     job_name = "Deploy_App"
     job_name = "Deploy_Puppet" if application.shortname == "puppet"
     subdomain_prefix = "deploy.staging"
-    subdomain_prefix = "deploy" if environment == "production"
+    subdomain_prefix = "deploy" if environment.include?("production")
     escaped_release_tag = CGI.escape(release_tag)
-    "https://#{subdomain_prefix}.publishing.service.gov.uk/job/#{job_name}/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe
+    domain = if environment.start_with?("aws")
+               "govuk.digital"
+             else
+               "publishing.service.gov.uk"
+             end
+    "https://#{subdomain_prefix}.#{domain}/job/#{job_name}/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe
   end
 
 private
