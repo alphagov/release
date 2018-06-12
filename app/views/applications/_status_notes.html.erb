@@ -1,11 +1,19 @@
 <% if site_settings.status_notes.present? %>
-  <div class="global-status-note alert alert-danger" role="alert">
-    <p><%= site_settings.status_notes %></p>
+  <div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon govuk-circle" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+      <span class="global-status-note"><%= site_settings.status_notes %></span>
+    </strong>
   </div>
 <% end %>
 
 <% if application.status_notes.present? %>
-  <div class="application-status-note alert alert-warning" role="alert">
-    <p><%= application.status_notes %></p>
+  <div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon govuk-circle" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+      <span class="alert-warning"><%= application.status_notes %></span>
+    </strong>
   </div>
 <% end %>

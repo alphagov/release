@@ -1,11 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
-  <h1 class="remove-bottom-margin">
-    <span class="name">Edit <%= @application.name %></span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-  </h1>
-</div>
+<%= title @application.name %>
 
 <ul class="tabs">
   <li>
@@ -19,5 +14,6 @@
   </li>
 </ul>
 
+<%= h2 "Edit" %>
 
-<%= render partial: "form", locals: { application: @application } %>
+<%= render "form", application: @application %>

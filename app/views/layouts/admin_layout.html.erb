@@ -1,0 +1,37 @@
+<% navigation_links = capture do %>
+  <li class="govuk-header__navigation-item <%= controller_name.in?(%w[applications]) ? "govuk-header__navigation-item--active" : nil %>">
+    <%= link_to "Applications", applications_path, class: 'govuk-header__link' %>
+  </li>
+
+  <li class="govuk-header__navigation-item <%= controller_name.in?(%w[deployments]) ? "govuk-header__navigation-item--active" : nil %>">
+    <%= link_to "Deployments", activity_path, class: 'govuk-header__link' %>
+  </li>
+
+  <li class="govuk-header__navigation-item <%= controller_name.in?(%w[sites]) ? "govuk-header__navigation-item--active" : nil %>">
+    <%= link_to "Site settings", site_path, class: 'govuk-header__link' %>
+  </li>
+<% end %>
+
+<%= render "govuk_publishing_components/components/admin_layout", environment: "development", browser_title: yield(:page_title) + " - GOV.UK Release", navigation_links: navigation_links do %>
+
+  <% if flash[:error] %>
+    <div class="govuk-error-summary govuk-!-mt-r7" role="alert" tabindex="-1">
+      <div class="govuk-error-summary__body">
+        <%= flash[:error] %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if flash[:notice] %>
+    <div class="govuk-panel govuk-panel--confirmation govuk-!-mt-r7">
+      <div class="govuk-panel__body">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= yield %>
+
+  <%= javascript_include_tag "govuk-admin-template" %>
+  <%= stylesheet_link_tag "admin_extra", media: "all" %>
+<% end %>

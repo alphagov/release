@@ -1,0 +1,37 @@
+<table class="govuk-table" data-module="filterable-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Application</th>
+      <th scope="col" class="govuk-table__header">Date</th>
+      <th scope="col" class="govuk-table__header">Environment</th>
+      <th scope="col" class="govuk-table__header">Release</th>
+    </tr>
+    <tr class="if-no-js-hide table-header-secondary">
+      <td colspan="4">
+        <form>
+          <label for="deployments-filter" class="visually-hidden">Filter Deployments</label>
+          <input id="deployments-filter" type="text" class="govuk-input js-filter-table-input" placeholder="Filter deployments">
+        </form>
+      </td>
+    </tr>
+  </thead>
+
+  <tbody class="govuk-table__body">
+  <% deployments.each do |deployment| %>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__header">
+        <%= link_to deployment.application.name, deployment.application %>
+      </td>
+      <td class="govuk-table__cell">
+        <%= human_datetime(deployment.created_at) %>
+      </td>
+      <td class="govuk-table__cell">
+        <%= environment_tag deployment.environment %></span>
+      </td>
+      <td class="govuk-table__cell">
+        <%= github_tag_link_to(deployment.application, deployment.version) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

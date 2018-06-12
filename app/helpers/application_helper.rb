@@ -1,4 +1,20 @@
 module ApplicationHelper
+  def title(text, params = {})
+    render 'govuk_publishing_components/components/title', { title: text }.merge(params)
+  end
+
+  def h2(text, params = {})
+    render 'govuk_publishing_components/components/heading', { text: text, heading_level: 2 }.merge(params)
+  end
+
+  def h3(text, params = {})
+    render 'govuk_publishing_components/components/heading', { text: text, heading_level: 3 }.merge(params)
+  end
+
+  def environment_tag(environment_name)
+    tag.strong environment_name, class: "govuk-tag govuk-tag--#{environment_name}"
+  end
+
   def nav_link(text, link)
     recognized = Rails.application.routes.recognize_path(link)
     if recognized[:controller] == params[:controller] && recognized[:action] == params[:action]
@@ -31,7 +47,7 @@ module ApplicationHelper
   end
 
   def github_tag_link_to(app, git_ref)
-    link_to(git_ref.truncate(12), "#{app.repo_url}/tree/#{git_ref}", target: "_blank")
+    link_to(git_ref.truncate(15), "#{app.repo_url}/tree/#{git_ref}", target: "_blank")
   end
 
   def github_compare_to_master(application, deploy)

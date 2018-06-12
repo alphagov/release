@@ -15,7 +15,9 @@ gem 'whenever', '0.10.0'
 gem 'gds-sso', '~> 13'
 gem 'plek', '2.1.1'
 gem 'govuk_admin_template', '6.6.0'
+gem 'govuk_publishing_components', github: 'alphagov/govuk_publishing_components', branch: 'layout-for-admin-apps'
 gem 'govuk_app_config'
+gem 'gds-api-adapters'
 
 group :test, :development do
   gem 'better_errors', '2.4.0'

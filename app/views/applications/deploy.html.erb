@@ -1,125 +1,135 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
-  <h1 class="remove-bottom-margin">
-    <span class="name">Deploy <%= @application.name %></span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-  </h1>
-  <%= link_to @application.repo_url, @application.repo_url, target: "_blank" %>
-</div>
+<%= render "govuk_publishing_components/components/back_link", { href: application_path(@application) } %>
 
-<main>
-  <%= render 'status_notes', application: @application %>
+<%= title "Deploy #{@application.name}" %>
 
-  <h2>Candidate Release <span class="label label-info"><%= @release_tag %></span></h2>
-  <% if @production_deploy %>
-    <p class="lead add-top-margin">Production is <span class="label label-danger"><%= @production_deploy.version %></span> &mdash; deployed at <%= human_datetime(@production_deploy.created_at) %></p>
-  <% else %>
-    <p class="lead add-top-margin">Production is <span class="label label-danger">not deployed yet</span>!</p>
-  <% end %>
+<%= render 'status_notes', application: @application %>
 
-  <% unless @application.staging_and_production_in_sync? %>
-    <div class="callout callout-danger">
-      <div class="callout-title">Production and Staging are not in sync</div>
-      <div class="callout-body">Proceed with caution and check the <a href="<%= @application.repo_compare_url('deployed-to-production', 'deployed-to-staging') %>">differences between production and staging</a></div>
-    </div>
-  <% end %>
+<% unless @application.staging_and_production_in_sync? %>
+  <div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon govuk-circle" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+        Production and Staging are not in sync<br/>
+        Proceed with caution and check the <a href="<%= @application.repo_compare_url('deployed-to-production', 'deployed-to-staging') %>">differences between production and staging</a>
+    </strong>
+  </div>
+<% end %>
 
-  <% if @production_deploy %>
-    <p class="pull-right">
-      <a class="btn btn-default" href="<%= @application.repo_compare_url(@production_deploy.version, @release_tag) %>">
-        <i class="glyphicon glyphicon-new-window add-right-margin"></i>Full Diff
-      </a>
-    </p>
+<table class="govuk-table">
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <th class="govuk-table__header" scope="row">Deploying release tag</th>
+      <td class="govuk-table__cell release-tag"><%= @release_tag %></td>
+    </tr>
 
-    <p class="lead"><%= @commits.length %> <%= 'commit'.pluralize(@commits.length) %></p>
+    <% if @production_deploy %>
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="row">Current production release</th>
+        <td class="govuk-table__cell current-release"><%= @production_deploy.version %> (deployed at <%= human_datetime(@production_deploy.created_at) %>)</td>
+      </tr>
 
-    <% if @github_available %>
-      <table class="table table-striped table-bordered table-hover commits" data-module="filterable-table">
-        <thead>
-          <tr class="table-header">
-            <th width="10%">Hash</th>
-            <th width="55%">Message</th>
-            <th width="20%">Author</th>
-            <th width="15%">Date</th>
-          </tr>
-          <tr class="if-no-js-hide table-header-secondary">
-              <td colspan="4">
-                <form>
-                  <label for="table-filter" class="rm">Filter commits</label>
-                  <input id="table-filter" autofocus="autofocus" type="text" class="form-control normal js-filter-table-input" placeholder="Filter commits">
-                </form>
-              </td>
-            </tr>
-        </thead>
-        <tbody>
-          <% @commits.each do |commit| %>
-            <tr>
-              <td class="hash">
-                <%= link_to commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank" %>
-              </td>
-              <td class="message">
-                  <% summary, body = commit[:commit][:message].split(/\n/, 2) %>
-                  <a href="<%= "#{@application.repo_url}/commit/#{commit[:sha]}" %>" target="_blank"><%= summary %></a>
-              </td>
-              <td class="author">
-                <% if commit[:author] %>
-                  <img height="20" width="20" class="avatar" src="<%= commit[:author][:avatar_url] %>" alt="" />
-                <% end %>
-                <% if commit[:commit][:author] %>
-                  <span class="name">
-                    <%= commit[:commit][:author][:name] %>
-                  </span>
-                <% end %>
-              </td>
-              <td class="date">
-                <% if commit[:commit][:author] %>
-                  <% commit_date = commit[:commit][:author][:date] %>
-                  <span class="date"><%= commit_date.to_date.to_s(:short) =%></span>
-                  <span class="time"><%= commit_date.to_s(:govuk_time) =%></span>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <div class="alert alert-error">
-        <div>Couldn't get data from GitHub:</div>
-        <div><%= @github_error %></div>
-      </div>
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="row">Number of commits</th>
+        <td class="govuk-table__cell "><%= @commits.length %> <%= 'commit'.pluralize(@commits.length) %> (<%= link_to "Full diff on GitHub", @application.repo_compare_url(@production_deploy.version, @release_tag), target: "_blank" %>)</td>
+      </tr>
     <% end %>
-  <% end %>
+  </tbody>
+</table>
 
-  <% if current_user.may_deploy? %>
-    <h2>Deploy</h2>
-    <div class="row">
-      <div class="col-md-3">
-        <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
-      </div>
+<% if current_user.may_deploy? %>
+  <%= h2 "Deploy" %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
+    </div>
 
-      <div class="col-md-9">
-        <h3>Test on Staging</h3>
-        <% if @staging_dashboard_url %>
-          <p>
-            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            <a target="_blank" href="<%= @staging_dashboard_url %>">Staging dashboard</a>:
-            monitor your deployment to check that it doesn't cause any problems.
-          </p>
+    <div class="govuk-grid-column-two-thirds">
+      <%= h3 "Test on Staging" %>
+      <% if @staging_dashboard_url %>
+        <p>
+          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+          <a target="_blank" href="<%= @staging_dashboard_url %>">Staging dashboard</a>:
+          monitor your deployment to check that it doesn't cause any problems.
+        </p>
+      <% end %>
+      <p><a class="govuk-button" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "staging") %>">Deploy to Staging</a></p>
+
+      <%= h3 "Promote to Production" %>
+
+      <% if @production_dashboard_url %>
+        <p>
+          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+          <a target="_blank" href="<%= @production_dashboard_url %>">Production dashboard</a>:
+          monitor your deployment to check that it doesn't cause any problems.
+        </p>
+      <% end %>
+      <p><a class="govuk-button" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "production") %>">Deploy to Production</a></p>
+    </div>
+  </div>
+<% end %>
+
+<% if @production_deploy %>
+  <%= h2 "Commits" %>
+
+  <% if @github_available %>
+    <table class="govuk-table" data-module="filterable-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header" scope="col" width="10%">Hash</th>
+          <th class="govuk-table__header" scope="col" width="55%">Message</th>
+          <th class="govuk-table__header" scope="col" width="20%">Author</th>
+          <th class="govuk-table__header" scope="col" width="15%">Date</th>
+        </tr>
+        <tr class="if-no-js-hide table-header-secondary">
+            <td colspan="4">
+              <form>
+                <label for="table-filter" class="visually-hidden">Filter commits</label>
+                <input id="table-filter" type="text" class="govuk-input normal js-filter-table-input" placeholder="Filter commits">
+              </form>
+            </td>
+          </tr>
+      </thead>
+
+      <tbody class="govuk-table__body">
+        <% @commits.each do |commit| %>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <%= link_to commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank" %>
+            </td>
+
+            <th class="govuk-table__header">
+              <% summary, body = commit[:commit][:message].split(/\n/, 2) %>
+              <a href="<%= "#{@application.repo_url}/commit/#{commit[:sha]}" %>" target="_blank"><%= summary %></a>
+            </td>
+
+            <td class="govuk-table__cell">
+              <% if commit[:author] %>
+                <img height="20" width="20" class="avatar" src="<%= commit[:author][:avatar_url] %>" alt="" />
+              <% end %>
+              <% if commit[:commit][:author] %>
+                <span class="name">
+                  <%= commit[:commit][:author][:name] %>
+                </span>
+              <% end %>
+            </td>
+
+            <td class="govuk-table__cell">
+              <% if commit[:commit][:author] %>
+                <% commit_date = commit[:commit][:author][:date] %>
+                <span class="date"><%= commit_date.to_date.to_s(:short) =%></span>
+                <span class="time"><%= commit_date.to_s(:govuk_time) =%></span>
+              <% end %>
+            </td>
+          </tr>
         <% end %>
-        <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "staging") %>">Deploy to Staging</a></p>
-
-        <h3>Promote to Production</h3>
-        <% if @production_dashboard_url %>
-          <p>
-            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            <a target="_blank" href="<%= @production_dashboard_url %>">Production dashboard</a>:
-            monitor your deployment to check that it doesn't cause any problems.
-          </p>
-        <% end %>
-        <p><a class="btn btn-danger" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "production") %>">Deploy to Production</a></p>
-      </div>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="alert alert-error">
+      <div>Couldn't get data from GitHub:</div>
+      <div><%= @github_error %></div>
     </div>
   <% end %>
-
-</main>
+<% end %>
