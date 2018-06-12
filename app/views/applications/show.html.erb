@@ -1,11 +1,8 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
-  <h1 class="remove-bottom-margin">
-    <span class="name"><%= @application.name %></span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-  </h1>
-</div>
+<%= title @application.name %>
+
+<%= render 'status_notes', application: @application %>
 
 <ul class="tabs">
   <li class="active">
@@ -27,52 +24,56 @@
 
 <%= render 'status_notes', application: @application %>
 
-<h2 class="add-bottom-margin">Commit log</h2>
 <% if @github_available %>
-  <table class="table table-striped table-bordered table-hover">
-    <thead>
-      <tr class="table-header">
-        <th>Deployed to</th>
-        <th>Tags</th>
-        <th>Commit</th>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="col">Release</th>
+        <th class="govuk-table__header" scope="col">Commit</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="govuk-table__body">
       <% @commits.each do |commit| %>
-        <tr>
+        <tr class="govuk-table__row">
           <% if tags = @tags_by_commit[commit[:sha]] %>
-            <td>
+            <th class="govuk-table__cell">
               <% tags.each do |tag| %>
+                <%= link_to "Deploy #{tag[:name]}", deploy_application_path(@application, tag: tag[:name]) %>
+
                 <% if deployments = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
                   <% deployments.each do |deployment| %>
-                  <p class="deployment <%= 'production' if deployment.environment == 'production' %>">
-                    <strong class="label label-default env"><%= deployment.environment.humanize %></strong>
-                    <span class="rm">at</span>
-                    <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %>
-                  </p>
+                    <div style="white-space:nowrap;">
+                      <%= environment_tag deployment.environment %>
+                      <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %><br/>
+                    </div>
                   <% end %>
                 <% end %>
               <% end %>
-            </td>
-            <td>
-              <% tags.each do |tag| %>
-                <span class="release-tag"><a href="<%= deploy_application_path(@application) %>?tag=<%= tag[:name] %>"><%= tag[:name] %></a></span>
-              <% end %>
-            </td>
+            </th>
           <% else %>
-            <td></td>
-            <td></td>
+            <th class="govuk-table__header"></th>
           <% end %>
-          <td>
-            <%= commit[:commit][:message].split(/\n/)[0] %>
-            <% if commit[:commit][:author] %>
-            <span class="author">
-              <%= commit[:commit][:author][:name] %>
-            </span>
+
+          <td class="govuk-table__cell govuk-!-f-16">
+            <% summary, body = commit[:commit][:message].split(/\n/, 2) %>
+            <a href="<%= "#{@application.repo_url}/commit/#{commit[:sha]}" %>" target="_blank"><%= summary %></a>
+
+            <br/>
+
+            <% if commit[:author] %>
+              <img height="20" width="20" class="avatar" src="<%= commit[:author][:avatar_url] %>" alt="" />
             <% end %>
-            <small>
-            <%= link_to commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank", class: "commit-hash pull-right" %>
-            </small>
+            <% if commit[:commit][:author] %>
+              <span class="name">
+                <%= commit[:commit][:author][:name] %>
+              </span>
+            <% end %>
+
+            <% if commit[:commit][:author] %>
+              <% commit_date = commit[:commit][:author][:date] %>
+              <span class="date"><%= commit_date.to_date.to_s(:short) =%></span>
+              <span class="time"><%= commit_date.to_date.to_s(:govuk_time) =%></span>
+            <% end %>
           </td>
         </tr>
       <% end %>
@@ -85,32 +86,26 @@
   </div>
 <% end %>
 
-<h2 class="add-bottom-margin">What’s where?</h2>
+<%= h2 "What’s where?" %>
 
-<% if current_user.may_deploy? %>
-<p>
-<%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "btn btn-success" %>
-</p>
-<% end %>
-
-<table class="table table-striped table-bordered table-hover">
-  <thead class="table-header">
-    <tr>
-      <th>Environment</th>
-      <th>Version</th>
-      <th>Previous version</th>
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th class="govuk-table__header">Environment</th>
+      <th class="govuk-table__header">Version</th>
+      <th class="govuk-table__header">Previous version</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="govuk-table__body">
     <% @application.latest_deploy_to_each_environment.each do |environment, deployment| %>
-      <tr>
-        <td><%= environment.humanize %></td>
-        <td>
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header"><%= environment_tag(environment) %></th>
+        <td class="govuk-table__cell">
           <%= github_tag_link_to(@application, deployment.version) %>
           at
           <%= human_datetime(deployment.created_at) %>
         </td>
-        <td>
+        <td class="govuk-table__cell">
           <% if deployment.previous_deployment %>
             <%= github_tag_link_to(@application, deployment.previous_deployment.version) %>
             at

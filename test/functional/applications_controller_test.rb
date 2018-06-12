@@ -61,6 +61,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :new
       assert_select "form input#application_name"
     end
+
     should "redirect when the user has no deploy permissions" do
       actions_requiring_deploy_permission_redirect(:get, :new)
     end
@@ -107,7 +108,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the application" do
       get :show, params: { id: @app.id }
-      assert_select "h1 span.name", @app.name
+      assert_select "h1", @app.name
     end
 
     should "should include status notes as a warning" do
@@ -132,7 +133,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the application" do
         get :show, params: { id: @app.id }
-        assert_select "h1 span.name", @app.name
+        assert_select "h1", @app.name
       end
 
       should "set the commit history in reverse order" do
@@ -218,11 +219,6 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "show the form" do
       get :edit, params: { id: @app.id }
       assert_select "form input#application_name[value='#{@app.name}']"
-    end
-
-    should "allow editing of the shortname in the form" do
-      get :edit, params: { id: @app.id }
-      assert_select "form input#application_shortname[placeholder='#{@app.shortname}']"
     end
   end
 
@@ -330,13 +326,15 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show that we are trying to deploy the application" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "h1 span.name", "Deploy #{@app.name}"
+      assert_select "h1", "Deploy #{@app.name}"
     end
 
     should "indicate which releases are current and about to be deployed" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "h2 .label-info", @release_tag
-      assert_select "p.lead .label-danger", @deployment.version
+      assert_select ".release-tag", text: @release_tag
+      assert_select ".current-release" do |e|
+        e.text.starts_with?(@deployment.version)
+      end
     end
 
     should "include status notes as a warning" do

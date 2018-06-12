@@ -22,7 +22,6 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
     assert page.has_content?('Site settings updated')
     assert_equal '/applications', current_path
 
-
     click_on @app1.name
     assert page.has_selector?('.global-status-note', text: 'Christmas deploy freeze in place. Emergency deploys only until 2nd Jan'), "Global status note is missing from Application 1 deploys page"
     click_on 'release_1000'

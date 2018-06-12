@@ -1,11 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
-  <h1 class="remove-bottom-margin">
-    <span class="name"><%= @application.name %> deployments</span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-  </h1>
-</div>
+<%= title @application.name %>
 
 <ul class="tabs">
   <li>
@@ -21,16 +16,8 @@
   </li>
 </ul>
 
+<%= h2 "Deployments" %>
+
 <%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "govuk-button" %>
 
-<ul class="list-group activity-list">
-  <% @deployments.each do |deployment| %>
-    <li class="list-group-item deployment to_<%= deployment.environment %>">
-      <h2>
-        <em><%= link_to deployment.application.name, application_path(deployment.application) %></em>
-        <%= deployment.version %> to <em><%= deployment.environment %></em>
-      </h2>
-      <p><%= human_datetime deployment.created_at %></p>
-    </li>
-  <% end %>
-</ul>
+<%= render "deployments_table", deployments: @deployments %>

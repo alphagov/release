@@ -1,34 +1,37 @@
-<table id="application-list" class="table table-striped table-bordered table-hover" data-module="filterable-table">
-  <thead>
-    <tr class='table-header'>
-      <th scope="col" class="headerSortDown">Name</th>
-      <th scope="col">In&nbsp;sync?</th>
+<table id="application-list" class="govuk-table" data-module="filterable-table">
+  <thead class="govuk-table__head">
+    <tr class='govuk-table__row'>
+      <th scope="col" class="govuk-table__header">Name</th>
+
+      <th scope="col" class="govuk-table__header">In&nbsp;sync?</th>
       <% @environments.each do |environment| %>
-        <th scope="col"><%= environment.humanize %></th>
+        <th scope="col" class="govuk-table__header"><%= environment.humanize %></th>
       <% end %>
-      <th>Notes</th>
     </tr>
     <tr class="if-no-js-hide table-header-secondary">
       <td colspan="5">
         <form>
-          <label for="applications-filter" class="rm">Filter applications</label>
-          <input id="applications-filter" autofocus="autofocus" type="text" class="form-control normal js-filter-table-input" placeholder="Filter applications">
+          <label for="applications-filter" class="visually-hidden">Filter applications</label>
+          <input id="applications-filter" type="text" class="govuk-input js-filter-table-input" placeholder="Filter applications">
         </form>
       </td>
     </tr>
   </thead>
-  <tbody>
+
+  <tbody class="govuk-table__body">
     <% @applications.each do |application| %>
-      <tr>
-        <td>
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="row">
           <%= link_to application.name, application, class: 'js-open-on-submit' %>
-        </td>
-        <td class="<%= application.staging_and_production_in_sync? ? "in-sync" : "not-in-sync" %>">
+        </th>
+
+        <td class="govuk-table__cell <%= application.staging_and_production_in_sync? ? "in-sync" : "not-in-sync" %>">
           <%= application.staging_and_production_in_sync? ? "Yes" : "No" %>
         </td>
+
         <% @environments.each do |environment| %>
           <% latest_deploy = application.latest_deploy_to_each_environment[environment] %>
-          <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
+          <td class="govuk-table__cell <%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
             <% if latest_deploy %>
               <%= github_tag_link_to(application, latest_deploy.version) %>
               <br/><span class="text-muted">
@@ -47,36 +50,6 @@
             <% end %>
           </td>
         <% end %>
-        <td class="notes">
-          <%= application.status_notes %>
-          <!-- Button to trigger modal -->
-          <% if current_user.may_deploy? %>
-            <a href="#edit-notes-app-<%= application.id %>" role="button" data-toggle="modal">
-              <i class="glyphicon glyphicon-edit pull-right" title="Edit notes"></i>
-            </a>
-
-            <!-- Modal -->
-            <div id="edit-notes-app-<%= application.id %>" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit-notes-app-<%= application.id %>Label" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 class="modal-title" id="edit-notes-app-<%= application.id %>Label">Edit notes for <%= application.name %></h3>
-                  </div>
-                  <%= simple_form_for application, url: update_notes_application_path(application) do |f| %>
-                    <div class="modal-body">
-                      <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50, data: { length_counting: 'on', count_message_threshold: 255, count_message_selector: "#notes-length-info-for-app-#{application.id}" } } %>
-                      <p id="notes-length-info-for-app-<%= application.id %>">Notes should be 255 characters or fewer. <span class="count"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                      <%= f.button :submit, label: 'Save', as: :button, button_html: { class: 'btn btn-primary' } %>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </td>
       </tr>
     <% end %>
   </tbody>

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
+  layout 'admin_layout'
 
   before_action :authenticate_user!, except: [:healthcheck]
 
@@ -20,6 +21,10 @@ class ApplicationController < ActionController::Base
     @site_settings ||= Site.settings
   end
   helper_method :site_settings
+
+  before_action do
+    response.headers[Slimmer::Headers::SKIP_HEADER] = "true"
+  end
 
 private
 
