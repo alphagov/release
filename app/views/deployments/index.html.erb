@@ -27,8 +27,8 @@
   <% @deployments.each do |deployment| %>
     <li class="list-group-item deployment to_<%= deployment.environment %>">
       <h2>
-        <em><%= link_to deployment.application.name, application_path(deployment.application) %></em>
-        <%= deployment.version %> to <em><%= deployment.environment %></em>
+        <em><%= github_tag_link_to(@application, deployment.version) %></em>
+        to <em><%= deployment.environment %></em>
       </h2>
       <p><%= human_datetime deployment.created_at %></p>
     </li>
