@@ -86,12 +86,15 @@ class DeploymentsControllerTest < ActionController::TestCase
     context "notification API" do
       should "create a deployment record" do
         app = FactoryBot.create(:application, repo: "org/app")
-        post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
+        post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
 
         deployment = app.reload.deployments.last
         refute_nil deployment
         assert_equal "release_123", deployment.version
         assert_equal "staging", deployment.environment
+        assert_equal "user@example.org", deployment.jenkins_user_email
+        assert_equal "A User", deployment.jenkins_user_name
+        assert_equal "02a570885766dc43d5e2432855bbffb342543906", deployment.deployed_sha
       end
 
       should "unarchive an archived application" do
