@@ -24,12 +24,28 @@ class Deployment < ApplicationRecord
       .first
   end
 
+  def previous_version
+    previous_deployment.try(:version)
+  end
+
   def recent?
     created_at > 2.hours.ago
   end
 
   def production?
     environment == 'production'
+  end
+
+  def commits
+    @commits ||= begin
+      Services.github.compare(application.repo, previous_version, version).commits.reverse.map do |commit|
+        Commit.new(commit.to_h, application)
+      end
+    end
+  end
+
+  def diff_url
+    application.repo_compare_url(previous_version, version)
   end
 
 private
