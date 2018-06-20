@@ -19,8 +19,8 @@ class Deployment < ApplicationRecord
   def previous_deployment
     @previous_deployment ||= Deployment
       .where(application_id: self.application_id, environment: self.environment)
-      .order("created_at DESC")
-      .offset(1)
+      .where("id < ?", id)
+      .order("id DESC")
       .first
   end
 
