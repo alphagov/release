@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2018_06_20_100419) do
 
-  create_table "applications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "applications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.string "repo"
     t.datetime "created_at", null: false
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2018_06_20_100419) do
     t.index ["shortname"], name: "index_applications_on_shortname"
   end
 
-  create_table "deployments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "deployments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "version"
     t.string "environment"
     t.integer "application_id"
@@ -38,13 +38,13 @@ ActiveRecord::Schema.define(version: 2018_06_20_100419) do
     t.index ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc"
   end
 
-  create_table "sites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sites", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "status_notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "uid"
