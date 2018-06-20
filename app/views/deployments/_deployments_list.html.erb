@@ -1,0 +1,14 @@
+<ul class="list-group activity-list">
+  <% @deployments.each do |deployment| %>
+    <li class="list-group-item deployment to_<%= deployment.environment %>">
+      <%= link_to deployment do %>
+        <h2>
+          <%= deployment.application.name %> <%= deployment.environment %>
+          <%= deployment.previous_version || "?" %> to <%= deployment.version %>
+        </h2>
+      <% end %>
+
+      <p><%= human_datetime deployment.created_at %> by <%= deployment.jenkins_user_name || "<em>Unknown user</em>".html_safe %></p>
+    </li>
+  <% end %>
+</ul>
