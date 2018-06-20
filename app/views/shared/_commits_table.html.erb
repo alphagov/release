@@ -1,0 +1,43 @@
+<table class="table table-striped table-bordered table-hover commits" data-module="filterable-table">
+  <thead>
+    <tr class="table-header">
+      <th width="10%">SHA</th>
+      <th width="55%">Message</th>
+      <th width="20%">Author</th>
+      <th width="15%">Date</th>
+    </tr>
+    <tr class="if-no-js-hide table-header-secondary">
+        <td colspan="4">
+          <form>
+            <label for="table-filter" class="rm">Filter commits</label>
+            <input id="table-filter" autofocus="autofocus" type="text" class="form-control normal js-filter-table-input" placeholder="Filter commits">
+          </form>
+        </td>
+      </tr>
+  </thead>
+  <tbody>
+    <% commits.each do |commit| %>
+      <tr>
+        <td class="hash">
+          <%= link_to commit.sha, commit.github_url, target: '_blank' %>
+        </td>
+        <td class="message">
+          <% if commit.pr? %>
+            <%= octicon "git-pull-request", height: '20px', style: "vertical-align: middle; margin-right: 4px;" %>
+          <% end %>
+          <%= link_to commit.title, commit.github_url, target: '_blank' %>
+        </td>
+        <td class="author">
+          <% if commit.author_avatar %>
+            <%= image_tag commit.author_avatar, height: '20px', width: '20px', class: 'avatar' %>
+            <%= tag.span commit.author_name, class: 'name' %>
+          <% end %>
+        </td>
+        <td class="date">
+          <span class="date"><%= commit.commit_date.to_date.to_s(:short) =%></span>
+          <span class="time"><%= commit.commit_date.to_s(:govuk_time) =%></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

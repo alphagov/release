@@ -76,7 +76,7 @@ class ApplicationsController < ApplicationController
         @release_tag
       )
       # The `compare` API shows commits in forward chronological order
-      @commits = comparison.commits.reverse
+      @commits = comparison.commits.reverse.map { |commit_data| Commit.new(commit_data.to_h, @application) }
     end
     @github_available = true
   rescue Octokit::NotFound => e
