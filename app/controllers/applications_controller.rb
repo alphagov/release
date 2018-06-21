@@ -15,7 +15,7 @@ class ApplicationsController < ApplicationController
   end
 
   def show
-    @tags_by_commit = github.tags(@application.repo).each_with_object({}) do |tag, hash|
+    @tags_by_commit = Services.github.tags(@application.repo).each_with_object({}) do |tag, hash|
       sha = tag[:commit][:sha];
       hash[sha] ||= [];
       hash[sha] << tag
@@ -29,7 +29,7 @@ class ApplicationsController < ApplicationController
 
     @production_deploy = @application.deployments.last_deploy_to "production"
     if @production_deploy
-      comparison = github.compare(
+      comparison = Services.github.compare(
         @application.repo,
         @production_deploy.version,
         "master"
@@ -38,7 +38,7 @@ class ApplicationsController < ApplicationController
       @commits = comparison.commits.reverse + [comparison.base_commit]
     else
       # the `commits` API shows commits in reverse chronological order
-      @commits = github.commits(@application.repo)
+      @commits = Services.github.commits(@application.repo)
     end
 
     @github_available = true
@@ -70,13 +70,13 @@ class ApplicationsController < ApplicationController
 
     @production_deploy = @application.deployments.last_deploy_to "production"
     if @production_deploy
-      comparison = github.compare(
+      comparison = Services.github.compare(
         @application.repo,
         @production_deploy.version,
         @release_tag
       )
       # The `compare` API shows commits in forward chronological order
-      @commits = comparison.commits.reverse
+      @commits = comparison.commits.reverse.map { |commit_data| Commit.new(commit_data.to_h, @application) }
     end
     @github_available = true
   rescue Octokit::NotFound => e
@@ -116,7 +116,7 @@ private
 
   def github_rate_limited_error_message
     message = "Github API rate limit exceeded. "
-    resets_at = github.rate_limit.try(:resets_at)
+    resets_at = Services.github.rate_limit.try(:resets_at)
     if resets_at
       time_until_reset = time_ago_in_words(resets_at)
       message << "Rate limit will reset in #{time_until_reset}."
@@ -126,11 +126,6 @@ private
 
   def find_application
     @application = Application.friendly.find(params[:id])
-  end
-
-  def github
-    credentials = defined?(GITHUB_CREDENTIALS) ? GITHUB_CREDENTIALS : {}
-    @client ||= Octokit::Client.new(credentials)
   end
 
   def application_notes_params

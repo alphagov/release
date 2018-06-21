@@ -196,7 +196,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       should "show the rate limit message" do
         assert_select '.alert-error' do
           assert_select 'div', "Couldn't get data from GitHub:"
-          assert_select 'div', "Github API rate limit exceeded. Rate limit will reset in 5 minutes."
         end
       end
     end

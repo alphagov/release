@@ -10,6 +10,7 @@ gem 'octokit', '4.9.0'
 gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '4.1.12'
 gem 'whenever', '0.10.0'
+gem 'octicons_helper'
 
 # GDS gems.
 gem 'gds-sso', '~> 13'

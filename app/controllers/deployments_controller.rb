@@ -6,6 +6,10 @@ class DeploymentsController < ApplicationController
     @deployments = @application.deployments.newest_first.limit(100)
   end
 
+  def show
+    @deployment = Deployment.find(params[:id])
+  end
+
   def recent
     @deployments = Deployment.includes(:application).newest_first.limit(25)
   end

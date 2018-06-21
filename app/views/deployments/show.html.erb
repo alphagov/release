@@ -1,0 +1,50 @@
+<h1>Deploy #<%= @deployment.id %></h1>
+
+<table>
+  <tr>
+    <th style='width:200px'>Application</th>
+    <td><%= @deployment.application.name %></td>
+  </tr>
+  <tr>
+    <th>Environment</th>
+    <td><%= @deployment.environment %></td>
+  </tr>
+  <tr>
+    <th>Deployed by</th>
+    <td><%= @deployment.jenkins_user_name || "<em>Not recorded</em>".html_safe %></td>
+  </tr>
+  <tr>
+    <th>Deployed at</th>
+    <td><%= @deployment.created_at %></td>
+  </tr>
+</table>
+
+<% if @deployment.previous_deployment %>
+  <table>
+    <tr>
+      <th style='width:200px'>Previous version</th>
+      <td><%= @deployment.previous_version %> (<%= @deployment.previous_deployment.deployed_sha || "unknown SHA" %>)</td>
+    </tr>
+    <tr>
+      <th>Deployed version</th>
+      <td><%= @deployment.version %> (<%= @deployment.deployed_sha || "unknown SHA" %>)</td>
+    </tr>
+    <tr>
+      <th>Commits</th>
+      <td><%= @deployment.commits.count %> (<%= link_to "Diff URL", @deployment.diff_url %>)</td>
+    </tr>
+    <tr>
+      <th>Pull requests</th>
+      <td><%= @deployment.commits.count(&:pr?) %></td>
+    </tr>
+    <tr>
+      <th>Authors</th>
+      <td><%= to_sentence @deployment.commits.map(&:author_name).compact.uniq %></td>
+    </tr>
+  </table>
+
+  <br/>
+  <br/>
+
+  <%= render 'shared/commits_table', commits: @deployment.commits %>
+<% end %>

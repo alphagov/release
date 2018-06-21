@@ -13,7 +13,7 @@
 
 <% content_for :navbar_items do %>
   <%= nav_link 'Applications', applications_path %>
-  <%= nav_link 'Activity', activity_path %>
+  <%= nav_link 'Deploys', activity_path %>
   <%= nav_link 'Archived', archived_applications_path %>
   <%= nav_link 'Site settings', site_path if current_user.may_deploy? %>
 <% end %>
