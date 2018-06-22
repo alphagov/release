@@ -41,8 +41,13 @@ module ApplicationHelper
   def jenkins_deploy_url(application, release_tag, environment)
     job_name = "Deploy_App"
     job_name = "Deploy_Puppet" if application.shortname == "puppet"
-    subdomain_prefix = "deploy.staging"
-    subdomain_prefix = "deploy" if environment.include?("production")
+    if environment.start_with?("aws")
+      subdomain_prefix = "deploy.blue.staging"
+      subdomain_prefix = "deploy.blue" if environment.include?("production")
+    else
+      subdomain_prefix = "deploy.staging"
+      subdomain_prefix = "deploy" if environment.include?("production")
+    end
     escaped_release_tag = CGI.escape(release_tag)
     domain = if environment.start_with?("aws")
                "govuk.digital"
