@@ -56,19 +56,19 @@
         <% if @staging_dashboard_url %>
           <p>
             <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            Monitor your deployment to check that it doesn't cause any problems, via the:
-            <a target="_blank" href="<%= @staging_dashboard_url %>">Carrenza Staging dashboard</a>
+            Monitor your deployment to check that it doesn't cause any problems, via the
+            <a target="_blank" href="<%= @staging_dashboard_url %>">Carrenza Staging dashboard</a>.
           </p>
         <% end %>
+        <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "staging") %>">Deploy to Carrenza Staging</a></p>
 
         <% if @aws_staging_dashboard_url %>
           <p>
             <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
             Monitor your deployment to check that it doesn't cause any problems, via the
-            <a target="_blank" href="<%= @aws_staging_dashboard_url %>">AWS Staging dashboard</a>
+            <a target="_blank" href="<%= @aws_staging_dashboard_url %>">AWS Staging dashboard</a>.
           </p>
         <% end %>
-        <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "staging") %>">Deploy to Carrenza Staging</a></p>
         <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "aws_staging") %>">Deploy to AWS Staging</a></p>
 
         <h3>Promote to Production</h3>
