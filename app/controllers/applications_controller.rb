@@ -66,6 +66,7 @@ class ApplicationsController < ApplicationController
     if application_has_dashboard?(@application.shortname)
       @staging_dashboard_url = dashboard_url('grafana.staging.publishing.service.gov.uk', @application.shortname)
       @production_dashboard_url = dashboard_url('grafana.publishing.service.gov.uk', @application.shortname)
+      @aws_staging_dashboard_url = dashboard_url('grafana.staging.govuk.digital', @application.shortname)
     end
 
     @production_deploy = @application.deployments.last_deploy_to "production"
