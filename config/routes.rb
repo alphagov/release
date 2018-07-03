@@ -10,6 +10,7 @@ ReleaseApp::Application.routes.draw do
 
     member do
       get :deploy
+      get :stats
     end
 
     resources :deployments
@@ -22,6 +23,8 @@ ReleaseApp::Application.routes.draw do
   get '/activity', to: 'deployments#recent', as: :activity
 
   get '/healthcheck', to: 'application#healthcheck'
+
+  get '/stats', to: 'stats#index'
 
   root to: redirect("/applications", status: 302)
 
