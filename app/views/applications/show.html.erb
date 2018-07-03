@@ -19,6 +19,9 @@
   <li>
     <%= link_to "Recent deployments", application_deployments_path(@application) %>
   </li>
+  <li>
+    <%= link_to "Stats", stats_application_path(@application) %>
+  </li>
 </ul>
 
 <% if @application.archived %>

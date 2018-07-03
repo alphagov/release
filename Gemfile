@@ -12,6 +12,8 @@ gem 'uglifier', '4.1.13'
 gem 'whenever', '0.10.0'
 gem 'octicons_helper'
 
+gem 'chartkick'
+
 # GDS gems.
 gem 'gds-sso', '~> 13'
 gem 'plek', '2.1.1'

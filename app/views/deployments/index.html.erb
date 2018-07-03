@@ -19,6 +19,9 @@
   <li class="active">
     <%= link_to "Recent deployments", application_deployments_path(@application) %>
   </li>
+  <li>
+    <%= link_to "Stats", stats_application_path(@application) %>
+  </li>
 </ul>
 
 <%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "govuk-button" %>

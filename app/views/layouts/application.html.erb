@@ -7,6 +7,7 @@
 <% end %>
 <% content_for :head do %>
   <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tag %>
   <%= yield :extra_headers %>
 <% end %>
@@ -16,6 +17,7 @@
   <%= nav_link 'Deploys', activity_path %>
   <%= nav_link 'Archived', archived_applications_path %>
   <%= nav_link 'Site settings', site_path if current_user.may_deploy? %>
+  <%= nav_link 'Stats', stats_path %>
 <% end %>
 
 <% content_for :navbar_right do %>
@@ -37,7 +39,6 @@
 <% content_for :footer_version, CURRENT_RELEASE_SHA %>
 
 <% content_for :body_end do %>
-  <%= javascript_include_tag "application" %>
   <%= yield :extra_javascript %>
 <% end %>
 

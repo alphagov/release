@@ -1,0 +1,9 @@
+<% content_for :page_title, "Deployment stats" %>
+
+<h2>Deployments per month</h2>
+
+<%= line_chart @stats.per_month, width: "100%", height: "450px", legend: false, download: true %>
+
+<h2>Deployments per year</h2>
+
+<%= column_chart @stats.per_year, width: "100%", height: "250px", legend: false, download: true %>
