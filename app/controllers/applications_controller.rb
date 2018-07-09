@@ -4,7 +4,7 @@ class ApplicationsController < ApplicationController
 
   include ActionView::Helpers::DateHelper
 
-  ENVIRONMENTS = %w(integration staging production).freeze
+  ENVIRONMENTS = %w(production staging integration).freeze
 
   def index
     @applications = Application.where(archived: false)
