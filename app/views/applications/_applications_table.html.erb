@@ -40,11 +40,6 @@
             <% else %>
               N/A
             <% end %>
-            <% if current_user.may_deploy? %>
-              <%= link_to(new_application_deployment_path(application, environment: environment)) do %>
-                <i class="glyphicon glyphicon-plus pull-right" title="Add a missing deployment"></i>
-              <% end %>
-            <% end %>
           </td>
         <% end %>
         <td class="notes">
