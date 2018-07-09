@@ -9,7 +9,7 @@
       <th>Notes</th>
     </tr>
     <tr class="if-no-js-hide table-header-secondary">
-      <td colspan="5">
+      <td colspan="<%= 3 + @environments.length %>">
         <form>
           <label for="applications-filter" class="rm">Filter applications</label>
           <input id="applications-filter" autofocus="autofocus" type="text" class="form-control normal js-filter-table-input" placeholder="Filter applications">
