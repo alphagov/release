@@ -18,13 +18,6 @@
     <p class="lead add-top-margin">Production is <span class="label label-danger">not deployed yet</span>!</p>
   <% end %>
 
-  <% unless @application.staging_and_production_in_sync? %>
-    <div class="callout callout-danger">
-      <div class="callout-title">Production and Staging are not in sync</div>
-      <div class="callout-body">Proceed with caution and check the <a href="<%= @application.repo_compare_url('deployed-to-production', 'deployed-to-staging') %>">differences between production and staging</a></div>
-    </div>
-  <% end %>
-
   <% if @production_deploy %>
     <p class="pull-right">
       <a class="btn btn-default" href="<%= @application.repo_compare_url(@production_deploy.version, @release_tag) %>">
