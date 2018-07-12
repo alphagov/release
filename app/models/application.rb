@@ -29,13 +29,12 @@ class Application < ApplicationRecord
     latest_deploy_to_each_environment.select { |env, _deploy| environments.include?(env) }
   end
 
-  def staging_and_production_in_sync?
-    return @staging_and_production_in_sync unless @staging_and_production_in_sync.nil?
-    staging = latest_deploy_to_each_environment["staging"]
-    production = latest_deploy_to_each_environment["production"]
-    staging_version = staging.nil? ? nil : staging.version
-    production_version = production.nil? ? nil : production.version
-    @staging_and_production_in_sync = (staging_version == production_version)
+  def in_sync?(environments)
+    latest_deploy_to(*environments)
+      .values
+      .map(&:version)
+      .uniq
+      .length <= 1
   end
 
   def fallback_shortname

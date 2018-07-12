@@ -9,7 +9,7 @@
       <th>Notes</th>
     </tr>
     <tr class="if-no-js-hide table-header-secondary">
-      <td colspan="5">
+      <td colspan="<%= 3 + @environments.length %>">
         <form>
           <label for="applications-filter" class="rm">Filter applications</label>
           <input id="applications-filter" autofocus="autofocus" type="text" class="form-control normal js-filter-table-input" placeholder="Filter applications">
@@ -23,8 +23,8 @@
         <td>
           <%= link_to application.name, application, class: 'js-open-on-submit' %>
         </td>
-        <td class="<%= application.staging_and_production_in_sync? ? "in-sync" : "not-in-sync" %>">
-          <%= application.staging_and_production_in_sync? ? "Yes" : "No" %>
+        <td class="<%= application.in_sync?(@environments) ? "in-sync" : "not-in-sync" %>">
+          <%= application.in_sync?(@environments) ? "Yes" : "No" %>
         </td>
         <% @environments.each do |environment| %>
           <% latest_deploy = application.latest_deploy_to_each_environment[environment] %>
@@ -39,11 +39,6 @@
               <% end %>
             <% else %>
               N/A
-            <% end %>
-            <% if current_user.may_deploy? %>
-              <%= link_to(new_application_deployment_path(application, environment: environment)) do %>
-                <i class="glyphicon glyphicon-plus pull-right" title="Add a missing deployment"></i>
-              <% end %>
             <% end %>
           </td>
         <% end %>

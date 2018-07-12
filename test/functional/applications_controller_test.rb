@@ -23,7 +23,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the latest deploy to an environment" do
       get :index
-      assert_select "table tbody tr td:nth-child(3)", /release_x/
+      assert_select "table tbody tr td:nth-child(4)", /release_x/
     end
 
     should "provide a link to compare with master" do

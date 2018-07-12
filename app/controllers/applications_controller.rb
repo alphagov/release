@@ -4,14 +4,16 @@ class ApplicationsController < ApplicationController
 
   include ActionView::Helpers::DateHelper
 
+  ENVIRONMENTS = %w(production staging integration).freeze
+
   def index
-    @environments = %w(staging production)
     @applications = Application.where(archived: false)
+    @environments = ENVIRONMENTS
   end
 
   def archived
-    @environments = %w(staging production)
     @applications = Application.where(archived: true)
+    @environments = ENVIRONMENTS
   end
 
   def stats
