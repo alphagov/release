@@ -6,3 +6,8 @@ en:
     attributes:
       deploy:
         release: "Release Number"
+
+  application_status:
+    production_and_staging_not_in_sync: "Production and Staging not in sync"
+    undeployed_changes_in_integration: "Undeployed changes in Integration"
+    all_environments_match: "All environments match"

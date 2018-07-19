@@ -22,13 +22,16 @@ table#application-list {
   tbody {
     tr {
       td {
-        &.in-sync, &.not-in-sync {
+        &.application-status {
           color: white;
         }
-        &.in-sync {
+        &.application-status-all_environments_match {
           background-color: #468847;
         }
-        &.not-in-sync {
+        &.application-status-undeployed_changes_in_integration {
+          background-color: #d95f0e;
+        }
+        &.application-status-production_and_staging_not_in_sync {
           background-color: #b94a48;
         }
         &.deployed-recently {
