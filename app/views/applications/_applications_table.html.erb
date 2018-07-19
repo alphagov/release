@@ -2,7 +2,7 @@
   <thead>
     <tr class='table-header'>
       <th scope="col" class="headerSortDown">Name</th>
-      <th scope="col">In&nbsp;sync?</th>
+      <th scope="col">Status</th>
       <% @environments.each do |environment| %>
         <th scope="col"><%= environment.humanize %></th>
       <% end %>
@@ -23,8 +23,8 @@
         <td>
           <%= link_to application.name, application, class: 'js-open-on-submit' %>
         </td>
-        <td class="<%= application.in_sync?(@environments) ? "in-sync" : "not-in-sync" %>">
-          <%= application.in_sync?(@environments) ? "Yes" : "No" %>
+        <td class="application-status application-status-<%= application.status %>">
+          <%= t("application_status.#{application.status}") %>
         </td>
         <% @environments.each do |environment| %>
           <% latest_deploy = application.latest_deploy_to_each_environment[environment] %>
