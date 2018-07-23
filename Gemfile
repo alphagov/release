@@ -8,7 +8,7 @@ gem 'mysql2', '0.4.10'
 gem 'nested_form', '0.3.2'
 gem 'octokit', '4.9.0'
 gem 'sass-rails', '~> 5.0.6'
-gem 'uglifier', '4.1.15'
+gem 'uglifier', '4.1.16'
 gem 'whenever', '0.10.0'
 gem 'octicons_helper'
 
