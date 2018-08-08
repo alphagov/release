@@ -1,0 +1,44 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "32a2057610a2ef0cfd1fe5f64b55fb9525638c4046756567afdc235309f78b66",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/applications/deploy.html.erb",
+      "line": 8,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Application.friendly.find(params[:id]).repo_url, Application.friendly.find(params[:id]).repo_url, :target => \"_blank\")",
+      "render_path": [{"type":"controller","class":"ApplicationsController","method":"deploy","line":71,"file":"app/controllers/applications_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "applications/deploy"
+      },
+      "user_input": "Application.friendly.find(params[:id]).repo_url",
+      "confidence": "Weak",
+      "note": "repo_url begins with 'https://', it's not an arbitrary string"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "ac866efcce1282a08d4d0d11d537ed7ce20c5e69cc7bbc84f04e87504a41f85e",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/deployments/show.html.erb",
+      "line": 34,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(\"Diff URL\", Deployment.find(params[:id]).diff_url)",
+      "render_path": [{"type":"controller","class":"DeploymentsController","method":"show","line":11,"file":"app/controllers/deployments_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "deployments/show"
+      },
+      "user_input": "Deployment.find(params[:id]).diff_url",
+      "confidence": "Weak",
+      "note": "diff_url begins with 'https://', it's not an arbitrary string"
+    }
+  ],
+  "updated": "2018-08-08 08:34:58 +0000",
+  "brakeman_version": "4.3.1"
+}
