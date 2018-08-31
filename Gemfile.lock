@@ -162,7 +162,7 @@ GEM
     octicons_helper (8.0.0)
       octicons (= 8.0.0)
       rails
-    octokit (4.10.0)
+    octokit (4.11.0)
       sawyer (~> 0.8.0, >= 0.5.3)
     omniauth (1.7.1)
       hashie (>= 3.4.6, < 3.6.0)
@@ -185,7 +185,7 @@ GEM
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     rack (2.0.5)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -322,7 +322,7 @@ DEPENDENCIES
   mysql2 (= 0.4.10)
   nested_form (= 0.3.2)
   octicons_helper
-  octokit (= 4.10.0)
+  octokit (= 4.11.0)
   plek (= 2.1.1)
   poltergeist (~> 1.18.1)
   pry (= 0.11.3)
