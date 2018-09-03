@@ -85,7 +85,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.23)
+    ffi (1.9.25)
     friendly_id (5.2.4)
       activerecord (>= 4.0.0)
     gds-sso (13.6.0)
