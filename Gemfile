@@ -21,7 +21,7 @@ gem 'govuk_admin_template', '6.6.0'
 gem 'govuk_app_config'
 
 group :test, :development do
-  gem 'better_errors', '2.4.0'
+  gem 'better_errors', '2.5.0'
   gem 'binding_of_caller', '0.8.0'
   gem 'capybara', '~> 3.7.0'
   gem 'database_cleaner', '~> 1.7.0'
