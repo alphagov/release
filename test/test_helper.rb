@@ -6,7 +6,7 @@ SimpleCov.start 'rails'
 
 ENV["RAILS_ENV"] = "test"
 
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rails/test_help'
 require 'shoulda-context'
 require 'minitest/autorun'
@@ -33,7 +33,7 @@ class ActiveSupport::TestCase
   def read_only_stub_user
     @read_only_stub_user ||= FactoryBot.create(:user,
                                                 name: 'Stub User',
-                                                permissions: ['signin'])
+                                                permissions: %w(signin))
   end
 
   def login_as_stub_user

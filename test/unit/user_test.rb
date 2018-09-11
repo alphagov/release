@@ -16,7 +16,7 @@ class UserTest < ActiveSupport::TestCase
     end
 
     should "return false if the user does not have deploy permissions" do
-      user = FactoryBot.create(:user, permissions: ["singin"])
+      user = FactoryBot.create(:user, permissions: %w(singin))
 
       refute user.may_deploy?
     end
