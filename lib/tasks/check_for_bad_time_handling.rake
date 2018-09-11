@@ -9,7 +9,6 @@ task :check_for_bad_time_handling do
   end
   if matching_files.any?
     raise <<~MSG
-
       Avoid issues with daylight-savings time by always building instances of
       TimeWithZone and not Time. Use methods like:
           Time.zone.now, Time.zone.parse, n.days.ago, m.hours.from_now, etc
@@ -19,7 +18,6 @@ task :check_for_bad_time_handling do
 
       Files that contain bad Time handling:
         #{matching_files.join("\n  ")}
-
-MSG
+    MSG
   end
 end
