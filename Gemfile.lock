@@ -282,7 +282,7 @@ GEM
     timecop (0.9.1)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.18)
+    uglifier (4.1.19)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.4.0)
     unicorn (5.4.1)
@@ -336,7 +336,7 @@ DEPENDENCIES
   simplecov (= 0.16.1)
   simplecov-rcov (= 0.2.3)
   timecop (= 0.9.1)
-  uglifier (= 4.1.18)
+  uglifier (= 4.1.19)
   webmock (~> 3.4.2)
   whenever (= 0.10.0)
 
