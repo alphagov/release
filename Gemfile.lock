@@ -48,6 +48,8 @@ GEM
     ast (2.4.0)
     autoprefixer-rails (8.3.0)
       execjs
+    aws-xray-sdk (0.10.2)
+      oj (~> 3.0)
     better_errors (2.5.0)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -107,7 +109,8 @@ GEM
       jquery-rails (~> 4.3.1)
       plek (>= 2.1.0)
       rails (>= 3.2.0)
-    govuk_app_config (1.8.0)
+    govuk_app_config (1.9.1)
+      aws-xray-sdk (~> 0.10.0)
       logstasher (~> 1.2.2)
       sentry-raven (~> 2.7.1)
       statsd-ruby (~> 1.4.0)
@@ -165,6 +168,7 @@ GEM
       rails
     octokit (4.12.0)
       sawyer (~> 0.8.0, >= 0.5.3)
+    oj (3.6.10)
     omniauth (1.7.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
