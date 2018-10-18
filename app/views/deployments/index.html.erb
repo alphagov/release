@@ -11,11 +11,9 @@
   <li>
     <%= link_to "Deploy status", @application %>
   </li>
-  <% if current_user.may_deploy? %>
-    <li>
-      <%= link_to "Edit", edit_application_path(@application) %>
-    </li>
-  <% end %>
+  <li>
+    <%= link_to "Edit", edit_application_path(@application) %>
+  </li>
   <li class="active">
     <%= link_to "Recent deployments", application_deployments_path(@application) %>
   </li>

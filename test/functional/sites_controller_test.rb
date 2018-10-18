@@ -6,10 +6,6 @@ class SitesControllerTest < ActionController::TestCase
   end
 
   context "GET show" do
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(:get, :show)
-    end
-
     should 'render the show template with an empty form if no site settings are persisted' do
       get :show
       assert_template :show
@@ -29,10 +25,6 @@ class SitesControllerTest < ActionController::TestCase
   end
 
   context "PATCH update" do
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(:patch, :update, site: { status_notes: 'No deploys plz!' })
-    end
-
     should "create some site settings if there are none" do
       refute Site.settings.persisted?
 

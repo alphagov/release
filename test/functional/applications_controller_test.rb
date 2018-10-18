@@ -35,25 +35,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :index
       assert_select "table td[title=?]", @deploy1.created_at.to_s
     end
-
-    context "when the user has no deploy permissions" do
-      setup do
-        login_as_read_only_stub_user
-        get :index
-      end
-
-      should "not show buttons to add missing deployments" do
-        assert_select "a:match('href', ?)", %r"/applications/\d+/deployments/new.*", count: 0
-      end
-
-      should "not show buttons to edit application notes" do
-        assert_select "a:match('href', ?)", %r"#edit-notes-app-\d+", count: 0
-      end
-
-      should "not show button to create application" do
-        assert_select "a[href='/applications/new']", false
-      end
-    end
   end
 
   context "GET new" do
@@ -61,22 +42,9 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :new
       assert_select "form input#application_name"
     end
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(:get, :new)
-    end
   end
 
   context "POST create" do
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(
-        :post,
-        :create,
-        name: "My First App",
-        repo: "org/my_first_app",
-        domain: "github.baz"
-      )
-    end
-
     should "create an application" do
       assert_difference "Application.count", 1 do
         post :create, params: {
@@ -154,21 +122,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
     end
 
-    context "when the user has no deploy permissions" do
-      setup do
-        login_as_read_only_stub_user
-        get :show, params: { id: @app.id }
-      end
-
-      should "not show the edit button" do
-        assert_select "a[href='/applications/#{@app.id}/edit']", false
-      end
-
-      should "not show the button to record a missing deployment" do
-        assert_select "a[href='/applications/#{@app.id}/deployments/new']", false
-      end
-    end
-
     context "when there is a github API 404 error" do
       setup do
         stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::NotFound.new)
@@ -206,14 +159,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app = FactoryBot.create(:application, name: "monkeys", repo: "org/monkeys")
     end
 
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(
-        :get,
-        :edit,
-        id: 123
-      )
-    end
-
     should "show the form" do
       get :edit, params: { id: @app.id }
       assert_select "form input#application_name[value='#{@app.name}']"
@@ -226,14 +171,6 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update" do
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(
-        :get,
-        :update,
-        id: 456, application: { name: "new name", repo: "new/repo" }
-      )
-    end
-
     setup do
       @app = FactoryBot.create(:application)
     end
@@ -255,14 +192,6 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "PUT update_notes" do
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(
-        :put,
-        :update_notes,
-        id: 789, application: { status_notes: "Rolled back deploy because science." }
-      )
-    end
-
     setup do
       @app = FactoryBot.create(:application)
     end
@@ -285,21 +214,6 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "show only archived applications" do
       get :archived
       assert_select "table tbody tr", count: 1
-    end
-
-    context "when the user has no deploy permissions" do
-      setup do
-        login_as_read_only_stub_user
-        get :archived
-      end
-
-      should "not show buttons to add missing deployments" do
-        assert_select "a:match('href', ?)", %r"/applications/\d+/deployments/new.*", count: 0
-      end
-
-      should "not show buttons to edit application notes" do
-        assert_select "a:match('href', ?)", %r"#edit-notes-app-\d+", count: 0
-      end
     end
   end
 

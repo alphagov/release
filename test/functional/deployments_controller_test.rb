@@ -26,10 +26,6 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "GET new" do
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(:get, :new)
-    end
-
     should "preselect the application" do
       FactoryBot.create(
         :application,
@@ -44,19 +40,6 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "POST create" do
-    should "redirect when the user has no deploy permissions" do
-      actions_requiring_deploy_permission_redirect(
-        :post,
-        :create,
-        deployment: {
-          application_id: 123,
-          version: "",
-          environment: "staging",
-          created_at: "18/01/2013 11:57"
-        }
-      )
-    end
-
     context "manually recording a deployment" do
       should "create a deployment record" do
         app = FactoryBot.create(:application, repo: "org/app")
