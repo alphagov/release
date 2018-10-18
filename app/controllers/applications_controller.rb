@@ -1,5 +1,4 @@
 class ApplicationsController < ApplicationController
-  before_action :redirect_if_read_only_user, only: %i[new edit create update update_notes]
   before_action :find_application, only: %i[show edit update update_notes deploy stats]
 
   include ActionView::Helpers::DateHelper

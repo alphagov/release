@@ -1,6 +1,4 @@
 class SitesController < ApplicationController
-  before_action :redirect_if_read_only_user
-
   def show; end
 
   def update

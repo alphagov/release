@@ -37,44 +37,42 @@
     <% end %>
   <% end %>
 
-  <% if current_user.may_deploy? %>
-    <h2>Deploy</h2>
-    <div class="row">
-      <div class="col-md-3">
-        <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
-      </div>
-
-      <div class="col-md-9">
-        <h3>Test on Staging</h3>
-        <% if @staging_dashboard_url %>
-          <p>
-            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            Monitor your deployment to check that it doesn't cause any problems, via the
-            <a target="_blank" href="<%= @staging_dashboard_url %>">Carrenza Staging dashboard</a>.
-          </p>
-        <% end %>
-        <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "staging") %>">Deploy to Carrenza Staging</a></p>
-
-        <% if @aws_staging_dashboard_url %>
-          <p>
-            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            Monitor your deployment to check that it doesn't cause any problems, via the
-            <a target="_blank" href="<%= @aws_staging_dashboard_url %>">AWS Staging dashboard</a>.
-          </p>
-        <% end %>
-        <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "aws_staging") %>">Deploy to AWS Staging</a></p>
-
-        <h3>Promote to Production</h3>
-        <% if @production_dashboard_url %>
-          <p>
-            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-            <a target="_blank" href="<%= @production_dashboard_url %>">Production dashboard</a>:
-            monitor your deployment to check that it doesn't cause any problems.
-          </p>
-        <% end %>
-        <p><a class="btn btn-danger" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "production") %>">Deploy to Production</a></p>
-      </div>
+  <h2>Deploy</h2>
+  <div class="row">
+    <div class="col-md-3">
+      <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
     </div>
-  <% end %>
+
+    <div class="col-md-9">
+      <h3>Test on Staging</h3>
+      <% if @staging_dashboard_url %>
+        <p>
+          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+          Monitor your deployment to check that it doesn't cause any problems, via the
+          <a target="_blank" href="<%= @staging_dashboard_url %>">Carrenza Staging dashboard</a>.
+        </p>
+      <% end %>
+      <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "staging") %>">Deploy to Carrenza Staging</a></p>
+
+      <% if @aws_staging_dashboard_url %>
+        <p>
+          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+          Monitor your deployment to check that it doesn't cause any problems, via the
+          <a target="_blank" href="<%= @aws_staging_dashboard_url %>">AWS Staging dashboard</a>.
+        </p>
+      <% end %>
+      <p><a class="btn btn-primary add-bottom-margin" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "aws_staging") %>">Deploy to AWS Staging</a></p>
+
+      <h3>Promote to Production</h3>
+      <% if @production_dashboard_url %>
+        <p>
+          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+          <a target="_blank" href="<%= @production_dashboard_url %>">Production dashboard</a>:
+          monitor your deployment to check that it doesn't cause any problems.
+        </p>
+      <% end %>
+      <p><a class="btn btn-danger" target="_blank" href="<%= jenkins_deploy_url(@application, @release_tag, "production") %>">Deploy to Production</a></p>
+    </div>
+  </div>
 
 </main>
