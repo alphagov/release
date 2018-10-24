@@ -8,7 +8,6 @@ gem 'mysql2', '0.4.10'
 gem 'octokit', '4.13.0'
 gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '4.1.19'
-gem 'whenever', '0.10.0'
 gem 'octicons_helper'
 
 gem 'chartkick'
