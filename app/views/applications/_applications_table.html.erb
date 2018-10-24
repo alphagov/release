@@ -44,32 +44,7 @@
         <% end %>
         <td class="notes">
           <%= application.status_notes %>
-
-          <!-- Button to trigger modal -->
-          <a href="#edit-notes-app-<%= application.id %>" role="button" data-toggle="modal">
-            <i class="glyphicon glyphicon-edit pull-right" title="Edit notes"></i>
-          </a>
-
-          <!-- Modal -->
-          <div id="edit-notes-app-<%= application.id %>" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit-notes-app-<%= application.id %>Label" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                  <h3 class="modal-title" id="edit-notes-app-<%= application.id %>Label">Edit notes for <%= application.name %></h3>
-                </div>
-                <%= simple_form_for application, url: update_notes_application_path(application) do |f| %>
-                  <div class="modal-body">
-                    <%= f.input :status_notes, as: :text, input_html: { rows: 5, cols: 50, data: { length_counting: 'on', count_message_threshold: 255, count_message_selector: "#notes-length-info-for-app-#{application.id}" } } %>
-                    <p id="notes-length-info-for-app-<%= application.id %>">Notes should be 255 characters or fewer. <span class="count"></span></p>
-                  </div>
-                  <div class="modal-footer">
-                    <%= f.button :submit, label: 'Save', as: :button, button_html: { class: 'btn btn-primary' } %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
+          <%= link_to "edit", edit_application_path(application) %>
         </td>
       </tr>
     <% end %>

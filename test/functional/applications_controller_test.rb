@@ -191,19 +191,6 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
   end
 
-  context "PUT update_notes" do
-    setup do
-      @app = FactoryBot.create(:application)
-    end
-
-    should "update the application, redirect to /applications" do
-      put :update_notes, params: { id: @app.id, application: { status_notes: "Rolled back deploy because science." } }
-      @app.reload
-      assert_equal "Rolled back deploy because science.", @app.status_notes
-      assert_redirected_to "/applications"
-    end
-  end
-
   context "GET archived" do
     setup do
       @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1")

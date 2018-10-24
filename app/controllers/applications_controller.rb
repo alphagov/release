@@ -1,5 +1,5 @@
 class ApplicationsController < ApplicationController
-  before_action :find_application, only: %i[show edit update update_notes deploy stats]
+  before_action :find_application, only: %i[show edit update deploy stats]
 
   include ActionView::Helpers::DateHelper
 
@@ -110,14 +110,6 @@ class ApplicationsController < ApplicationController
     end
   end
 
-  def update_notes
-    if @application.update_attributes(application_notes_params)
-      redirect_to applications_path, flash: { notice: "Successfully updated notes" }
-    else
-      redirect_to applications_path, flash: { error: "Failed to update notes" }
-    end
-  end
-
 private
 
   def github_rate_limited_error_message
@@ -132,10 +124,6 @@ private
 
   def find_application
     @application = Application.friendly.find(params[:id])
-  end
-
-  def application_notes_params
-    params.require(:application).permit(:status_notes)
   end
 
   def application_params

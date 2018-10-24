@@ -3,7 +3,7 @@
 <h1>Site settings</h1>
 
 <%= simple_form_for site_settings, url: site_path, method: 'patch' do |f| %>
-  <%= f.input :status_notes, label: "Notes", as: :text, input_html: { rows: 5, cols: 50, autofocus: 'autofocus', data: { length_counting: 'on', count_message_threshold: 255, count_message_selector: '.notes-length-info' } } %>
-  <p class="notes-length-info">Notes should be 255 characters or fewer. <span class="count"></span></p>
+  <%= f.input :status_notes, label: "Notes", as: :text %>
+  <p>Notes should be 255 characters or fewer.</p>
   <%= f.button :submit, value: "Save settings", class: 'btn btn-success' %>
 <% end %>

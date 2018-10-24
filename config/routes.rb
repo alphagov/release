@@ -5,10 +5,6 @@ ReleaseApp::Application.routes.draw do
     end
 
     member do
-      patch :update_notes
-    end
-
-    member do
       get :deploy
       get :stats
     end

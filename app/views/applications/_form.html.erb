@@ -4,6 +4,7 @@
   <%= f.input :domain, label: "GitHub domain", hint: "eg github.digital.cabinet-office.gov.uk", input_html: { class: 'form-control input-md-6' } %>
   <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
                           input_html: { placeholder: @application.fallback_shortname, class: 'form-control input-md-6' } %>
+  <%= f.input :status_notes, as: :text, input_html: { class: 'form-control input-md-6' }, hint: "Use for deploy instructions and deploy freezes" %>
   <%= f.input :archived, label: "Archived?" %>
   <%= f.button :submit, class: 'btn btn-success' %>
 <% end %>
