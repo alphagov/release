@@ -6,4 +6,4 @@ require File.expand_path('../config/application', __FILE__)
 
 ReleaseApp::Application.load_tasks
 
-task :default => [:test, :check_for_bad_time_handling]
+task :default => [:test]
