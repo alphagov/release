@@ -20,6 +20,4 @@ $(function () {
       }
     }
   });
-
-  $("textarea#application_status_notes").autoGrow();
 });
