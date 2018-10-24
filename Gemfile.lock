@@ -152,7 +152,6 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mysql2 (0.4.10)
-    nested_form (0.3.2)
     nio4r (2.3.1)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
@@ -328,7 +327,6 @@ DEPENDENCIES
   minitest (= 5.11.3)
   mocha (= 1.7.0)
   mysql2 (= 0.4.10)
-  nested_form (= 0.3.2)
   octicons_helper
   octokit (= 4.13.0)
   plek (= 2.1.1)
@@ -347,4 +345,4 @@ DEPENDENCIES
   whenever (= 0.10.0)
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
