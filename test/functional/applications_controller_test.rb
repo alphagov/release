@@ -73,9 +73,19 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
     end
 
-    should "show the application" do
+    should "show the application name" do
       get :show, params: { id: @app.id }
       assert_select "h1 span.name", @app.name
+    end
+
+    should "show the application provider" do
+      get :show, params: { id: @app.id }
+      assert_select "h1 span.badge", "Carrenza"
+
+      @app.update(on_aws: true)
+
+      get :show, params: { id: @app.id }
+      assert_select "h1 span.badge", "AWS"
     end
 
     should "should include status notes as a warning" do
@@ -176,9 +186,10 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "update the application" do
-      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo" } }
+      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true } }
       @app.reload
       assert_equal "new name", @app.name
+      assert_equal @app.on_aws?, true
     end
 
     context "invalid request" do
@@ -284,6 +295,22 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "a:match('href', ?)", %r"grafana.publishing.service.gov.uk", count: 0
       assert_select "a:match('href', ?)", %r"grafana.staging.publishing.service.gov.uk", count: 0
+    end
+
+    should "show Carrenza links when application is not on AWS" do
+      @app.update(on_aws: false)
+
+      get :deploy, params: { id: @app.id, tag: @release_tag }
+      assert_select "a[href=?]", "https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+      assert_select "a[href=?]", "https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+    end
+
+    should "show AWS links when application is on AWS" do
+      @app.update(on_aws: true)
+
+      get :deploy, params: { id: @app.id, tag: @release_tag }
+      assert_select "a[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+      assert_select "a[href=?]", "https://deploy.blue.production.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
     end
   end
 

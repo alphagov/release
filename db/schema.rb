@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_20_100419) do
+ActiveRecord::Schema.define(version: 2018_10_25_084256) do
 
   create_table "applications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2018_06_20_100419) do
     t.string "shortname"
     t.string "domain"
     t.boolean "archived", default: false, null: false
+    t.boolean "on_aws", default: false, null: false
     t.index ["name"], name: "index_applications_on_name", unique: true
     t.index ["repo"], name: "index_applications_on_repo", unique: true
     t.index ["shortname"], name: "index_applications_on_shortname"

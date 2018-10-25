@@ -4,6 +4,7 @@
   <h1 class="remove-bottom-margin">
     <span class="name"><%= @application.name %> deployments</span>
     <span class="shortname">(<%= @application.shortname %>)</span>
+    <%= render partial: "applications/provider_badge", locals: { application: @application } %>
   </h1>
 </div>
 

@@ -69,9 +69,13 @@ class ApplicationsController < ApplicationController
     @release_tag = params[:tag]
 
     if application_has_dashboard?(@application.shortname)
-      @staging_dashboard_url = dashboard_url('grafana.staging.publishing.service.gov.uk', @application.shortname)
-      @production_dashboard_url = dashboard_url('grafana.publishing.service.gov.uk', @application.shortname)
-      @aws_staging_dashboard_url = dashboard_url('grafana.staging.govuk.digital', @application.shortname)
+      if @application.on_aws?
+        @staging_dashboard_url = dashboard_url('grafana.blue.staging.govuk.digital', @application.shortname)
+        @production_dashboard_url = dashboard_url('grafana.blue.production.govuk.digital', @application.shortname)
+      else
+        @staging_dashboard_url = dashboard_url('grafana.staging.publishing.service.gov.uk', @application.shortname)
+        @production_dashboard_url = dashboard_url('grafana.publishing.service.gov.uk', @application.shortname)
+      end
     end
 
     @production_deploy = @application.deployments.last_deploy_to "production"
@@ -136,6 +140,7 @@ private
       :shortname,
       :status_notes,
       :task,
+      :on_aws,
     )
   end
 
