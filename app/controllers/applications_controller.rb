@@ -136,6 +136,7 @@ private
       :shortname,
       :status_notes,
       :task,
+      :on_aws,
     )
   end
 

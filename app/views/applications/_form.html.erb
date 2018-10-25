@@ -6,5 +6,6 @@
                           input_html: { placeholder: @application.fallback_shortname, class: 'form-control input-md-6' } %>
   <%= f.input :status_notes, as: :text, input_html: { class: 'form-control input-md-6' }, hint: "Use for deploy instructions and deploy freezes" %>
   <%= f.input :archived, label: "Archived?" %>
+  <%= f.input :on_aws, label: "Deployed to AWS?" %>
   <%= f.button :submit, class: 'btn btn-success' %>
 <% end %>

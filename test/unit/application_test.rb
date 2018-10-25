@@ -87,6 +87,13 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal false, application.archived
     end
 
+    should "default to not being on AWS" do
+      @atts.delete :on_aws
+      application = Application.new(@atts)
+
+      assert_equal false, application.on_aws
+    end
+
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
 

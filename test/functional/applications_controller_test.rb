@@ -176,9 +176,10 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "update the application" do
-      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo" } }
+      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true } }
       @app.reload
       assert_equal "new name", @app.name
+      assert_equal @app.on_aws, true
     end
 
     context "invalid request" do
