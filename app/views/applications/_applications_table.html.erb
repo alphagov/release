@@ -22,6 +22,9 @@
       <tr>
         <td>
           <%= link_to application.name, application, class: 'js-open-on-submit' %>
+          <div style="margin-top: .5rem;">
+            <%= render partial: "provider_badge", locals: { application: application } %>
+          </div>
         </td>
         <td class="application-status application-status-<%= application.status %>">
           <%= t("application_status.#{application.status}") %>

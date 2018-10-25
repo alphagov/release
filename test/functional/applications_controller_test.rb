@@ -73,9 +73,19 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
     end
 
-    should "show the application" do
+    should "show the application name" do
       get :show, params: { id: @app.id }
       assert_select "h1 span.name", @app.name
+    end
+
+    should "show the application provider" do
+      get :show, params: { id: @app.id }
+      assert_select "h1 span.badge", "Carrenza"
+
+      @app.update(on_aws: true)
+
+      get :show, params: { id: @app.id }
+      assert_select "h1 span.badge", "AWS"
     end
 
     should "should include status notes as a warning" do

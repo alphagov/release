@@ -4,6 +4,7 @@
   <h1 class="remove-bottom-margin">
     <span class="name">Edit <%= @application.name %></span>
     <span class="shortname">(<%= @application.shortname %>)</span>
+    <%= render partial: "provider_badge", locals: { application: @application } %>
   </h1>
 </div>
 
