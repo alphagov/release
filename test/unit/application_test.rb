@@ -91,7 +91,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts.delete :on_aws
       application = Application.new(@atts)
 
-      assert_equal false, application.on_aws
+      assert_equal false, application.on_aws?
     end
 
     should "be invalid with a name that is too long" do

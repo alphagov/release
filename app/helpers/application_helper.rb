@@ -42,7 +42,7 @@ module ApplicationHelper
     job_name = "Deploy_App"
     job_name = "Deploy_Puppet" if application.shortname == "puppet"
 
-    if application.on_aws
+    if application.on_aws?
       subdomain_prefix = "deploy.blue.#{environment}"
     else
       subdomain_prefix = "deploy.staging"
@@ -50,7 +50,7 @@ module ApplicationHelper
     end
 
     escaped_release_tag = CGI.escape(release_tag)
-    domain = if application.on_aws
+    domain = if application.on_aws?
                "govuk.digital"
              else
                "publishing.service.gov.uk"

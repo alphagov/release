@@ -189,7 +189,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true } }
       @app.reload
       assert_equal "new name", @app.name
-      assert_equal @app.on_aws, true
+      assert_equal @app.on_aws?, true
     end
 
     context "invalid request" do

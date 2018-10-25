@@ -69,7 +69,7 @@ class ApplicationsController < ApplicationController
     @release_tag = params[:tag]
 
     if application_has_dashboard?(@application.shortname)
-      if @application.on_aws
+      if @application.on_aws?
         @staging_dashboard_url = dashboard_url('grafana.blue.staging.govuk.digital', @application.shortname)
         @production_dashboard_url = dashboard_url('grafana.blue.production.govuk.digital', @application.shortname)
       else
