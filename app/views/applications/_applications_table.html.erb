@@ -30,7 +30,8 @@
           <%= t("application_status.#{application.status}") %>
         </td>
         <% @environments.each do |environment| %>
-          <% latest_deploy = application.latest_deploy_to_each_environment[environment] %>
+          <% environment_name = (application.on_aws? && environment != "integration") ? "#{environment}-aws" : environment %>
+          <% latest_deploy = application.latest_deploy_to_each_environment[environment_name] %>
           <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
             <% if latest_deploy %>
               <%= github_tag_link_to(application, latest_deploy.version) %>

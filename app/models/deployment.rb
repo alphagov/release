@@ -33,7 +33,7 @@ class Deployment < ApplicationRecord
   end
 
   def production?
-    environment == 'production'
+    environment == 'production' || environment == 'production-aws'
   end
 
   def commits
@@ -53,7 +53,7 @@ private
     # Record the deployment to statsd and thence to graphite
   def record_to_statsd
     # Only record production deployments in production graphite
-    if self.environment == "production"
+    if self.environment == "production" || self.environment == "production-aws"
       key = "deploys.#{self.application.shortname}"
       GovukStatsd.increment(key)
     end
