@@ -32,7 +32,7 @@ class ApplicationsController < ApplicationController
       @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
     end
 
-    @production_deploy = @application.deployments.last_deploy_to "production"
+    @production_deploy = @application.deployments.last_deploy_to production_environment_name
     if @production_deploy
       comparison = Services.github.compare(
         @application.repo,
@@ -78,7 +78,7 @@ class ApplicationsController < ApplicationController
       end
     end
 
-    @production_deploy = @application.deployments.last_deploy_to "production"
+    @production_deploy = @application.deployments.last_deploy_to production_environment_name
     if @production_deploy
       comparison = Services.github.compare(
         @application.repo,
@@ -167,5 +167,13 @@ private
 
   def dashboard_url(host_name, application_name)
     "https://#{host_name}/dashboard/file/deployment_#{application_name}.json"
+  end
+
+  def production_environment_name
+    if @application.on_aws?
+      "production-aws"
+    else
+      "production"
+    end
   end
 end
