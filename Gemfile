@@ -28,7 +28,7 @@ group :test, :development do
   gem 'minitest', '5.11.3'
   gem 'mocha', '1.7.0', require: false
   gem 'poltergeist', '~> 1.18.1'
-  gem 'pry', '0.12.0'
+  gem 'pry', '0.12.2'
   gem 'rails-controller-testing'
   gem 'shoulda-context', '1.2.2', require: false
   gem 'simplecov', '0.16.1', require: false
