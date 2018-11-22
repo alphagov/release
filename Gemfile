@@ -7,7 +7,7 @@ gem 'friendly_id', '5.2.4'
 gem 'mysql2', '0.4.10'
 gem 'octokit', '4.13.0'
 gem 'sass-rails', '~> 5.0.6'
-gem 'uglifier', '4.1.19'
+gem 'uglifier', '4.1.20'
 gem 'octicons_helper'
 
 gem 'chartkick'
