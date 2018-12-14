@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.2'
 
-gem 'simple_form', '~> 4.0'
+gem 'simple_form', '~> 4.1'
 gem 'friendly_id', '5.2.4'
 gem 'mysql2', '0.4.10'
 gem 'octokit', '4.13.0'
