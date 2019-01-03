@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.2'
 
-gem 'friendly_id', '5.2.4'
+gem 'friendly_id', '5.2.5'
 gem 'mysql2', '0.4.10'
 gem 'octicons_helper'
 gem 'octokit', '4.13.0'
