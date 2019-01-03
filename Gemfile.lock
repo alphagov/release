@@ -88,7 +88,7 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
-    friendly_id (5.2.4)
+    friendly_id (5.2.5)
       activerecord (>= 4.0.0)
     gds-sso (14.0.0)
       multi_json (~> 1.0)
@@ -117,7 +117,7 @@ GEM
       unicorn (~> 5.4.0)
     hashdiff (0.3.7)
     hashie (3.6.0)
-    i18n (1.2.0)
+    i18n (1.4.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.1)
     jquery-rails (4.3.1)
@@ -316,7 +316,7 @@ DEPENDENCIES
   chartkick
   database_cleaner (~> 1.7.0)
   factory_bot_rails
-  friendly_id (= 5.2.4)
+  friendly_id (= 5.2.5)
   gds-sso (~> 14)
   govuk-lint
   govuk_admin_template (= 6.6.0)
