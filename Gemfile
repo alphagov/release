@@ -2,21 +2,21 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.2'
 
-gem 'simple_form', '~> 4.1'
 gem 'friendly_id', '5.2.4'
 gem 'mysql2', '0.4.10'
+gem 'octicons_helper'
 gem 'octokit', '4.13.0'
 gem 'sass-rails', '~> 5.0.6'
+gem 'simple_form', '~> 4.1'
 gem 'uglifier', '4.1.20'
-gem 'octicons_helper'
 
 gem 'chartkick'
 
 # GDS gems.
 gem 'gds-sso', '~> 14'
-gem 'plek', '2.1.1'
 gem 'govuk_admin_template', '6.6.0'
 gem 'govuk_app_config'
+gem 'plek', '2.1.1'
 
 group :test, :development do
   gem 'better_errors', '2.5.0'
