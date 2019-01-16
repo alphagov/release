@@ -26,7 +26,7 @@ group :test, :development do
   gem 'factory_bot_rails'
   gem 'govuk-lint'
   gem 'minitest', '5.11.3'
-  gem 'mocha', '1.7.0', require: false
+  gem 'mocha', '1.8.0', require: false
   gem 'poltergeist', '~> 1.18.1'
   gem 'pry', '0.12.2'
   gem 'rails-controller-testing'
