@@ -86,6 +86,6 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
           "comments_url": "https://api.github.com/repos/#{application.repo}/commits/1234567890/comments"
         }
       ])
-    stub_request(:get, "https://grafana.dev.gov.uk:80/api/dashboards/file/deployment_#{application.shortname}.json").to_return(status: 200, body: "")
+    stub_request(:get, "https://grafana.dev.gov.uk:80/api/dashboards/file/#{application.shortname}.json").to_return(status: 200, body: "")
   end
 end
