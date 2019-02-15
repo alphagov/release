@@ -19,7 +19,7 @@ gem 'govuk_app_config'
 gem 'plek', '2.1.1'
 
 group :test, :development do
-  gem 'better_errors', '2.5.0'
+  gem 'better_errors', '2.5.1'
   gem 'binding_of_caller', '0.8.0'
   gem 'capybara', '~> 3.13.2'
   gem 'database_cleaner', '~> 1.7.0'
