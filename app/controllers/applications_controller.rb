@@ -68,14 +68,12 @@ class ApplicationsController < ApplicationController
   def deploy
     @release_tag = params[:tag]
 
-    if application_has_dashboard?(@application.shortname)
-      if @application.on_aws?
-        @staging_dashboard_url = dashboard_url('grafana.blue.staging.govuk.digital', @application.shortname)
-        @production_dashboard_url = dashboard_url('grafana.blue.production.govuk.digital', @application.shortname)
-      else
-        @staging_dashboard_url = dashboard_url('grafana.staging.publishing.service.gov.uk', @application.shortname)
-        @production_dashboard_url = dashboard_url('grafana.publishing.service.gov.uk', @application.shortname)
-      end
+    if @application.on_aws?
+      @staging_dashboard_url = dashboard_url('grafana.blue.staging.govuk.digital', @application.shortname)
+      @production_dashboard_url = dashboard_url('grafana.blue.production.govuk.digital', @application.shortname)
+    else
+      @staging_dashboard_url = dashboard_url('grafana.staging.publishing.service.gov.uk', @application.shortname)
+      @production_dashboard_url = dashboard_url('grafana.publishing.service.gov.uk', @application.shortname)
     end
 
     @production_deploy = @application.deployments.last_deploy_to production_environment_name
@@ -142,27 +140,6 @@ private
       :task,
       :on_aws,
     )
-  end
-
-  def application_has_dashboard?(application_name)
-    grafana_base_url = Plek.new.external_url_for('grafana')
-    uri = URI("#{grafana_base_url}/api/dashboards/file/#{application_name}.json")
-    request = Net::HTTP::Get.new(uri.path)
-
-    begin
-      grafana_api_response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http|
-        http.read_timeout = 2 # seconds
-        http.request(request)
-      }
-    rescue StandardError => e
-      # Do not link to dashboards if Grafana API does not respond. Either
-      # Grafana is not available or it does not exist in this environment (e.g.
-      # development)
-      logger.warn("Failed to call Grafana API at '#{uri}': #{e.message}")
-      return false
-    end
-
-    grafana_api_response.is_a?(Net::HTTPSuccess)
   end
 
   def dashboard_url(host_name, application_name)
