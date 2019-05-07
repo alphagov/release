@@ -11,9 +11,9 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
       @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
       @deploy1 = FactoryBot.create(:deployment,
-        application: @app1,
-        environment: "staging",
-        version: "release_x")
+                                   application: @app1,
+                                   environment: "staging",
+                                   version: "release_x")
     end
 
     should "list unarchived applications" do
