@@ -311,35 +311,35 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  better_errors (= 2.5.1)
-  binding_of_caller (= 0.8.0)
-  capybara (~> 3.18.0)
+  better_errors (~> 2)
+  binding_of_caller (~> 0.8)
+  capybara (~> 3)
   chartkick
-  database_cleaner (~> 1.7.0)
+  database_cleaner (~> 1)
   factory_bot_rails
-  friendly_id (= 5.2.5)
+  friendly_id (~> 5)
   gds-sso (~> 14)
   govuk-lint
-  govuk_admin_template (= 6.7.0)
+  govuk_admin_template (~> 6)
   govuk_app_config
-  minitest (= 5.11.3)
-  mocha (= 1.8.0)
-  mysql2 (= 0.4.10)
+  minitest (~> 5)
+  mocha (~> 1)
+  mysql2 (~> 0.4)
   octicons_helper
-  octokit (= 4.14.0)
-  plek (= 2.1.1)
-  poltergeist (~> 1.18.1)
-  pry (= 0.12.2)
-  rails (~> 5.2.2)
+  octokit (~> 4)
+  plek (~> 2)
+  poltergeist (~> 1)
+  pry (~> 0.12)
+  rails (~> 5.2)
   rails-controller-testing
-  sass-rails (~> 5.0.6)
-  shoulda-context (= 1.2.2)
-  simple_form (~> 4.1)
-  simplecov (= 0.16.1)
-  simplecov-rcov (= 0.2.3)
-  timecop (= 0.9.1)
-  uglifier (= 4.1.20)
-  webmock (~> 3.5.1)
+  sass-rails (~> 5)
+  shoulda-context (~> 1)
+  simple_form (~> 4)
+  simplecov (~> 0.16)
+  simplecov-rcov (~> 0.2)
+  timecop (~> 0.9)
+  uglifier (~> 4)
+  webmock (~> 3)
 
 BUNDLED WITH
-   1.16.2
+   1.17.3
