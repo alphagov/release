@@ -16,7 +16,7 @@ gem 'chartkick'
 gem 'gds-sso', '~> 14'
 gem 'govuk_admin_template', '~> 6'
 gem 'govuk_app_config'
-gem 'plek', '~> 2'
+gem 'plek', '~> 3'
 
 group :test, :development do
   gem 'better_errors', '~> 2'
