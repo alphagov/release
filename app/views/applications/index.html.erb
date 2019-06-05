@@ -1,5 +1,11 @@
 <% content_for :page_title, "Applications" %>
 
+<%= render "govuk_publishing_components/components/breadcrumbs", {
+  breadcrumbs: [
+    root_crumb
+  ]
+} %>
+
 <h1>Applications</h1>
 
 <%= render partial: "applications_table", locals: { applications: @applications, environments: @environments } %>
