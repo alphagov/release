@@ -1,6 +1,18 @@
 <% content_for :page_title, @application.name %>
 
 <div class="page-header">
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    breadcrumbs: [
+      root_crumb,
+      {
+        title: @application.name,
+        url: application_path
+      },
+      {
+        title: "Edit #{@application.name}"
+      }
+    ]
+  } %>
   <h1 class="remove-bottom-margin">
     <span class="name">Edit <%= @application.name %></span>
     <span class="shortname">(<%= @application.shortname %>)</span>
