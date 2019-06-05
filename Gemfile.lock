@@ -180,7 +180,7 @@ GEM
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
-    plek (2.1.1)
+    plek (3.0.0)
     poltergeist (1.18.1)
       capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
@@ -327,7 +327,7 @@ DEPENDENCIES
   mysql2 (~> 0.4)
   octicons_helper
   octokit (~> 4)
-  plek (~> 2)
+  plek (~> 3)
   poltergeist (~> 1)
   pry (~> 0.12)
   rails (~> 5.2)
