@@ -1,5 +1,12 @@
 <% content_for :page_title, 'Site settings' %>
 
+<%= render "govuk_publishing_components/components/breadcrumbs", {
+  breadcrumbs: [
+    {
+      title: "Site settings"
+    }
+  ]
+} %>
 <h1>Site settings</h1>
 
 <%= simple_form_for site_settings, url: site_path, method: 'patch' do |f| %>
