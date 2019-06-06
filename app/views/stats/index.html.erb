@@ -1,5 +1,12 @@
 <% content_for :page_title, "Deployment stats" %>
 
+<%= render "govuk_publishing_components/components/breadcrumbs", {
+  breadcrumbs: [
+    {
+      title: "Deployments per month"
+    }
+  ]
+} %>
 <h2>Deployments per month</h2>
 
 <%= line_chart @stats.per_month, width: "100%", height: "450px", legend: false, download: true %>
