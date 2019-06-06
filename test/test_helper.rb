@@ -40,3 +40,13 @@ class ActiveSupport::TestCase
     DatabaseCleaner.clean
   end
 end
+
+class ActionView::TestCase
+  setup do
+    DatabaseCleaner.start
+  end
+
+  teardown do
+    DatabaseCleaner.clean
+  end
+end
