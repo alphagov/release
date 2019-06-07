@@ -1,3 +1,15 @@
+<%= render "govuk_publishing_components/components/breadcrumbs", {
+  breadcrumbs: [
+    root_crumb,
+    {
+      title: "Recent deployments",
+      url: activity_path
+    },
+    {
+      title: "Deploy #{@deployment.id} for #{@deployment.application.name}"
+    }
+  ]
+} %>
 <h1>Deploy #<%= @deployment.id %></h1>
 
 <table>

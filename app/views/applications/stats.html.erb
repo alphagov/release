@@ -1,8 +1,17 @@
 <% content_for :page_title, "#{@application.name} stats" %>
 
 <div class="page-header">
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    breadcrumbs: [
+      root_crumb,
+      application_node_crumb(application: @application),
+      {
+        title: "#{@application.name} stats"
+      }
+    ]
+  } %>
   <h1 class="remove-bottom-margin">
-    <span class="name"><%= @application.name %></span>
+    <span class="name"><%= @application.name %> stats</span>
     <span class="shortname">(<%= @application.shortname %>)</span>
     <%= render partial: "provider_badge", locals: { application: @application } %>
   </h1>

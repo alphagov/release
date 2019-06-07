@@ -2,6 +2,15 @@
 
 <div class="page-header">
   <h1 class="remove-bottom-margin">
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    breadcrumbs: [
+      root_crumb,
+      application_node_crumb(application: @application),
+      {
+        title: "#{@application.name} recent deployments"
+      }
+    ]
+  } %>
     <span class="name"><%= @application.name %> deployments</span>
     <span class="shortname">(<%= @application.shortname %>)</span>
     <%= render partial: "applications/provider_badge", locals: { application: @application } %>
