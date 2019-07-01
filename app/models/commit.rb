@@ -31,6 +31,6 @@ class Commit
   end
 
   def commit_date
-    commit_data[:commit][:author][:date].to_time
+    commit_data[:commit][:author][:date].to_time # rubocop:disable Rails/Date
   end
 end

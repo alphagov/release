@@ -13,7 +13,7 @@ class Application < ApplicationRecord
 
   validates_uniqueness_of :name, :repo
 
-  has_many :deployments
+  has_many :deployments, dependent: :destroy
 
   default_scope { order("name ASC") }
 

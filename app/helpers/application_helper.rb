@@ -53,7 +53,7 @@ module ApplicationHelper
                "publishing.service.gov.uk"
              end
 
-    "https://#{subdomain_prefix}.#{domain}/job/Deploy_App/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe
+    "https://#{subdomain_prefix}.#{domain}/job/Deploy_App/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def jenkins_deploy_puppet_url(release_tag, environment, aws:)
@@ -71,7 +71,7 @@ module ApplicationHelper
                "publishing.service.gov.uk"
              end
 
-    "https://#{subdomain_prefix}.#{domain}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe
+    "https://#{subdomain_prefix}.#{domain}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
   end
 
 private

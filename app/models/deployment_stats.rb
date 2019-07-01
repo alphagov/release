@@ -7,7 +7,7 @@ class DeploymentStats
 
   def per_month
     production_deploys
-      .where("deployments.created_at < ?", Date.today.at_beginning_of_month)
+      .where("deployments.created_at < ?", Time.zone.today.at_beginning_of_month)
       .group("DATE_FORMAT(deployments.created_at,'%Y-%m')")
       .count
   end
