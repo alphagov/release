@@ -26,7 +26,7 @@ class SitesControllerTest < ActionController::TestCase
 
   context "PATCH update" do
     should "create some site settings if there are none" do
-      refute Site.settings.persisted?
+      assert_not Site.settings.persisted?
 
       patch :update, params: { site: { status_notes: 'Deploy freeze in place.' } }
 
@@ -45,7 +45,7 @@ class SitesControllerTest < ActionController::TestCase
     should "rerender the form if the site settings won't save" do
       patch :update, params: { site: { status_notes: 'a' * 256 } }
 
-      refute Site.settings.persisted?
+      assert_not Site.settings.persisted?
 
       assert_select 'form[action="/site"]'
       assert_select 'form textarea[name="site[status_notes]"]', 'a' * 256

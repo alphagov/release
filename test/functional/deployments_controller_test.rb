@@ -46,7 +46,7 @@ class DeploymentsControllerTest < ActionController::TestCase
         post :create, params: { deployment: { application_id: app.id, version: "release_123", environment: "staging", created_at: "18/01/2013 11:57" } }
 
         deployment = app.reload.deployments.last
-        refute_nil deployment
+        assert_not_nil deployment
         assert_equal "release_123", deployment.version
         assert_equal "staging", deployment.environment
         assert_equal "2013-01-18 11:57:00 +0000", deployment.created_at.to_s
@@ -72,7 +72,7 @@ class DeploymentsControllerTest < ActionController::TestCase
         post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
 
         deployment = app.reload.deployments.last
-        refute_nil deployment
+        assert_not_nil deployment
         assert_equal "release_123", deployment.version
         assert_equal "staging", deployment.environment
         assert_equal "user@example.org", deployment.jenkins_user_email

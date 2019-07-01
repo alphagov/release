@@ -25,14 +25,14 @@ class ApplicationTest < ActiveSupport::TestCase
     should "be invalid with an empty name" do
       application = Application.new(@atts.merge(name: ""))
 
-      refute application.valid?
+      assert_not application.valid?
     end
 
     should "be invalid with a duplicate name" do
       FactoryBot.create(:application, name: "Tron-o-matic")
       application = Application.new(@atts)
 
-      refute application.valid?
+      assert_not application.valid?
       assert application.errors[:name].include?("has already been taken")
     end
 
@@ -40,7 +40,7 @@ class ApplicationTest < ActiveSupport::TestCase
       FactoryBot.create(:application, repo: "alphagov/tron-o-matic")
       application = Application.new(@atts)
 
-      refute application.valid?
+      assert_not application.valid?
       assert application.errors[:repo].include?("has already been taken")
     end
 
@@ -48,19 +48,19 @@ class ApplicationTest < ActiveSupport::TestCase
       application = Application.new(@atts)
 
       application.repo = "noslashes"
-      refute application.valid?
+      assert_not application.valid?
       assert application.errors[:repo].include?("is invalid")
 
       application.repo = "too/many/slashes"
-      refute application.valid?
+      assert_not application.valid?
       assert application.errors[:repo].include?("is invalid")
 
       application.repo = "/slashatfront"
-      refute application.valid?
+      assert_not application.valid?
       assert application.errors[:repo].include?("is invalid")
 
       application.repo = "slashatback/"
-      refute application.valid?
+      assert_not application.valid?
       assert application.errors[:repo].include?("is invalid")
     end
 
@@ -97,31 +97,31 @@ class ApplicationTest < ActiveSupport::TestCase
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
 
-      refute application.valid?
+      assert_not application.valid?
     end
 
     should "be invalid with a domain that is too long" do
       application = Application.new(@atts.merge(domain: ("gith" + ("u" * 247) + "b.com")))
 
-      refute application.valid?
+      assert_not application.valid?
     end
 
     should "be invalid with a repo that is too long" do
       application = Application.new(@atts.merge(repo: ("alphagov/my-r" + ("e" * 243) + "po")))
 
-      refute application.valid?
+      assert_not application.valid?
     end
 
     should "be invalid with a shortname that is too long" do
       application = Application.new(@atts.merge(shortname: ("a" * 256)))
 
-      refute application.valid?
+      assert_not application.valid?
     end
 
     should "be invalid with status_notes that are too long" do
       application = Application.new(@atts.merge(status_notes: ("This app is n" + ("o" * 233) + "t working!")))
 
-      refute application.valid?
+      assert_not application.valid?
     end
   end
 

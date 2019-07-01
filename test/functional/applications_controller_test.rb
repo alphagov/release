@@ -89,7 +89,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "should include status notes as a warning" do
-      @app.update_attributes(status_notes: 'Do not deploy this without talking to core team first!')
+      @app.update(status_notes: 'Do not deploy this without talking to core team first!')
       get :show, params: { id: @app.id }
       assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
     end
