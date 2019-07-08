@@ -32,7 +32,7 @@ group :test, :development do
   gem 'pry', '~> 0.12'
   gem 'rails-controller-testing'
   gem 'shoulda-context', '~> 1', require: false
-  gem 'simplecov', '~> 0.16', require: false
+  gem 'simplecov', '~> 0.17', require: false
   gem 'simplecov-rcov', '~> 0.2', require: false
   gem 'timecop', '~> 0.9'
   gem 'webmock', '~> 3', require: false
