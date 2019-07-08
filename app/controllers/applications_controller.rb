@@ -104,7 +104,7 @@ class ApplicationsController < ApplicationController
   end
 
   def update
-    if @application.update_attributes(application_params)
+    if @application.update(application_params)
       redirect_to @application, flash: { notice: "Successfully updated the application" }
     else
       flash.now[:error] = "There are some problems with the application"

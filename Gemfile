@@ -15,8 +15,8 @@ gem 'chartkick'
 # GDS gems.
 gem 'gds-sso', '~> 14'
 gem 'govuk_admin_template', '~> 6'
-gem 'govuk_publishing_components'
 gem 'govuk_app_config'
+gem 'govuk_publishing_components'
 gem 'plek', '~> 3'
 
 group :test, :development do

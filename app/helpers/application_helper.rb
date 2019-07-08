@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def github_tag_link_to(app, git_ref)
-    link_to(git_ref.truncate(20), "#{app.repo_url}/tree/#{git_ref}", target: "_blank")
+    link_to(git_ref.truncate(20), "#{app.repo_url}/tree/#{git_ref}", target: "_blank", rel: "noopener")
   end
 
   def github_compare_to_master(application, deploy)
@@ -53,7 +53,7 @@ module ApplicationHelper
                "publishing.service.gov.uk"
              end
 
-    "https://#{subdomain_prefix}.#{domain}/job/Deploy_App/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe
+    "https://#{subdomain_prefix}.#{domain}/job/Deploy_App/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def jenkins_deploy_puppet_url(release_tag, environment, aws:)
@@ -71,7 +71,7 @@ module ApplicationHelper
                "publishing.service.gov.uk"
              end
 
-    "https://#{subdomain_prefix}.#{domain}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe
+    "https://#{subdomain_prefix}.#{domain}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
   end
 
 private

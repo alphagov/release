@@ -48,7 +48,7 @@ class DeploymentsController < ApplicationController
 private
 
   def application_by_repo
-    if (existing_app = Application.find_by_repo(repo_path))
+    if (existing_app = Application.find_by(repo: repo_path))
       existing_app
     else
       Application.create!(name: app_name, repo: repo_path, domain: domain)

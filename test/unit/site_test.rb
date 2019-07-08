@@ -9,7 +9,7 @@ class SiteTest < ActiveSupport::TestCase
     should 'be invalid with a status_note that is longer than 255 chars' do
       assert FactoryBot.build(:site, status_notes: 'a' * 254).valid?
       assert FactoryBot.build(:site, status_notes: 'a' * 255).valid?
-      refute FactoryBot.build(:site, status_notes: 'a' * 256).valid?
+      assert_not FactoryBot.build(:site, status_notes: 'a' * 256).valid?
     end
 
     should 'be blocked from creating if there is already a site instance' do
@@ -17,15 +17,15 @@ class SiteTest < ActiveSupport::TestCase
       assert original.persisted?
 
       remake = FactoryBot.build(:site, status_notes: 'Aw :(')
-      refute remake.valid?
-      refute remake.save
+      assert_not remake.valid?
+      assert_not remake.save
       assert_equal ['There can only be one Site instance'], remake.errors[:base]
     end
   end
 
   context '.settings' do
     should "return an unsaved instance if no instance is persisted already" do
-      refute Site.settings.persisted?
+      assert_not Site.settings.persisted?
     end
 
     should "return an the persisted instance if one has be saved already" do
