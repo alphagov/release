@@ -128,7 +128,7 @@ GEM
     govuk_frontend_toolkit (8.2.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
-    govuk_publishing_components (17.15.0)
+    govuk_publishing_components (17.16.0)
       gds-api-adapters
       govuk_app_config
       govuk_frontend_toolkit
@@ -199,7 +199,7 @@ GEM
       rails
     octokit (4.14.0)
       sawyer (~> 0.8.0, >= 0.5.3)
-    oj (3.7.12)
+    oj (3.8.0)
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
