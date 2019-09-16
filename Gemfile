@@ -6,7 +6,7 @@ gem 'friendly_id', '~> 5'
 gem 'mysql2', '~> 0.4'
 gem 'octicons_helper'
 gem 'octokit', '~> 4'
-gem 'sass-rails', '~> 5'
+gem 'sass-rails', '~> 6'
 gem 'simple_form', '~> 4'
 gem 'uglifier', '~> 4'
 
