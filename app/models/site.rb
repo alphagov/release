@@ -9,6 +9,6 @@ class Site < ApplicationRecord
 private
 
   def there_can_be_only_one
-    errors.add(:base, 'There can only be one Site instance') if Site.count.positive?
+    errors.add(:base, "There can only be one Site instance") if Site.count.positive?
   end
 end

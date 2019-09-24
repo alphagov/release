@@ -97,7 +97,7 @@ private
   def new_deployment_params
     params.permit(
       :application_id,
-      :environment
+      :environment,
     )
   end
 end

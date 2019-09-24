@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ApplicationTest < ActiveSupport::TestCase
   include ApplicationHelper
@@ -8,7 +8,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
         repo: "alphagov/tron-o-matic",
-        domain: "github.foo"
+        domain: "github.foo",
       }
     end
 

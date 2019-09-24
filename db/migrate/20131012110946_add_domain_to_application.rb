@@ -3,10 +3,10 @@ class AddDomainToApplication < ActiveRecord::Migration
     add_column :applications, :domain, :string
 
     Application.all.each do |app|
-      if app.repo.start_with? 'gds'
-        app.domain = 'github.gds'
+      if app.repo.start_with? "gds"
+        app.domain = "github.gds"
       else
-        app.domain = 'github.com'
+        app.domain = "github.com"
       end
       app.save!
     end

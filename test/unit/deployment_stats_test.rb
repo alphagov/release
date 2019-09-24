@@ -1,8 +1,8 @@
-require 'test_helper'
+require "test_helper"
 
 class DeploymentStatsTest < ActiveSupport::TestCase
-  describe '#per_month' do
-    should 'return correct data' do
+  describe "#per_month" do
+    should "return correct data" do
       Deployment.delete_all
 
       app = FactoryBot.create(:application, name: SecureRandom.hex, repo: "alphagov/" + SecureRandom.hex)
@@ -26,8 +26,8 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#per_year' do
-    should 'return correct data' do
+  describe "#per_year" do
+    should "return correct data" do
       Deployment.delete_all
 
       app = FactoryBot.create(:application, name: SecureRandom.hex, repo: "alphagov/" + SecureRandom.hex)
@@ -51,8 +51,8 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     end
   end
 
-  describe '.initialize' do
-    should 'scope the results' do
+  describe ".initialize" do
+    should "scope the results" do
       Deployment.delete_all
 
       other_app = FactoryBot.create(:application, name: SecureRandom.hex, repo: "alphagov/" + SecureRandom.hex)

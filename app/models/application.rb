@@ -3,9 +3,9 @@ class Application < ApplicationRecord
 
   friendly_id :fallback_shortname, use: :slugged, slug_column: :shortname
 
-  validates_presence_of :name, message: 'is required'
-  validates_presence_of :repo, message: 'is required'
-  validates_presence_of :domain, message: 'is required'
+  validates_presence_of :name, message: "is required"
+  validates_presence_of :repo, message: "is required"
+  validates_presence_of :domain, message: "is required"
 
   validates :name, :repo, :domain, :status_notes, :shortname, length: { maximum: 255 }
 
@@ -20,7 +20,7 @@ class Application < ApplicationRecord
   def latest_deploy_to_each_environment
     return @latest_deploy_to_each_environment unless @latest_deploy_to_each_environment.nil?
 
-    environments = deployments.select('DISTINCT environment').map(&:environment)
+    environments = deployments.select("DISTINCT environment").map(&:environment)
     @latest_deploy_to_each_environment = environments.each_with_object({}) do |environment, hash|
       hash[environment] = deployments.last_deploy_to(environment)
     end
@@ -41,14 +41,14 @@ class Application < ApplicationRecord
   def status
     return :production_and_staging_not_in_sync unless in_sync?(production_and_staging_environments)
     return :undeployed_changes_in_integration unless in_sync?(
-      production_and_staging_environments + %w[integration]
+      production_and_staging_environments + %w[integration],
     )
 
     :all_environments_match
   end
 
   def fallback_shortname
-    self.repo.split('/')[-1] unless self.repo.nil?
+    self.repo.split("/")[-1] unless self.repo.nil?
   end
 
   def repo_url

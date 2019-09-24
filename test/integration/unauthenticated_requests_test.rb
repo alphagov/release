@@ -1,4 +1,4 @@
-require 'integration_test_helper'
+require "integration_test_helper"
 
 class UnauthenticatedRequestsTest < ActionDispatch::IntegrationTest
   should "not display the signed in user details when not present" do

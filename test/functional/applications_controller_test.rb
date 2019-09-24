@@ -51,8 +51,8 @@ class ApplicationsControllerTest < ActionController::TestCase
           application: {
             name: "My First App",
             repo: "org/my_first_app",
-            domain: "github.baz"
-          }
+            domain: "github.baz",
+          },
         }
       end
     end
@@ -89,9 +89,9 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "should include status notes as a warning" do
-      @app.update(status_notes: 'Do not deploy this without talking to core team first!')
+      @app.update(status_notes: "Do not deploy this without talking to core team first!")
       get :show, params: { id: @app.id }
-      assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
+      assert_select ".alert-warning", "Do not deploy this without talking to core team first!"
     end
 
     context "GET show with a production deployment" do
@@ -121,7 +121,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         # equality on the objects themselves
         assert_equal(
           [@second_commit[:sha], @first_commit[:sha]],
-          assigns[:commits].take(2).map { |commit| commit[:sha] }
+          assigns[:commits].take(2).map { |commit| commit[:sha] },
         )
       end
 
@@ -139,9 +139,9 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "show the error message" do
-        assert_select '.alert-error' do
-          assert_select 'div', "Couldn't get data from GitHub:"
-          assert_select 'div', "Octokit::NotFound"
+        assert_select ".alert-error" do
+          assert_select "div", "Couldn't get data from GitHub:"
+          assert_select "div", "Octokit::NotFound"
         end
       end
     end
@@ -151,14 +151,14 @@ class ApplicationsControllerTest < ActionController::TestCase
         stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::TooManyRequests.new)
         stub_request(:get, "https://api.github.com/rate_limit").to_return(
           headers: { "X-RateLimit-Reset" => 5.minutes.from_now.to_i },
-          body: ""
+          body: "",
         )
         get :show, params: { id: @app.id }
       end
 
       should "show the rate limit message" do
-        assert_select '.alert-error' do
-          assert_select 'div', "Couldn't get data from GitHub:"
+        assert_select ".alert-error" do
+          assert_select "div", "Couldn't get data from GitHub:"
         end
       end
     end
@@ -217,9 +217,9 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET deploy" do
     setup do
-      @app = FactoryBot.create(:application, status_notes: 'Do not deploy this without talking to core team first!')
+      @app = FactoryBot.create(:application, status_notes: "Do not deploy this without talking to core team first!")
       @deployment = FactoryBot.create(:deployment, application_id: @app.id)
-      @release_tag = 'hot_fix_1'
+      @release_tag = "hot_fix_1"
       stub_request(:get, %r{grafana_hostname/api/dashboards/file/#{@app.shortname}.json}).to_return(status: 404)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
@@ -252,13 +252,13 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "include status notes as a warning" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select '.alert-warning', 'Do not deploy this without talking to core team first!'
+      assert_select ".alert-warning", "Do not deploy this without talking to core team first!"
     end
 
     should "show dashboard links to application's deployment dashboard" do
       @app.shortname = "whitehall"
       @app.save
-      stub_request(:get, 'https://grafana_hostname/api/dashboards/file/whitehall.json').to_return(status: '200')
+      stub_request(:get, "https://grafana_hostname/api/dashboards/file/whitehall.json").to_return(status: "200")
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select "a[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/whitehall.json"
@@ -296,8 +296,8 @@ private
       sha: random_sha,
       login: "winston",
       commit: {
-        message: "Hi"
-      }
+        message: "Hi",
+      },
     }
   end
 end

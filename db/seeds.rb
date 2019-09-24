@@ -24,7 +24,7 @@ applications = [
 
 applications.each do |application_hash|
   begin
-    app_defaults = { domain: 'github.com' }
+    app_defaults = { domain: "github.com" }
     Application.create!(app_defaults.merge(application_hash))
   rescue ActiveRecord::RecordInvalid => e
     puts "Skipping #{application_hash[:name]}"
@@ -33,7 +33,7 @@ end
 
 # Create a dummy user
 u = User.new
-u.name = 'Winston'
-u.email = 'winston@gov.uk'
-u.permissions = ['signin']
+u.name = "Winston"
+u.email = "winston@gov.uk"
+u.permissions = ["signin"]
 u.save!

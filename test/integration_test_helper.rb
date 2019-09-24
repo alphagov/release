@@ -1,6 +1,6 @@
-require 'test_helper'
-require 'capybara/rails'
-require 'webmock'
+require "test_helper"
+require "capybara/rails"
+require "webmock"
 
 Capybara.javascript_driver = :poltergeist
 DatabaseCleaner.strategy = :truncation
