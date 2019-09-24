@@ -37,7 +37,7 @@ class ApplicationsController < ApplicationController
       comparison = Services.github.compare(
         @application.repo,
         @production_deploy.version,
-        "master"
+        "master",
       )
       # The `compare` API shows commits in forward chronological order
       @commits = comparison.commits.reverse + [comparison.base_commit]
@@ -69,11 +69,11 @@ class ApplicationsController < ApplicationController
     @release_tag = params[:tag]
 
     if @application.on_aws?
-      @staging_dashboard_url = dashboard_url('grafana.blue.staging.govuk.digital', @application.shortname)
-      @production_dashboard_url = dashboard_url('grafana.blue.production.govuk.digital', @application.shortname)
+      @staging_dashboard_url = dashboard_url("grafana.blue.staging.govuk.digital", @application.shortname)
+      @production_dashboard_url = dashboard_url("grafana.blue.production.govuk.digital", @application.shortname)
     else
-      @staging_dashboard_url = dashboard_url('grafana.staging.publishing.service.gov.uk', @application.shortname)
-      @production_dashboard_url = dashboard_url('grafana.publishing.service.gov.uk', @application.shortname)
+      @staging_dashboard_url = dashboard_url("grafana.staging.publishing.service.gov.uk", @application.shortname)
+      @production_dashboard_url = dashboard_url("grafana.publishing.service.gov.uk", @application.shortname)
     end
 
     @production_deploy = @application.deployments.last_deploy_to production_environment_name
@@ -81,7 +81,7 @@ class ApplicationsController < ApplicationController
       comparison = Services.github.compare(
         @application.repo,
         @production_deploy.version,
-        @release_tag
+        @release_tag,
       )
       # The `compare` API shows commits in forward chronological order
       @commits = comparison.commits.reverse.map { |commit_data| Commit.new(commit_data.to_h, @application) }

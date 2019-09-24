@@ -1,7 +1,7 @@
 ReleaseApp::Application.routes.draw do
   resources :applications do
     collection do
-      get 'archived', to: 'applications#archived'
+      get "archived", to: "applications#archived"
     end
 
     member do
@@ -16,11 +16,11 @@ ReleaseApp::Application.routes.draw do
 
   resource :site, only: %i(show update)
 
-  get '/activity', to: 'deployments#recent', as: :activity
+  get "/activity", to: "deployments#recent", as: :activity
 
-  get '/healthcheck', to: 'application#healthcheck'
+  get "/healthcheck", to: "application#healthcheck"
 
-  get '/stats', to: 'stats#index'
+  get "/stats", to: "stats#index"
 
   root to: redirect("/applications", status: 302)
 

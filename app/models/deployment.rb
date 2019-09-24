@@ -7,7 +7,7 @@ class Deployment < ApplicationRecord
   scope :newest_first, -> { order("created_at DESC") }
 
   def self.environments
-    Deployment.select('DISTINCT environment').map(&:environment)
+    Deployment.select("DISTINCT environment").map(&:environment)
   end
 
   def self.last_deploy_to(environment)
@@ -33,7 +33,7 @@ class Deployment < ApplicationRecord
   end
 
   def production?
-    environment == 'production' || environment == 'production-aws'
+    environment == "production" || environment == "production-aws"
   end
 
   def commits

@@ -3,7 +3,7 @@ class SitesController < ApplicationController
 
   def update
     if site_settings.update(site_params)
-      redirect_to root_path, alert: 'Site settings updated'
+      redirect_to root_path, alert: "Site settings updated"
     else
       render :show
     end

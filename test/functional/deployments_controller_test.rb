@@ -30,12 +30,12 @@ class DeploymentsControllerTest < ActionController::TestCase
       FactoryBot.create(
         :application,
         repo: "org/app",
-        name: "Application"
+        name: "Application",
       )
 
       get :new, params: { application_id: "app" }
 
-      assert_select '#deployment_application_id option[selected]', 'Application'
+      assert_select "#deployment_application_id option[selected]", "Application"
     end
   end
 
