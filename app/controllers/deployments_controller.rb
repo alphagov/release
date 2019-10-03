@@ -53,7 +53,7 @@ private
       if existing_apps.length == 1
         existing_apps[0]
       else
-        existing_apps = Application.where(repo: repo_path, application_id: application_id)
+        existing_apps = Application.where(repo: repo_path, name: application_name)
 
         case existing_apps
         when 1
