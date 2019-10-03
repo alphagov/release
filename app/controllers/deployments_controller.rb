@@ -57,12 +57,14 @@ private
         if existing_apps.length == 1
           existing_apps[0]
         else
-          if existing_apps.length == 0
-            flash[:alert] = "Failed to find application using repo: %s and application_id: %" % [ repo_path, application_id]
+          if existing_apps.empty?
+            flash[:alert] = format("Failed to find application using repo: %{repo_path} and application_id: %{application_id}",
+                repo_path: repo_path, application_id: application_id)
           else
             flash[:alert] = "Found multiple applications using repo: %s and application_id: %" % [ repo_path, application_id]
           end
-            render :new
+
+          render :new
         end
       end
     else
