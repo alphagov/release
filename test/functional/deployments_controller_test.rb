@@ -80,6 +80,19 @@ class DeploymentsControllerTest < ActionController::TestCase
         assert_equal "02a570885766dc43d5e2432855bbffb342543906", deployment.deployed_sha
       end
 
+      should "create a deployment record for correct app when multiple apps share same repo name" do
+        FactoryBot.create(:application, repo: "org/app", name: "test-app-1")
+        app2 = FactoryBot.create(:application, repo: "org/app", name: "test-app-2")
+        post :create, params: { repo: "org/app", application_by_name: true, application_name: "test-app-2", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
+        deployment = app2.reload.deployments.last
+        assert_not_nil deployment
+        assert_equal "release_123", deployment.version
+        assert_equal "staging", deployment.environment
+        assert_equal "user@example.org", deployment.jenkins_user_email
+        assert_equal "A User", deployment.jenkins_user_name
+        assert_equal "02a570885766dc43d5e2432855bbffb342543906", deployment.deployed_sha
+      end
+
       should "unarchive an archived application" do
         app = FactoryBot.create(:application, repo: "org/app", archived: true)
         post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
@@ -107,6 +120,13 @@ class DeploymentsControllerTest < ActionController::TestCase
         should "create an application" do
           assert_difference [-> { Deployment.count }, -> { Application.count }], 1 do
             post :create, params: { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
+          end
+        end
+
+        should "create an application by name" do
+          FactoryBot.create(:application, repo: "org/duplicate_repo", name: "test-app-1")
+          assert_difference [-> { Deployment.count }, -> { Application.count }], 1 do
+            post :create, params: { repo: "org/duplicate_repo", application_by_name: true, application_name: "test-app-2", deployment: { version: "release_1", environment: "staging" } }
           end
         end
 

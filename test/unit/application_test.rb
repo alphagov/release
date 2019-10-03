@@ -36,14 +36,6 @@ class ApplicationTest < ActiveSupport::TestCase
       assert application.errors[:name].include?("has already been taken")
     end
 
-    should "be invalid with a duplicate repo" do
-      FactoryBot.create(:application, repo: "alphagov/tron-o-matic")
-      application = Application.new(@atts)
-
-      assert_not application.valid?
-      assert application.errors[:repo].include?("has already been taken")
-    end
-
     should "be invalid with an invalid repo" do
       application = Application.new(@atts)
 

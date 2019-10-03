@@ -26,7 +26,15 @@ class DeploymentsController < ApplicationController
 
   def create
     if push_notification?
-      application = application_by_repo
+
+      application = if use_application_by_name
+                      application_by_name
+                    else
+                      application_by_repo
+                    end
+
+      return if application.nil?
+
       application.archived = false
       application.save!
       Deployment.create!(deployment_params.merge(application: application))
@@ -48,10 +56,28 @@ class DeploymentsController < ApplicationController
 private
 
   def application_by_repo
-    if (existing_app = Application.find_by(repo: repo_path))
-      existing_app
+    existing_apps = Application.where(repo: repo_path)
+
+    case existing_apps.length
+    when 0
+      Application.create!(name: normalize_app_name(repo_path), repo: repo_path, domain: domain)
+    when 1
+      existing_apps[0]
     else
-      Application.create!(name: app_name, repo: repo_path, domain: domain)
+      flash[:alert] = format("Found multiple applications using repo: %<repo_path>s while using application_by_repo",
+                             repo_path: repo_path)
+      render :new
+      return nil
+    end
+  end
+
+  def application_by_name
+    existing_apps = Application.where(repo: repo_path, name: params[:application_name])
+
+    if existing_apps.length.zero?
+      Application.create!(name: normalize_app_name(params[:application_name]), repo: repo_path, domain: domain)
+    elsif existing_apps.length == 1
+      existing_apps[0]
     end
   end
 
@@ -65,9 +91,9 @@ private
     end
   end
 
-  def app_name
-    repo_title = repo_path.split("/")[-1].tr("-", " ").humanize.titlecase
-    repo_title.gsub(/\bApi\b/, "API")
+  def normalize_app_name(unnormalized_app_name)
+    normalized_app_name = unnormalized_app_name.split("/")[-1].tr("-", " ").humanize.titlecase
+    normalized_app_name.gsub(/\bApi\b/, "API")
   end
 
   def domain
@@ -77,6 +103,10 @@ private
 
   def push_notification?
     params[:repo].present?
+  end
+
+  def use_application_by_name
+    params.fetch(:application_by_name, nil) == "true"
   end
 
   def deployment_params
