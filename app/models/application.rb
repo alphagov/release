@@ -11,7 +11,7 @@ class Application < ApplicationRecord
 
   validates_format_of :repo, with: /\A[^\s\/]+\/[^\s\/]+\Z/i
 
-  validates_uniqueness_of :name, :repo
+  validates_uniqueness_of :name
 
   has_many :deployments, dependent: :destroy
 

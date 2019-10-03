@@ -48,8 +48,24 @@ class DeploymentsController < ApplicationController
 private
 
   def application_by_repo
-    if (existing_app = Application.find_by(repo: repo_path))
-      existing_app
+    existing_apps = Application.where(repo: repo_path)
+    if (existing_apps.present?)
+      if (existing_apps.length == 1)
+        existing_apps[0]
+      else
+        existing_apps = Application.where(repo: repo_path, application_id: application_id)
+        if (existing_apps.length == 1)
+          existing_apps[0]
+        else
+          if (existing_apps.length == 0)
+            flash[:alert] = "Failed to find application using repo: %s and application_id: %" % [ repo_path, application_id]
+            render :new
+          else
+            flash[:alert] = "Found multiple applications using repo: %s and application_id: %" % [ repo_path, application_id]
+            render :new
+          end
+        end
+    end
     else
       Application.create!(name: app_name, repo: repo_path, domain: domain)
     end
