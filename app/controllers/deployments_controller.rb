@@ -54,17 +54,17 @@ private
         existing_apps[0]
       else
         existing_apps = Application.where(repo: repo_path, application_id: application_id)
-        if existing_apps.length == 1
-          existing_apps[0]
-        else
-          if existing_apps.empty?
-            flash[:alert] = format("Failed to find application using repo: %{repo_path} and application_id: %{application_id}",
-                                   repo_path: repo_path, application_id: application_id)
-          else
-            flash[:alert] = format("Found multiple applications using repo: %{repo_path} and application_id: %{application_id}",
-                                   repo_path: repo_path, application_id: application_id)
-          end
 
+        case existing_apps
+        when 1
+          existing_apps[0]
+        when 0
+          flash[:alert] = format("Failed to find application using repo: %<repo_path>s and application_id: %<application_id>s",
+                                 repo_path: repo_path, application_id: application_id)
+          render :new
+        else
+          flash[:alert] = format("Found multiple applications using repo: %<repo_path>s and application_id: %<application_id>s",
+                                 repo_path: repo_path, application_id: application_id)
           render :new
         end
       end
