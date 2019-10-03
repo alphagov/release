@@ -59,9 +59,10 @@ private
         else
           if existing_apps.empty?
             flash[:alert] = format("Failed to find application using repo: %{repo_path} and application_id: %{application_id}",
-                repo_path: repo_path, application_id: application_id)
+                                   repo_path: repo_path, application_id: application_id)
           else
-            flash[:alert] = "Found multiple applications using repo: %s and application_id: %" % [ repo_path, application_id]
+            flash[:alert] = format("Found multiple applications using repo: %{repo_path} and application_id: %{application_id}",
+                                   repo_path: repo_path, application_id: application_id)
           end
 
           render :new
