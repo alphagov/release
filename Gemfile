@@ -7,7 +7,7 @@ gem 'mysql2', '~> 0.4'
 gem 'octicons_helper'
 gem 'octokit', '~> 4'
 gem 'sass-rails', '~> 5'
-gem 'simple_form', '~> 4'
+gem 'simple_form', '~> 5'
 gem 'uglifier', '~> 4'
 
 gem 'chartkick'
