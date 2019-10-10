@@ -72,7 +72,7 @@ private
   end
 
   def application_by_name
-    existing_apps = Application.where(repo: repo_path, name: params[:application_name])
+    existing_apps = Application.where(name: normalize_app_name(params[:application_name]))
 
     if existing_apps.length.zero?
       Application.create!(name: normalize_app_name(params[:application_name]), repo: repo_path, domain: domain)

@@ -82,7 +82,7 @@ class DeploymentsControllerTest < ActionController::TestCase
 
       should "create a deployment record for correct app when multiple apps share same repo name" do
         FactoryBot.create(:application, repo: "org/app", name: "test-app-1")
-        app2 = FactoryBot.create(:application, repo: "org/app", name: "test-app-2")
+        app2 = FactoryBot.create(:application, repo: "org/app", name: "test app 2")
         post :create, params: { repo: "org/app", application_by_name: true, application_name: "test-app-2", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
         deployment = app2.reload.deployments.last
         assert_not_nil deployment
