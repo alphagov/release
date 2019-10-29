@@ -66,7 +66,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
-    chartkick (3.2.1)
+    chartkick (3.2.2)
     cliver (0.3.2)
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
