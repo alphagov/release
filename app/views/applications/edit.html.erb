@@ -1,6 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
+<div class="release-header">
   <%= render "govuk_publishing_components/components/breadcrumbs", {
     breadcrumbs: [
       root_crumb,
@@ -10,11 +10,12 @@
       }
     ]
   } %>
-  <h1 class="remove-bottom-margin">
-    <span class="name">Edit <%= @application.name %></span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-    <%= render partial: "provider_badge", locals: { application: @application } %>
-  </h1>
+  <%= render "govuk_publishing_components/components/title", {
+    title: "Edit #{@application.name}",
+    context: @application.shortname,
+    margin_bottom: 0
+  } %>
+  <%= render partial: "provider_badge", locals: { application: @application } %>
 </div>
 
 <ul class="tabs">

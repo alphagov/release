@@ -7,12 +7,14 @@
     }
   ]
 } %>
-<h1>Manually record a deployment</h1>
 
-<p class="lead">
-  All deployments should be automatically recorded from a push notification,
-  but if that fails, use this form.
-</p>
+<%= render "govuk_publishing_components/components/title", {
+  title: "Manually record a deployment"
+} %>
+
+<%= render "govuk_publishing_components/components/lead_paragraph", {
+  text: "All deployments should be automatically recorded from a push notification, but if that fails, use this form."
+} %>
 
 <%= simple_form_for @deployment do |f| %>
   <%= f.input :application_id, as: :select, collection: Application.all %>

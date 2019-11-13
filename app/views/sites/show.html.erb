@@ -7,7 +7,10 @@
     }
   ]
 } %>
-<h1>Site settings</h1>
+
+<%= render "govuk_publishing_components/components/title", {
+  title: "Site settings"
+} %>
 
 <%= simple_form_for site_settings, url: site_path, method: 'patch' do |f| %>
   <%= f.input :status_notes, label: "Notes", as: :text %>

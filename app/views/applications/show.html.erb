@@ -1,6 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
+<div class="release-header">
   <%= render "govuk_publishing_components/components/breadcrumbs", {
     breadcrumbs: [
       root_crumb,
@@ -9,11 +9,12 @@
       }
     ]
   } %>
-  <h1 class="remove-bottom-margin">
-    <span class="name"><%= @application.name %></span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-    <%= render partial: "provider_badge", locals: { application: @application } %>
-  </h1>
+  <%= render "govuk_publishing_components/components/title", {
+    title: "Deploy #{@application.name}",
+    context: @application.shortname,
+    margin_bottom: 0
+  } %>
+  <%= render partial: "provider_badge", locals: { application: @application } %>
 </div>
 
 <ul class="tabs">
@@ -32,12 +33,20 @@
 </ul>
 
 <% if @application.archived %>
-  <p>This application has been marked as archived.</p>
+  <%= render "govuk_publishing_components/components/notice", {
+    title: "This application has been marked as archived.",
+    margin_bottom: 4,
+  } %>
 <% end %>
 
 <%= render 'status_notes', application: @application %>
 
-<h2 class="add-bottom-margin">Commit log</h2>
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Commit log",
+  heading_level: 2,
+  margin_bottom: 4,
+} %>
+
 <% if @github_available %>
   <table class="table table-striped table-bordered table-hover">
     <thead>
@@ -89,17 +98,26 @@
     </tbody>
   </table>
 <% else %>
-  <div class="alert alert-error">
-    <div>Couldn't get data from GitHub:</div>
-    <div><%= @github_error %></div>
+  <%= render "govuk_publishing_components/components/govspeak", {
+  } do %>
+    <div class="application-notice help-notice">
+    <p>Couldn't get data from GitHub:</p>
+    <p><%= @github_error %></p>
   </div>
+  <% end %>
 <% end %>
 
-<h2 class="add-bottom-margin">What’s where?</h2>
+<%= render "govuk_publishing_components/components/heading", {
+  text: "What's where?",
+  heading_level: 2,
+  margin_bottom: 4,
+} %>
 
-<p>
-<%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "btn btn-success" %>
-</p>
+<%= render "govuk_publishing_components/components/button", {
+  text: "Record a missing deployment",
+  href: new_application_deployment_path(@application),
+  margin_bottom: true
+} %>
 
 <table class="table table-striped table-bordered table-hover">
   <thead class="table-header">

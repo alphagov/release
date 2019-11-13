@@ -1,7 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
-  <h1 class="remove-bottom-margin">
+<div class="release-header">
   <%= render "govuk_publishing_components/components/breadcrumbs", {
     breadcrumbs: [
       root_crumb,
@@ -11,10 +10,12 @@
       }
     ]
   } %>
-    <span class="name"><%= @application.name %> deployments</span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-    <%= render partial: "applications/provider_badge", locals: { application: @application } %>
-  </h1>
+  <%= render "govuk_publishing_components/components/title", {
+    title: "Deploy #{@application.name}",
+    context: @application.shortname,
+    margin_bottom: 0
+  } %>
+  <%= render partial: "applications/provider_badge", locals: { application: @application } %>
 </div>
 
 <ul class="tabs">
@@ -32,6 +33,10 @@
   </li>
 </ul>
 
-<%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "govuk-button" %>
+<%= render "govuk_publishing_components/components/button", {
+  text: "Record a missing deployment",
+  href: new_application_deployment_path(@application),
+  margin_bottom: true
+} %>
 
 <%= render "deployments_list", deploys: @deployments %>

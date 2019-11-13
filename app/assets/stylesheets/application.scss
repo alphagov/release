@@ -22,6 +22,12 @@ h1 {
   padding-left: 1em;
 }
 
+.release-header {
+  border-bottom: 1px solid #aaa;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
 table.commits td.hash,
 .commit-hash {
   font-family: monospace;
@@ -60,4 +66,8 @@ table.commits td.hash,
 }
 .alert-notice {
   @extend .alert-success;
+}
+
+.release__stats {
+  margin-top: govuk-spacing(6);
 }

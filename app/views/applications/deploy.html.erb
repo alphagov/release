@@ -1,6 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
+<div class="release-header">
   <%= render "govuk_publishing_components/components/breadcrumbs", {
     breadcrumbs: [
       root_crumb,
@@ -10,12 +10,15 @@
       }
     ]
   } %>
-  <h1 class="remove-bottom-margin">
-    <span class="name">Deploy <%= @application.name %></span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-    <%= render partial: "provider_badge", locals: { application: @application } %>
-  </h1>
-  <%= link_to @application.repo_url, @application.repo_url, target: "_blank" %>
+
+  <%= render "govuk_publishing_components/components/title", {
+    title: "#{@application.name} Recent Deployments",
+    context: @application.shortname,
+    margin_bottom: 0
+  } %>
+  <%= render partial: "provider_badge", locals: { application: @application } %>
+
+  <%= link_to @application.repo_url, @application.repo_url, target: "_blank", class: "govuk-link" %>
 </div>
 
 <main>

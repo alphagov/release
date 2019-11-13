@@ -6,8 +6,14 @@
   ]
 } %>
 
-<h1>Applications</h1>
+<%= render "govuk_publishing_components/components/title", {
+  title: "Applications"
+} %>
 
 <%= render partial: "applications_table", locals: { applications: @applications, environments: @environments } %>
 
-<%= link_to 'Create application', new_application_path, class: "btn btn-success" %>
+<%= render "govuk_publishing_components/components/button", {
+  text: "Create application",
+  href: new_application_path,
+  margin_bottom: true
+} %>
