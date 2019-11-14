@@ -16,10 +16,73 @@
   text: "All deployments should be automatically recorded from a push notification, but if that fails, use this form."
 } %>
 
-<%= simple_form_for @deployment do |f| %>
-  <%= f.input :application_id, as: :select, collection: Application.all %>
-  <%= f.input :environment, required: "required", input_html: { class: "form-control" }%>
-  <%= f.input :version, required: "required", input_html: { class: "form-control" } %>
-  <%= f.input :created_at, label: "Deployed at" %>
-  <%= f.submit class: "btn btn-success" %>
+<%
+  applications = Application.all.map do |application|
+    {
+      text: application.name,
+      value: application.id,
+      selected: (true if application.shortname.present? && request.path.include?(application.shortname))
+    }
+  end
+%>
+
+<%= form_for @deployment do |f| %>
+  <%= render "govuk_publishing_components/components/select", {
+    id: "deployment_application_id",
+    label: "Application",
+    name: "deployment[application_id]",
+    options: applications
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "Environment"
+    },
+    name: "deployment[environment]"
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "Version"
+    },
+    name: "deployment[version]"
+  } %>
+
+  <%= render "govuk_publishing_components/components/date_input", {
+    legend_text: "When was this deployment made?",
+    hint: "Please enter in format: DD MM YYYY HH MM. For example: 25 8 2019 09 00",
+    items: [
+      {
+        label: "Day",
+        name: "deployment[created_at(3i)]",
+        width: 2
+      },
+      {
+        label: "Month",
+        name: "deployment[created_at(2i)]",
+        width: 2
+      },
+      {
+        label: "Year",
+        name: "deployment[created_at(1i)]",
+        width: 4
+      },
+      {
+        label: "Hour",
+        name: "deployment[created_at(4i)]",
+        width: 2
+      },
+      {
+        label: "Minutes",
+        name: "deployment[created_at(5i)]",
+        width: 2
+      }
+    ]
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Add missing deployment",
+    name: "commit",
+    value: "Add missing deployment"
+  } %>
 <% end %>

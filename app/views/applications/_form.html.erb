@@ -1,11 +1,75 @@
-<%= simple_form_for @application do |f| %>
-  <%= f.input :name, label: "Name", input_html: { class: 'form-control input-md-6' } %>
-  <%= f.input :repo, label: "GitHub repository path", hint: "eg alphagov/publisher", input_html: { class: 'form-control input-md-6' } %>
-  <%= f.input :domain, label: "GitHub domain", hint: "eg github.com", input_html: { class: 'form-control input-md-6' } %>
-  <%= f.input :shortname, label: "Short name", hint: "for use in graphite metrics, eg whitehall",
-                          input_html: { placeholder: @application.fallback_shortname, class: 'form-control input-md-6' } %>
-  <%= f.input :status_notes, as: :text, input_html: { class: 'form-control input-md-6' }, hint: "Use for deploy instructions and deploy freezes" %>
-  <%= f.input :archived, label: "Archived?" %>
-  <%= f.input :on_aws, label: "Deployed to AWS?" %>
-  <%= f.button :submit, class: 'btn btn-success' %>
+<%= form_for @application do |f| %>
+    <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "Application name"
+    },
+    name: "application[name]",
+    value: @application.name
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "GitHub repository path"
+    },
+    name: "application[repo]",
+    hint: "Example: alphagov/publisher",
+    value: @application.repo
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "GitHub domain"
+    },
+    name: "application[domain]",
+    hint: "Example: github.com",
+    value: @application.domain
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "Short name"
+    },
+    name: "application[shortname]",
+    hint: "For use in graphite metrics. Example: whitehall",
+    value: @application.shortname
+  } %>
+
+  <%= render "govuk_publishing_components/components/textarea", {
+    label: {
+      text: "Status notes"
+    },
+    hint: "Use for deploy instructions and deploy freezes",
+    name: "application[status_notes]",
+    value: @application.status_notes
+  } %>
+
+  <input type="hidden" name="application[archived]" value="0" />
+  <%= render "govuk_publishing_components/components/checkboxes", {
+    name: "application[archived]",
+    items: [
+      {
+        label: "Archived?",
+        value: "1",
+        checked: @application.archived
+      }
+    ]
+  } %>
+
+  <input type="hidden" name="application[on_aws]" value="0" />
+  <%= render "govuk_publishing_components/components/checkboxes", {
+    name: "application[on_aws]",
+    items: [
+      {
+        label: "Deployed to AWS?",
+        value: "1",
+        checked: @application.on_aws?
+      }
+    ]
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Update application",
+    name: "application[commit]",
+    value: "Update application"
+  } %>
 <% end %>
