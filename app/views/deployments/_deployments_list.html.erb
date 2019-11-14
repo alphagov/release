@@ -1,14 +1,14 @@
-<ul class="list-group activity-list">
+<ul class="activity-list">
   <% @deployments.each do |deployment| %>
-    <li class="list-group-item deployment to_<%= deployment.environment %>">
-      <%= link_to deployment do %>
-        <h2>
-          <%= deployment.application.name %> <%= deployment.environment %>
-          <%= deployment.previous_version || "?" %> to <%= deployment.version %>
-        </h2>
+    <li class="activity-list__deployment activity-list__deployment--<%= deployment.environment %>">
+      <%= link_to deployment, class: "activity-list__deployment-link govuk-link govuk-!-margin-bottom-0" do %>
+          <%= deployment.application.name %> (<%= deployment.environment %>)
       <% end %>
-
-      <p><%= human_datetime deployment.created_at %> by <%= deployment.jenkins_user_name || "<em>Unknown user</em>".html_safe %></p>
+      <p class="activity-list__deployment-release govuk-body"><%= deployment.previous_version || "unknown release" %> to <%= deployment.version %></p>
+      <ul class="activity-list__metadata">
+        <li class="activity-list__metadata-item">At: <%= human_datetime deployment.created_at %></li>
+        <li class="activity-list__metadata-item">By: <%= deployment.jenkins_user_name || "<em>unknown user</em>".html_safe %></li>
+      </ul>
     </li>
   <% end %>
 </ul>

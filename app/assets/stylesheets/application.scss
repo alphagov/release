@@ -1,10 +1,10 @@
 $govuk-typography-use-rem: false;
 
+@import "govuk_publishing_components/all_components";
 @import "govuk_admin_template";
 @import "activity";
 @import "tables";
 @import "tabs";
-@import "govuk_publishing_components/all_components";
 
 h1 span.shortname {
   font-family: monospace;
