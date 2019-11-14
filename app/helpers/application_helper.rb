@@ -74,6 +74,29 @@ module ApplicationHelper
     "https://#{subdomain_prefix}.#{domain}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
   end
 
+  def navigation_items
+    return [] unless current_user
+
+    items = []
+
+    items << { text: "Applications", href: applications_path, active: is_current?(applications_path) }
+    items << { text: "Deploys", href: activity_path, active: is_current?(activity_path) }
+    items << { text: "Archived", href: archived_applications_path, active: is_current?(archived_applications_path) }
+    items << { text: "Site settings", href: site_path, active: is_current?(site_path) }
+    items << { text: "Stats", href: stats_path, active: is_current?(stats_path) }
+
+    items << { text: current_user.name, href: Plek.new.external_url_for("signon") }
+    items << { text: "Sign out", href: gds_sign_out_path }
+
+    items
+  end
+
+  def is_current?(link)
+    recognized = Rails.application.routes.recognize_path(link)
+    recognized[:controller] == params[:controller] &&
+      recognized[:action] == params[:action]
+  end
+
 private
 
   def yesterday

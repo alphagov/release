@@ -45,11 +45,13 @@ class DeploymentsController < ApplicationController
         application = Application.find(deployment_params[:application_id])
         application.archived = false
         application.save!
-        redirect_to applications_path, notice: "Deployment created for #{application.name}"
+
+        flash.now[:notice] = { message: "Deployment created for #{application.name}" }
       else
-        flash[:alert] = "Failed to create deployment"
-        render :new
+        flash[:alert] = { message: "Failed to create deployment" }
       end
+
+      render :new
     end
   end
 
@@ -64,8 +66,9 @@ private
     when 1
       existing_apps[0]
     else
-      flash[:alert] = format("Found multiple applications using repo: %<repo_path>s while using application_by_repo",
-                             repo_path: repo_path)
+      flash[:alert] = {
+        message: format("Found multiple applications using repo: %<repo_path>s while using application_by_repo", repo_path: repo_path),
+      }
       render :new
       return nil
     end
