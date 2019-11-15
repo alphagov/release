@@ -3,11 +3,11 @@ module ApplicationHelper
     recognized = Rails.application.routes.recognize_path(link)
     if recognized[:controller] == params[:controller] && recognized[:action] == params[:action]
       content_tag(:li, class: "active") do
-        link_to(text, link)
+        link_to(text, link, class: "govuk-link")
       end
     else
       content_tag(:li) do
-        link_to(text, link)
+        link_to(text, link, class: "govuk-link")
       end
     end
   end

@@ -19,13 +19,13 @@
     <% commits.each do |commit| %>
       <tr>
         <td class="hash">
-          <%= link_to commit.sha, commit.github_url, target: '_blank' %>
+          <%= link_to commit.sha, commit.github_url, target: '_blank', class: "govuk-link" %>
         </td>
         <td class="message">
           <% if commit.pr? %>
             <%= octicon "git-pull-request", height: '20px', style: "vertical-align: middle; margin-right: 4px;" %>
           <% end %>
-          <%= link_to commit.title, commit.github_url, target: '_blank' %>
+          <%= link_to commit.title, commit.github_url, target: '_blank', class: "govuk-link" %>
         </td>
         <td class="author">
           <% if commit.author_avatar %>

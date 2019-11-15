@@ -21,7 +21,7 @@
     <% @applications.each do |application| %>
       <tr>
         <td>
-          <%= link_to application.name, application, class: 'js-open-on-submit' %>
+          <%= link_to application.name, application, class: 'js-open-on-submit govuk-link' %>
           <div style="margin-top: .5rem;">
             <%= render partial: "provider_badge", locals: { application: application } %>
           </div>
@@ -38,7 +38,7 @@
               <br/><span class="text-muted">
                 <%= human_datetime(latest_deploy.created_at) %>
               </span>
-              <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare") do %>
+              <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare govuk-link") do %>
                 <i class="glyphicon glyphicon-random" title="Compare to master"></i>
               <% end %>
             <% else %>
@@ -48,7 +48,7 @@
         <% end %>
         <td class="notes">
           <%= application.status_notes %>
-          <%= link_to "edit", edit_application_path(application) %>
+          <%= link_to "edit", edit_application_path(application), class: "govuk-link" %>
         </td>
       </tr>
     <% end %>

@@ -46,7 +46,7 @@
     </tr>
     <tr>
       <th>Commits</th>
-      <td><%= @deployment.commits.count %> (<%= link_to "Diff URL", @deployment.diff_url %>)</td>
+      <td><%= @deployment.commits.count %> (<%= link_to "Diff URL", @deployment.diff_url, class: "govuk-link" %>)</td>
     </tr>
     <tr>
       <th>Pull requests</th>
