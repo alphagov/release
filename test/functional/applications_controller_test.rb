@@ -91,7 +91,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "should include status notes as a warning" do
       @app.update(status_notes: "Do not deploy this without talking to core team first!")
       get :show, params: { id: @app.id }
-      assert_select ".alert-warning", "Do not deploy this without talking to core team first!"
+      assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
 
     context "GET show with a production deployment" do
@@ -139,7 +139,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "show the error message" do
-        assert_select ".alert-error" do
+        assert_select ".gem-c-error-alert" do
           assert_select "div", "Couldn't get data from GitHub:"
           assert_select "div", "Octokit::NotFound"
         end
@@ -157,7 +157,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "show the rate limit message" do
-        assert_select ".alert-error" do
+        assert_select ".gem-c-error-alert" do
           assert_select "div", "Couldn't get data from GitHub:"
         end
       end
@@ -252,7 +252,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "include status notes as a warning" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".alert-warning", "Do not deploy this without talking to core team first!"
+      assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
 
     should "show dashboard links to application's deployment dashboard" do

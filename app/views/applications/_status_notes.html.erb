@@ -1,11 +1,12 @@
 <% if site_settings.status_notes.present? %>
-  <div class="global-status-note alert alert-danger" role="alert">
-    <p><%= site_settings.status_notes %></p>
-  </div>
+  <%= render "govuk_publishing_components/components/error_alert", {
+    message: site_settings.status_notes
+  } %>
 <% end %>
 
 <% if application.status_notes.present? %>
-  <div class="application-status-note alert alert-warning" role="alert">
-    <p><%= application.status_notes %></p>
-  </div>
+  <%= render "govuk_publishing_components/components/notice", {
+    title: application.status_notes,
+    margin_bottom: 4,
+  } %>
 <% end %>

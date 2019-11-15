@@ -62,16 +62,6 @@ table.commits td.hash,
   }
 }
 
-.alert-alert {
-  @extend .alert-info;
-}
-.alert-error {
-  @extend .alert-danger;
-}
-.alert-notice {
-  @extend .alert-success;
-}
-
 .release__stats {
   margin-top: govuk-spacing(6);
 }

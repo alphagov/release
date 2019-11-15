@@ -43,10 +43,13 @@
     <% if @github_available %>
       <%= render "shared/commits_table", commits: @commits %>
     <% else %>
-      <div class="alert alert-error">
-        <div>Couldn't get data from GitHub:</div>
-        <div><%= @github_error %></div>
-      </div>
+      <%= render "govuk_publishing_components/components/govspeak", {
+      } do %>
+        <div class="application-notice help-notice">
+          <p>Couldn't get data from GitHub:</p>
+          <p><%= @github_error %></p>
+        </div>
+      <% end %>
     <% end %>
   <% end %>
 
