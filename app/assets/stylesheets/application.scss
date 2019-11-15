@@ -26,10 +26,47 @@ h1 {
   float: none;
 }
 
+.release__author {
+  color: govuk-colour("dark-grey");
+}
+
+// Add some table overrides to prevent overflow
+.release__applications-table .gem-c-table {
+  @include govuk-font(16);
+  width: 100%;
+  display: block;
+  overflow: scroll;
+}
+
+.release__applications-table .release__application-notes {
+  width: 50%;
+}
+
+.release__applications-table .govuk-table__cell {
+  .application-status {
+    padding: 10px;
+    color: govuk-colour("white");
+  }
+
+  .application-status-all_environments_match {
+    background-color: govuk-colour("green");
+  }
+  .application-status-undeployed_changes_in_integration {
+    background-color: darken(govuk-colour("orange"), 10%);
+  }
+  .application-status-production_and_staging_not_in_sync {
+    background-color: govuk-colour("red");
+  }
+}
+
 .release-header {
   border-bottom: 1px solid #aaa;
   padding-bottom: 20px;
   margin-bottom: 30px;
+}
+
+.release__commit-author {
+  vertical-align: middle;
 }
 
 table.commits td.hash,
@@ -37,29 +74,27 @@ table.commits td.hash,
   font-family: monospace;
 }
 
-.deployment {
-  margin: 0 0 10px 0;
-
-  .env {
-    min-width: 8em;
-  }
-
-  time {
-    // to match `.label`
-    font-size: 75%;
-  }
-
-  &.production {
-    .env {
-      background: $production-color
-    }
-  }
-}
-
 .release-tag  {
   &.label a {
     color: #fff;
   }
+}
+
+.release__commit {
+  line-height: 1.7;
+}
+
+.release__commit-label {
+  display: inline;
+  padding: .2em .6em .3em;
+  color: #fff;
+  border-radius: .25em;
+  background-color: #999999;
+  font-weight: bold;
+}
+
+.release__commit-label--production {
+  background-color: #df3034;
 }
 
 .release__stats {
