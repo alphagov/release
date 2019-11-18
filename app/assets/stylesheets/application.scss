@@ -3,7 +3,10 @@ $govuk-typography-use-rem: false;
 @import "govuk_publishing_components/all_components";
 @import "govuk_admin_template";
 @import "activity";
-@import "tables";
+
+.js-hidden {
+  display: none;
+}
 
 h1 span.shortname {
   font-family: monospace;

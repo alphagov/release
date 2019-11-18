@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def github_tag_link_to(app, git_ref)
-    link_to(git_ref.truncate(20), "#{app.repo_url}/tree/#{git_ref}", target: "_blank", rel: "noopener")
+    link_to(git_ref.truncate(15), "#{app.repo_url}/tree/#{git_ref}", target: "_blank", rel: "noopener", class: "govuk-link")
   end
 
   def github_compare_to_master(application, deploy)

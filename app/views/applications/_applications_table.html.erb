@@ -1,56 +1,67 @@
-<table id="application-list" class="table table-striped table-bordered table-hover" data-module="filterable-table">
-  <thead>
-    <tr class='table-header'>
-      <th scope="col" class="headerSortDown">Name</th>
-      <th scope="col">Status</th>
+<%= render "govuk_publishing_components/components/input", {
+  label: {
+    text: "Filter applications"
+  },
+  name: "applications-filter",
+  type: "search",
+  search_icon: true,
+  autofocus: true,
+  tabindex: 0
+} %>
+
+<div class="release__applications-table" data-filter-applications>
+  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Applications") do |t| %>
+    <%= t.head do %>
+      <%= t.header "Name" %>
+      <%= t.header "Status" %>
       <% @environments.each do |environment| %>
-        <th scope="col"><%= environment.humanize %></th>
+        <%= t.header environment.humanize %>
       <% end %>
-      <th>Notes</th>
-    </tr>
-    <tr class="if-no-js-hide table-header-secondary">
-      <td colspan="<%= 3 + @environments.length %>">
-        <form>
-          <label for="applications-filter" class="rm">Filter applications</label>
-          <input id="applications-filter" autofocus="autofocus" type="text" class="form-control normal js-filter-table-input" placeholder="Filter applications">
-        </form>
-      </td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @applications.each do |application| %>
-      <tr>
-        <td>
-          <%= link_to application.name, application, class: 'js-open-on-submit govuk-link' %>
-          <div style="margin-top: .5rem;">
-            <%= render partial: "provider_badge", locals: { application: application } %>
-          </div>
-        </td>
-        <td class="application-status application-status-<%= application.status %>">
-          <%= t("application_status.#{application.status}") %>
-        </td>
-        <% @environments.each do |environment| %>
-          <% environment_name = (application.on_aws? && environment != "integration") ? "#{environment}-aws" : environment %>
-          <% latest_deploy = application.latest_deploy_to_each_environment[environment_name] %>
-          <td class="<%= latest_deploy.try(:recent?) ? "deployed-recently" : "" %>" title="<%= latest_deploy.try(:created_at) || '' %>">
-            <% if latest_deploy %>
-              <%= github_tag_link_to(application, latest_deploy.version) %>
-              <br/><span class="text-muted">
-                <%= human_datetime(latest_deploy.created_at) %>
-              </span>
-              <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare govuk-link") do %>
-                <i class="glyphicon glyphicon-random" title="Compare to master"></i>
-              <% end %>
-            <% else %>
-              N/A
-            <% end %>
-          </td>
-        <% end %>
-        <td class="notes">
-          <%= application.status_notes %>
-          <%= link_to "edit", edit_application_path(application), class: "govuk-link" %>
-        </td>
-      </tr>
+      <%= t.header "Notes" %>
     <% end %>
-  </tbody>
-</table>
+
+    <%= t.body do %>
+      <% @applications.each do |application| %>
+        <%= t.row do %>
+          <% application_name = capture do %>
+            <%= link_to application.name, application, class: "govuk-link", data: { "filter-applications-link": "" } %>
+            <%= render partial: "provider_badge", locals: { application: application } %>
+          <% end %>
+
+          <% application_notes = capture do %>
+            <p class="release__application-notes">
+              <%= application.status_notes %>
+              <%= link_to "edit", edit_application_path(application), class: "govuk-link" %>
+            </p>
+          <% end %>
+
+          <%= t.cell application_name %>
+
+          <% application_status = capture do %>
+            <p class="govuk-body-s application-status application-status-<%= application.status %>"><%= t("application_status.#{application.status}") %></p>
+          <% end %>
+
+          <%= t.cell application_status %>
+
+          <% @environments.each do |environment| %>
+            <% environment_name = (application.on_aws? && environment != "integration") ? "#{environment}-aws" : environment %>
+            <% latest_deploy = application.latest_deploy_to_each_environment[environment_name] %>
+            <% env_deploy = capture do %>
+              <% if latest_deploy %>
+                <p class="govuk-body-s govuk-!-margin-bottom-1"><%= github_tag_link_to(application, latest_deploy.version) %></p>
+                <p class="govuk-body-s govuk-!-margin-bottom-1"><%= human_datetime(latest_deploy.created_at) %></p>
+                <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare govuk-link govuk-body-s") do %>
+                  <i class="glyphicon glyphicon-random" title="Compare to master"></i>
+                <% end %>
+              <% else %>
+                <p class="govuk-body-s">N/A</p>
+              <% end %>
+            <% end %>
+            <%= t.cell env_deploy %>
+          <% end %>
+          <%= t.cell application_notes %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
