@@ -12,112 +12,138 @@
   } %>
 
   <%= render "govuk_publishing_components/components/title", {
-    title: "#{@application.name} Recent Deployments",
-    context: @application.shortname,
+    title: "Deploy #{@application.name}",
+    context: {
+      text: @application.shortname,
+      href: @application.repo_url
+    },
     margin_bottom: 0
   } %>
   <%= render partial: "provider_badge", locals: { application: @application } %>
-
-  <%= link_to @application.repo_url, @application.repo_url, target: "_blank", class: "govuk-link" %>
 </div>
 
-<main>
-  <%= render 'status_notes', application: @application %>
+<%= render 'status_notes', application: @application %>
 
-  <h2>Candidate Release <span class="label label-info"><%= @release_tag %></span></h2>
-  <% if @production_deploy %>
-    <p class="lead add-top-margin">Production is <span class="label label-danger"><%= @production_deploy.version %></span> &mdash; deployed at <%= human_datetime(@production_deploy.created_at) %></p>
-  <% else %>
-    <p class="lead add-top-margin">Production is <span class="label label-danger">not deployed yet</span>!</p>
-  <% end %>
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Candidate Release: #{@release_tag}",
+  margin_bottom: 4
+} %>
 
-  <% if @production_deploy %>
-    <p class="pull-right">
-      <a class="btn btn-default" href="<%= @application.repo_compare_url(@production_deploy.version, @release_tag) %>">
-        <i class="glyphicon glyphicon-new-window add-right-margin"></i>Full Diff
-      </a>
-    </p>
+<% if @production_deploy %>
+  <p class="govuk-body">Production is on <%= @production_deploy.version %> &mdash; deployed at <%= human_datetime(@production_deploy.created_at) %></p>
+<% else %>
+  <p class="govuk-body">Production is not deployed yet!</p>
+<% end %>
 
-    <p class="lead"><%= @commits.length %> <%= 'commit'.pluralize(@commits.length) %></p>
-
-    <% if @github_available %>
-      <%= render "shared/commits_table", commits: @commits %>
-    <% else %>
-      <%= render "govuk_publishing_components/components/govspeak", {
-      } do %>
-        <div class="application-notice help-notice">
-          <p>Couldn't get data from GitHub:</p>
-          <p><%= @github_error %></p>
-        </div>
-      <% end %>
-    <% end %>
-  <% end %>
-
-  <h2>Deploy</h2>
-  <div class="row">
-    <div class="col-md-3">
-      <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
-    </div>
-
-    <div class="col-md-9">
-      <% if @application.shortname == 'puppet' %>
-        <h3>Test on Staging</h3>
-        <p>
-          <a class="btn btn-primary add-bottom-margin"
-             target="_blank"
-             href="<%= jenkins_deploy_puppet_url(@release_tag, "staging", aws: false) %>">
-            Deploy to Staging (Carrenza)
-          </a>
-          <a class="btn btn-primary add-bottom-margin"
-             target="_blank"
-             href="<%= jenkins_deploy_puppet_url(@release_tag, "staging", aws: true) %>">
-            Deploy to Staging (AWS)
-          </a>
-        </p>
-
-        <h3>Promote to Production</h3>
-        <p>
-          <a class="btn btn-danger"
-             target="_blank"
-             href="<%= jenkins_deploy_puppet_url(@release_tag, "production", aws: false) %>">
-            Deploy to Production (Carrenza)
-          </a>
-          <a class="btn btn-danger"
-             target="_blank"
-             href="<%= jenkins_deploy_puppet_url(@release_tag, "production", aws: true) %>">
-            Deploy to Production (AWS)
-          </a>
-        </p>
-      <% else %>
-        <h3>Test on Staging</h3>
-        <p>
-          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-          <a target="_blank" href="<%= @staging_dashboard_url %>">Staging dashboard</a>:
-          Monitor your deployment to check that it doesn't cause any problems.
-        </p>
-        <p>
-          <a class="btn btn-primary add-bottom-margin"
-             target="_blank"
-             href="<%= jenkins_deploy_app_url(@application, @release_tag, "staging") %>">
-            Deploy to Staging
-          </a>
-        </p>
-
-        <h3>Promote to Production</h3>
-        <p>
-          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-          <a target="_blank" href="<%= @production_dashboard_url %>">Production dashboard</a>:
-          monitor your deployment to check that it doesn't cause any problems.
-        </p>
-        <p>
-          <a class="btn btn-danger"
-             target="_blank"
-             href="<%= jenkins_deploy_app_url(@application, @release_tag, "production") %>">
-            Deploy to Production
-          </a>
-        </p>
-      <% end %>
-    </div>
+<% if @production_deploy %>
+  <div class="pull-right">
+    <%= render "govuk_publishing_components/components/button", {
+      text: "View full diff",
+      secondary: true,
+      href: @application.repo_compare_url(@production_deploy.version, @release_tag)
+    } %>
   </div>
 
-</main>
+  <p class="govuk-body"><%= @commits.length %> <%= 'commit'.pluralize(@commits.length) %></p>
+
+  <% if @github_available %>
+    <%= render "shared/commits_table", commits: @commits %>
+  <% else %>
+    <%= render "govuk_publishing_components/components/govspeak", {
+    } do %>
+      <div class="application-notice help-notice">
+        <p>Couldn't get data from GitHub:</p>
+        <p><%= @github_error %></p>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Deploy",
+  margin_bottom: 4
+} %>
+
+<div class="row">
+  <div class="col-md-3">
+    <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
+  </div>
+
+  <div class="col-md-9">
+    <% if @application.shortname == 'puppet' %>
+        <%= render "govuk_publishing_components/components/heading", {
+          text: "Deploy to Staging",
+          margin_bottom: 4,
+          heading_level: 3
+        } %>
+      <p class="govuk-body">
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Deploy to Staging (Carrenza)",
+          href: jenkins_deploy_puppet_url(@release_tag, "staging", aws: false),
+          target: "_blank",
+        } %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Deploy to Staging (AWS)",
+          href: jenkins_deploy_puppet_url(@release_tag, "staging", aws: true),
+          target: "_blank",
+          margin_bottom: true
+        } %>
+      </p>
+
+      <%= render "govuk_publishing_components/components/heading", {
+        text: "Deploy to Production",
+        margin_bottom: 4,
+        heading_level: 3
+      } %>
+      <p class="govuk-body">
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Deploy to Production (Carrenza)",
+          href: jenkins_deploy_puppet_url(@release_tag, "production", aws: false),
+          target: "_blank",
+          destructive: true
+        } %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Deploy to Production (AWS)",
+          href: jenkins_deploy_puppet_url(@release_tag, "production", aws: true),
+          target: "_blank",
+          destructive: true
+        } %>
+      </p>
+    <% else %>
+      <%= render "govuk_publishing_components/components/heading", {
+        text: "Deploy to Staging",
+        margin_bottom: 4,
+        heading_level: 3
+      } %>
+      <p class="govuk-body">
+        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+        <a target="_blank" href="<%= @staging_dashboard_url %>" class="govuk-link">Staging dashboard</a>:
+        Monitor your deployment to check that it doesn't cause any problems.
+      </p>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Deploy to Staging",
+        href: jenkins_deploy_app_url(@application, @release_tag, "staging"),
+        target: "_blank",
+        margin_bottom: true
+      } %>
+
+      <%= render "govuk_publishing_components/components/heading", {
+        text: "Deploy to Production",
+        margin_bottom: 4,
+        heading_level: 3
+      } %>
+      <p class="govuk-body">
+        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+        <a target="_blank" href="<%= @production_dashboard_url %>" class="govuk-link">Production dashboard</a>:
+        monitor your deployment to check that it doesn't cause any problems.
+      </p>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Deploy to Production",
+        href: jenkins_deploy_app_url(@application, @release_tag, "production"),
+        target: "_blank",
+        destructive: true,
+        margin_bottom: true
+      } %>
+    <% end %>
+  </div>
+</div>

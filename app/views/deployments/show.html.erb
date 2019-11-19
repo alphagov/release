@@ -15,51 +15,19 @@
   title: "Deploy ##{@deployment.id}"
 } %>
 
-<table>
-  <tr>
-    <th style='width:200px'>Application</th>
-    <td><%= @deployment.application.name %></td>
-  </tr>
-  <tr>
-    <th>Environment</th>
-    <td><%= @deployment.environment %></td>
-  </tr>
-  <tr>
-    <th>Deployed by</th>
-    <td><%= @deployment.jenkins_user_name || "<em>Not recorded</em>".html_safe %></td>
-  </tr>
-  <tr>
-    <th>Deployed at</th>
-    <td><%= @deployment.created_at %></td>
-  </tr>
-</table>
+<div class="govuk-body">
+  <p><span class="govuk-!-font-weight-bold">Application:</span> <%= @deployment.application.name %></p>
+  <p><span class="govuk-!-font-weight-bold">Environment:</span> <%= @deployment.environment %></p>
+  <p><span class="govuk-!-font-weight-bold">Deployed by:</span> <%= @deployment.jenkins_user_name || "<em>Not recorded</em>".html_safe %></p>
+  <p><span class="govuk-!-font-weight-bold">Deployed at:</span> <%= @deployment.created_at %></p>
 
-<% if @deployment.previous_deployment %>
-  <table>
-    <tr>
-      <th style='width:200px'>Previous version</th>
-      <td><%= @deployment.previous_version %> (<%= @deployment.previous_deployment.deployed_sha || "unknown SHA" %>)</td>
-    </tr>
-    <tr>
-      <th>Deployed version</th>
-      <td><%= @deployment.version %> (<%= @deployment.deployed_sha || "unknown SHA" %>)</td>
-    </tr>
-    <tr>
-      <th>Commits</th>
-      <td><%= @deployment.commits.count %> (<%= link_to "Diff URL", @deployment.diff_url, class: "govuk-link" %>)</td>
-    </tr>
-    <tr>
-      <th>Pull requests</th>
-      <td><%= @deployment.commits.count(&:pr?) %></td>
-    </tr>
-    <tr>
-      <th>Authors</th>
-      <td><%= to_sentence @deployment.commits.map(&:author_name).compact.uniq %></td>
-    </tr>
-  </table>
+  <% if @deployment.previous_deployment %>
+    <p><span class="govuk-!-font-weight-bold">Previous version:</span> <%= @deployment.previous_version %> (<%= @deployment.previous_deployment.deployed_sha || "unknown SHA" %>)</p>
+    <p><span class="govuk-!-font-weight-bold">Deployed version:</span> <%= @deployment.version %> (<%= @deployment.deployed_sha || "unknown SHA" %>)</p>
+    <p><span class="govuk-!-font-weight-bold">Commits:</span> <%= @deployment.commits.count %> (<%= link_to "Diff URL", @deployment.diff_url, class: "govuk-link" %>)</p>
+    <p><span class="govuk-!-font-weight-bold">Pull requests:</span> <%= @deployment.commits.count(&:pr?) %></p>
+    <p><span class="govuk-!-font-weight-bold">Authors:</span> <%= to_sentence @deployment.commits.map(&:author_name).compact.uniq %></p>
+  <% end %>
+</div>
 
-  <br/>
-  <br/>
-
-  <%= render 'shared/commits_table', commits: @deployment.commits %>
-<% end %>
+<%= render 'shared/commits_table', commits: @deployment.commits %>
