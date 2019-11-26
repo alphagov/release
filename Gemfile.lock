@@ -304,9 +304,6 @@ GEM
     sentry-raven (2.11.3)
       faraday (>= 0.7.6, < 1.0)
     shoulda-context (1.2.2)
-    simple_form (4.1.0)
-      actionpack (>= 5.0)
-      activemodel (>= 5.0)
     simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -379,7 +376,6 @@ DEPENDENCIES
   rails-controller-testing
   sass-rails (~> 5)
   shoulda-context (~> 1)
-  simple_form (~> 4)
   simplecov (~> 0.17)
   simplecov-rcov (~> 0.2)
   timecop (~> 0.9)
