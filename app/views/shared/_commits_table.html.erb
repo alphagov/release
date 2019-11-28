@@ -1,36 +1,38 @@
-<%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commits") do |t| %>
-  <%= t.head do %>
-    <%= t.header "SHA" %>
-    <%= t.header "Message" %>
-    <%= t.header "Author" %>
-    <%= t.header "Date" %>
-  <% end %>
+<div class="release__deploy-commits-table">
+  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commits") do |t| %>
+    <%= t.head do %>
+      <%= t.header "SHA" %>
+      <%= t.header "Message" %>
+      <%= t.header "Author" %>
+      <%= t.header "Date" %>
+    <% end %>
 
-  <%= t.body do %>
-    <% commits.each do |commit| %>
-      <%= t.row do %>
-        <%= t.cell link_to(commit.sha, commit.github_url, target: '_blank', class: "govuk-link") %>
+    <%= t.body do %>
+      <% commits.each do |commit| %>
+        <%= t.row do %>
+          <%= t.cell link_to(commit.sha, commit.github_url, target: '_blank', class: "govuk-link") %>
 
-        <% commit_message = capture do %>
-          <% if commit.pr? %>
-            <%= octicon "git-pull-request", height: '20px', style: "vertical-align: middle; margin-right: 4px;" %>
+          <% commit_message = capture do %>
+            <% if commit.pr? %>
+              <%= octicon "git-pull-request", height: '20px', style: "vertical-align: middle; margin-right: 4px;" %>
+            <% end %>
+            <%= link_to commit.title, commit.github_url, target: '_blank', class: "govuk-link" %>
           <% end %>
-          <%= link_to commit.title, commit.github_url, target: '_blank', class: "govuk-link" %>
-        <% end %>
 
-        <%= t.cell commit_message %>
+          <%= t.cell commit_message %>
 
-        <% commit_author = capture do %>
-          <% if commit.author_avatar %>
-            <%= image_tag commit.author_avatar, height: '20px', width: '20px' %>
+          <% commit_author = capture do %>
+            <% if commit.author_avatar %>
+              <%= image_tag commit.author_avatar, height: '20px', width: '20px' %>
+            <% end %>
+            <%= tag.span commit.author_name, class: 'release__deploy-commits-author' %>
           <% end %>
-          <%= tag.span commit.author_name, class: 'release__commit-author' %>
+
+          <%= t.cell commit_author %>
+
+          <%= t.cell "#{commit.commit_date.to_date.to_s(:short)} #{commit.commit_date.to_s(:govuk_time)}" %>
         <% end %>
-
-        <%= t.cell commit_author %>
-
-        <%= t.cell "#{commit.commit_date.to_date.to_s(:short)} #{commit.commit_date.to_s(:govuk_time)}" %>
       <% end %>
     <% end %>
   <% end %>
-<% end %>
+</div>

@@ -3,34 +3,15 @@ $govuk-typography-use-rem: false;
 @import "govuk_publishing_components/all_components";
 @import "govuk_admin_template";
 @import "activity";
+@import "tables";
 
 .js-hidden {
   display: none;
 }
 
-h1 span.shortname {
-  font-family: monospace;
-  font-size: 0.8em;
-  color: #aaa;
-}
-
-h1 {
-  line-height: 46px;
-  margin: 22px 0;
-}
-
-.author {
-  @extend .text-muted;
-  padding-left: 1em;
-}
-
 // Override for header component, as the number of links means they don't fit when floating right
 .gem-c-header__content {
   float: none;
-}
-
-.release__author {
-  color: govuk-colour("dark-grey");
 }
 
 // Add some table overrides to prevent overflow
@@ -41,63 +22,10 @@ h1 {
   overflow: scroll;
 }
 
-.release__applications-table .release__application-notes {
-  width: 50%;
-}
-
-.release__applications-table .govuk-table__cell {
-  .application-status {
-    padding: 10px;
-    color: govuk-colour("white");
-  }
-
-  .application-status-all_environments_match {
-    background-color: govuk-colour("green");
-  }
-  .application-status-undeployed_changes_in_integration {
-    background-color: darken(govuk-colour("orange"), 10%);
-  }
-  .application-status-production_and_staging_not_in_sync {
-    background-color: govuk-colour("red");
-  }
-}
-
-.release-header {
-  border-bottom: 1px solid #aaa;
+.release__application-header {
+  border-bottom: 1px solid govuk-colour("mid-grey");
   padding-bottom: 20px;
   margin-bottom: 30px;
-}
-
-.release__commit-author {
-  vertical-align: middle;
-}
-
-table.commits td.hash,
-.commit-hash {
-  font-family: monospace;
-}
-
-.release-tag  {
-  &.label a {
-    color: #fff;
-  }
-}
-
-.release__commit {
-  line-height: 1.7;
-}
-
-.release__commit-label {
-  display: inline;
-  padding: .2em .6em .3em;
-  color: #fff;
-  border-radius: .25em;
-  background-color: #999999;
-  font-weight: bold;
-}
-
-.release__commit-label--production {
-  background-color: #df3034;
 }
 
 .release__stats {
