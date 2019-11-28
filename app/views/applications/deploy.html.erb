@@ -17,7 +17,7 @@
       text: @application.shortname,
       href: @application.repo_url
     },
-    margin_bottom: 0
+    margin_bottom: 2
   } %>
   <%= render partial: "provider_badge", locals: { application: @application } %>
 </div>
@@ -36,7 +36,7 @@
 <% end %>
 
 <% if @production_deploy %>
-  <div class="pull-right">
+  <div class="release__view-diff">
     <%= render "govuk_publishing_components/components/button", {
       text: "View full diff",
       secondary: true,
@@ -64,12 +64,12 @@
   margin_bottom: 4
 } %>
 
-<div class="row">
-  <div class="col-md-3">
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
     <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
   </div>
 
-  <div class="col-md-9">
+  <div class="govuk-grid-column-two-thirds">
     <% if @application.shortname == 'puppet' %>
         <%= render "govuk_publishing_components/components/heading", {
           text: "Deploy to Staging",
@@ -116,7 +116,7 @@
         heading_level: 3
       } %>
       <p class="govuk-body">
-        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+        <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
         <a target="_blank" href="<%= @staging_dashboard_url %>" class="govuk-link">Staging dashboard</a>:
         Monitor your deployment to check that it doesn't cause any problems.
       </p>
@@ -133,7 +133,7 @@
         heading_level: 3
       } %>
       <p class="govuk-body">
-        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+        <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
         <a target="_blank" href="<%= @production_dashboard_url %>" class="govuk-link">Production dashboard</a>:
         monitor your deployment to check that it doesn't cause any problems.
       </p>

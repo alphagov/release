@@ -24,12 +24,12 @@
       <% @applications.each do |application| %>
         <%= t.row do %>
           <% application_name = capture do %>
-            <%= link_to application.name, application, class: "govuk-link", data: { "filter-applications-link": "" } %>
+            <%= link_to application.name, application, class: "govuk-link release__application-link", data: { "filter-applications-link": "" } %> </br>
             <%= render partial: "provider_badge", locals: { application: application } %>
           <% end %>
 
           <% application_notes = capture do %>
-            <p class="release__application-notes">
+            <p class="govuk-body-s release__application-notes">
               <%= application.status_notes %>
               <%= link_to "edit", edit_application_path(application), class: "govuk-link" %>
             </p>
@@ -51,7 +51,7 @@
                 <p class="govuk-body-s govuk-!-margin-bottom-1"><%= github_tag_link_to(application, latest_deploy.version) %></p>
                 <p class="govuk-body-s govuk-!-margin-bottom-1"><%= human_datetime(latest_deploy.created_at) %></p>
                 <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare govuk-link govuk-body-s") do %>
-                  <i class="glyphicon glyphicon-random" title="Compare to master"></i>
+                  <%= octicon "git-compare", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-label": "Compare to master" %>
                 <% end %>
               <% else %>
                 <p class="govuk-body-s">N/A</p>

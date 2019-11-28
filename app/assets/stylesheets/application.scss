@@ -1,7 +1,6 @@
 $govuk-typography-use-rem: false;
 
 @import "govuk_publishing_components/all_components";
-@import "govuk_admin_template";
 @import "activity";
 @import "tables";
 
@@ -30,4 +29,20 @@ $govuk-typography-use-rem: false;
 
 .release__stats {
   margin-top: govuk-spacing(6);
+}
+
+.release__badge {
+  @include govuk-font(16, $weight: "bold");
+  background-color:  govuk-colour("light-blue");
+  padding: 3px 5px;
+  border-radius: 20px;
+  color: govuk-colour("white");
+}
+
+.release__badge--aws {
+  background-color: govuk-colour("orange");
+}
+
+.release__view-diff {
+  float: right;
 }

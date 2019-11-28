@@ -2,8 +2,13 @@
   color: govuk-colour("dark-grey");
 }
 
-.release__applications-table .release__application-notes {
+.release__application-notes {
   width: 50%;
+}
+
+.release__application-link {
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 .release__applications-table .govuk-table__cell {

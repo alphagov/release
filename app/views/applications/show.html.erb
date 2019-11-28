@@ -12,7 +12,7 @@
   <%= render "govuk_publishing_components/components/title", {
     title: "Deploy #{@application.name}",
     context: @application.shortname,
-    margin_bottom: 0
+    margin_bottom: 2
   } %>
   <%= render partial: "provider_badge", locals: { application: @application } %>
 </div>

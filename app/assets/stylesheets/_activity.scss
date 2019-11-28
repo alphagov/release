@@ -35,6 +35,10 @@
 .activity-list__deployment--production {
   color: govuk-colour("white");
 
+  .activity-list__metadata {
+    color: govuk-colour("white");
+  }
+
   .activity-list__deployment-release {
     color: govuk-colour("white");
   }
