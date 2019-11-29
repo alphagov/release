@@ -13,45 +13,47 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
     visit "/"
 
     click_on @app1.name
-    assert page.has_no_selector?(".global-status-note")
+    assert page.has_no_selector?(".gem-c-notice")
+    assert page.has_no_selector?(".gem-c-error-alert")
 
     click_on "Site settings"
 
     fill_in "Notes", with: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"
-    click_on "Save settings"
-    assert page.has_content?("Site settings updated")
-    assert_equal "/applications", current_path
+    click_on "Save status notes"
+    assert page.has_selector?(".gem-c-success-alert", text: "Site settings updated")
+    assert_equal "/site", current_path
 
-
+    visit "/"
     click_on @app1.name
-    assert page.has_selector?(".global-status-note", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 1 deploys page"
+    assert page.has_selector?(".gem-c-error-alert", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 1 deploys page"
     click_on "release_1000"
-    assert page.has_selector?(".global-status-note", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 1 release_1000 tag deploy page"
+    assert page.has_selector?(".gem-c-error-alert", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 1 release_1000 tag deploy page"
 
     visit "/"
 
     click_on @app2.name
-    assert page.has_selector?(".global-status-note", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 2 deploys page"
+    assert page.has_selector?(".gem-c-error-alert", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 2 deploys page"
     click_on "release_200"
-    assert page.has_selector?(".global-status-note", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 2 release_200 tag deploy page"
+    assert page.has_selector?(".gem-c-error-alert", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 2 release_200 tag deploy page"
 
     click_on "Site settings"
     fill_in "Notes", with: ""
-    click_on "Save settings"
-    assert page.has_content?("Site settings updated")
-    assert_equal "/applications", current_path
+    click_on "Save status notes"
+    assert page.has_selector?(".gem-c-success-alert", text: "Site settings updated")
+    assert_equal "/site", current_path
 
+    visit "/"
     click_on @app1.name
-    assert page.has_no_selector?(".global-status-note")
+    assert page.has_no_selector?(".gem-c-error-alert")
     click_on "release_1000"
-    assert page.has_no_selector?(".global-status-note")
+    assert page.has_no_selector?(".gem-c-error-alert")
 
     visit "/"
 
     click_on @app2.name
-    assert page.has_no_selector?(".global-status-note")
+    assert page.has_no_selector?(".gem-c-error-alert")
     click_on "release_200"
-    assert page.has_no_selector?(".global-status-note")
+    assert page.has_no_selector?(".gem-c-error-alert")
   end
 
   def stub_deploy_and_release_page_api_requests_for(application, tag)

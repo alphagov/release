@@ -11,7 +11,7 @@ class DeployPageTest < ActionDispatch::IntegrationTest
 
     visit deployment_path(deployment)
 
-    assert page.has_content?("##{deployment.id}")
+    assert page.has_content?(deployment.id.to_s)
   end
 
   test "page handles a deployment with a previous deployment" do
