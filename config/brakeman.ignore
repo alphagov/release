@@ -3,42 +3,66 @@
     {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
-      "fingerprint": "32a2057610a2ef0cfd1fe5f64b55fb9525638c4046756567afdc235309f78b66",
+      "fingerprint": "62a5e98c3e67704e4e0fef7b106bc2c5597ef98c2d931c53cb777e1f10addb55",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
-      "file": "app/views/applications/deploy.html.erb",
-      "line": 8,
-      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
-      "code": "link_to(Application.friendly.find(params[:id]).repo_url, Application.friendly.find(params[:id]).repo_url, :target => \"_blank\")",
-      "render_path": [{"type":"controller","class":"ApplicationsController","method":"deploy","line":71,"file":"app/controllers/applications_controller.rb"}],
-      "location": {
-        "type": "template",
-        "template": "applications/deploy"
-      },
-      "user_input": "Application.friendly.find(params[:id]).repo_url",
-      "confidence": "Weak",
-      "note": "repo_url begins with 'https://', it's not an arbitrary string"
-    },
-    {
-      "warning_type": "Cross-Site Scripting",
-      "warning_code": 4,
-      "fingerprint": "ac866efcce1282a08d4d0d11d537ed7ce20c5e69cc7bbc84f04e87504a41f85e",
-      "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/deployments/show.html.erb",
-      "line": 34,
+      "line": 27,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
-      "code": "link_to(\"Diff URL\", Deployment.find(params[:id]).diff_url)",
-      "render_path": [{"type":"controller","class":"DeploymentsController","method":"show","line":11,"file":"app/controllers/deployments_controller.rb"}],
+      "code": "link_to(\"Diff URL\", Deployment.find(params[:id]).diff_url, :class => \"govuk-link\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "DeploymentsController",
+          "method": "show",
+          "line": 9,
+          "file": "app/controllers/deployments_controller.rb",
+          "rendered": {
+            "name": "deployments/show",
+            "file": "app/views/deployments/show.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "deployments/show"
       },
       "user_input": "Deployment.find(params[:id]).diff_url",
       "confidence": "Weak",
-      "note": "diff_url begins with 'https://', it's not an arbitrary string"
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "76371fa642984acaad63dbda84c3fc32a061d6df8866bb7bab5e93041d879ca9",
+      "check_name": "RenderInline",
+      "message": "Unescaped parameter value rendered inline",
+      "file": "app/views/applications/deploy.html.erb",
+      "line": 28,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(text => \"Candidate Release: #{params[:tag]}\", { :margin_bottom => 4 })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "ApplicationsController",
+          "method": "deploy",
+          "line": 70,
+          "file": "app/controllers/applications_controller.rb",
+          "rendered": {
+            "name": "applications/deploy",
+            "file": "app/views/applications/deploy.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "applications/deploy"
+      },
+      "user_input": "params[:tag]",
+      "confidence": "High",
+      "note": ""
     }
   ],
-  "updated": "2018-08-08 08:34:58 +0000",
-  "brakeman_version": "4.3.1"
+  "updated": "2019-12-02 16:37:19 +0000",
+  "brakeman_version": "4.7.1"
 }
