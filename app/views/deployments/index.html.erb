@@ -18,20 +18,27 @@
   <%= render partial: "applications/provider_badge", locals: { application: @application } %>
 </div>
 
-<ul class="tabs">
-  <li>
-    <%= link_to "Deploy status", @application %>
-  </li>
-  <li>
-    <%= link_to "Edit", edit_application_path(@application) %>
-  </li>
-  <li class="active">
-    <%= link_to "Recent deployments", application_deployments_path(@application) %>
-  </li>
-  <li>
-    <%= link_to "Stats", stats_application_path(@application) %>
-  </li>
-</ul>
+<%= render "components/tabs", {
+  tabs: [
+    {
+      href: @application,
+      label: "Deploy status",
+    },
+    {
+      href: edit_application_path(@application),
+      label: "Edit",
+    },
+    {
+      href: application_deployments_path(@application),
+      label: "Recent deployments",
+      active: true,
+    },
+    {
+      href: stats_application_path(@application),
+      label: "Stats",
+    }
+  ]
+} %>
 
 <%= render "govuk_publishing_components/components/button", {
   text: "Record a missing deployment",

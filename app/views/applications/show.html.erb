@@ -17,20 +17,27 @@
   <%= render partial: "provider_badge", locals: { application: @application } %>
 </div>
 
-<ul class="tabs">
-  <li class="active">
-    <%= link_to "Deploy status", @application %>
-  </li>
-  <li>
-    <%= link_to "Edit", edit_application_path(@application) %>
-  </li>
-  <li>
-    <%= link_to "Recent deployments", application_deployments_path(@application) %>
-  </li>
-  <li>
-    <%= link_to "Stats", stats_application_path(@application) %>
-  </li>
-</ul>
+<%= render "components/tabs", {
+  tabs: [
+    {
+      href: @application,
+      label: "Deploy status",
+      active: true,
+    },
+    {
+      href: edit_application_path(@application),
+      label: "Edit",
+    },
+    {
+      href: application_deployments_path(@application),
+      label: "Recent deployments",
+    },
+    {
+      href: stats_application_path(@application),
+      label: "Stats",
+    }
+  ]
+} %>
 
 <% if @application.archived %>
   <%= render "govuk_publishing_components/components/notice", {
