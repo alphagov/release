@@ -1,46 +1,36 @@
-<% content_for :app_title, 'GOV.UK Release' %>
-<% content_for :page_title, ' | GOV.UK Release' %>
-<% content_for :favicon do %>
-  <% environment_style = GovukAdminTemplate.environment_style %>
-  <%= favicon_link_tag environment_style ?
-        "govuk_admin_template/favicon-#{environment_style}.png" : "govuk_admin_template/favicon.png" %>
-<% end %>
 <% content_for :head do %>
-  <%= stylesheet_link_tag "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tag %>
-  <%= yield :extra_headers %>
+  <%= javascript_include_tag "admin" %>
 <% end %>
 
-<% content_for :navbar_items do %>
-  <%= nav_link 'Applications', applications_path %>
-  <%= nav_link 'Deploys', activity_path %>
-  <%= nav_link 'Archived', archived_applications_path %>
-  <%= nav_link 'Site settings', site_path %>
-  <%= nav_link 'Stats', stats_path %>
-<% end %>
+<%= render "govuk_publishing_components/components/layout_for_admin", {
+  environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
+  product_name: "Release",
+  browser_title: yield(:page_title).presence || "GOV.UK Release"
+} do %>
+  <%= render "govuk_publishing_components/components/skip_link" %>
+  <%= render "govuk_publishing_components/components/layout_header", {
+    product_name: "Release",
+    environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
+    navigation_items: navigation_items
+  } %>
 
-<% content_for :navbar_right do %>
-  <% if current_user %>
-    <%= link_to current_user.name, Plek.new.external_url_for('signon') %>
-    &bull; <%= link_to 'Sign out', gds_sign_out_path %>
-  <% end %>
-<% end %>
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper govuk-!-padding-top-2" id="main-content" role="main">
+    <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
+        <% if k.eql?(:notice) %>
+          <%= render "govuk_publishing_components/components/success_alert", flash[k] %>
+        <% else%>
+          <%= render "govuk_publishing_components/components/error_alert", flash[k] %>
+        <% end %>
+    <% end %>
 
-<% content_for :content do %>
-  <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
-    <div class="alert alert-<%= k %>">
-      <%= flash[k] %>
-    </div>
-  <% end %>
-  <%= yield %>
-<% end %>
+    <%= yield %>
+  </main>
 
-<% content_for :footer_version, CURRENT_RELEASE_SHA %>
+  <p class="govuk-body-s">Version: <%= CURRENT_RELEASE_SHA %></p>
+</div>
 
-<% content_for :body_end do %>
+  <%= render "govuk_publishing_components/components/layout_footer", {} %>
   <%= yield :extra_javascript %>
 <% end %>
-
-<%# use the govuk_admin_template layout %>
-<%= render :template => 'layouts/govuk_admin_template' %>

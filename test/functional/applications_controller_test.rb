@@ -18,29 +18,24 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "list unarchived applications" do
       get :index
-      assert_select "table tbody tr", count: 2
+      assert_select ".gem-c-table .govuk-table__body .govuk-table__row", count: 2
     end
 
     should "show the latest deploy to an environment" do
       get :index
-      assert_select "table tbody tr td:nth-child(4)", /release_x/
+      assert_select ".gem-c-table .govuk-table__body .govuk-link[href='https://mygithub.tld/user/app1/tree/release_x']", "release_x"
     end
 
     should "provide a link to compare with master" do
       get :index
-      assert_select "table a[href=?]", "https://mygithub.tld/user/app1/compare/release_x...master"
-    end
-
-    should "provide a title attribute to sort environment columns by date" do
-      get :index
-      assert_select "table td[title=?]", @deploy1.created_at.to_s
+      assert_select ".gem-c-table .govuk-table__body .govuk-link[href=?]", "https://mygithub.tld/user/app1/compare/release_x...master"
     end
   end
 
   context "GET new" do
     should "render the form" do
       get :new
-      assert_select "form input#application_name"
+      assert_select "form#new_application"
     end
   end
 
@@ -58,10 +53,17 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     context "invalid request" do
+      should "render an error message" do
+        post :create, params: { application: { name: "", repo: "org/my_first_app" } }
+        assert_select ".gem-c-error-alert"
+        assert_select ".gem-c-error-summary__title", text: "There was a problem creating the new application"
+        assert_select ".gem-c-error-summary__body", text: "Name is required, Domain is required"
+      end
+
       should "rerender the form" do
         post :create, params: { application: { name: "", repo: "org/my_first_app" } }
-        assert_select "form input#application_name"
-        assert_select "form input#application_repo[value='org/my_first_app']"
+        assert_select "form#new_application input[name='application[name]']"
+        assert_select "form#new_application input[name='application[repo]'][value='org/my_first_app']"
       end
     end
   end
@@ -75,23 +77,28 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the application name" do
       get :show, params: { id: @app.id }
-      assert_select "h1 span.name", @app.name
+      assert_select ".gem-c-title .gem-c-title__text", text: "Deploy #{@app.name}"
+    end
+
+    should "show the application shortname" do
+      get :show, params: { id: @app.id }
+      assert_select ".gem-c-title .gem-c-title__context", text: @app.shortname
     end
 
     should "show the application provider" do
       get :show, params: { id: @app.id }
-      assert_select "h1 span.badge", "Carrenza"
+      assert_select ".release__badge", "Carrenza"
 
       @app.update(on_aws: true)
 
       get :show, params: { id: @app.id }
-      assert_select "h1 span.badge", "AWS"
+      assert_select ".release__badge", "AWS"
     end
 
     should "should include status notes as a warning" do
       @app.update(status_notes: "Do not deploy this without talking to core team first!")
       get :show, params: { id: @app.id }
-      assert_select ".alert-warning", "Do not deploy this without talking to core team first!"
+      assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
 
     context "GET show with a production deployment" do
@@ -110,7 +117,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the application" do
         get :show, params: { id: @app.id }
-        assert_select "h1 span.name", @app.name
+        assert_select ".gem-c-title .gem-c-title__text", text: "Deploy #{@app.name}"
       end
 
       should "set the commit history in reverse order" do
@@ -139,9 +146,9 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "show the error message" do
-        assert_select ".alert-error" do
-          assert_select "div", "Couldn't get data from GitHub:"
-          assert_select "div", "Octokit::NotFound"
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from GitHub:"
+          assert_select "p", "Octokit::NotFound"
         end
       end
     end
@@ -157,8 +164,8 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "show the rate limit message" do
-        assert_select ".alert-error" do
-          assert_select "div", "Couldn't get data from GitHub:"
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from GitHub:"
         end
       end
     end
@@ -171,12 +178,12 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the form" do
       get :edit, params: { id: @app.id }
-      assert_select "form input#application_name[value='#{@app.name}']"
+      assert_select "form.edit_application input[name='application[name]'][value='#{@app.name}']"
     end
 
     should "allow editing of the shortname in the form" do
       get :edit, params: { id: @app.id }
-      assert_select "form input#application_shortname[placeholder='#{@app.shortname}']"
+      assert_select "form.edit_application input[name='application[shortname]'][value='#{@app.shortname}']"
     end
   end
 
@@ -193,11 +200,18 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     context "invalid request" do
+      should "render an error message" do
+        put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
+        assert_select ".gem-c-error-alert"
+        assert_select ".gem-c-error-summary__title", text: "There was a problem updating the application details"
+        assert_select ".gem-c-error-summary__body", text: "Name is required"
+      end
+
       should "rerender the form" do
         put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
         @app.reload
-        assert_select "form input#application_name[value='']"
-        assert_select "form input#application_repo[value='new/repo']"
+        assert_select "form.edit_application input[name='application[name]'][value='']"
+        assert_select "form.edit_application input[name='application[repo]'][value='new/repo']"
       end
     end
   end
@@ -211,14 +225,14 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show only archived applications" do
       get :archived
-      assert_select "table tbody tr", count: 1
+      assert_select ".gem-c-table .govuk-table__body .govuk-table__row", count: 1
     end
   end
 
   context "GET deploy" do
     setup do
       @app = FactoryBot.create(:application, status_notes: "Do not deploy this without talking to core team first!")
-      @deployment = FactoryBot.create(:deployment, application_id: @app.id)
+      @deployment = FactoryBot.create(:deployment, application_id: @app.id, created_at: "18/01/2013 11:57")
       @release_tag = "hot_fix_1"
       stub_request(:get, %r{grafana_hostname/api/dashboards/file/#{@app.shortname}.json}).to_return(status: 404)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
@@ -241,18 +255,18 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show that we are trying to deploy the application" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "h1 span.name", "Deploy #{@app.name}"
+      assert_select ".gem-c-title .gem-c-title__text", "Deploy #{@app.name}"
     end
 
     should "indicate which releases are current and about to be deployed" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "h2 .label-info", @release_tag
-      assert_select "p.lead .label-danger", @deployment.version
+      assert_select ".gem-c-heading", "Candidate Release: #{@release_tag}"
+      assert_select ".govuk-body", "Production is on #{@deployment.version} — deployed at 11am on 18 Jan 2013"
     end
 
     should "include status notes as a warning" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".alert-warning", "Do not deploy this without talking to core team first!"
+      assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
 
     should "show dashboard links to application's deployment dashboard" do
@@ -261,24 +275,24 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "https://grafana_hostname/api/dashboards/file/whitehall.json").to_return(status: "200")
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "a[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/whitehall.json"
-      assert_select "a[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/file/whitehall.json"
+      assert_select ".govuk-link[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/whitehall.json"
+      assert_select ".govuk-link[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/file/whitehall.json"
     end
 
     should "show Carrenza links when application is not on AWS" do
       @app.update(on_aws: false)
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "a[href=?]", "https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
-      assert_select "a[href=?]", "https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+      assert_select ".gem-c-button[href=?]", "https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+      assert_select ".gem-c-button[href=?]", "https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
     end
 
     should "show AWS links when application is on AWS" do
       @app.update(on_aws: true)
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select "a[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
-      assert_select "a[href=?]", "https://deploy.blue.production.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+      assert_select ".gem-c-button[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+      assert_select ".gem-c-button[href=?]", "https://deploy.blue.production.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
     end
   end
 

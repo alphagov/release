@@ -96,18 +96,32 @@ class ApplicationsController < ApplicationController
     @application = Application.new(application_params)
 
     if @application.valid? && @application.save
-      redirect_to @application, flash: { notice: "Successfully created new application" }
+
+      flash.now[:notice] = { message: "Successfully created new application" }
+
+      render action: "show"
     else
-      flash.now[:error] = "There are some problems with the application"
+      errors = @application.errors.full_messages
+
+      error_string = errors.join(", ")
+
+      flash.now[:error] = { message: "There was a problem creating the new application", description: error_string }
       render action: "new"
     end
   end
 
   def update
     if @application.update(application_params)
-      redirect_to @application, flash: { notice: "Successfully updated the application" }
+
+      flash.now[:notice] = { message: "Successfully updated the application details" }
+
+      render action: "show"
     else
-      flash.now[:error] = "There are some problems with the application"
+      errors = @application.errors.full_messages
+
+      error_string = errors.join(", ")
+
+      flash.now[:error] = { message: "There was a problem updating the application details", description: error_string }
       render :edit
     end
   end

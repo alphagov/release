@@ -10,8 +10,8 @@ class SitesControllerTest < ActionController::TestCase
       get :show
       assert_template :show
 
-      assert_select 'form[action="/site"]'
-      assert_select 'form textarea[name="site[status_notes]"]', ""
+      assert_select "form[action='/site']"
+      assert_select ".gem-c-character-count .govuk-textarea[name='site[status_notes]']", ""
     end
 
     should "render the show template with a form filled with the existing site settings" do
@@ -19,8 +19,8 @@ class SitesControllerTest < ActionController::TestCase
       get :show
       assert_template :show
 
-      assert_select 'form[action="/site"]'
-      assert_select 'form textarea[name="site[status_notes]"]', "Deploy freeze in place."
+      assert_select "form[action='/site']"
+      assert_select ".gem-c-character-count .govuk-textarea[name='site[status_notes]']", "Deploy freeze in place."
     end
   end
 
@@ -40,15 +40,6 @@ class SitesControllerTest < ActionController::TestCase
       patch :update, params: { site: { status_notes: "Deploy freeze in place." } }
 
       assert_equal "Deploy freeze in place.", site_settings.reload.status_notes
-    end
-
-    should "rerender the form if the site settings won't save" do
-      patch :update, params: { site: { status_notes: "a" * 256 } }
-
-      assert_not Site.settings.persisted?
-
-      assert_select 'form[action="/site"]'
-      assert_select 'form textarea[name="site[status_notes]"]', "a" * 256
     end
   end
 end

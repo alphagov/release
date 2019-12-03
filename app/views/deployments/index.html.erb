@@ -1,7 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
-  <h1 class="remove-bottom-margin">
+<div class="release__application-header">
   <%= render "govuk_publishing_components/components/breadcrumbs", {
     breadcrumbs: [
       root_crumb,
@@ -11,27 +10,40 @@
       }
     ]
   } %>
-    <span class="name"><%= @application.name %> deployments</span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-    <%= render partial: "applications/provider_badge", locals: { application: @application } %>
-  </h1>
+  <%= render "govuk_publishing_components/components/title", {
+    title: "Deploy #{@application.name}",
+    context: @application.shortname,
+    margin_bottom: 2
+  } %>
+  <%= render partial: "applications/provider_badge", locals: { application: @application } %>
 </div>
 
-<ul class="tabs">
-  <li>
-    <%= link_to "Deploy status", @application %>
-  </li>
-  <li>
-    <%= link_to "Edit", edit_application_path(@application) %>
-  </li>
-  <li class="active">
-    <%= link_to "Recent deployments", application_deployments_path(@application) %>
-  </li>
-  <li>
-    <%= link_to "Stats", stats_application_path(@application) %>
-  </li>
-</ul>
+<%= render "components/tabs", {
+  tabs: [
+    {
+      href: @application,
+      label: "Deploy status",
+    },
+    {
+      href: edit_application_path(@application),
+      label: "Edit",
+    },
+    {
+      href: application_deployments_path(@application),
+      label: "Recent deployments",
+      active: true,
+    },
+    {
+      href: stats_application_path(@application),
+      label: "Stats",
+    }
+  ]
+} %>
 
-<%= link_to "Record a missing deployment", new_application_deployment_path(@application), class: "govuk-button" %>
+<%= render "govuk_publishing_components/components/button", {
+  text: "Record a missing deployment",
+  href: new_application_deployment_path(@application),
+  margin_bottom: true
+} %>
 
 <%= render "deployments_list", deploys: @deployments %>

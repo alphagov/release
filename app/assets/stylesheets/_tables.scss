@@ -1,0 +1,54 @@
+.release__commits-table .release__commits-author {
+  color: govuk-colour("dark-grey");
+}
+
+.release__application-notes {
+  width: 50%;
+}
+
+.release__application-link {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.release__applications-table .govuk-table__cell {
+  .application-status {
+    padding: 10px;
+    color: govuk-colour("white");
+  }
+
+  .application-status-all_environments_match {
+    background-color: govuk-colour("green");
+  }
+  .application-status-undeployed_changes_in_integration {
+    background-color: darken(govuk-colour("orange"), 10%);
+  }
+  .application-status-production_and_staging_not_in_sync {
+    background-color: govuk-colour("red");
+  }
+}
+
+.release__deploy-commits-table .release__deploy-commits-author {
+  vertical-align: middle;
+}
+
+.release__commit-hash {
+  font-family: monospace;
+}
+
+.release__commits-message {
+  line-height: 1.7;
+}
+
+.release__commits-label {
+  display: inline;
+  padding: 5px;
+  color: govuk-colour("white");
+  border-radius: 5px;
+  background-color: govuk-colour("dark-grey");
+  font-weight: bold;
+}
+
+.release__commits-label--production {
+  background-color: govuk-colour("red");
+}

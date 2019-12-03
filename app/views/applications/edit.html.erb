@@ -1,6 +1,6 @@
 <% content_for :page_title, @application.name %>
 
-<div class="page-header">
+<div class="release__application-header">
   <%= render "govuk_publishing_components/components/breadcrumbs", {
     breadcrumbs: [
       root_crumb,
@@ -10,27 +10,34 @@
       }
     ]
   } %>
-  <h1 class="remove-bottom-margin">
-    <span class="name">Edit <%= @application.name %></span>
-    <span class="shortname">(<%= @application.shortname %>)</span>
-    <%= render partial: "provider_badge", locals: { application: @application } %>
-  </h1>
+  <%= render "govuk_publishing_components/components/title", {
+    title: "Edit #{@application.name}",
+    context: @application.shortname,
+    margin_bottom: 2
+  } %>
+  <%= render partial: "provider_badge", locals: { application: @application } %>
 </div>
 
-<ul class="tabs">
-  <li>
-    <%= link_to "Deploy status", @application %>
-  </li>
-  <li class="active">
-    <%= link_to "Edit", edit_application_path(@application) %>
-  </li>
-  <li>
-    <%= link_to "Recent deployments", application_deployments_path(@application) %>
-  </li>
-  <li>
-    <%= link_to "Stats", stats_application_path(@application) %>
-  </li>
-</ul>
-
+<%= render "components/tabs", {
+  tabs: [
+    {
+      href: @application,
+      label: "Deploy status",
+    },
+    {
+      href: edit_application_path(@application),
+      label: "Edit",
+      active: true,
+    },
+    {
+      href: application_deployments_path(@application),
+      label: "Recent deployments",
+    },
+    {
+      href: stats_application_path(@application),
+      label: "Stats",
+    }
+  ]
+} %>
 
 <%= render partial: "form", locals: { application: @application } %>

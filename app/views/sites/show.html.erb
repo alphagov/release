@@ -7,10 +7,26 @@
     }
   ]
 } %>
-<h1>Site settings</h1>
 
-<%= simple_form_for site_settings, url: site_path, method: 'patch' do |f| %>
-  <%= f.input :status_notes, label: "Notes", as: :text %>
-  <p>Notes should be 255 characters or fewer.</p>
-  <%= f.button :submit, value: "Save settings", class: 'btn btn-success' %>
+<%= render "govuk_publishing_components/components/title", {
+  title: "Site settings"
+} %>
+
+<%= form_for site_settings, url: site_path, method: 'patch' do |f| %>
+  <%= render "govuk_publishing_components/components/character_count", {
+    textarea: {
+      label: {
+        text: "Notes"
+      },
+      name: "site[status_notes]",
+      value: site_settings.status_notes,
+    },
+    maxlength: 255
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save status notes",
+    value: "Save status notes",
+    name: "commit"
+  } %>
 <% end %>

@@ -37,11 +37,14 @@ class Deployment < ApplicationRecord
   end
 
   def commits
-    @commits ||= begin
-      Services.github.compare(application.repo, previous_version, version).commits.reverse.map do |commit|
-        Commit.new(commit.to_h, application)
+    @commits ||=
+      begin
+        Services.github.compare(application.repo, previous_version, version).commits.reverse.map do |commit|
+          Commit.new(commit.to_h, application)
+        end
+      rescue Octokit::NotFound
+        []
       end
-    end
   end
 
   def diff_url

@@ -1,63 +1,48 @@
 $govuk-typography-use-rem: false;
 
-@import "govuk_admin_template";
+@import "govuk_publishing_components/all_components";
 @import "activity";
 @import "tables";
-@import "tabs";
-@import "govuk_publishing_components/all_components";
 
-h1 span.shortname {
-  font-family: monospace;
-  font-size: 0.8em;
-  color: #aaa;
+.js-hidden {
+  display: none;
 }
 
-h1 {
-  line-height: 46px;
-  margin: 22px 0;
+// Override for header component, as the number of links means they don't fit when floating right
+.gem-c-header__content {
+  float: none;
 }
 
-.author {
-  @extend .text-muted;
-  padding-left: 1em;
+// Add some table overrides to prevent overflow
+.release__applications-table .gem-c-table {
+  @include govuk-font(16);
+  width: 100%;
+  display: block;
+  overflow: scroll;
 }
 
-table.commits td.hash,
-.commit-hash {
-  font-family: monospace;
+.release__application-header {
+  border-bottom: 1px solid govuk-colour("mid-grey");
+  padding-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-.deployment {
-  margin: 0 0 10px 0;
-
-  .env {
-    min-width: 8em;
-  }
-
-  time {
-    // to match `.label`
-    font-size: 75%;
-  }
-
-  &.production {
-    .env {
-      background: $production-color
-    }
-  }
+.release__stats {
+  margin-top: govuk-spacing(6);
 }
 
-.release-tag  {
-  &.label a {
-    color: #fff;
-  }
+.release__badge {
+  @include govuk-font(16, $weight: "bold");
+  background-color:  govuk-colour("light-blue");
+  padding: 3px 5px;
+  border-radius: 20px;
+  color: govuk-colour("white");
 }
 
-.alert-alert {
-  @extend .alert-info;
+.release__badge--aws {
+  background-color: govuk-colour("orange");
 }
-.alert-error {
-  @extend .alert-danger;
-}
-.alert-notice {
-  @extend .alert-success;
+
+.release__view-diff {
+  float: right;
 }

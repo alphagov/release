@@ -1,0 +1,54 @@
+.activity-list,
+.activity-list__metadata {
+  list-style: none;
+  padding: 0;
+}
+
+.activity-list__deployment {
+  margin-bottom: govuk-spacing(4);
+  border-bottom: 1px solid $govuk-border-colour;
+  padding: govuk-spacing(2);
+}
+
+.activity-list__deployment-link {
+  @include govuk-font(19, $weight: bold);
+}
+
+.activity-list__deployment-release {
+  font-weight: bold;
+}
+
+.activity-list__metadata-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.activity-list__deployment--staging {
+  background-color: govuk-colour("blue");
+}
+
+.activity-list__deployment--production {
+  background-color: lighten(govuk-colour("green"), 10%);
+}
+
+.activity-list__deployment--staging,
+.activity-list__deployment--production {
+  color: govuk-colour("white");
+
+  .activity-list__metadata {
+    color: govuk-colour("white");
+  }
+
+  .activity-list__deployment-release {
+    color: govuk-colour("white");
+  }
+
+  .activity-list__deployment-link,
+  .activity-list__deployment-link:visited {
+    color: govuk-colour("white");
+  }
+
+  .activity-list__deployment-link:focus {
+    color: govuk-colour("black");
+  }
+}

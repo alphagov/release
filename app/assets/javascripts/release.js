@@ -1,23 +1,20 @@
 $(function () {
-  $.tablesorter.addParser({
-    id: 'release-num-and-date',
-    is: function (s) {
-      return false; // auto detection of this parser off
-    },
-    format: function (s, table, cell, cellIndex) {
-      return $(cell).attr('title');
-    },
-    type: 'text'
-  });
+  var applicationsFilterInput = $("input[name='applications-filter']")
+  var applicationsFilterRows = $("[data-filter-applications]").find(".govuk-table__body .govuk-table__row")
 
-  $('#application-list').tablesorter({
-    headers: {
-      2: {
-        sorter: 'release-num-and-date'
-      },
-      3: {
-        sorter: 'release-num-and-date'
+  applicationsFilterInput.on('keyup', function(e) {
+    var searchTerm = e.target.value
+
+    applicationsFilterRows.not(function() {
+      var currentApplication = $(this)
+      var currentApplicationLink = currentApplication.find("[data-filter-applications-link]")
+      var currentApplicationText = currentApplicationLink.text()
+
+      currentApplication.removeClass('js-hidden')
+
+      if (currentApplicationText.toLowerCase().includes(searchTerm)) {
+        return true
       }
-    }
-  });
+    }).addClass('js-hidden');
+  })
 });
