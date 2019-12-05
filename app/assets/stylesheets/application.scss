@@ -22,9 +22,7 @@ $govuk-typography-use-rem: false;
 }
 
 .release__application-header {
-  border-bottom: 1px solid govuk-colour("mid-grey");
-  padding-bottom: 20px;
-  margin-bottom: 30px;
+  margin-bottom: govuk-spacing(9);
 }
 
 .release__stats {

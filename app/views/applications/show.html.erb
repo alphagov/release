@@ -56,7 +56,7 @@
 
 <% if @github_available %>
   <div class="release__commits-table">
-    <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commit log") do |t| %>
+    <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commit log", { caption_classes: "govuk-visually-hidden" }) do |t| %>
       <%= t.head do %>
         <%= t.header "Deployed to" %>
         <%= t.header "Release tags" %>
@@ -137,7 +137,7 @@
   margin_bottom: true
 } %>
 
-<%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's where?") do |t| %>
+<%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's where?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
   <%= t.head do %>
     <%= t.header "Environment" %>
     <%= t.header "Current version" %>

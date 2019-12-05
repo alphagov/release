@@ -1,5 +1,5 @@
 <div class="release__deploy-commits-table">
-  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commits") do |t| %>
+  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commits", { caption_classes: "govuk-visually-hidden" }) do |t| %>
     <%= t.head do %>
       <%= t.header "SHA" %>
       <%= t.header "Message" %>
