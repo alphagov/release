@@ -1,5 +1,5 @@
 class ChangeUserPermissionsToArray < ActiveRecord::Migration
-  class User < ActiveRecord::Base
+  class User < ApplicationRecord
     serialize :permissions
   end
 
