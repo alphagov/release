@@ -1,5 +1,5 @@
 class RemoveUnnecessaryShortnames < ActiveRecord::Migration
-  class Application < ActiveRecord::Base; end
+  class Application < ApplicationRecord; end
 
   def up
     app = Application.find_by(shortname: "tariff")
@@ -10,6 +10,5 @@ class RemoveUnnecessaryShortnames < ActiveRecord::Migration
     app.save!
   end
 
-  def down
-  end
+  def down; end
 end

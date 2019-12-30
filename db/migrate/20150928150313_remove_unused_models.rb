@@ -6,11 +6,11 @@ class RemoveUnusedModels < ActiveRecord::Migration
 
   def down
     create_table "releases", force: :cascade do |t|
-      t.text     "notes",                      limit: 65535
+      t.text     "notes", limit: 65535
       t.datetime "created_at",                                               null: false
       t.datetime "updated_at",                                               null: false
       t.datetime "deploy_at"
-      t.boolean  "released",                   limit: 1,     default: false
+      t.boolean  "released", limit: 1, default: false
       t.datetime "released_at"
       t.integer  "user_id",                    limit: 4
       t.text     "product_team_members",       limit: 65535
@@ -29,7 +29,7 @@ class RemoveUnusedModels < ActiveRecord::Migration
       t.boolean  "extended_support_required",   limit: 1,     default: false
       t.datetime "created_at",                                                null: false
       t.datetime "updated_at",                                                null: false
-      t.integer  "release_id",                  limit: 4
+      t.integer  "release_id", limit: 4
     end
   end
 end

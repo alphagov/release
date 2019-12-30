@@ -268,6 +268,10 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
+    rubocop-govuk (1.0.0)
+      rubocop (~> 0.76)
+      rubocop-rails (~> 2)
+      rubocop-rspec (~> 1.28)
     rubocop-rails (2.3.2)
       rack (>= 1.1)
       rubocop (>= 0.72.0)
@@ -372,6 +376,7 @@ DEPENDENCIES
   pry (~> 0.12)
   rails (~> 5.2)
   rails-controller-testing
+  rubocop-govuk
   sass-rails (~> 5)
   shoulda-context (~> 1)
   simplecov (~> 0.17)
