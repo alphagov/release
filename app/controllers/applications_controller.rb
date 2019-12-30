@@ -68,18 +68,13 @@ class ApplicationsController < ApplicationController
   def deploy
     @release_tag = params[:tag]
 
-    if @application.on_aws?
-      @staging_dashboard_url = dashboard_url("grafana.blue.staging.govuk.digital", @application.shortname)
-      @production_dashboard_url = dashboard_url("grafana.blue.production.govuk.digital", @application.shortname)
-    else
-      @staging_dashboard_url = dashboard_url("grafana.staging.publishing.service.gov.uk", @application.shortname)
-      @production_dashboard_url = dashboard_url("grafana.publishing.service.gov.uk", @application.shortname)
-    end
-
+    @staging_dashboard_url = dashboard_url(@application, "staging")
+    @production_dashboard_url = dashboard_url(@application, "production")
 
     @integration_smokey_url = smokey_url(@application, "integration")
     @staging_smokey_url = smokey_url(@application, "staging")
     @production_deploy = @application.deployments.last_deploy_to production_environment_name
+
     if @production_deploy
       comparison = Services.github.compare(
         @application.repo,
@@ -159,8 +154,9 @@ private
     )
   end
 
-  def dashboard_url(host_name, application_name)
-    "https://#{host_name}/dashboard/file/#{application_name}.json"
+  def dashboard_url(application, environment)
+    suffix = helpers.govuk_domain_suffix(environment, on_aws: application.on_aws?)
+    "https://grafana.#{suffix}/dashboard/file/#{application.shortname}.json"
   end
 
   def smokey_url(application, environment)
