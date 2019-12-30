@@ -1,6 +1,6 @@
 class FleshOutReleaseModel < ActiveRecord::Migration
   def change
-    change_table(:releases) do |t|
+    change_table(:releases) do |t| # rubocop:disable Rails/BulkChangeTable
       t.references :user
       t.text :product_team_members
       t.text :summary
