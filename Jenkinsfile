@@ -7,6 +7,6 @@ REPOSITORY = 'release'
 node {
   govuk.buildProject(
     sassLint: false,
-    rubyLintDiff: false
+    rubyLintDirs: "",
   )
 }
