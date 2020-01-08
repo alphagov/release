@@ -68,15 +68,8 @@ class ApplicationsController < ApplicationController
   def deploy
     @release_tag = params[:tag]
 
-    if @application.on_aws?
-      @staging_dashboard_url = dashboard_url("grafana.blue.staging.govuk.digital", @application.shortname)
-      @production_dashboard_url = dashboard_url("grafana.blue.production.govuk.digital", @application.shortname)
-    else
-      @staging_dashboard_url = dashboard_url("grafana.staging.publishing.service.gov.uk", @application.shortname)
-      @production_dashboard_url = dashboard_url("grafana.publishing.service.gov.uk", @application.shortname)
-    end
-
     @production_deploy = @application.deployments.last_deploy_to production_environment_name
+
     if @production_deploy
       comparison = Services.github.compare(
         @application.repo,
@@ -154,10 +147,6 @@ private
       :task,
       :on_aws,
     )
-  end
-
-  def dashboard_url(host_name, application_name)
-    "https://#{host_name}/dashboard/file/#{application_name}.json"
   end
 
   def production_environment_name

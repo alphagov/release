@@ -30,50 +30,6 @@ module ApplicationHelper
     end
   end
 
-  def github_tag_link_to(app, git_ref)
-    link_to(git_ref.truncate(15), "#{app.repo_url}/tree/#{git_ref}", target: "_blank", rel: "noopener", class: "govuk-link")
-  end
-
-  def github_compare_to_master(application, deploy)
-    "#{application.repo_url}/compare/#{deploy.version}...master"
-  end
-
-  def jenkins_deploy_app_url(application, release_tag, environment)
-    if application.on_aws?
-      subdomain_prefix = "deploy.blue.#{environment}"
-    else
-      subdomain_prefix = "deploy.staging"
-      subdomain_prefix = "deploy" if environment.include?("production")
-    end
-
-    escaped_release_tag = CGI.escape(release_tag)
-    domain = if application.on_aws?
-               "govuk.digital"
-             else
-               "publishing.service.gov.uk"
-             end
-
-    "https://#{subdomain_prefix}.#{domain}/job/Deploy_App/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
-  end
-
-  def jenkins_deploy_puppet_url(release_tag, environment, aws:)
-    if aws
-      subdomain_prefix = "deploy.blue.#{environment}"
-    else
-      subdomain_prefix = "deploy.staging"
-      subdomain_prefix = "deploy" if environment.include?("production")
-    end
-
-    escaped_release_tag = CGI.escape(release_tag)
-    domain = if aws
-               "govuk.digital"
-             else
-               "publishing.service.gov.uk"
-             end
-
-    "https://#{subdomain_prefix}.#{domain}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
-  end
-
   def navigation_items
     return [] unless current_user
 

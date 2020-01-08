@@ -117,8 +117,13 @@
       } %>
       <p class="govuk-body">
         <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-        <a target="_blank" href="<%= @staging_dashboard_url %>" class="govuk-link">Staging dashboard</a>:
+        <a target="_blank" href="<%= dashboard_url(@application, "staging") %>" class="govuk-link">Staging dashboard</a>:
         Monitor your deployment to check that it doesn't cause any problems.
+      </p>
+      <p class="govuk-body">
+        <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+        <a target="_blank" href="<%= smokey_url(@application, "integration") %>" class="govuk-link">Integration smokey</a>:
+        Check Smokey has run in Integration and your deploy didn't cause any problems.
       </p>
       <%= render "govuk_publishing_components/components/button", {
         text: "Deploy to Staging",
@@ -134,8 +139,13 @@
       } %>
       <p class="govuk-body">
         <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-        <a target="_blank" href="<%= @production_dashboard_url %>" class="govuk-link">Production dashboard</a>:
-        monitor your deployment to check that it doesn't cause any problems.
+        <a target="_blank" href="<%= dashboard_url(@application, "production") %>" class="govuk-link">Production dashboard</a>:
+        Monitor your deployment to check that it doesn't cause any problems.
+      </p>
+      <p class="govuk-body">
+        <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+        <a target="_blank" href="<%= smokey_url(@application, "staging") %>" class="govuk-link">Staging smokey</a>:
+        Check Smokey has run in Staging and your deploy didn't cause any problems.
       </p>
       <%= render "govuk_publishing_components/components/button", {
         text: "Deploy to Production",
