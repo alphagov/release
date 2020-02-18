@@ -69,7 +69,7 @@ GEM
     chartkick (3.3.1)
     cliver (0.3.2)
     coderay (1.1.2)
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -90,7 +90,7 @@ GEM
     ffi (1.12.2)
     friendly_id (5.3.0)
       activerecord (>= 4.0.0)
-    gds-api-adapters (63.3.0)
+    gds-api-adapters (63.4.0)
       addressable
       link_header
       null_logger
@@ -122,7 +122,7 @@ GEM
       sentry-raven (>= 2.7.1, < 2.14.0)
       statsd-ruby (~> 1.4.0)
       unicorn (>= 5.4, < 5.6)
-    govuk_publishing_components (21.22.0)
+    govuk_publishing_components (21.22.2)
       gds-api-adapters
       govuk_app_config
       kramdown
@@ -175,7 +175,7 @@ GEM
     mysql2 (0.4.10)
     netrc (0.11.0)
     nio4r (2.5.2)
-    nokogiri (1.10.7)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     null_logger (0.0.1)
     oauth2 (1.4.2)
@@ -213,7 +213,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (4.0.3)
-    rack (2.2.1)
+    rack (2.2.2)
     rack-cache (1.11.0)
       rack (>= 0.4)
     rack-test (1.1.0)
@@ -260,7 +260,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rouge (3.15.0)
+    rouge (3.16.0)
     rubocop (0.76.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
