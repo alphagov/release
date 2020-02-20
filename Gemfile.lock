@@ -90,7 +90,7 @@ GEM
     ffi (1.12.2)
     friendly_id (5.3.0)
       activerecord (>= 4.0.0)
-    gds-api-adapters (63.4.0)
+    gds-api-adapters (63.5.0)
       addressable
       link_header
       null_logger
@@ -122,7 +122,7 @@ GEM
       sentry-raven (>= 2.7.1, < 2.14.0)
       statsd-ruby (~> 1.4.0)
       unicorn (>= 5.4, < 5.6)
-    govuk_publishing_components (21.22.2)
+    govuk_publishing_components (21.24.0)
       gds-api-adapters
       govuk_app_config
       kramdown
