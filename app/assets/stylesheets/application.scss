@@ -45,22 +45,17 @@ $govuk-typography-use-rem: false;
   float: right;
 }
 
-.non-production-version {
+.release__non-production-banner {
   @include govuk-font(16);
-  margin: 0 15px 15px 15px;
-  border: 1px solid #B01117;
+  margin: govuk-spacing(3);
+  margin-top: 0;
+  padding: govuk-spacing(3);
+  border: 1px solid $govuk-border-colour;
   background-color: govuk-colour('red');
   color: govuk-colour('white');
-  padding: 1em;
   font-weight: bold;
 
-  a {
-    cursor: pointer;
+  .govuk-link {
     color: govuk-colour('white');
-    text-decoration: underline;
-
-    &:focus {
-      @include govuk-focused-text;
-    }
   }
 }
