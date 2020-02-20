@@ -44,3 +44,23 @@ $govuk-typography-use-rem: false;
 .release__view-diff {
   float: right;
 }
+
+.non-production-version {
+  @include govuk-font(16);
+  margin: 0 15px 15px 15px;
+  border: 1px solid #B01117;
+  background-color: govuk-colour('red');
+  color: govuk-colour('white');
+  padding: 1em;
+  font-weight: bold;
+
+  a {
+    cursor: pointer;
+    color: govuk-colour('white');
+    text-decoration: underline;
+
+    &:focus {
+      @include govuk-focused-text;
+    }
+  }
+}
