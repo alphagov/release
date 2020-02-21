@@ -44,3 +44,18 @@ $govuk-typography-use-rem: false;
 .release__view-diff {
   float: right;
 }
+
+.release__non-production-banner {
+  @include govuk-font(16);
+  margin: govuk-spacing(3);
+  margin-top: 0;
+  padding: govuk-spacing(3);
+  border: 1px solid $govuk-border-colour;
+  background-color: govuk-colour('red');
+  color: govuk-colour('white');
+  font-weight: bold;
+
+  .govuk-link {
+    color: govuk-colour('white');
+  }
+}

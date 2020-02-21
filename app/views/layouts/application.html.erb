@@ -16,6 +16,9 @@
   } %>
 
 <div class="govuk-width-container">
+  <% if GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment != "production" %>
+    <div class="release__non-production-banner">THIS IS NOT THE CANONICAL RELEASE APP. GO TO <a class="govuk-link" href="https://release.publishing.service.gov.uk">PRODUCTION</a> TO SEE CURRENT RELEASES IN ALL ENVIRONMENTS.</div>
+  <% end %>
   <main class="govuk-main-wrapper govuk-!-padding-top-2" id="main-content" role="main">
     <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
         <% if k.eql?(:notice) %>
