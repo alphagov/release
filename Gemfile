@@ -24,7 +24,6 @@ group :test, :development do
   gem "capybara", "~> 3"
   gem "database_cleaner", "~> 1"
   gem "factory_bot_rails"
-  gem "govuk-lint"
   gem "minitest", "~> 5"
   gem "mocha", "~> 1", require: false
   gem "poltergeist", "~> 1"
