@@ -70,7 +70,7 @@ private
         message: format("Found multiple applications using repo: %<repo_path>s while using application_by_repo", repo_path: repo_path),
       }
       render :new
-      return nil
+      nil
     end
   end
 
