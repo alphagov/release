@@ -27,7 +27,7 @@ group :test, :development do
   gem "minitest", "~> 5"
   gem "mocha", "~> 1", require: false
   gem "poltergeist", "~> 1"
-  gem "pry", "~> 0.12"
+  gem "pry", "~> 0.13"
   gem "rails-controller-testing"
   gem "rubocop-govuk"
   gem "shoulda-context", "~> 1", require: false
