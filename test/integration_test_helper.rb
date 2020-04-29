@@ -27,7 +27,6 @@ class ActionDispatch::IntegrationTest
   end
 end
 
-
 class JavascriptIntegrationTest < ActionDispatch::IntegrationTest
   self.use_transactional_tests = false
   setup do
