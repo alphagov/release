@@ -13,7 +13,7 @@ FactoryBot.define do
   factory :user do
     name { "Stub User" }
     sequence(:email) { |n| "winston-#{n}@gov.uk" }
-    permissions { %w(signin) }
+    permissions { %w[signin] }
   end
 
   factory :site do

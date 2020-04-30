@@ -2,7 +2,7 @@ class Deployment < ApplicationRecord
   after_create :record_to_statsd
   belongs_to :application
 
-  validates_presence_of :version, :environment, :application_id
+  validates :version, :environment, :application_id, presence: true
 
   scope :newest_first, -> { order("created_at DESC") }
 
@@ -18,7 +18,7 @@ class Deployment < ApplicationRecord
 
   def previous_deployment
     @previous_deployment ||= Deployment
-      .where(application_id: self.application_id, environment: self.environment)
+      .where(application_id: application_id, environment: environment)
       .where("id < ?", id)
       .order("id DESC")
       .first
@@ -53,11 +53,11 @@ class Deployment < ApplicationRecord
 
 private
 
-    # Record the deployment to statsd and thence to graphite
+  # Record the deployment to statsd and thence to graphite
   def record_to_statsd
     # Only record production deployments in production graphite
-    if self.environment == "production" || self.environment == "production-aws"
-      key = "deploys.#{self.application.shortname}"
+    if environment == "production" || environment == "production-aws"
+      key = "deploys.#{application.shortname}"
       GovukStatsd.increment(key)
     end
   end
