@@ -23,12 +23,10 @@ applications = [
 ]
 
 applications.each do |application_hash|
-  begin
-    app_defaults = { domain: "github.com" }
-    Application.create!(app_defaults.merge(application_hash))
-  rescue ActiveRecord::RecordInvalid
-    puts "Skipping #{application_hash[:name]}"
-  end
+  app_defaults = { domain: "github.com" }
+  Application.create!(app_defaults.merge(application_hash))
+rescue ActiveRecord::RecordInvalid
+  puts "Skipping #{application_hash[:name]}"
 end
 
 # Create a dummy user

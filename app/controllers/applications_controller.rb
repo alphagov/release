@@ -3,7 +3,7 @@ class ApplicationsController < ApplicationController
 
   include ActionView::Helpers::DateHelper
 
-  ENVIRONMENTS = %w(production staging integration).freeze
+  ENVIRONMENTS = %w[production staging integration].freeze
 
   def index
     @applications = Application.where(archived: false)
@@ -21,8 +21,8 @@ class ApplicationsController < ApplicationController
 
   def show
     @tags_by_commit = Services.github.tags(@application.repo).each_with_object({}) do |tag, hash|
-      sha = tag[:commit][:sha];
-      hash[sha] ||= [];
+      sha = tag[:commit][:sha]
+      hash[sha] ||= []
       hash[sha] << tag
     end
     # where version == git tag, which it isn't for licensify

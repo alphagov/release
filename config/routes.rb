@@ -14,7 +14,7 @@ ReleaseApp::Application.routes.draw do
 
   resources :deployments
 
-  resource :site, only: %i(show update)
+  resource :site, only: %i[show update]
 
   get "/activity", to: "deployments#recent", as: :activity
 

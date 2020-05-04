@@ -3,15 +3,15 @@ class Application < ApplicationRecord
 
   friendly_id :fallback_shortname, use: :slugged, slug_column: :shortname
 
-  validates_presence_of :name, message: "is required"
-  validates_presence_of :repo, message: "is required"
-  validates_presence_of :domain, message: "is required"
+  validates :name, presence: { message: "is required" }
+  validates :repo, presence: { message: "is required" }
+  validates :domain, presence: { message: "is required" }
 
   validates :name, :repo, :domain, :status_notes, :shortname, length: { maximum: 255 }
 
-  validates_format_of :repo, with: /\A[^\s\/]+\/[^\s\/]+\Z/i
+  validates :repo, format: { with: /\A[^\s\/]+\/[^\s\/]+\Z/i }
 
-  validates_uniqueness_of :name
+  validates :name, uniqueness: true
 
   has_many :deployments, dependent: :destroy
 
@@ -48,7 +48,7 @@ class Application < ApplicationRecord
   end
 
   def fallback_shortname
-    self.repo.split("/")[-1] unless self.repo.nil?
+    repo.split("/")[-1] unless repo.nil?
   end
 
   def repo_url
@@ -64,7 +64,7 @@ class Application < ApplicationRecord
   end
 
   def production_and_staging_environments
-    if self.on_aws?
+    if on_aws?
       %w[production-aws staging-aws]
     else
       %w[production staging]
