@@ -86,6 +86,13 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal false, application.on_aws?
     end
 
+    should "default to not be in deploy freeze" do
+      @atts.delete :on_aws
+      application = Application.new(@atts)
+
+      assert_equal false, application.deploy_freeze?
+    end
+
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
 
