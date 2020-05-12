@@ -15,7 +15,7 @@
     context: @application.shortname,
     margin_bottom: 2
   } %>
-  <%= render partial: "applications/provider_badge", locals: { application: @application } %>
+  <%= render partial: "applications/badges", locals: { application: @application } %>
 </div>
 
 <%= render "components/tabs", {

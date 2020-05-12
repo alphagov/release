@@ -30,15 +30,22 @@ $govuk-typography-use-rem: false;
 }
 
 .release__badge {
-  @include govuk-font(16, $weight: "bold");
+  @include govuk-font(14, $weight: "bold");
   background-color:  govuk-colour("light-blue");
   padding: 3px 5px;
   border-radius: 20px;
   color: govuk-colour("white");
+  white-space: nowrap;
+  display: inline-block;
+  margin-bottom: govuk-spacing(1);
 }
 
-.release__badge--aws {
+.release__badge--orange {
   background-color: govuk-colour("orange");
+}
+
+.release__badge--red {
+  background-color: govuk-colour("red");
 }
 
 .release__view-diff {

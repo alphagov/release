@@ -1,0 +1,9 @@
+<% if application.on_aws? %>
+  <span class="release__badge release__badge--orange">AWS</span>
+<% else %>
+  <span class="release__badge">Carrenza</span>
+<% end %>
+
+<% if application.deploy_freeze? %>
+  <span class="release__badge release__badge--red">Do not deploy</span>
+<% end %>
