@@ -73,17 +73,21 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "default to not being archived" do
-      @atts.delete :archived
       application = Application.new(@atts)
 
       assert_equal false, application.archived
     end
 
     should "default to not being on AWS" do
-      @atts.delete :on_aws
       application = Application.new(@atts)
 
       assert_equal false, application.on_aws?
+    end
+
+    should "default to not be in deploy freeze" do
+      application = Application.new(@atts)
+
+      assert_equal false, application.deploy_freeze?
     end
 
     should "be invalid with a name that is too long" do

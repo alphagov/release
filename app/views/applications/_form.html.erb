@@ -67,6 +67,18 @@
     ]
   } %>
 
+  <input type="hidden" name="application[deloy_freeze]" value="0" />
+  <%= render "govuk_publishing_components/components/checkboxes", {
+    name: "application[deploy_freeze]",
+    items: [
+      {
+        label: "Freeze deployements?",
+        value: "1",
+        checked: @application.deploy_freeze?
+      }
+    ]
+  } %>
+
   <%= render "govuk_publishing_components/components/button", {
     text: "Update application",
     name: "application[commit]",
