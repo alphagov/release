@@ -18,7 +18,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "list unarchived applications" do
       get :index
-      assert_select ".gem-c-table .govuk-table__body .govuk-table__row", count: 2
+      assert_select ".release__application-link", count: 2
     end
 
     should "show the latest deploy to an environment" do
