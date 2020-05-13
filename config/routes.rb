@@ -1,4 +1,8 @@
 ReleaseApp::Application.routes.draw do
+  namespace :api, defaults: { format: :json } do
+    resources :applications, only: [:show]
+  end
+
   resources :applications do
     collection do
       get "archived", to: "applications#archived"
