@@ -7,7 +7,7 @@ class Api::ApplicationsControllerTest < ActionController::TestCase
 
   context "GET show" do
     setup do
-      @app = FactoryBot.create(:application)
+      @app = FactoryBot.create(:application, name: "Application 1", repo: "alphagov/application-1")
     end
 
     should "return a succsessful response" do
@@ -19,9 +19,11 @@ class Api::ApplicationsControllerTest < ActionController::TestCase
 
       assert_equal "Application 1", body["name"]
       assert_equal "application-1", body["shortname"]
-      assert_equal "", body["status_notes"]
+      assert_equal "", body["notes"]
       assert_equal false, body["archived"]
-      assert_equal false, body["on_aws"]
+      assert_equal false, body["deploy_freeze"]
+      assert_equal false, body["hosted_on_aws"]
+      assert_equal "https://mygithub.tld/alphagov/application-1", body["repository_url"]
     end
   end
 end
