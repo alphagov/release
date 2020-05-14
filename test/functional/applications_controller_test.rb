@@ -95,6 +95,16 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select ".release__badge", "AWS"
     end
 
+    should "show the deployment freeze badge" do
+      get :show, params: { id: @app.id }
+      assert_select ".release__badge", { text: "Do not deploy", count: 0 }
+
+      @app.update(deploy_freeze: true)
+
+      get :show, params: { id: @app.id }
+      assert_select ".release__badge", "Do not deploy"
+    end
+
     should "should include status notes as a warning" do
       @app.update(status_notes: "Do not deploy this without talking to core team first!")
       get :show, params: { id: @app.id }
@@ -193,10 +203,11 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "update the application" do
-      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true } }
+      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true, deploy_freeze: true } }
       @app.reload
       assert_equal "new name", @app.name
-      assert_equal @app.on_aws?, true
+      assert_equal true, @app.on_aws?
+      assert_equal true, @app.deploy_freeze?
     end
 
     context "invalid request" do

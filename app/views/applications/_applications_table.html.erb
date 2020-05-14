@@ -25,7 +25,7 @@
         <%= t.row do %>
           <% application_name = capture do %>
             <%= link_to application.name, application, class: "govuk-link release__application-link", data: { "filter-applications-link": "" } %> </br>
-            <%= render partial: "provider_badge", locals: { application: application } %>
+            <%= render partial: "badges", locals: { application: application } %>
           <% end %>
 
           <% application_notes = capture do %>

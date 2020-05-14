@@ -146,6 +146,7 @@ private
       :status_notes,
       :task,
       :on_aws,
+      :deploy_freeze,
     )
   end
 
