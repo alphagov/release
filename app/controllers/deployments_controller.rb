@@ -19,9 +19,11 @@ class DeploymentsController < ApplicationController
 
     application_id = Application.where(shortname: shortname).pluck(:id).first
 
-    @deployment = Deployment.new(application_id: application_id,
-                                 environment: new_deployment_params[:environment],
-                                 created_at: default_deploy_time)
+    @deployment = Deployment.new(
+      application_id: application_id,
+      environment: new_deployment_params[:environment],
+      created_at: default_deploy_time,
+    )
   end
 
   def create
@@ -67,7 +69,7 @@ private
       existing_apps[0]
     else
       flash[:alert] = {
-        message: format("Found multiple applications using repo: %<repo_path>s while using application_by_repo", repo_path: repo_path),
+        message: sprintf("Found multiple applications using repo: %<repo_path>s while using application_by_repo", repo_path: repo_path),
       }
       render :new
       nil
