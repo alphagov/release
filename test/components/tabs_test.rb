@@ -10,16 +10,17 @@ class TabsTest < ComponentTestCase
   end
 
   test "renders tabs and sections" do
-    render "components/tabs", tabs: [
-      {
-        label: "First section",
-        href: "/page1",
-      },
-      {
-        label: "Second section",
-        href: "/page2",
-      },
-    ]
+    render "components/tabs",
+           tabs: [
+             {
+               label: "First section",
+               href: "/page1",
+             },
+             {
+               label: "Second section",
+               href: "/page2",
+             },
+           ]
 
     assert_select ".govuk-tabs"
     assert_select ".govuk-tabs__tab", 2

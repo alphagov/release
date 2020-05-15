@@ -10,10 +10,12 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1")
       @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
       @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
-      @deploy1 = FactoryBot.create(:deployment,
-                                   application: @app1,
-                                   environment: "staging",
-                                   version: "release_x")
+      @deploy1 = FactoryBot.create(
+        :deployment,
+        application: @app1,
+        environment: "staging",
+        version: "release_x",
+      )
     end
 
     should "list unarchived applications" do
@@ -42,13 +44,14 @@ class ApplicationsControllerTest < ActionController::TestCase
   context "POST create" do
     should "create an application" do
       assert_difference "Application.count", 1 do
-        post :create, params: {
-          application: {
-            name: "My First App",
-            repo: "org/my_first_app",
-            domain: "github.baz",
-          },
-        }
+        post :create,
+             params: {
+               application: {
+                 name: "My First App",
+                 repo: "org/my_first_app",
+                 domain: "github.baz",
+               },
+             }
       end
     end
 
@@ -120,9 +123,11 @@ class ApplicationsControllerTest < ActionController::TestCase
         @base_commit = stub_commit
         Octokit::Client.any_instance.stubs(:compare)
           .with(@app.repo, version, "master")
-          .returns(stub("comparison",
-                        commits: [@first_commit, @second_commit],
-                        base_commit: @base_commit))
+          .returns(stub(
+                     "comparison",
+                     commits: [@first_commit, @second_commit],
+                     base_commit: @base_commit,
+                   ))
       end
 
       should "show the application" do
@@ -250,9 +255,11 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
       Octokit::Client.any_instance.stubs(:compare)
         .with(@app.repo, @deployment.version, @release_tag)
-        .returns(stub("comparison",
-                      commits: [],
-                      base_commit: nil))
+        .returns(stub(
+                   "comparison",
+                   commits: [],
+                   base_commit: nil,
+                 ))
       Plek.any_instance
         .stubs(:external_url_for)
         .with("signon")
