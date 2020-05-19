@@ -3,6 +3,7 @@ FactoryBot.define do
     sequence(:name) { |n| "Application #{n}" }
     sequence(:repo) { |n| "alphagov/application-#{n}" }
     domain { "mygithub.tld" }
+    status_notes { "" }
   end
 
   factory :deployment do
