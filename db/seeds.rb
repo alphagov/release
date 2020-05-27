@@ -24,9 +24,9 @@ applications = [
 
 applications.each do |application_hash|
   app_defaults = { domain: "github.com" }
+  next if Application.find_by(name: application_hash[:name]).present?
+
   Application.create!(app_defaults.merge(application_hash))
-rescue ActiveRecord::RecordInvalid
-  puts "Skipping #{application_hash[:name]}"
 end
 
 # Create a dummy user
