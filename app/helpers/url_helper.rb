@@ -27,12 +27,12 @@ module UrlHelper
   def jenkins_deploy_app_url(application, release_tag, environment)
     suffix = govuk_domain_suffix(environment, on_aws: application.on_aws?)
     escaped_release_tag = CGI.escape(release_tag)
-    "https://deploy.#{suffix}/job/Deploy_App/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
+    "https://deploy.#{suffix}/job/Deploy_App/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe
   end
 
   def jenkins_deploy_puppet_url(release_tag, environment, aws:)
     suffix = govuk_domain_suffix(environment, on_aws: aws)
     escaped_release_tag = CGI.escape(release_tag)
-    "https://deploy.#{suffix}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe # rubocop:disable Rails/OutputSafety
+    "https://deploy.#{suffix}/job/Deploy_Puppet/parambuild?TAG=#{escaped_release_tag}".html_safe
   end
 end
