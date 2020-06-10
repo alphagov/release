@@ -20,43 +20,48 @@ class ApplicationsController < ApplicationController
   end
 
   def show
-    @tags_by_commit = Services.github.tags(@application.repo).each_with_object({}) do |tag, hash|
-      sha = tag[:commit][:sha]
-      hash[sha] ||= []
-      hash[sha] << tag
-    end
-    # where version == git tag, which it isn't for licensify
-    @latest_deploy_to_each_environment_by_version = {}
-    @application.latest_deploy_to_each_environment.each_value do |deployment|
-      @latest_deploy_to_each_environment_by_version[deployment.version] ||= []
-      @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
-    end
+    respond_to do |format|
+      format.json { render json: @application }
+      format.html do
+        @tags_by_commit = Services.github.tags(@application.repo).each_with_object({}) do |tag, hash|
+          sha = tag[:commit][:sha]
+          hash[sha] ||= []
+          hash[sha] << tag
+        end
+        # where version == git tag, which it isn't for licensify
+        @latest_deploy_to_each_environment_by_version = {}
+        @application.latest_deploy_to_each_environment.each_value do |deployment|
+          @latest_deploy_to_each_environment_by_version[deployment.version] ||= []
+          @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
+        end
 
-    @production_deploy = @application.deployments.last_deploy_to production_environment_name
-    if @production_deploy
-      comparison = Services.github.compare(
-        @application.repo,
-        @production_deploy.version,
-        "master",
-      )
-      # The `compare` API shows commits in forward chronological order
-      @commits = comparison.commits.reverse + [comparison.base_commit]
-    else
-      # the `commits` API shows commits in reverse chronological order
-      @commits = Services.github.commits(@application.repo)
-    end
+        @production_deploy = @application.deployments.last_deploy_to production_environment_name
+        if @production_deploy
+          comparison = Services.github.compare(
+            @application.repo,
+            @production_deploy.version,
+            "master",
+          )
+          # The `compare` API shows commits in forward chronological order
+          @commits = comparison.commits.reverse + [comparison.base_commit]
+        else
+          # the `commits` API shows commits in reverse chronological order
+          @commits = Services.github.commits(@application.repo)
+        end
 
-    @github_available = true
-  rescue Octokit::TooManyRequests
-    @github_available = false
-    @github_error = github_rate_limited_error_message
-  rescue Octokit::NotFound => e
-    @github_available = false
-    @github_error = e.message
-  rescue Octokit::Error => e
-    GovukError.notify(e.message)
-    @github_available = false
-    @github_error = e.message
+        @github_available = true
+      rescue Octokit::TooManyRequests
+        @github_available = false
+        @github_error = github_rate_limited_error_message
+      rescue Octokit::NotFound => e
+        @github_available = false
+        @github_error = e.message
+      rescue Octokit::Error => e
+        GovukError.notify(e.message)
+        @github_available = false
+        @github_error = e.message
+      end
+    end
   end
 
   def new
