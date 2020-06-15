@@ -308,7 +308,7 @@ GEM
       faraday (> 0.8, < 2.0)
     sentry-raven (3.0.0)
       faraday (>= 1.0)
-    shoulda-context (1.2.2)
+    shoulda-context (2.0.0)
     simplecov (0.18.5)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -380,7 +380,7 @@ DEPENDENCIES
   rails-controller-testing
   rubocop-govuk
   sass-rails (~> 5)
-  shoulda-context (~> 1)
+  shoulda-context (~> 2)
   simplecov (~> 0.18)
   simplecov-rcov (~> 0.2)
   timecop (~> 0.9)
