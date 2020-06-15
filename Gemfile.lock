@@ -104,12 +104,12 @@ GEM
       plek (>= 1.9.0)
       rack-cache
       rest-client (~> 2.0)
-    gds-sso (14.3.0)
+    gds-sso (15.0.0)
       multi_json (~> 1.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
       omniauth-gds (~> 3.2)
-      rails (>= 4)
+      rails (>= 5)
       warden (~> 1.2)
       warden-oauth2 (~> 0.0.1)
     globalid (0.4.2)
@@ -364,7 +364,7 @@ DEPENDENCIES
   database_cleaner (~> 1)
   factory_bot_rails
   friendly_id (~> 5)
-  gds-sso (~> 14)
+  gds-sso (~> 15)
   govuk_admin_template (~> 6)
   govuk_app_config
   govuk_publishing_components
