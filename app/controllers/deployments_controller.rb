@@ -17,7 +17,7 @@ class DeploymentsController < ApplicationController
 
     shortname = new_deployment_params[:application_id]
 
-    application_id = Application.where(shortname: shortname).pluck(:id).first
+    application_id = Application.where(shortname: shortname).pick(:id)
 
     @deployment = Deployment.new(
       application_id: application_id,
