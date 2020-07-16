@@ -10,7 +10,7 @@ class Application < ApplicationRecord
 
   validates :repo, format: { with: /\A[^\s\/]+\/[^\s\/]+\Z/i }
 
-  validates :name, uniqueness: true
+  validates :name, uniqueness: { case_sensitive: true }
 
   has_many :deployments, dependent: :destroy
 
