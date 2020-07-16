@@ -20,8 +20,8 @@ class Application < ApplicationRecord
     return @latest_deploy_to_each_environment unless @latest_deploy_to_each_environment.nil?
 
     environments = deployments.select("DISTINCT environment").map(&:environment)
-    @latest_deploy_to_each_environment = environments.each_with_object({}) do |environment, hash|
-      hash[environment] = deployments.last_deploy_to(environment)
+    @latest_deploy_to_each_environment = environments.index_with do |environment|
+      deployments.last_deploy_to(environment)
     end
   end
 
