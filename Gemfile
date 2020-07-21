@@ -17,7 +17,7 @@ gem "gds-sso", "~> 15"
 gem "govuk_admin_template", "~> 6"
 gem "govuk_app_config"
 gem "govuk_publishing_components"
-gem "plek", "~> 3"
+gem "plek", "~> 4"
 
 group :test, :development do
   gem "better_errors", "~> 2"
