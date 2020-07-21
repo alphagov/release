@@ -92,7 +92,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :show, params: { id: @app.id }
       assert_select ".release__badge", "Carrenza"
 
-      @app.update(on_aws: true)
+      @app.update!(on_aws: true)
 
       get :show, params: { id: @app.id }
       assert_select ".release__badge", "AWS"
@@ -102,14 +102,14 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :show, params: { id: @app.id }
       assert_select ".release__badge", { text: "Do not deploy", count: 0 }
 
-      @app.update(deploy_freeze: true)
+      @app.update!(deploy_freeze: true)
 
       get :show, params: { id: @app.id }
       assert_select ".release__badge", "Do not deploy"
     end
 
     should "should include status notes as a warning" do
-      @app.update(status_notes: "Do not deploy this without talking to core team first!")
+      @app.update!(status_notes: "Do not deploy this without talking to core team first!")
       get :show, params: { id: @app.id }
       assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
@@ -311,7 +311,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show dashboard links to application's deployment dashboard" do
       @app.shortname = "whitehall"
-      @app.save
+      @app.save!
       stub_request(:get, "https://grafana_hostname/api/dashboards/file/whitehall.json").to_return(status: "200")
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
@@ -320,7 +320,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "show Carrenza links when application is not on AWS" do
-      @app.update(on_aws: false)
+      @app.update!(on_aws: false)
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select ".gem-c-button[href=?]", "https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
@@ -328,7 +328,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
 
     should "show AWS links when application is on AWS" do
-      @app.update(on_aws: true)
+      @app.update!(on_aws: true)
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select ".gem-c-button[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
