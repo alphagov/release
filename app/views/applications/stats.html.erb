@@ -1,44 +1,6 @@
 <% content_for :page_title, "#{@application.name} stats" %>
 
-<div class="release__application-header">
-  <%= render "govuk_publishing_components/components/breadcrumbs", {
-    breadcrumbs: [
-      root_crumb,
-      application_node_crumb(application: @application),
-      {
-        title: "#{@application.name} stats"
-      }
-    ]
-  } %>
-  <%= render "govuk_publishing_components/components/title", {
-    title: "#{@application.name} stats",
-    context: @application.shortname,
-    margin_bottom: 2
-  } %>
-  <%= render partial: "badges", locals: { application: @application } %>
-</div>
-
-<%= render "components/tabs", {
-  tabs: [
-    {
-      href: @application,
-      label: "Deploy status",
-    },
-    {
-      href: edit_application_path(@application),
-      label: "Edit",
-    },
-    {
-      href: application_deployments_path(@application),
-      label: "Recent deployments",
-    },
-    {
-      href: stats_application_path(@application),
-      label: "Stats",
-      active: true,
-    }
-  ]
-} %>
+<%= render partial: "shared/application_header", locals: { application: @application, tab: "stats" } %>
 
 <div class="release__stats">
   <%= render "govuk_publishing_components/components/heading", {
