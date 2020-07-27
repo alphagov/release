@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 5.2"
+gem "rails", "~> 6.0"
 
 gem "active_model_serializers", "~> 0.10.0"
 gem "friendly_id", "~> 5"
