@@ -1,8 +1,8 @@
 class DeploymentStats
   attr_reader :initial_scope
 
-  def initialize(initial_scope = nil)
-    @initial_scope = initial_scope || Deployment
+  def initialize(initial_scope = Deployment)
+    @initial_scope = initial_scope
   end
 
   def per_month
@@ -22,7 +22,7 @@ private
 
   def production_deploys
     @production_deploys ||= initial_scope
-      .where(environment: "production")
+      .where(environment: %w[production production-aws])
       .joins(:application)
       .order("deployments.created_at ASC")
   end
