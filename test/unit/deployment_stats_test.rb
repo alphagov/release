@@ -16,10 +16,11 @@ class DeploymentStatsTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, created_at: "2018-01-01", application: app, environment: "production")
       FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
       FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
+      FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production-aws")
 
       expected = {
         "2018-01" => 1,
-        "2018-02" => 2,
+        "2018-02" => 3,
       }
 
       assert_equal(expected, DeploymentStats.new.per_month)
@@ -38,12 +39,14 @@ class DeploymentStatsTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, created_at: "2016-01-01", application: app, environment: "production")
       FactoryBot.create(:deployment, created_at: "2017-01-01", application: app, environment: "production")
       FactoryBot.create(:deployment, created_at: "2017-01-01", application: app, environment: "production")
+      FactoryBot.create(:deployment, created_at: "2017-01-01", application: app, environment: "production-aws")
+
       # Do include deploys from this year
       FactoryBot.create(:deployment, created_at: Time.zone.now, application: app, environment: "production")
 
       expected = {
         2016 => 1,
-        2017 => 2,
+        2017 => 3,
         Time.zone.now.year => 1,
       }
 
@@ -62,7 +65,7 @@ class DeploymentStatsTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, created_at: "2018-01-01", application: other_app, environment: "production")
 
       FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
-      FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
+      FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production-aws")
 
       expected = {
         "2018-02" => 2,
