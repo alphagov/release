@@ -64,7 +64,7 @@ private
 
     case existing_apps.length
     when 0
-      Application.create!(name: normalize_app_name(repo_path), repo: repo_path, domain: domain)
+      Application.create!(name: normalize_app_name(repo_path), repo: repo_path)
     when 1
       existing_apps[0]
     else
@@ -80,7 +80,7 @@ private
     existing_apps = Application.where(name: normalize_app_name(params[:application_name]))
 
     if existing_apps.length.zero?
-      Application.create!(name: normalize_app_name(params[:application_name]), repo: repo_path, domain: domain)
+      Application.create!(name: normalize_app_name(params[:application_name]), repo: repo_path)
     elsif existing_apps.length == 1
       existing_apps[0]
     end
@@ -99,11 +99,6 @@ private
   def normalize_app_name(unnormalized_app_name)
     normalized_app_name = unnormalized_app_name.split("/")[-1].tr("-", " ").humanize.titlecase
     normalized_app_name.gsub(/\bApi\b/, "API")
-  end
-
-  def domain
-    # Deployments created from push notifications will default to github.com
-    "github.com"
   end
 
   def push_notification?
