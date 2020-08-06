@@ -74,7 +74,8 @@
       {
         label: "Freeze deployments?",
         value: "1",
-        checked: @application.deploy_freeze?
+        checked: @application.deploy_freeze?,
+        hint: "Disables automatic deployments. Our deploy jobs will query the value of this flag in the API and abort if it is set. Manual deploy job builds will continue to work."
       }
     ]
   } %>

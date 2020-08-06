@@ -100,12 +100,12 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the deployment freeze badge" do
       get :show, params: { id: @app.id }
-      assert_select ".release__badge", { text: "Do not deploy", count: 0 }
+      assert_select ".release__badge", { text: "Automatic deployments disabled", count: 0 }
 
       @app.update!(deploy_freeze: true)
 
       get :show, params: { id: @app.id }
-      assert_select ".release__badge", "Do not deploy"
+      assert_select ".release__badge", "Automatic deployments disabled"
     end
 
     should "should include status notes as a warning" do
