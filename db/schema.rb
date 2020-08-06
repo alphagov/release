@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_12_101702) do
+ActiveRecord::Schema.define(version: 2020_08_05_150707) do
 
   create_table "applications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 2020_05_12_101702) do
     t.datetime "updated_at", null: false
     t.string "status_notes"
     t.string "shortname"
-    t.string "domain"
     t.boolean "archived", default: false, null: false
     t.boolean "on_aws", default: false, null: false
     t.boolean "deploy_freeze", default: false, null: false

@@ -5,9 +5,8 @@ class Application < ApplicationRecord
 
   validates :name, presence: { message: "is required" }
   validates :repo, presence: { message: "is required" }
-  validates :domain, presence: { message: "is required" }
 
-  validates :name, :repo, :domain, :status_notes, :shortname, length: { maximum: 255 }
+  validates :name, :repo, :status_notes, :shortname, length: { maximum: 255 }
 
   validates :repo, format: { with: /\A[^\s\/]+\/[^\s\/]+\Z/i }
 
@@ -52,15 +51,15 @@ class Application < ApplicationRecord
   end
 
   def repo_url
-    "https://#{domain}/#{repo}"
+    "https://github.com/#{repo}"
   end
 
   def repo_compare_url(from, to)
-    "https://#{domain}/#{repo}/compare/#{from}...#{to}"
+    "https://github.com/#{repo}/compare/#{from}...#{to}"
   end
 
   def repo_tag_url(tag)
-    "https://#{domain}/#{repo}/releases/tag/#{tag}"
+    "https://github.com/#{repo}/releases/tag/#{tag}"
   end
 
   def production_and_staging_environments

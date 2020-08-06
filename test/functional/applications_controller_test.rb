@@ -25,12 +25,12 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the latest deploy to an environment" do
       get :index
-      assert_select ".gem-c-table .govuk-table__body .govuk-link[href='https://mygithub.tld/user/app1/tree/release_x']", "release_x"
+      assert_select ".gem-c-table .govuk-table__body .govuk-link[href='https://github.com/user/app1/tree/release_x']", "release_x"
     end
 
     should "provide a link to compare with master" do
       get :index
-      assert_select ".gem-c-table .govuk-table__body .govuk-link[href=?]", "https://mygithub.tld/user/app1/compare/release_x...master"
+      assert_select ".gem-c-table .govuk-table__body .govuk-link[href=?]", "https://github.com/user/app1/compare/release_x...master"
     end
   end
 
@@ -49,7 +49,6 @@ class ApplicationsControllerTest < ActionController::TestCase
                application: {
                  name: "My First App",
                  repo: "org/my_first_app",
-                 domain: "github.baz",
                },
              }
       end
@@ -60,7 +59,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         post :create, params: { application: { name: "", repo: "org/my_first_app" } }
         assert_select ".gem-c-error-alert"
         assert_select ".gem-c-error-summary__title", text: "There was a problem creating the new application"
-        assert_select ".gem-c-error-summary__body", text: "Name is required, Domain is required"
+        assert_select ".gem-c-error-summary__body", text: "Name is required"
       end
 
       should "rerender the form" do
@@ -159,7 +158,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         @app = FactoryBot.create(:application, name: "Application 1", repo: "alphagov/application-1")
       end
 
-      should "return a succsessful response" do
+      should "return a successful response" do
         get :show, params: { id: @app.id }, format: :json
         body = JSON.parse(response.body)
 
@@ -172,7 +171,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_equal false, body["archived"]
         assert_equal false, body["deploy_freeze"]
         assert_equal false, body["hosted_on_aws"]
-        assert_equal "https://mygithub.tld/alphagov/application-1", body["repository_url"]
+        assert_equal "https://github.com/alphagov/application-1", body["repository_url"]
       end
     end
 

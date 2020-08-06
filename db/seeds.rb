@@ -12,7 +12,6 @@ applications = [
   { name: "Licence finder",                         repo: "alphagov/licence-finder", shortname: "licencefinder" },
   { name: "Licensify",                              repo: "alphagov/licensify" },
   { name: "Publisher",                              repo: "alphagov/publisher" },
-  { name: "Puppet",                                 repo: "gds/puppet", domain: "github.gds" },
   { name: "Rummager",                               repo: "alphagov/rummager" },
   { name: "Signon",                                 repo: "alphagov/signon" },
   { name: "Smart answers",                          repo: "alphagov/smart-answers", shortname: "smartanswers" },
@@ -23,10 +22,9 @@ applications = [
 ]
 
 applications.each do |application_hash|
-  app_defaults = { domain: "github.com" }
   next if Application.find_by(name: application_hash[:name]).present?
 
-  Application.create!(app_defaults.merge(application_hash))
+  Application.create!(application_hash)
 end
 
 # Create a dummy user

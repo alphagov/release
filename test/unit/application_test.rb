@@ -8,7 +8,6 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
         repo: "alphagov/tron-o-matic",
-        domain: "github.foo",
       }
     end
 
@@ -69,7 +68,7 @@ class ApplicationTest < ActiveSupport::TestCase
     should "know its location on the internet" do
       application = Application.new(@atts)
 
-      assert_equal "https://github.foo/alphagov/tron-o-matic", application.repo_url
+      assert_equal "https://github.com/alphagov/tron-o-matic", application.repo_url
     end
 
     should "default to not being archived" do
@@ -92,12 +91,6 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
-
-      assert_not application.valid?
-    end
-
-    should "be invalid with a domain that is too long" do
-      application = Application.new(@atts.merge(domain: ("gith" + ("u" * 247) + "b.com")))
 
       assert_not application.valid?
     end

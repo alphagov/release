@@ -143,7 +143,6 @@ private
   def application_params
     params.require(:application).permit(
       :archived,
-      :domain,
       :id,
       :name,
       :repo,
