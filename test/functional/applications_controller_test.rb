@@ -163,7 +163,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         body = JSON.parse(response.body)
 
         assert_response :success
-        assert_equal "application/json", response.content_type
+        assert_equal "application/json", response.media_type
 
         assert_equal "Application 1", body["name"]
         assert_equal "application-1", body["shortname"]

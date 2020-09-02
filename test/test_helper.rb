@@ -10,7 +10,7 @@ require File.expand_path("../config/environment", __dir__)
 require "rails/test_help"
 require "shoulda-context"
 require "minitest/autorun"
-require "mocha/setup"
+require "mocha/minitest"
 require "webmock/minitest"
 
 DatabaseCleaner.strategy = :transaction
