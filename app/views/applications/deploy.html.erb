@@ -70,90 +70,49 @@
   </div>
 
   <div class="govuk-grid-column-two-thirds">
-    <% if @application.shortname == 'puppet' %>
-        <%= render "govuk_publishing_components/components/heading", {
-          text: "Deploy to Staging",
-          margin_bottom: 4,
-          heading_level: 3
-        } %>
-      <p class="govuk-body">
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Deploy to Staging (Carrenza)",
-          href: jenkins_deploy_puppet_url(@release_tag, "staging", aws: false),
-          target: "_blank",
-        } %>
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Deploy to Staging (AWS)",
-          href: jenkins_deploy_puppet_url(@release_tag, "staging", aws: true),
-          target: "_blank",
-          margin_bottom: true
-        } %>
-      </p>
+    <%= render "govuk_publishing_components/components/heading", {
+      text: "Deploy to Staging",
+      margin_bottom: 4,
+      heading_level: 3
+    } %>
+    <p class="govuk-body">
+      <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= dashboard_url(@application, "staging") %>" class="govuk-link">Staging dashboard</a>:
+      Monitor your deployment to check that it doesn't cause any problems.
+    </p>
+    <p class="govuk-body">
+      <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= smokey_url(@application, "integration") %>" class="govuk-link">Integration smokey</a>:
+      Check Smokey has run in Integration and your deploy didn't cause any problems.
+    </p>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Deploy to Staging",
+      href: jenkins_deploy_app_url(@application, @release_tag, "staging"),
+      target: "_blank",
+      margin_bottom: true
+    } %>
 
-      <%= render "govuk_publishing_components/components/heading", {
-        text: "Deploy to Production",
-        margin_bottom: 4,
-        heading_level: 3
-      } %>
-      <p class="govuk-body">
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Deploy to Production (Carrenza)",
-          href: jenkins_deploy_puppet_url(@release_tag, "production", aws: false),
-          target: "_blank",
-          destructive: true
-        } %>
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Deploy to Production (AWS)",
-          href: jenkins_deploy_puppet_url(@release_tag, "production", aws: true),
-          target: "_blank",
-          destructive: true
-        } %>
-      </p>
-    <% else %>
-      <%= render "govuk_publishing_components/components/heading", {
-        text: "Deploy to Staging",
-        margin_bottom: 4,
-        heading_level: 3
-      } %>
-      <p class="govuk-body">
-        <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-        <a target="_blank" href="<%= dashboard_url(@application, "staging") %>" class="govuk-link">Staging dashboard</a>:
-        Monitor your deployment to check that it doesn't cause any problems.
-      </p>
-      <p class="govuk-body">
-        <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-        <a target="_blank" href="<%= smokey_url(@application, "integration") %>" class="govuk-link">Integration smokey</a>:
-        Check Smokey has run in Integration and your deploy didn't cause any problems.
-      </p>
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Deploy to Staging",
-        href: jenkins_deploy_app_url(@application, @release_tag, "staging"),
-        target: "_blank",
-        margin_bottom: true
-      } %>
-
-      <%= render "govuk_publishing_components/components/heading", {
-        text: "Deploy to Production",
-        margin_bottom: 4,
-        heading_level: 3
-      } %>
-      <p class="govuk-body">
-        <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-        <a target="_blank" href="<%= dashboard_url(@application, "production") %>" class="govuk-link">Production dashboard</a>:
-        Monitor your deployment to check that it doesn't cause any problems.
-      </p>
-      <p class="govuk-body">
-        <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-        <a target="_blank" href="<%= smokey_url(@application, "staging") %>" class="govuk-link">Staging smokey</a>:
-        Check Smokey has run in Staging and your deploy didn't cause any problems.
-      </p>
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Deploy to Production",
-        href: jenkins_deploy_app_url(@application, @release_tag, "production"),
-        target: "_blank",
-        destructive: true,
-        margin_bottom: true
-      } %>
-    <% end %>
+    <%= render "govuk_publishing_components/components/heading", {
+      text: "Deploy to Production",
+      margin_bottom: 4,
+      heading_level: 3
+    } %>
+    <p class="govuk-body">
+      <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= dashboard_url(@application, "production") %>" class="govuk-link">Production dashboard</a>:
+      Monitor your deployment to check that it doesn't cause any problems.
+    </p>
+    <p class="govuk-body">
+      <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= smokey_url(@application, "staging") %>" class="govuk-link">Staging smokey</a>:
+      Check Smokey has run in Staging and your deploy didn't cause any problems.
+    </p>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Deploy to Production",
+      href: jenkins_deploy_app_url(@application, @release_tag, "production"),
+      target: "_blank",
+      destructive: true,
+      margin_bottom: true
+    } %>
   </div>
 </div>
