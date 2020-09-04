@@ -87,7 +87,7 @@
     </p>
     <%= render "govuk_publishing_components/components/button", {
       text: "Deploy to Staging",
-      href: jenkins_deploy_app_url(@application, @release_tag, "staging"),
+      href: jenkins_deploy_url(@application, @release_tag, "staging"),
       target: "_blank",
       margin_bottom: true
     } %>
@@ -109,7 +109,7 @@
     </p>
     <%= render "govuk_publishing_components/components/button", {
       text: "Deploy to Production",
-      href: jenkins_deploy_app_url(@application, @release_tag, "production"),
+      href: jenkins_deploy_url(@application, @release_tag, "production"),
       target: "_blank",
       destructive: true,
       margin_bottom: true
