@@ -33,7 +33,6 @@ group :test, :development do
   gem "rubocop-govuk"
   gem "shoulda-context", require: false
   gem "simplecov", require: false
-  gem "simplecov-rcov", require: false
   gem "timecop"
   gem "webmock", require: false
 end
