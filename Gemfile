@@ -7,7 +7,7 @@ gem "friendly_id"
 gem "mysql2"
 gem "octicons_helper"
 gem "octokit"
-gem "sass-rails"
+gem "sassc-rails"
 gem "uglifier"
 
 gem "chartkick"
