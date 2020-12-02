@@ -23,3 +23,7 @@
 
 # Zeus config
 /custom_plan.rb
+
+# Yarn
+/node_modules
+/yarn-error.log
