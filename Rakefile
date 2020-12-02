@@ -5,9 +5,5 @@ require File.expand_path("config/application", __dir__)
 
 ReleaseApp::Application.load_tasks
 
-desc "Lint Ruby"
-task lint: :environment do
-  sh "bundle exec rubocop"
-end
-
-task default: %i[test lint]
+Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
+task default: %i[lint test]
