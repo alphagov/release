@@ -20,9 +20,11 @@
   .application-status-all_environments_match {
     background-color: govuk-colour("green");
   }
+
   .application-status-undeployed_changes_in_integration {
     background-color: darken(govuk-colour("orange"), 10%);
   }
+
   .application-status-production_and_staging_not_in_sync {
     background-color: govuk-colour("red");
   }
