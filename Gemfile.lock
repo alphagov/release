@@ -279,8 +279,6 @@ GEM
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
     safe_yaml (1.0.5)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -361,7 +359,7 @@ DEPENDENCIES
   rails (= 6.0.3.4)
   rails-controller-testing
   rubocop-govuk
-  sass-rails
+  sassc-rails
   shoulda-context
   simplecov
   timecop

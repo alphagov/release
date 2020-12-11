@@ -31,7 +31,7 @@ $govuk-typography-use-rem: false;
 
 .release__badge {
   @include govuk-font(14, $weight: "bold");
-  background-color:  govuk-colour("light-blue");
+  background-color: govuk-colour("light-blue");
   padding: 3px 5px;
   border-radius: 20px;
   color: govuk-colour("white");
