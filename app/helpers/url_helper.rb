@@ -18,10 +18,15 @@ module UrlHelper
   end
 
   def govuk_domain_suffix(environment, on_aws:)
-    return "blue.#{environment}.govuk.digital" if on_aws
-    return "publishing.service.gov.uk" if environment == "production"
-
-    "#{environment}.publishing.service.gov.uk"
+    if environment == "integration"
+      "integration.publishing.service.gov.uk"
+    elsif on_aws
+      "blue.#{environment}.govuk.digital"
+    elsif environment == "production"
+      "publishing.service.gov.uk"
+    else
+      "#{environment}.publishing.service.gov.uk"
+    end
   end
 
   def jenkins_deploy_url(application, release_tag, environment)
