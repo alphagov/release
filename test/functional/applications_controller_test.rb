@@ -314,21 +314,11 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "https://grafana_hostname/api/dashboards/file/whitehall.json").to_return(status: "200")
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".govuk-link[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/whitehall.json"
-      assert_select ".govuk-link[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/file/whitehall.json"
+      assert_select ".govuk-link[href=?]", "https://grafana.production.govuk.digital/dashboard/file/whitehall.json"
+      assert_select ".govuk-link[href=?]", "https://grafana.staging.govuk.digital/dashboard/file/whitehall.json"
     end
 
-    should "show Carrenza links when application is not on AWS" do
-      @app.update!(on_aws: false)
-
-      get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".gem-c-button[href=?]", "https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
-      assert_select ".gem-c-button[href=?]", "https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
-    end
-
-    should "show AWS links when application is on AWS" do
-      @app.update!(on_aws: true)
-
+    should "show deploy links" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select ".gem-c-button[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
       assert_select ".gem-c-button[href=?]", "https://deploy.blue.production.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
