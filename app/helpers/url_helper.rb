@@ -13,8 +13,8 @@ module UrlHelper
     link_to(git_ref.truncate(15), "#{app.repo_url}/tree/#{git_ref}", target: "_blank", rel: "noopener", class: "govuk-link")
   end
 
-  def github_compare_to_master(application, deploy)
-    "#{application.repo_url}/compare/#{deploy.version}...master"
+  def github_compare_to_default(application, deploy)
+    "#{application.repo_url}/compare/#{deploy.version}...#{application.default_branch}"
   end
 
   def govuk_domain_suffix(environment, on_aws:)

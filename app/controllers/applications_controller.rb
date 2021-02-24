@@ -40,7 +40,7 @@ class ApplicationsController < ApplicationController
           comparison = Services.github.compare(
             @application.repo,
             @production_deploy.version,
-            "master",
+            @application.default_branch,
           )
           # The `compare` API shows commits in forward chronological order
           @commits = comparison.commits.reverse + [comparison.base_commit]
