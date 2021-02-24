@@ -146,6 +146,7 @@ private
       :id,
       :name,
       :repo,
+      :default_branch,
       :shortname,
       :status_notes,
       :task,

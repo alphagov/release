@@ -16,6 +16,19 @@
     value: @application.repo
   } %>
 
+  <%= render "govuk_publishing_components/components/select", {
+    id: "default_branch",
+    label: "GitHub repository default branch",
+    name: "application[default_branch]",
+    options: Application.default_branches.map do |(id, label)|
+      {
+        text: label,
+        value: id,
+        selected: @application.default_branch == label,
+      }
+    end
+  } %>
+
   <%= render "govuk_publishing_components/components/input", {
     label: {
       text: "Short name"
