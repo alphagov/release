@@ -1,4 +1,10 @@
 class DeploymentsController < ApplicationController
+  class ApplicationConflictError < RuntimeError; end
+
+  rescue_from ApplicationConflictError do
+    head :conflict
+  end
+
   def index
     @application = Application.friendly.find(params[:application_id])
     @deployments = @application.deployments.newest_first.limit(100)
@@ -68,11 +74,7 @@ private
     when 1
       existing_apps[0]
     else
-      flash[:alert] = {
-        message: sprintf("Found multiple applications using repo: %<repo_path>s while using application_by_repo", repo_path: repo_path),
-      }
-      render :new
-      nil
+      raise ApplicationConflictError
     end
   end
 

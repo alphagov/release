@@ -148,6 +148,15 @@ class DeploymentsControllerTest < ActionController::TestCase
           assert_equal "New App", app.name
         end
       end
+
+      context "handling multiple applications with the same repo" do
+        should "return a conflict response" do
+          FactoryBot.create(:application, name: "app 1", repo: "org/app")
+          FactoryBot.create(:application, name: "app 2", repo: "org/app")
+          post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
+          assert_response :conflict
+        end
+      end
     end
   end
 end
