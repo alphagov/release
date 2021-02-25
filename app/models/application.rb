@@ -8,7 +8,7 @@ class Application < ApplicationRecord
 
   validates :name, :repo, :status_notes, :shortname, length: { maximum: 255 }
 
-  validates :repo, format: { with: /\A[^\s\/]+\/[^\s\/]+\Z/i }
+  validates :repo, format: { with: /\A[^\s\/]+\/[^\s\/]+\Z/i }, allow_blank: true
 
   validates :name, uniqueness: { case_sensitive: true }
 
