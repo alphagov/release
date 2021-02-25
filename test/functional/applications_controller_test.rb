@@ -7,7 +7,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET index" do
     setup do
-      @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1")
+      @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1", default_branch: "main")
       @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
       @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
       @deploy1 = FactoryBot.create(
@@ -28,9 +28,9 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select ".gem-c-table .govuk-table__body .govuk-link[href='https://github.com/user/app1/tree/release_x']", "release_x"
     end
 
-    should "provide a link to compare with master" do
+    should "provide a link to compare with default branch" do
       get :index
-      assert_select ".gem-c-table .govuk-table__body .govuk-link[href=?]", "https://github.com/user/app1/compare/release_x...master"
+      assert_select ".gem-c-table .govuk-table__body .govuk-link[href=?]", "https://github.com/user/app1/compare/release_x...main"
     end
   end
 
@@ -121,7 +121,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         @second_commit = stub_commit
         @base_commit = stub_commit
         Octokit::Client.any_instance.stubs(:compare)
-          .with(@app.repo, version, "master")
+          .with(@app.repo, version, @app.default_branch)
           .returns(stub(
                      "comparison",
                      commits: [@first_commit, @second_commit],

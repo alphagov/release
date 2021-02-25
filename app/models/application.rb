@@ -12,6 +12,10 @@ class Application < ApplicationRecord
 
   validates :name, uniqueness: { case_sensitive: true }
 
+  validates :default_branch, presence: true
+
+  enum default_branch: { master: "master", main: "main" }, _prefix: true
+
   has_many :deployments, dependent: :destroy
 
   default_scope { order("name ASC") }

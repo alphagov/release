@@ -50,8 +50,8 @@
               <% if latest_deploy %>
                 <p class="govuk-body-s govuk-!-margin-bottom-1"><%= github_tag_link_to(application, latest_deploy.version) %></p>
                 <p class="govuk-body-s govuk-!-margin-bottom-1"><%= human_datetime(latest_deploy.created_at) %></p>
-                <%= link_to(github_compare_to_master(application, latest_deploy), target: "_blank", class: "compare govuk-link govuk-body-s") do %>
-                  <%= octicon "git-compare", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-label": "Compare to master" %>
+                <%= link_to(github_compare_to_default(application, latest_deploy), target: "_blank", class: "compare govuk-link govuk-body-s") do %>
+                  <%= octicon "git-compare", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-label": "Compare to #{application.default_branch}" %>
                 <% end %>
               <% else %>
                 <p class="govuk-body-s">N/A</p>
