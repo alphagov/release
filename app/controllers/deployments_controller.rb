@@ -54,12 +54,11 @@ class DeploymentsController < ApplicationController
         application.archived = false
         application.save!
 
-        flash.now[:notice] = { message: "Deployment created for #{application.name}" }
+        redirect_to application_path(application), notice: "Deployment created for #{application.name}"
       else
-        flash[:alert] = { message: "Failed to create deployment" }
+        render :new, status: :unprocessable_entity
       end
 
-      render :new
     end
   end
 
