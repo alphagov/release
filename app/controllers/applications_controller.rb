@@ -93,34 +93,18 @@ class ApplicationsController < ApplicationController
   def create
     @application = Application.new(application_params)
 
-    if @application.valid? && @application.save
-
-      flash.now[:notice] = { message: "Successfully created new application" }
-
-      render action: "show"
+    if @application.save
+      redirect_to @application, notice: "Successfully created new application"
     else
-      errors = @application.errors.full_messages
-
-      error_string = errors.join(", ")
-
-      flash.now[:error] = { message: "There was a problem creating the new application", description: error_string }
-      render action: "new"
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
     if @application.update(application_params)
-
-      flash.now[:notice] = { message: "Successfully updated the application details" }
-
-      render action: "show"
+      redirect_to @application, notice: "Successfully updated the application details"
     else
-      errors = @application.errors.full_messages
-
-      error_string = errors.join(", ")
-
-      flash.now[:error] = { message: "There was a problem updating the application details", description: error_string }
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

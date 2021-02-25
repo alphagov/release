@@ -52,10 +52,18 @@ class DeploymentsControllerTest < ActionController::TestCase
         assert_equal "2013-01-18 11:57:00 +0000", deployment.created_at.to_s
       end
 
-      should "redisplay the form on error" do
+      should "redirect to the application on a successful create" do
+        app = FactoryBot.create(:application, repo: "org/app")
+        post :create, params: { deployment: { application_id: app.id, version: "release_123", environment: "staging", created_at: "18/01/2013 11:57" } }
+
+        assert_redirected_to application_path(app)
+      end
+
+      should "redisplay the form and respond with a 422 when there is an error" do
         app = FactoryBot.create(:application, repo: "org/app")
         post :create, params: { deployment: { application_id: app.id, version: "", environment: "staging", created_at: "18/01/2013 11:57" } }
         assert_template :new
+        assert_response :unprocessable_entity
       end
 
       should "unarchive an archived application" do
@@ -146,6 +154,15 @@ class DeploymentsControllerTest < ActionController::TestCase
           post :create, params: { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
           app = Application.unscoped.last
           assert_equal "New App", app.name
+        end
+      end
+
+      context "handling multiple applications with the same repo" do
+        should "return a conflict response" do
+          FactoryBot.create(:application, name: "app 1", repo: "org/app")
+          FactoryBot.create(:application, name: "app 2", repo: "org/app")
+          post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
+          assert_response :conflict
         end
       end
     end

@@ -41,5 +41,17 @@ class SitesControllerTest < ActionController::TestCase
 
       assert_equal "Deploy freeze in place.", site_settings.reload.status_notes
     end
+
+    should "redirect to the root on a successful update" do
+      patch :update, params: { site: { status_notes: "Deploy freeze in place." } }
+
+      assert_redirected_to root_path
+    end
+
+    should "respond with an unprocessable entity for invalid input" do
+      patch :update, params: { site: { status_notes: SecureRandom.alphanumeric(1000) } }
+
+      assert_response :unprocessable_entity
+    end
   end
 end

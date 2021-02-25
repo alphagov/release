@@ -3,10 +3,10 @@ class SitesController < ApplicationController
 
   def update
     if site_settings.update(site_params)
-      flash.now[:notice] = { message: "Site settings updated" }
+      redirect_to root_path, notice: "Site settings updated"
+    else
+      render :show, status: :unprocessable_entity
     end
-
-    render :show
   end
 
 private

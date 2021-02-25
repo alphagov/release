@@ -1,4 +1,10 @@
 class DeploymentsController < ApplicationController
+  class ApplicationConflictError < RuntimeError; end
+
+  rescue_from ApplicationConflictError do
+    head :conflict
+  end
+
   def index
     @application = Application.friendly.find(params[:application_id])
     @deployments = @application.deployments.newest_first.limit(100)
@@ -48,12 +54,11 @@ class DeploymentsController < ApplicationController
         application.archived = false
         application.save!
 
-        flash.now[:notice] = { message: "Deployment created for #{application.name}" }
+        redirect_to application_path(application), notice: "Deployment created for #{application.name}"
       else
-        flash[:alert] = { message: "Failed to create deployment" }
+        render :new, status: :unprocessable_entity
       end
 
-      render :new
     end
   end
 
@@ -68,11 +73,7 @@ private
     when 1
       existing_apps[0]
     else
-      flash[:alert] = {
-        message: sprintf("Found multiple applications using repo: %<repo_path>s while using application_by_repo", repo_path: repo_path),
-      }
-      render :new
-      nil
+      raise ApplicationConflictError
     end
   end
 

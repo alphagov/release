@@ -21,7 +21,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
     fill_in "Notes", with: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"
     click_on "Save status notes"
     assert page.has_selector?(".gem-c-success-alert", text: "Site settings updated")
-    assert_equal "/site", current_path
+    assert_equal "/applications", current_path
 
     visit "/"
     click_on @app1.name
@@ -40,7 +40,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
     fill_in "Notes", with: ""
     click_on "Save status notes"
     assert page.has_selector?(".gem-c-success-alert", text: "Site settings updated")
-    assert_equal "/site", current_path
+    assert_equal "/applications", current_path
 
     visit "/"
     click_on @app1.name

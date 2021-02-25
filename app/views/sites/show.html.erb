@@ -8,6 +8,8 @@
   ]
 } %>
 
+<%= render "shared/form_errors", resource: site_settings %>
+
 <%= render "govuk_publishing_components/components/title", {
   title: "Site settings"
 } %>
@@ -20,6 +22,7 @@
       },
       name: "site[status_notes]",
       value: site_settings.status_notes,
+      error_message: site_settings.errors[:status_notes].first,
     },
     maxlength: 255
   } %>

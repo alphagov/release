@@ -8,6 +8,8 @@
   ]
 } %>
 
+<%= render "shared/form_errors", resource: @deployment %>
+
 <%= render "govuk_publishing_components/components/title", {
   title: "Manually record a deployment"
 } %>
@@ -21,7 +23,7 @@
     {
       text: application.name,
       value: application.id,
-      selected: (true if application.shortname.present? && request.path.include?(application.shortname))
+      selected: application.id == @deployment.application_id,
     }
   end
 %>
@@ -31,51 +33,62 @@
     id: "deployment_application_id",
     label: "Application",
     name: "deployment[application_id]",
-    options: applications
+    options: applications,
+    error_message: @deployment.errors[:application].first,
   } %>
 
   <%= render "govuk_publishing_components/components/input", {
     label: {
       text: "Environment"
     },
-    name: "deployment[environment]"
+    name: "deployment[environment]",
+    value: @deployment.environment,
+    error_message: @deployment.errors[:environment].first,
   } %>
 
   <%= render "govuk_publishing_components/components/input", {
     label: {
       text: "Version"
     },
-    name: "deployment[version]"
+    name: "deployment[version]",
+    value: @deployment.version,
+    error_message: @deployment.errors[:version].first,
   } %>
 
   <%= render "govuk_publishing_components/components/date_input", {
     legend_text: "When was this deployment made?",
     hint: "Please enter in format: DD MM YYYY HH MM. For example: 25 8 2019 09 00",
+    error_message: @deployment.errors[:created_at].first,
     items: [
       {
         label: "Day",
         name: "deployment[created_at(3i)]",
-        width: 2
+        width: 2,
+        value: @deployment.created_at&.day,
       },
       {
         label: "Month",
         name: "deployment[created_at(2i)]",
-        width: 2
+        width: 2,
+        value: @deployment.created_at&.month,
       },
       {
         label: "Year",
         name: "deployment[created_at(1i)]",
-        width: 4
+        width: 4,
+        value: @deployment.created_at&.year,
       },
       {
         label: "Hour",
         name: "deployment[created_at(4i)]",
-        width: 2
+        width: 2,
+        value: @deployment.created_at&.hour,
       },
       {
         label: "Minutes",
         name: "deployment[created_at(5i)]",
-        width: 2
+        width: 2,
+        value: @deployment.created_at&.min,
       }
     ]
   } %>
