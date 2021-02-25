@@ -42,8 +42,20 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "POST create" do
-    should "create an application" do
-      assert_difference "Application.count", 1 do
+    context "valid request" do
+      should "create an application" do
+        assert_difference "Application.count", 1 do
+          post :create,
+               params: {
+                 application: {
+                   name: "My First App",
+                   repo: "org/my_first_app",
+                 },
+               }
+        end
+      end
+
+      should "redirect to the application" do
         post :create,
              params: {
                application: {
@@ -51,21 +63,20 @@ class ApplicationsControllerTest < ActionController::TestCase
                  repo: "org/my_first_app",
                },
              }
+        assert_redirected_to application_path(Application.last)
       end
     end
 
     context "invalid request" do
       should "render an error message" do
         post :create, params: { application: { name: "", repo: "org/my_first_app" } }
-        assert_select ".gem-c-error-alert"
-        assert_select ".gem-c-error-summary__title", text: "There was a problem creating the new application"
-        assert_select ".gem-c-error-summary__body", text: "Name is required"
+        assert_select ".gem-c-error-summary__list-item", text: "Name is required"
       end
 
-      should "rerender the form" do
+      should "rerender the form and respond with an unprocessable entity status" do
         post :create, params: { application: { name: "", repo: "org/my_first_app" } }
-        assert_select "form#new_application input[name='application[name]']"
-        assert_select "form#new_application input[name='application[repo]'][value='org/my_first_app']"
+        assert_template :new
+        assert_response :unprocessable_entity
       end
     end
   end
@@ -228,27 +239,31 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app = FactoryBot.create(:application)
     end
 
-    should "update the application" do
-      put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true, deploy_freeze: true } }
-      @app.reload
-      assert_equal "new name", @app.name
-      assert_equal true, @app.on_aws?
-      assert_equal true, @app.deploy_freeze?
+    context "valid request" do
+      should "update the application" do
+        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true, deploy_freeze: true } }
+        @app.reload
+        assert_equal "new name", @app.name
+        assert_equal true, @app.on_aws?
+        assert_equal true, @app.deploy_freeze?
+      end
+
+      should "redirect to the application" do
+        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true, deploy_freeze: true } }
+        assert_redirected_to application_path(@app)
+      end
     end
 
     context "invalid request" do
       should "render an error message" do
         put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
-        assert_select ".gem-c-error-alert"
-        assert_select ".gem-c-error-summary__title", text: "There was a problem updating the application details"
-        assert_select ".gem-c-error-summary__body", text: "Name is required"
+        assert_select ".gem-c-error-summary__list-item", text: "Name is required"
       end
 
-      should "rerender the form" do
+      should "rerender the form and respond with an unprocessable entity status" do
         put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
-        @app.reload
-        assert_select "form.edit_application input[name='application[name]'][value='']"
-        assert_select "form.edit_application input[name='application[repo]'][value='new/repo']"
+        assert_template :edit
+        assert_response :unprocessable_entity
       end
     end
   end

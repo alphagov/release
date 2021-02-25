@@ -2,4 +2,6 @@
 
 <%= render partial: "shared/application_header", locals: { application: @application, tab: "edit" } %>
 
+<%= render "shared/form_errors", resource: @application %>
+
 <%= render partial: "form", locals: { application: @application } %>

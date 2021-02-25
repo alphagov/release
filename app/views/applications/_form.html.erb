@@ -4,7 +4,8 @@
       text: "Application name"
     },
     name: "application[name]",
-    value: @application.name
+    value: @application.name,
+    error_message: @application.errors[:name].first,
   } %>
 
   <%= render "govuk_publishing_components/components/input", {
@@ -13,13 +14,15 @@
     },
     name: "application[repo]",
     hint: "Example: alphagov/publisher",
-    value: @application.repo
+    value: @application.repo,
+    error_message: @application.errors[:repo].first,
   } %>
 
   <%= render "govuk_publishing_components/components/select", {
     id: "default_branch",
     label: "GitHub repository default branch",
     name: "application[default_branch]",
+    error_message: @application.errors[:default_branch].first,
     options: Application.default_branches.map do |(id, label)|
       {
         text: label,
@@ -35,7 +38,8 @@
     },
     name: "application[shortname]",
     hint: "For use in graphite metrics. Example: whitehall",
-    value: @application.shortname
+    value: @application.shortname,
+    error_message: @application.errors[:shortname].first,
   } %>
 
   <%= render "govuk_publishing_components/components/textarea", {
@@ -44,7 +48,8 @@
     },
     hint: "Use for deploy instructions and deploy freezes",
     name: "application[status_notes]",
-    value: @application.status_notes
+    value: @application.status_notes,
+    error_message: @application.errors[:status_notes].first,
   } %>
 
   <input type="hidden" name="application[archived]" value="0" />
@@ -85,8 +90,6 @@
   } %>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Update application",
-    name: "application[commit]",
-    value: "Update application"
+    text: @application.new_record? ? "Create Application" : "Update application",
   } %>
 <% end %>
