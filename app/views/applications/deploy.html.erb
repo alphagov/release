@@ -77,8 +77,8 @@
     } %>
     <p class="govuk-body">
       <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-      <a target="_blank" href="<%= dashboard_url(@application, "staging") %>" class="govuk-link">Staging dashboard</a>:
-      Monitor your deployment to check that it doesn't cause any problems.
+      <a target="_blank" href="<%= dashboard_url(@application, "integration") %>" class="govuk-link">Integration dashboard</a>:
+      Monitor your deployment to check that it hasn't caused any problems.
     </p>
     <p class="govuk-body">
       <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
@@ -99,7 +99,7 @@
     } %>
     <p class="govuk-body">
       <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-      <a target="_blank" href="<%= dashboard_url(@application, "production") %>" class="govuk-link">Production dashboard</a>:
+      <a target="_blank" href="<%= dashboard_url(@application, "staging") %>" class="govuk-link">Staging dashboard</a>:
       Monitor your deployment to check that it doesn't cause any problems.
     </p>
     <p class="govuk-body">
@@ -114,5 +114,21 @@
       destructive: true,
       margin_bottom: true
     } %>
+
+    <%= render "govuk_publishing_components/components/heading", {
+      text: "Monitor Production",
+      margin_bottom: 4,
+      heading_level: 3
+    } %>
+    <p class="govuk-body">
+      <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= dashboard_url(@application, "production") %>" class="govuk-link">Production dashboard</a>:
+      Monitor your deployment to check that it doesn't cause any problems.
+    </p>
+    <p class="govuk-body">
+      <%= octicon "circuit-board", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= smokey_url(@application, "production") %>" class="govuk-link">Production smokey</a>:
+      Check Smokey has run in Production and your deploy didn't cause any problems.
+    </p>
   </div>
 </div>
