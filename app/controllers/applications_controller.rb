@@ -23,6 +23,8 @@ class ApplicationsController < ApplicationController
     respond_to do |format|
       format.json { render json: @application }
       format.html do
+        @outstanding_dependency_pull_requests = Services.github.search_issues("repo:#{@application.repo} is:pr state:open label:dependencies")[:total_count]
+
         @tags_by_commit = Services.github.tags(@application.repo).each_with_object({}) do |tag, hash|
           sha = tag[:commit][:sha]
           hash[sha] ||= []

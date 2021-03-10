@@ -88,6 +88,24 @@
   <% end %>
 <% end %>
 
+<% if @github_available %>
+  <%= render "govuk_publishing_components/components/heading", {
+    text: "Outstanding dependencies",
+    heading_level: 3,
+    margin_bottom: 4,
+  } %>
+
+  <div>
+    <% if @outstanding_dependency_pull_requests.zero? %>
+      <p class="govuk-body">There are <%= github_dependency_link_to(@application, "no outstanding dependency pull requests") %>.</p>
+    <% elsif @outstanding_dependency_pull_requests == 1 %>
+      <p class="govuk-body">There is <%= github_dependency_link_to(@application, "one outstanding dependency pull request") %>.</p>
+    <% else %>
+      <p class="govuk-body">There are <%= github_dependency_link_to(@application, "#{@outstanding_dependency_pull_requests} outstanding dependency pull requests") %>.</p>
+    <% end %>
+  </div>
+<% end %>
+
 <%= render "govuk_publishing_components/components/heading", {
   text: "What's where?",
   heading_level: 2,

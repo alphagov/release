@@ -86,6 +86,12 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app = FactoryBot.create(:application)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
+
+      Octokit::Client.any_instance.stubs(:search_issues)
+        .with("repo:#{@app.repo} is:pr state:open label:dependencies")
+        .returns({
+          "total_count": 5,
+        })
     end
 
     should "show the application name" do
@@ -116,6 +122,11 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       get :show, params: { id: @app.id }
       assert_select ".release__badge", "Automatic deployments disabled"
+    end
+
+    should "show the outstanding dependency pull requests" do
+      get :show, params: { id: @app.id }
+      assert_select "a", "5 outstanding dependency pull requests"
     end
 
     should "should include status notes as a warning" do

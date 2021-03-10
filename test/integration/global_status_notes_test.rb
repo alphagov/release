@@ -89,5 +89,11 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
         },
       ])
     stub_request(:get, "https://grafana.dev.gov.uk:80/api/dashboards/file/#{application.shortname}.json").to_return(status: 200, body: "")
+
+    Octokit::Client.any_instance.stubs(:search_issues)
+        .with("repo:#{application.repo} is:pr state:open label:dependencies")
+        .returns({
+          "total_count": 5,
+        })
   end
 end
