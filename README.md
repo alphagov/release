@@ -2,32 +2,16 @@
 
 An application to make managing releases to specific environments easier.
 
-## Getting started
+## Technical documentation
 
-1. Create app-specific mysql user (check [config/database.yml](config/database.yml) for user details):
+This is a Ruby on Rails app, and should follow [our Rails app conventions](https://docs.publishing.service.gov.uk/manual/conventions-for-rails-applications.html).
 
-    ```
-    mysql.server start
-    mysql -u root
+You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-docker) to run the application and its tests with all the necessary dependencies. Follow [the usage instructions](https://github.com/alphagov/govuk-docker#usage) to get started.
 
-    # Create release user
-    CREATE USER 'release'@'localhost' IDENTIFIED BY 'release';
-    GRANT ALL PRIVILEGES
-    ON `release_%`.*
-    TO 'release'@'localhost'
-    WITH GRANT OPTION;
-    FLUSH PRIVILEGES;
-    exit
-    ```
+**Use GOV.UK Docker to run any commands that follow.**
 
-2. Install dependencies, create databases and run initial migrations, test:
-    ```
-    bundle install
-    bundle exec rake db:create:all db:migrate
-    bundle exec rake
-    ```
-3. Create applications in [db/seeds.rb](db/seeds.rb):
+### To the run the tests
 
-    ```
-    bundle exec rake db:seed
-    ```
+```
+bundle exec rake
+```
