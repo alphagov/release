@@ -132,7 +132,7 @@ GEM
       sentry-raven (~> 3.1.1)
       statsd-ruby (~> 1.5.0)
       unicorn (>= 5.4, < 5.9)
-    govuk_publishing_components (24.6.1)
+    govuk_publishing_components (24.7.0)
       govuk_app_config
       kramdown
       plek
@@ -150,7 +150,7 @@ GEM
     jsonapi-renderer (0.2.2)
     jwt (2.2.2)
     kgio (2.11.3)
-    kramdown (2.3.0)
+    kramdown (2.3.1)
       rexml
     logstasher (2.1.5)
       activesupport (>= 5.2)
