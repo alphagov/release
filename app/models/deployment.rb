@@ -28,10 +28,6 @@ class Deployment < ApplicationRecord
     created_at > 2.hours.ago
   end
 
-  def production?
-    environment == "production" || environment == "production-aws"
-  end
-
   def commits
     @commits ||=
       begin
