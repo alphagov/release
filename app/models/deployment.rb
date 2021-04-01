@@ -24,10 +24,6 @@ class Deployment < ApplicationRecord
     previous_deployment.try(:version)
   end
 
-  def recent?
-    created_at > 2.hours.ago
-  end
-
   def commits
     @commits ||=
       begin
