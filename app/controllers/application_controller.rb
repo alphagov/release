@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
 
-  before_action :authenticate_user!, except: [:healthcheck]
+  before_action :authenticate_user!
 
   protect_from_forgery
 
@@ -14,11 +14,6 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ActiveRecord::RecordNotFound, with: :error_404
-
-  def healthcheck
-    status = { status: "ok" }
-    render json: status
-  end
 
   def site_settings
     @site_settings ||= Site.settings

@@ -143,5 +143,9 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal "2pm on 3 Jul 2010",
                    human_datetime(Time.zone.now.change(year: 2010, month: 7, day: 3, hour: 14))
     end
+
+    should "show nothing if the date is missing" do
+      assert_equal "", human_datetime(nil)
+    end
   end
 end

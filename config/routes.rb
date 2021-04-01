@@ -18,7 +18,9 @@ ReleaseApp::Application.routes.draw do
 
   get "/activity", to: "deployments#recent", as: :activity
 
-  get "/healthcheck", to: "application#healthcheck"
+  get "/healthcheck", to: GovukHealthcheck.rack_response(
+    GovukHealthcheck::ActiveRecord,
+  )
 
   get "/stats", to: "stats#index"
 

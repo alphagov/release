@@ -44,9 +44,9 @@
     } %>
   </div>
 
-  <p class="govuk-body"><%= @commits.length %> <%= 'commit'.pluralize(@commits.length) %></p>
-
   <% if @github_available %>
+    <p class="govuk-body"><%= @commits.length %> <%= 'commit'.pluralize(@commits.length) %></p>
+
     <%= render "shared/commits_table", commits: @commits %>
   <% else %>
     <%= render "govuk_publishing_components/components/govspeak", {

@@ -6,10 +6,6 @@ class Deployment < ApplicationRecord
 
   scope :newest_first, -> { order("created_at DESC") }
 
-  def self.environments
-    Deployment.select("DISTINCT environment").map(&:environment)
-  end
-
   def self.last_deploy_to(environment)
     where(environment: environment)
       .order("created_at DESC")
@@ -26,14 +22,6 @@ class Deployment < ApplicationRecord
 
   def previous_version
     previous_deployment.try(:version)
-  end
-
-  def recent?
-    created_at > 2.hours.ago
-  end
-
-  def production?
-    environment == "production" || environment == "production-aws"
   end
 
   def commits
