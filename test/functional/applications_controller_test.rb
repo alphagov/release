@@ -227,6 +227,20 @@ class ApplicationsControllerTest < ActionController::TestCase
         end
       end
     end
+
+    context "when there is another github error" do
+      setup do
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::Error.new)
+        get :show, params: { id: @app.id }
+      end
+
+      should "show the error message" do
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from GitHub:"
+          assert_select "p", "Octokit::Error"
+        end
+      end
+    end
   end
 
   context "GET edit" do
