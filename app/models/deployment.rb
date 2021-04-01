@@ -6,10 +6,6 @@ class Deployment < ApplicationRecord
 
   scope :newest_first, -> { order("created_at DESC") }
 
-  def self.environments
-    Deployment.select("DISTINCT environment").map(&:environment)
-  end
-
   def self.last_deploy_to(environment)
     where(environment: environment)
       .order("created_at DESC")
