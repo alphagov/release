@@ -373,6 +373,23 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select ".gem-c-button[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
       assert_select ".gem-c-button[href=?]", "https://deploy.blue.production.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
     end
+
+    context "when there is a github API 404 error" do
+      setup do
+        Octokit::Client.any_instance.stubs(:compare)
+          .with(@app.repo, @deployment.version, @release_tag)
+          .raises(Octokit::NotFound.new)
+      end
+
+      should "show the error message" do
+        get :deploy, params: { id: @app.id, tag: @release_tag }
+
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from GitHub:"
+          assert_select "p", "Octokit::NotFound"
+        end
+      end
+    end
   end
 
 private
