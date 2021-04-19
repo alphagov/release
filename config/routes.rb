@@ -22,6 +22,11 @@ ReleaseApp::Application.routes.draw do
     GovukHealthcheck::ActiveRecord,
   )
 
+  get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
+  get "/healthcheck/ready", to: GovukHealthcheck.rack_response(
+    GovukHealthcheck::ActiveRecord,
+  )
+
   get "/stats", to: "stats#index"
 
   root to: redirect("/applications", status: 302)
