@@ -1,13 +1,13 @@
 class Report
   class DeployLagReport
-    def call
-      Application.all.flat_map { |app| deploy_sequences_for(app) }.compact
+    def call(start_date, end_date)
+      Application.all.flat_map { |app| deploy_sequences_for(app, start_date, end_date) }.compact
     end
 
   private
 
-    def deploy_sequences_for(app)
-      deploys = Deployment.where("created_at > ?", 1.year.ago).where(application: app)
+    def deploy_sequences_for(app, start_date, end_date)
+      deploys = Deployment.where("created_at BETWEEN ? AND ?", start_date, end_date).where(application: app)
 
       integration_deploys = deploys
         .where("environment LIKE 'integration%'")
