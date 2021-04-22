@@ -19,6 +19,7 @@ gem "uglifier"
 group :test, :development do
   gem "better_errors"
   gem "binding_of_caller"
+  gem "byebug"
   gem "capybara"
   gem "database_cleaner"
   gem "factory_bot_rails"
