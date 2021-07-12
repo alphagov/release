@@ -26,8 +26,4 @@ ReleaseApp::Application.routes.draw do
   get "/stats", to: "stats#index"
 
   root to: redirect("/applications", status: 302)
-
-  if Rails.env.development?
-    mount GovukAdminTemplate::Engine, at: "/style-guide"
-  end
 end
