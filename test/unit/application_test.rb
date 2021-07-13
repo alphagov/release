@@ -96,7 +96,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "be invalid with a repo that is too long" do
-      application = Application.new(@atts.merge(repo: ("alphagov/my-r" + ("e" * 243) + "po")))
+      application = Application.new(@atts.merge(repo: "alphagov/my-r#{'e' * 243}po"))
 
       assert_not application.valid?
     end
@@ -108,7 +108,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "be invalid with status_notes that are too long" do
-      application = Application.new(@atts.merge(status_notes: ("This app is n" + ("o" * 233) + "t working!")))
+      application = Application.new(@atts.merge(status_notes: "This app is n#{'o' * 233}t working!"))
 
       assert_not application.valid?
     end
