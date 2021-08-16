@@ -18,6 +18,8 @@ updates:
       - dependency-name: plek
         dependency-type: direct
       # Framework gems
+      - dependency-name: active_model_serializers
+        dependency-type: direct
       - dependency-name: factory_bot_rails
         dependency-type: direct
       - dependency-name: rails
