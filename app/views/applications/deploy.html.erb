@@ -13,9 +13,7 @@
 
   <%= render "govuk_publishing_components/components/title", {
     title: "Deploy #{@application.name}",
-    context: {
-      text: @application.shortname,
-    },
+    context: @application.shortname,
     margin_bottom: 2
   } %>
   <%= render partial: "shared/badges", locals: { application: @application } %>
