@@ -99,7 +99,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (1.7.0)
+    faraday (1.7.1)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -138,11 +138,15 @@ GEM
       sentry-ruby (~> 4.5.0)
       statsd-ruby (~> 1.5.0)
       unicorn (>= 5.4, < 5.9)
-    govuk_publishing_components (25.7.0)
+    govuk_personalisation (0.7.0)
+      plek (>= 1.9.0)
+      rails (~> 6)
+    govuk_publishing_components (26.0.0)
       govuk_app_config
+      govuk_personalisation (>= 0.7.0)
       kramdown
       plek
-      rails (>= 5.0.0.1)
+      rails (>= 6)
       rouge
       sprockets (< 4)
     hashdiff (1.0.1)
@@ -173,7 +177,7 @@ GEM
     multipart-post (2.1.1)
     mysql2 (0.5.3)
     nio4r (2.5.8)
-    nokogiri (1.12.3)
+    nokogiri (1.12.4)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     oauth2 (1.4.7)
