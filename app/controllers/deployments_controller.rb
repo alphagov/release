@@ -46,7 +46,7 @@ class DeploymentsController < ApplicationController
       application.archived = false
       application.save!
       Deployment.create!(deployment_params.merge(application: application))
-      head 200
+      head :ok
     else
       @deployment = Deployment.new(deployment_params)
       if @deployment.save
