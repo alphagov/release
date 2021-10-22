@@ -104,6 +104,18 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select ".gem-c-title .gem-c-title__context", text: @app.shortname
     end
 
+    should "show the CD status" do
+      get :show, params: { id: @app.id }
+      assert_select ".release__badge--orange", "Manually deployed"
+      assert_select ".release__badge", false
+
+      Application.stub :cd_statuses, { @app.shortname => { continuously_deployed: true } } do
+        get :show, params: { id: @app.id }
+        assert_select ".release__badge", "Continuously deployed"
+        assert_select ".release__badge--orange", false
+      end
+    end
+
     should "show the deployment freeze badge" do
       get :show, params: { id: @app.id }
       assert_select ".release__badge", { text: "Automatic deployments disabled", count: 0 }
