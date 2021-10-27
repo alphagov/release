@@ -107,7 +107,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     should "show the CD status" do
       get :show, params: { id: @app.id }
       assert_select ".release__badge--orange", "Manually deployed"
-      assert_select ".release__badge", false
+      assert_select ".release__badge", { text: "Continuously deployed", count: 0 }
 
       Application.stub :cd_statuses, { @app.shortname => { continuously_deployed: true } } do
         get :show, params: { id: @app.id }
