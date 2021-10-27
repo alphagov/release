@@ -73,4 +73,13 @@ class Application < ApplicationRecord
       %w[production staging]
     end
   end
+
+  def self.cd_statuses
+    @cd_statuses ||= YAML.safe_load(open("data/continuously_deployed_apps.yml"))
+  end
+
+  def cd_enabled?
+    key = shortname || fallback_shortname
+    Application.cd_statuses.include? key
+  end
 end

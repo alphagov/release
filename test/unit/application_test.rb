@@ -148,4 +148,34 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal "", human_datetime(nil)
     end
   end
+
+  context "continuous deployment" do
+    setup do
+      @atts = {
+        name: "Tron-o-matic",
+        repo: "alphagov/tron-o-matic",
+      }
+    end
+
+    context "when the application is not continuously deployed" do
+      should "return false" do
+        application = Application.new(@atts)
+
+        assert_not application.cd_enabled?
+
+        Application.stub :cd_statuses, ["something-other-than-tron-o-matic"] do
+          assert_not application.cd_enabled?
+        end
+      end
+    end
+
+    context "when the application is continuously deployed" do
+      should "return true" do
+        application = Application.new(@atts)
+        Application.stub :cd_statuses, ["tron-o-matic"] do
+          assert application.cd_enabled?
+        end
+      end
+    end
+  end
 end
