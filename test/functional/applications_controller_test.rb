@@ -195,6 +195,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_equal false, body["archived"]
         assert_equal false, body["deploy_freeze"]
         assert_equal false, body["hosted_on_aws"]
+        assert_equal false, body["continuously_deployed"]
         assert_equal "https://github.com/alphagov/application-1", body["repository_url"]
       end
     end
