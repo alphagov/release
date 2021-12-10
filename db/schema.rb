@@ -2,8 +2,8 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2021_03_19_081818) do
 
-  create_table "applications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "applications", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "repo"
     t.datetime "created_at", null: false
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_081818) do
     t.index ["shortname"], name: "index_applications_on_shortname"
   end
 
-  create_table "deployments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "deployments", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "version"
     t.string "environment"
     t.integer "application_id"
@@ -40,13 +40,13 @@ ActiveRecord::Schema.define(version: 2021_03_19_081818) do
     t.index ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc"
   end
 
-  create_table "sites", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "sites", charset: "utf8mb3", force: :cascade do |t|
     t.string "status_notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "uid"
