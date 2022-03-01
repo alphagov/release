@@ -131,7 +131,7 @@
         <%= t.header environment.humanize %>
         <%= t.cell "#{github_tag_link_to(@application, deployment.version)} at #{human_datetime(deployment.created_at)}".html_safe() %>
         <% previous_version = deployment.previous_deployment ? "#{github_tag_link_to(@application, deployment.previous_deployment.version)} at #{human_datetime(deployment.previous_deployment.created_at)}".html_safe() : "N/A" %>
-        <%= t.cell "#{github_tag_link_to(@application, deployment.version)} at #{human_datetime(deployment.created_at)}".html_safe() %>
+        <%= t.cell previous_version %>
       <% end %>
     <% end %>
   <% end %>
