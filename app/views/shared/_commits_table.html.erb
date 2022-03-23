@@ -30,7 +30,7 @@
 
           <%= t.cell commit_author %>
 
-          <%= t.cell "#{commit.commit_date.to_date.to_s(:short)} #{commit.commit_date.to_s(:govuk_time)}" %>
+          <%= t.cell "#{commit.commit_date.to_date.to_fs(:short)} #{commit.commit_date.to_fs(:govuk_time)}" %>
         <% end %>
       <% end %>
     <% end %>
