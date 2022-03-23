@@ -13,6 +13,7 @@ gem "octicons_helper"
 gem "octokit"
 gem "plek"
 gem "sassc-rails"
+gem "sprockets"
 gem "uglifier"
 
 group :test, :development do
