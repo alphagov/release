@@ -164,14 +164,14 @@ GEM
     govuk_personalisation (0.11.2)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (28.9.2)
+    govuk_publishing_components (29.1.0)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
       plek
       rails (>= 6)
       rouge
-      sprockets (< 4)
+      sprockets (>= 3)
     hashdiff (1.0.1)
     hashie (5.0.0)
     i18n (1.10.0)
@@ -258,7 +258,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (4.0.6)
-    puma (5.6.2)
+    puma (5.6.4)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
