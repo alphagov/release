@@ -1,6 +1,9 @@
 <% content_for :head do %>
   <%= csrf_meta_tag %>
   <%= javascript_include_tag "admin" %>
+  <% if Rails.env.development? %>
+    <%= javascript_include_tag "hotwire-livereload", defer: true %>
+  <% end %>
 <% end %>
 
 <%= render "govuk_publishing_components/components/layout_for_admin", {
