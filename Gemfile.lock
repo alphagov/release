@@ -174,6 +174,9 @@ GEM
       sprockets (< 4)
     hashdiff (1.0.1)
     hashie (5.0.0)
+    hotwire-livereload (1.1.0)
+      listen (>= 3.0.0)
+      rails (>= 6.0.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     io-wait (0.2.1)
@@ -182,6 +185,9 @@ GEM
     kgio (2.11.4)
     kramdown (2.3.2)
       rexml
+    listen (3.7.1)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
@@ -299,6 +305,10 @@ GEM
     rainbow (3.1.1)
     raindrops (0.20.0)
     rake (13.0.6)
+    rb-fsevent (0.11.1)
+    rb-inotify (0.10.1)
+      ffi (~> 1.0)
+    redis (4.6.0)
     regexp_parser (2.2.1)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -412,6 +422,7 @@ DEPENDENCIES
   gds-sso
   govuk_app_config
   govuk_publishing_components
+  hotwire-livereload
   minitest
   mocha
   mysql2
@@ -422,6 +433,7 @@ DEPENDENCIES
   pry
   rails (= 7.0.2)
   rails-controller-testing
+  redis
   rubocop-govuk
   sassc-rails
   shoulda-context

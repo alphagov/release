@@ -16,6 +16,11 @@ gem "sassc-rails"
 gem "sprockets"
 gem "uglifier"
 
+group :development do
+  gem "hotwire-livereload"
+  gem "redis"
+end
+
 group :test, :development do
   gem "better_errors"
   gem "binding_of_caller"
