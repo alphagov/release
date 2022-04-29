@@ -1,6 +1,10 @@
 FROM ruby:2.7.6
 MAINTAINER "govuk-role-platform-accounts-members@digital.cabinet-office.gov.uk"
 
+# Add yarn to apt sources
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
@@ -9,7 +13,8 @@ RUN apt-get update && \
       # for bundle exec rake -T and assets commands to work
       nodejs \
       # for healthcheck
-      curl
+      curl \
+      yarn
 
 COPY . .
 
