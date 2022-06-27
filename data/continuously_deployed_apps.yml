@@ -1,4 +1,5 @@
 - account-api
+- asset-manager
 - authenticating-proxy
 - bouncer
 - cache-clearing-service
