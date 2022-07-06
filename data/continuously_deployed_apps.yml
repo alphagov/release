@@ -9,6 +9,7 @@
 - content-data-admin
 - content-data-api
 - content-publisher
+- email-alert-api
 - email-alert-frontend
 - email-alert-service
 - feedback
