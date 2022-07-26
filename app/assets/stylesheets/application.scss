@@ -58,11 +58,11 @@ $govuk-typography-use-rem: false;
   margin-top: 0;
   padding: govuk-spacing(3);
   border: 1px solid $govuk-border-colour;
-  background-color: govuk-colour('red');
-  color: govuk-colour('white');
+  background-color: govuk-colour("red");
+  color: govuk-colour("white");
   font-weight: bold;
 
   .govuk-link {
-    color: govuk-colour('white');
+    color: govuk-colour("white");
   }
 }
