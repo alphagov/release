@@ -153,7 +153,7 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    govuk_app_config (4.7.0)
+    govuk_app_config (4.8.0)
       logstasher (~> 2.1)
       prometheus_exporter (~> 2.0)
       puma (~> 5.6)
