@@ -96,7 +96,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the application name" do
       get :show, params: { id: @app.id }
-      assert_select ".gem-c-title .gem-c-title__text", text: "Deploy #{@app.name}"
+      assert_select ".gem-c-title .gem-c-title__text", text: @app.name
     end
 
     should "show the application shortname" do
@@ -155,7 +155,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the application" do
         get :show, params: { id: @app.id }
-        assert_select ".gem-c-title .gem-c-title__text", text: "Deploy #{@app.name}"
+        assert_select ".gem-c-title .gem-c-title__text", text: @app.name
       end
 
       should "set the commit history in reverse order" do
@@ -335,14 +335,14 @@ class ApplicationsControllerTest < ActionController::TestCase
         .returns("https://grafana_hostname")
     end
 
-    should "show that we are trying to deploy the application" do
+    should "show that we are trying to deploy the release" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".gem-c-title .gem-c-title__text", "Deploy #{@app.name}"
+      assert_select ".gem-c-title .gem-c-title__text", "Deploy #{@release_tag}"
+      assert_select ".gem-c-title .gem-c-title__context", text: @app.name
     end
 
     should "indicate which releases are current and about to be deployed" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".gem-c-heading", "Candidate Release: #{@release_tag}"
       assert_select ".govuk-body", "Production is on #{@deployment.version} — deployed at 11am on 18 Jan 2013"
     end
 

@@ -1,4 +1,4 @@
-<% content_for :page_title, @application.name %>
+<% content_for :page_title, "#{@release_tag} - #{@application.name}" %>
 
 <div class="release__application-header">
   <%= render "govuk_publishing_components/components/breadcrumbs", {
@@ -6,14 +6,14 @@
       root_crumb,
       application_node_crumb(application: @application),
       {
-        title: "Deploy #{@application.name}"
+        title: "Deploy #{@release_tag}"
       }
     ]
   } %>
 
   <%= render "govuk_publishing_components/components/title", {
-    title: "Deploy #{@application.name}",
-    context: @application.shortname,
+    title: "Deploy #{@release_tag}",
+    context: @application.name,
     margin_bottom: 2
   } %>
   <%= render partial: "shared/badges", locals: { application: @application } %>
@@ -22,7 +22,7 @@
 <%= render 'status_notes', application: @application %>
 
 <%= render "govuk_publishing_components/components/heading", {
-  text: "Candidate Release: #{@release_tag}",
+  text: "Release changes",
   margin_bottom: 4
 } %>
 
