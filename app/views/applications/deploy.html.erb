@@ -21,11 +21,6 @@
 
 <%= render 'status_notes', application: @application %>
 
-<%= render "govuk_publishing_components/components/heading", {
-  text: "Release changes",
-  margin_bottom: 4
-} %>
-
 <% if @production_deploy %>
   <p class="govuk-body">Production is on <%= @production_deploy.version %> &mdash; deployed at <%= human_datetime(@production_deploy.created_at) %></p>
 <% else %>
@@ -33,6 +28,11 @@
 <% end %>
 
 <% if @production_deploy %>
+  <%= render "govuk_publishing_components/components/heading", {
+    text: "Release changes",
+    margin_bottom: 4
+  } %>
+
   <div class="release__view-diff">
     <%= render "govuk_publishing_components/components/button", {
       text: "View full diff",
@@ -55,11 +55,6 @@
     <% end %>
   <% end %>
 <% end %>
-
-<%= render "govuk_publishing_components/components/heading", {
-  text: "Deploy",
-  margin_bottom: 4
-} %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
@@ -129,3 +124,4 @@
     </p>
   </div>
 </div>
+
