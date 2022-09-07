@@ -62,10 +62,6 @@
 } %>
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-one-third">
-    <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
-  </div>
-
   <div class="govuk-grid-column-two-thirds">
     <%= render "govuk_publishing_components/components/heading", {
       text: "Deploy to Staging",
@@ -127,5 +123,9 @@
       <a target="_blank" href="<%= smokey_url(@application, "production") %>" class="govuk-link">Production smokey</a>:
       Run Smokey in Production and check your deploy didn't cause any problems.
     </p>
+  </div>
+
+  <div class="govuk-grid-column-one-third">
+    <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
   </div>
 </div>
