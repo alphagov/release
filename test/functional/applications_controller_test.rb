@@ -187,7 +187,6 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_equal "", body["notes"]
         assert_equal false, body["archived"]
         assert_equal false, body["deploy_freeze"]
-        assert_equal false, body["hosted_on_aws"]
         assert_equal false, body["continuously_deployed"]
         assert_equal "https://github.com/alphagov/application-1", body["repository_url"]
       end
@@ -262,15 +261,14 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "valid request" do
       should "update the application" do
-        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true, deploy_freeze: true } }
+        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", deploy_freeze: true } }
         @app.reload
         assert_equal "new name", @app.name
-        assert_equal true, @app.on_aws?
         assert_equal true, @app.deploy_freeze?
       end
 
       should "redirect to the application" do
-        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", on_aws: true, deploy_freeze: true } }
+        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", deploy_freeze: true } }
         assert_redirected_to application_path(@app)
       end
     end
@@ -350,21 +348,11 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "https://grafana_hostname/api/dashboards/file/whitehall.json").to_return(status: "200")
 
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".govuk-link[href=?]", "https://grafana.publishing.service.gov.uk/dashboard/file/whitehall.json"
-      assert_select ".govuk-link[href=?]", "https://grafana.staging.publishing.service.gov.uk/dashboard/file/whitehall.json"
+      assert_select ".govuk-link[href=?]", "https://grafana.blue.staging.govuk.digital/dashboard/file/whitehall.json"
+      assert_select ".govuk-link[href=?]", "https://grafana.blue.production.govuk.digital/dashboard/file/whitehall.json"
     end
 
-    should "show Carrenza links when application is not on AWS" do
-      @app.update!(on_aws: false)
-
-      get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".gem-c-button[href=?]", "https://deploy.staging.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
-      assert_select ".gem-c-button[href=?]", "https://deploy.publishing.service.gov.uk/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
-    end
-
-    should "show AWS links when application is on AWS" do
-      @app.update!(on_aws: true)
-
+    should "show links to jenkins" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
       assert_select ".gem-c-button[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
       assert_select ".gem-c-button[href=?]", "https://deploy.blue.production.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"

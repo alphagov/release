@@ -67,11 +67,7 @@ class Application < ApplicationRecord
   end
 
   def production_and_staging_environments
-    if on_aws?
-      %w[production-aws staging-aws]
-    else
-      %w[production staging]
-    end
+    %w[production-aws staging-aws]
   end
 
   def self.cd_statuses

@@ -77,12 +77,6 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal false, application.archived
     end
 
-    should "default to not being on AWS" do
-      application = Application.new(@atts)
-
-      assert_equal false, application.on_aws?
-    end
-
     should "default to not be in deploy freeze" do
       application = Application.new(@atts)
 

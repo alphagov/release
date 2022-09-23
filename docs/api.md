@@ -22,7 +22,6 @@ Examples:
    "deploy_freeze": true,
    "notes": "",
    "repository_url": "https://github.com/alphagov/smart-answers",
-   "hosted_on_aws": true
 }
 ```
 

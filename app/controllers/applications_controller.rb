@@ -37,7 +37,7 @@ class ApplicationsController < ApplicationController
           @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
         end
 
-        @production_deploy = @application.deployments.last_deploy_to production_environment_name
+        @production_deploy = @application.deployments.last_deploy_to "production"
         if @production_deploy
           comparison = Services.github.compare(
             @application.repo,
@@ -75,7 +75,7 @@ class ApplicationsController < ApplicationController
   def deploy
     @release_tag = params[:tag]
 
-    @production_deploy = @application.deployments.last_deploy_to production_environment_name
+    @production_deploy = @application.deployments.last_deploy_to "production"
 
     if @production_deploy
       comparison = Services.github.compare(
@@ -136,16 +136,7 @@ private
       :shortname,
       :status_notes,
       :task,
-      :on_aws,
       :deploy_freeze,
     )
-  end
-
-  def production_environment_name
-    if @application.on_aws?
-      "production-aws"
-    else
-      "production"
-    end
   end
 end

@@ -70,7 +70,7 @@
     </p>
     <p class="govuk-body">
       <%= octicon "cpu", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-      <a target="_blank" href="<%= smokey_url(@application, "integration") %>" class="govuk-link">Integration smokey</a>:
+      <a target="_blank" href="<%= smokey_url("integration") %>" class="govuk-link">Integration smokey</a>:
       Run Smokey in Integration and check your deploy didn't cause any problems.
     </p>
     <%= render "govuk_publishing_components/components/button", {
@@ -92,7 +92,7 @@
     </p>
     <p class="govuk-body">
       <%= octicon "cpu", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-      <a target="_blank" href="<%= smokey_url(@application, "staging") %>" class="govuk-link">Staging smokey</a>:
+      <a target="_blank" href="<%= smokey_url("staging") %>" class="govuk-link">Staging smokey</a>:
       Run Smokey in Staging and check your deploy didn't cause any problems.
     </p>
     <%= render "govuk_publishing_components/components/button", {
@@ -115,7 +115,7 @@
     </p>
     <p class="govuk-body">
       <%= octicon "cpu", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
-      <a target="_blank" href="<%= smokey_url(@application, "production") %>" class="govuk-link">Production smokey</a>:
+      <a target="_blank" href="<%= smokey_url("production") %>" class="govuk-link">Production smokey</a>:
       Run Smokey in Production and check your deploy didn't cause any problems.
     </p>
   </div>

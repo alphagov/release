@@ -64,18 +64,6 @@
     ]
   } %>
 
-  <input type="hidden" name="application[on_aws]" value="0" />
-  <%= render "govuk_publishing_components/components/checkboxes", {
-    name: "application[on_aws]",
-    items: [
-      {
-        label: "Deployed to AWS?",
-        value: "1",
-        checked: @application.on_aws?
-      }
-    ]
-  } %>
-
   <input type="hidden" name="application[deploy_freeze]" value="0" />
   <%= render "govuk_publishing_components/components/checkboxes", {
     name: "application[deploy_freeze]",
