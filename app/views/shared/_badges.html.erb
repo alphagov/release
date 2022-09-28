@@ -2,8 +2,6 @@
   <span class="release__badge release__badge--red">Automatic deployments disabled</span>
 <% end %>
 
-<% if application.cd_enabled? %>
-  <span class="release__badge">Continuously deployed</span>
-<% else %>
+<% unless application.cd_enabled? %>
   <span class="release__badge release__badge--orange">Manually deployed</span>
 <% end %>
