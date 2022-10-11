@@ -7,7 +7,7 @@ FactoryBot.define do
 
   factory :deployment do
     sequence(:version) { |n| "release_#{n}" }
-    environment { "production-aws" }
+    environment { "production" }
   end
 
   factory :user do
