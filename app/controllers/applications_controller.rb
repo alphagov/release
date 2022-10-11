@@ -3,7 +3,7 @@ class ApplicationsController < ApplicationController
 
   include ActionView::Helpers::DateHelper
 
-  ENVIRONMENTS = %w[production staging integration].freeze
+  ENVIRONMENTS = %w[production-aws staging-aws integration].freeze
 
   def index
     @applications = Application.where(archived: false)
@@ -37,7 +37,7 @@ class ApplicationsController < ApplicationController
           @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
         end
 
-        @production_deploy = @application.deployments.last_deploy_to "production"
+        @production_deploy = @application.deployments.last_deploy_to "production-aws"
         if @production_deploy
           comparison = Services.github.compare(
             @application.repo,
@@ -75,7 +75,7 @@ class ApplicationsController < ApplicationController
   def deploy
     @release_tag = params[:tag]
 
-    @production_deploy = @application.deployments.last_deploy_to "production"
+    @production_deploy = @application.deployments.last_deploy_to "production-aws"
 
     if @production_deploy
       comparison = Services.github.compare(

@@ -44,7 +44,7 @@ private
   # Record the deployment to statsd and thence to graphite
   def record_to_statsd
     # Only record production deployments in production graphite
-    if environment == "production" || environment == "production-aws"
+    if environment == "production-aws"
       key = "deploys.#{application.shortname}"
       GovukStatsd.increment(key)
     end
