@@ -42,10 +42,8 @@ class Application < ApplicationRecord
   end
 
   def status
-    return :production_and_staging_not_in_sync unless in_sync?(production_and_staging_environments)
-    return :undeployed_changes_in_integration unless in_sync?(
-      production_and_staging_environments + %w[integration],
-    )
+    return :production_and_staging_not_in_sync unless in_sync?(%w[production-aws staging-aws])
+    return :undeployed_changes_in_integration unless in_sync?(%w[production-aws staging-aws integration])
 
     :all_environments_match
   end
@@ -64,10 +62,6 @@ class Application < ApplicationRecord
 
   def repo_tag_url(tag)
     "https://github.com/#{repo}/releases/tag/#{tag}"
-  end
-
-  def production_and_staging_environments
-    %w[production-aws staging-aws]
   end
 
   def self.cd_statuses
