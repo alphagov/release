@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2021_03_19_081818) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_23_151609) do
   create_table "applications", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "repo"
@@ -19,7 +19,6 @@ ActiveRecord::Schema[7.0].define(version: 2021_03_19_081818) do
     t.string "status_notes"
     t.string "shortname"
     t.boolean "archived", default: false, null: false
-    t.boolean "on_aws", default: false, null: false
     t.boolean "deploy_freeze", default: false, null: false
     t.string "default_branch", default: "main", null: false
     t.index ["name"], name: "index_applications_on_name", unique: true

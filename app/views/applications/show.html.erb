@@ -37,7 +37,7 @@
                   <% if deployments = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
                     <% deployments.each do |deployment| %>
                       <p class="govuk-body-xs govuk-!-margin-bottom-1 release__commits-message">
-                        <span class="release__commits-label release__commits-label--<%= 'production' if ['production', 'production-aws'].include?(deployment.environment) %>"><%= deployment.environment.humanize %></span>
+                        <span class="release__commits-label release__commits-label--<%= 'production' if deployment.environment == "production-aws" %>"><%= deployment.environment.humanize %></span>
                         <span>at <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %></span>
                       </p>
                     <% end %>

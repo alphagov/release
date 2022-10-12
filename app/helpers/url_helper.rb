@@ -1,11 +1,11 @@
 module UrlHelper
   def dashboard_url(application, environment)
-    suffix = govuk_domain_suffix(environment, on_aws: application.on_aws?)
+    suffix = govuk_domain_suffix(environment)
     "https://grafana.#{suffix}/dashboard/file/#{application.shortname}.json"
   end
 
-  def smokey_url(application, environment)
-    suffix = govuk_domain_suffix(environment, on_aws: application.on_aws?)
+  def smokey_url(environment)
+    suffix = govuk_domain_suffix(environment)
     "https://deploy.#{suffix}/job/Smokey"
   end
 
@@ -21,20 +21,16 @@ module UrlHelper
     "#{application.repo_url}/compare/#{deploy.version}...#{application.default_branch}"
   end
 
-  def govuk_domain_suffix(environment, on_aws:)
+  def govuk_domain_suffix(environment)
     if environment == "integration"
       "integration.publishing.service.gov.uk"
-    elsif on_aws
-      "blue.#{environment}.govuk.digital"
-    elsif environment == "production"
-      "publishing.service.gov.uk"
     else
-      "#{environment}.publishing.service.gov.uk"
+      "blue.#{environment}.govuk.digital"
     end
   end
 
   def jenkins_deploy_url(application, release_tag, environment)
-    suffix = govuk_domain_suffix(environment, on_aws: application.on_aws?)
+    suffix = govuk_domain_suffix(environment)
     job_name = application.shortname == "puppet" ? "Deploy_Puppet" : "Deploy_App"
     escaped_release_tag = CGI.escape(release_tag)
     "https://deploy.#{suffix}/job/#{job_name}/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe

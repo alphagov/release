@@ -44,8 +44,7 @@
           <%= t.cell application_status %>
 
           <% @environments.each do |environment| %>
-            <% environment_name = (application.on_aws? && environment != "integration") ? "#{environment}-aws" : environment %>
-            <% latest_deploy = application.latest_deploy_to_each_environment[environment_name] %>
+            <% latest_deploy = application.latest_deploy_to_each_environment[environment] %>
             <% env_deploy = capture do %>
               <% if latest_deploy %>
                 <p class="govuk-body-s govuk-!-margin-bottom-1"><%= github_tag_link_to(application, latest_deploy.version) %></p>
