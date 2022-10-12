@@ -13,7 +13,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       @deploy1 = FactoryBot.create(
         :deployment,
         application: @app1,
-        environment: "staging-aws",
+        environment: "staging",
         version: "release_x",
       )
     end

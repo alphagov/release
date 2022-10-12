@@ -22,7 +22,7 @@ private
 
   def production_deploys
     @production_deploys ||= initial_scope
-      .where(environment: "production-aws")
+      .where(environment: "production")
       .joins(:application)
       .order("deployments.created_at ASC")
   end

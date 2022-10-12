@@ -42,8 +42,8 @@ class Application < ApplicationRecord
   end
 
   def status
-    return :production_and_staging_not_in_sync unless in_sync?(%w[production-aws staging-aws])
-    return :undeployed_changes_in_integration unless in_sync?(%w[production-aws staging-aws integration])
+    return :production_and_staging_not_in_sync unless in_sync?(%w[production staging])
+    return :undeployed_changes_in_integration unless in_sync?(%w[production staging integration])
 
     :all_environments_match
   end
