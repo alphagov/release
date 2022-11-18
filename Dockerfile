@@ -11,7 +11,8 @@ RUN apt-get update && \
       # base dependencies
       ruby-dev build-essential libgmp3-dev default-libmysqlclient-dev \
       # for bundle exec rake -T and assets commands to work
-      nodejs \
+      curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+      apt-get update -qq && apt-get install -y nodejs \
       # for healthcheck
       curl \
       yarn
