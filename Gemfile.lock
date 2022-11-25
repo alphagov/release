@@ -122,11 +122,11 @@ GEM
     ffi (1.15.5)
     friendly_id (5.5.0)
       activerecord (>= 4.0.0)
-    gds-sso (17.1.0)
+    gds-sso (17.1.1)
       oauth2 (~> 2.0)
       omniauth (~> 2.1)
       omniauth-oauth2 (~> 1.8)
-      plek (~> 4.0)
+      plek (>= 4, < 6)
       rails (>= 6)
       warden (~> 1.2)
       warden-oauth2 (~> 0.0.1)
@@ -233,7 +233,7 @@ GEM
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.4)
-    rack-protection (3.0.2)
+    rack-protection (3.0.3)
       rack
     rack-proxy (0.7.4)
       rack
