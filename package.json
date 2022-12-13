@@ -24,7 +24,7 @@
     "extends": "stylelint-config-gds/scss"
   },
   "dependencies": {
-    "jquery": "3.6.1"
+    "jquery": "3.6.2"
   },  
   "devDependencies": {
     "standardx": "^7.0.0",
