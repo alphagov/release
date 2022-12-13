@@ -2,4 +2,3 @@
 //= link application.js
 //= link admin.js
 //= link application.css
-//= link print.css
