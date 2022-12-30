@@ -109,7 +109,7 @@ GEM
     date (3.3.3)
     debug_inspector (1.1.0)
     docile (1.4.0)
-    erubi (1.11.0)
+    erubi (1.12.0)
     execjs (2.8.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -146,7 +146,7 @@ GEM
     govuk_personalisation (0.12.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (34.1.2)
+    govuk_publishing_components (34.1.3)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -179,13 +179,13 @@ GEM
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
+    mini_portile2 (2.8.1)
     minitest (5.16.3)
     mocha (2.0.2)
       ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
     mysql2 (0.5.4)
-    net-imap (0.3.3)
+    net-imap (0.3.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -236,8 +236,8 @@ GEM
     public_suffix (5.0.0)
     puma (6.0.1)
       nio4r (~> 2.0)
-    racc (1.6.1)
-    rack (2.2.4)
+    racc (1.6.2)
+    rack (2.2.5)
     rack-protection (3.0.3)
       rack
     rack-proxy (0.7.4)
