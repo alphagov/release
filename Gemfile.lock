@@ -147,7 +147,7 @@ GEM
     govuk_personalisation (0.12.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (34.1.2)
+    govuk_publishing_components (34.2.0)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -186,7 +186,7 @@ GEM
       ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
     mysql2 (0.5.4)
-    net-imap (0.3.3)
+    net-imap (0.3.4)
       date
       net-protocol
     net-pop (0.1.2)
