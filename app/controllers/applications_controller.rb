@@ -27,13 +27,6 @@ class ApplicationsController < ApplicationController
 
         @tag_names_by_commit = @application.tag_names_by_commit
 
-        # where version == git tag, which it isn't for licensify
-        @latest_deploy_to_each_environment_by_version = {}
-        @application.latest_deploy_to_each_environment.each_value do |deployment|
-          @latest_deploy_to_each_environment_by_version[deployment.version] ||= []
-          @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
-        end
-
         @commits = if @application.deployments.last_deploy_to("production")
                      @application.undeployed_commits
                    else
