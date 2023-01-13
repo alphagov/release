@@ -1,3 +1,5 @@
+require 'byebug'
+
 class DeploymentsController < ApplicationController
   class ApplicationConflictError < RuntimeError; end
 

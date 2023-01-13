@@ -17,6 +17,7 @@
   margin_bottom: 4,
 } %>
 
+
 <% if @github_available %>
   <div class="release__commits-table">
     <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commit log", { caption_classes: "govuk-visually-hidden" }) do |t| %>
@@ -30,32 +31,25 @@
       <%= t.body do %>
         <% @commits.each do |commit| %>
           <%= t.row do %>
-            <% tags = @tags_by_commit[commit[:sha]] %>
-            <% commit_deployments = capture do %>
-              <% if tags %>
-                <% tags.each do |tag| %>
-                  <% if deployments = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
-                    <% deployments.each do |deployment| %>
-                      <p class="govuk-body-xs govuk-!-margin-bottom-1 release__commits-message">
-                        <span class="release__commits-label release__commits-label--<%= 'production' if deployment.environment == "production" %>"><%= deployment.environment.humanize %></span>
-                        <span>at <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %></span>
-                      </p>
-                    <% end %>
-                  <% end %>
-                <% end %>
-              <% else %>
+            <% tag_names = @tags_by_commit.fetch(commit[:sha], []).map{ |t| t[:name] } %>
 
+            <% environment_deployments = capture do %>
+              <% @application.latest_deploy_to_each_environment.each do |environment, deployment|  %>
+                <% if tag_names.include?(deployment[:version]) || (deployment.deployed_sha.present? && commit[:sha].starts_with?(deployment[:deployed_sha])) %>
+                  <p class="govuk-body-xs govuk-!-margin-bottom-1 release__commits-message">
+                    <span class="release__commits-label release__commits-label--<%= 'production' if deployment.environment == "production" %>"><%= deployment.environment.humanize %></span>
+                    <span>at <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %></span>
+                  </p>
+                <% end %>
               <% end %>
             <% end %>
 
-            <%= t.cell commit_deployments || "" %>
+            <%= t.cell environment_deployments || "" %>
 
             <% commit_tags = capture do %>
-              <% if tags %>
-                <% tags.each do |tag| %>
-                  <a class="govuk-link govuk-body-s" href="<%= deploy_application_path(@application) %>?tag=<%= tag[:name] %>"><%= tag[:name] %></a>
+                <% tag_names.each do |tag| %>
+                  <a class="govuk-link govuk-body-s" href="<%= deploy_application_path(@application) %>?tag=<%= tag %>"><%= tag %></a>
                 <% end %>
-              <% end %>
             <% end %>
 
             <%= t.cell commit_tags || "" %>
