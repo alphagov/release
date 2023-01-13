@@ -25,7 +25,7 @@ class ApplicationsController < ApplicationController
       format.html do
         @outstanding_dependency_pull_requests = @application.dependency_pull_requests[:total_count]
 
-        @tags_by_commit = @application.tags_by_commit
+        @tag_names_by_commit = @application.tag_names_by_commit
 
         # where version == git tag, which it isn't for licensify
         @latest_deploy_to_each_environment_by_version = {}

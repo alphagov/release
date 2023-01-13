@@ -30,11 +30,11 @@
       <%= t.body do %>
         <% @commits.each do |commit| %>
           <%= t.row do %>
-            <% tags = @tags_by_commit[commit[:sha]] %>
+            <% tags = @tag_names_by_commit[commit[:sha]] %>
             <% commit_deployments = capture do %>
               <% if tags %>
                 <% tags.each do |tag| %>
-                  <% if deployments = @latest_deploy_to_each_environment_by_version[tag[:name]] %>
+                  <% if deployments = @latest_deploy_to_each_environment_by_version[tag] %>
                     <% deployments.each do |deployment| %>
                       <p class="govuk-body-xs govuk-!-margin-bottom-1 release__commits-message">
                         <span class="release__commits-label release__commits-label--<%= 'production' if deployment.environment == "production" %>"><%= deployment.environment.humanize %></span>
@@ -53,7 +53,7 @@
             <% commit_tags = capture do %>
               <% if tags %>
                 <% tags.each do |tag| %>
-                  <a class="govuk-link govuk-body-s" href="<%= deploy_application_path(@application) %>?tag=<%= tag[:name] %>"><%= tag[:name] %></a>
+                  <a class="govuk-link govuk-body-s" href="<%= deploy_application_path(@application) %>?tag=<%= tag %>"><%= tag %></a>
                 <% end %>
               <% end %>
             <% end %>

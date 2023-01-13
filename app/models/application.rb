@@ -81,11 +81,11 @@ class Application < ApplicationRecord
     Services.github.commits(repo)
   end
 
-  def tags_by_commit
+  def tag_names_by_commit
     tags.each_with_object({}) do |tag, hash|
       sha = tag[:commit][:sha]
       hash[sha] ||= []
-      hash[sha] << tag
+      hash[sha] << tag[:name]
     end
   end
 
