@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "7.0.4"
+gem "rails", "7.0.4.1"
 
 gem "active_model_serializers"
 gem "chartkick"
