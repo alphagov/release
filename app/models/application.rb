@@ -82,6 +82,8 @@ class Application < ApplicationRecord
   end
 
   def tag_names_by_commit
+    tags = Services.github.tags(repo)
+
     tags.each_with_object({}) do |tag, hash|
       sha = tag[:commit][:sha]
       hash[sha] ||= []
@@ -99,11 +101,5 @@ class Application < ApplicationRecord
     )
     # The `compare` API shows commits in forward chronological order
     comparison.commits.reverse + [comparison.base_commit]
-  end
-
-private
-
-  def tags
-    Services.github.tags(repo)
   end
 end
