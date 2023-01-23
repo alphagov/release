@@ -23,33 +23,15 @@ class ApplicationsController < ApplicationController
     respond_to do |format|
       format.json { render json: @application }
       format.html do
-        @outstanding_dependency_pull_requests = Services.github.search_issues("repo:#{@application.repo} is:pr state:open label:dependencies")[:total_count]
+        @outstanding_dependency_pull_requests = @application.dependency_pull_requests[:total_count]
 
-        @tags_by_commit = Services.github.tags(@application.repo).each_with_object({}) do |tag, hash|
-          sha = tag[:commit][:sha]
-          hash[sha] ||= []
-          hash[sha] << tag
-        end
-        # where version == git tag, which it isn't for licensify
-        @latest_deploy_to_each_environment_by_version = {}
-        @application.latest_deploy_to_each_environment.each_value do |deployment|
-          @latest_deploy_to_each_environment_by_version[deployment.version] ||= []
-          @latest_deploy_to_each_environment_by_version[deployment.version] << deployment
-        end
+        @tag_names_by_commit = @application.tag_names_by_commit
 
-        @production_deploy = @application.deployments.last_deploy_to "production"
-        if @production_deploy
-          comparison = Services.github.compare(
-            @application.repo,
-            @production_deploy.version,
-            @application.default_branch,
-          )
-          # The `compare` API shows commits in forward chronological order
-          @commits = comparison.commits.reverse + [comparison.base_commit]
-        else
-          # the `commits` API shows commits in reverse chronological order
-          @commits = Services.github.commits(@application.repo)
-        end
+        @commits = if @application.deployments.last_deploy_to("production")
+                     @application.undeployed_commits
+                   else
+                     @application.commits
+                   end
 
         @github_available = true
       rescue Octokit::TooManyRequests

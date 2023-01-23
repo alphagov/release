@@ -72,4 +72,34 @@ class Application < ApplicationRecord
     key = shortname || fallback_shortname
     Application.cd_statuses.include? key
   end
+
+  def dependency_pull_requests
+    Services.github.search_issues("repo:#{repo} is:pr state:open label:dependencies")
+  end
+
+  def commits
+    Services.github.commits(repo)
+  end
+
+  def tag_names_by_commit
+    tags = Services.github.tags(repo)
+
+    tags.each_with_object({}) do |tag, hash|
+      sha = tag[:commit][:sha]
+      hash[sha] ||= []
+      hash[sha] << tag[:name]
+    end
+  end
+
+  def undeployed_commits
+    production_deployment = deployments.last_deploy_to("production")
+
+    comparison = Services.github.compare(
+      repo,
+      production_deployment.version,
+      default_branch,
+    )
+    # The `compare` API shows commits in forward chronological order
+    comparison.commits.reverse + [comparison.base_commit]
+  end
 end
