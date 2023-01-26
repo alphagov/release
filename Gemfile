@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem "rails", "7.0.4"
 
 gem "active_model_serializers"
+gem "bootsnap", require: false
 gem "chartkick"
 gem "friendly_id"
 gem "gds-sso"
