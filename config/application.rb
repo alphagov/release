@@ -37,5 +37,9 @@ module ReleaseApp
     # to use CSS that has same function names as SCSS such as max.
     # https://github.com/alphagov/govuk-frontend/issues/1350
     config.assets.css_compressor = nil
+
+    # Set asset path to be application specific so that we can put all GOV.UK
+    # assets into an S3 bucket and distinguish app by path.
+    config.assets.prefix = "/assets/release"
   end
 end
