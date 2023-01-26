@@ -11,8 +11,7 @@
   },
   "standardx": {
     "env": {
-      "browser": true,
-      "jquery": true
+      "browser": true
     }
   },
   "eslintConfig": {
@@ -23,9 +22,7 @@
   "stylelint": {
     "extends": "stylelint-config-gds/scss"
   },
-  "dependencies": {
-    "jquery": "3.6.3"
-  },  
+  "dependencies": {},  
   "devDependencies": {
     "standardx": "^7.0.0",
     "stylelint": "^14.16.1",
