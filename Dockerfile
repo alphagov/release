@@ -1,30 +1,27 @@
-FROM ruby:2.7.6
-MAINTAINER "govuk-role-platform-accounts-members@digital.cabinet-office.gov.uk"
+ARG ruby_version=2.7.6
+ARG base_image=ghcr.io/alphagov/govuk-ruby-base:$ruby_version
+ARG builder_image=ghcr.io/alphagov/govuk-ruby-builder:$ruby_version
 
-# Add yarn to apt sources
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+FROM $builder_image AS builder
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y \
-      # base dependencies
-      ruby-dev build-essential libgmp3-dev default-libmysqlclient-dev \
-      # for bundle exec rake -T and assets commands to work
-      curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-      apt-get update -qq && apt-get install -y nodejs \
-      # for healthcheck
-      curl \
-      yarn
-
-COPY . .
-
+WORKDIR $APP_HOME
+COPY Gemfile* .ruby-version ./
 RUN bundle install
-RUN bundle exec rake assets:clean assets:precompile
+COPY package.json yarn.lock ./
+RUN yarn install --production --frozen-lockfile --non-interactive --link-duplicates
+COPY . .
+RUN bootsnap precompile --gemfile .
+RUN rails assets:precompile && rm -fr log
 
-HEALTHCHECK --interval=15s --timeout=3s\
-  CMD curl -f http://localhost:3036/ || exit 1
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3036"]
+FROM $base_image
 
-EXPOSE 3036
+ENV GOVUK_APP_NAME=release
+
+WORKDIR $APP_HOME
+COPY --from=builder $BUNDLE_PATH $BUNDLE_PATH
+COPY --from=builder $BOOTSNAP_CACHE_DIR $BOOTSNAP_CACHE_DIR
+COPY --from=builder $APP_HOME .
+
+USER app
+CMD ["puma"]
