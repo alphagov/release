@@ -33,7 +33,7 @@
             <% tags = @tag_names_by_commit.fetch(commit[:sha], []) %>
             <% commit_deployments = capture do %>
               <% @application.latest_deploy_to_each_environment.each do |_, deployment| %>
-                <% if tags.include?(deployment.version) %>
+                <% if tags.include?(deployment.version) || deployment.commit_match?(commit[:sha]) %>
                   <p class="govuk-body-xs govuk-!-margin-bottom-1 release__commits-message">
                     <span class="release__commits-label release__commits-label--<%= 'production' if deployment.environment == "production" %>"><%= deployment.environment.humanize %></span>
                     <span>at <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %></span>

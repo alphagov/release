@@ -39,6 +39,13 @@ class Deployment < ApplicationRecord
     application.repo_compare_url(previous_version, version)
   end
 
+  def commit_match?(sha)
+    commit_sha = deployed_sha || ""
+    return false if commit_sha.length < 6
+
+    sha.starts_with?(commit_sha)
+  end
+
 private
 
   # Record the deployment to statsd and thence to graphite

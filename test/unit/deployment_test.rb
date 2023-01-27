@@ -13,4 +13,36 @@ class DeploymentTest < ActiveSupport::TestCase
       assert_equal previous, the_deploy.previous_deployment
     end
   end
+
+  describe "#commit_match?" do
+    should "return true when SHAs are the same" do
+      deployment = FactoryBot.create(:deployment, deployed_sha: "c579613e5f0335ecf409fed881fa7919c150c1af")
+
+      assert_equal true, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
+    end
+
+    should "return false when SHAs are the different" do
+      deployment = FactoryBot.create(:deployment, deployed_sha: "0fa90a3bc5b1c91e9355de3507244e11d8a2d68c")
+
+      assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
+    end
+
+    should "return true if deployed_sha is a short SHA" do
+      deployment = FactoryBot.create(:deployment, deployed_sha: "c579613")
+
+      assert_equal true, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
+    end
+
+    should "return false if deployed_sha is nil" do
+      deployment = FactoryBot.create(:deployment, deployed_sha: nil)
+
+      assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
+    end
+
+    should "return false if deployed_sha too short" do
+      deployment = FactoryBot.create(:deployment, deployed_sha: "c5")
+
+      assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
+    end
+  end
 end
