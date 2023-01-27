@@ -8,6 +8,7 @@ FactoryBot.define do
   factory :deployment do
     sequence(:version) { |n| "release_#{n}" }
     environment { "production" }
+    application
   end
 
   factory :user do
