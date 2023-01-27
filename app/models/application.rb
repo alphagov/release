@@ -60,10 +60,6 @@ class Application < ApplicationRecord
     "https://github.com/#{repo}/compare/#{from}...#{to}"
   end
 
-  def repo_tag_url(tag)
-    "https://github.com/#{repo}/releases/tag/#{tag}"
-  end
-
   def self.cd_statuses
     @cd_statuses ||= YAML.safe_load(open("data/continuously_deployed_apps.yml"))
   end
