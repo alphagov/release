@@ -7,7 +7,7 @@ class DeployPageTest < ActionDispatch::IntegrationTest
 
   test "page handles a single deployment without a previous deployment" do
     application = FactoryBot.create(:application)
-    deployment = FactoryBot.create(:deployment, application: application, environment: "production")
+    deployment = FactoryBot.create(:deployment, application:, environment: "production")
 
     visit deployment_path(deployment)
 
@@ -37,10 +37,10 @@ class DeployPageTest < ActionDispatch::IntegrationTest
     ]
 
     stub_request(:get, "https://api.github.com/repos/#{application.repo}/compare/release_70...release_80")
-      .to_return(headers: { "content-type" => "application/json" }, body: { commits: commits }.to_json)
+      .to_return(headers: { "content-type" => "application/json" }, body: { commits: }.to_json)
 
-    FactoryBot.create(:deployment, application: application, environment: "production", version: "release_70")
-    deployment = FactoryBot.create(:deployment, application: application, environment: "production", version: "release_80", jenkins_user_name: "A Deployer")
+    FactoryBot.create(:deployment, application:, environment: "production", version: "release_70")
+    deployment = FactoryBot.create(:deployment, application:, environment: "production", version: "release_80", jenkins_user_name: "A Deployer")
 
     visit deployment_path(deployment)
 

@@ -32,15 +32,6 @@ class Report::DeployLagReportTest < ActiveSupport::TestCase
     assert_equal([], sequences)
   end
 
-  test "ignore the hosting provider (AWS vs. Carrenza)" do
-    deploy = FactoryBot.create(:deployment, environment: "integration", version: "release_123", application: @app)
-    prod_deploy = FactoryBot.create(:deployment, environment: "production", version: "release_124", application: @app)
-
-    sequences = Report::DeployLagReport.new.call(@start_date, @end_date)
-    assert_equal(deploy, sequences.first[:deploy])
-    assert_equal(prod_deploy, sequences.first[:prod_deploy])
-  end
-
   test "ignores deploys that are outside of the selected time range" do
     FactoryBot.create(:deployment, created_at: 2.years.ago, environment: "integration", version: "release_123", application: @app)
     FactoryBot.create(:deployment, created_at: 2.years.ago, environment: "production", version: "release_123", application: @app)

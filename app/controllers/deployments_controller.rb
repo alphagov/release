@@ -23,10 +23,10 @@ class DeploymentsController < ApplicationController
 
     shortname = new_deployment_params[:application_id]
 
-    application_id = Application.where(shortname: shortname).pick(:id)
+    application_id = Application.where(shortname:).pick(:id)
 
     @deployment = Deployment.new(
-      application_id: application_id,
+      application_id:,
       environment: new_deployment_params[:environment],
       created_at: default_deploy_time,
     )
@@ -45,7 +45,7 @@ class DeploymentsController < ApplicationController
 
       application.archived = false
       application.save!
-      Deployment.create!(deployment_params.merge(application: application))
+      Deployment.create!(deployment_params.merge(application:))
       head :ok
     else
       @deployment = Deployment.new(deployment_params)
@@ -80,7 +80,7 @@ private
   def application_by_name
     existing_apps = Application.where(name: normalize_app_name(params[:application_name]))
 
-    if existing_apps.length.zero?
+    if existing_apps.empty?
       Application.create!(name: normalize_app_name(params[:application_name]), repo: repo_path)
     elsif existing_apps.length == 1
       existing_apps[0]

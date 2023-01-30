@@ -7,14 +7,14 @@ class Deployment < ApplicationRecord
   scope :newest_first, -> { order("created_at DESC") }
 
   def self.last_deploy_to(environment)
-    where(environment: environment)
+    where(environment:)
       .order("created_at DESC")
       .first
   end
 
   def previous_deployment
     @previous_deployment ||= Deployment
-      .where(application_id: application_id, environment: environment)
+      .where(application_id:, environment:)
       .where("id < ?", id)
       .order("id DESC")
       .first

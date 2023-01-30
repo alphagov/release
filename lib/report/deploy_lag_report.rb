@@ -23,7 +23,7 @@ class Report
         prod_deploy = production_deploy_for(dep, production_by_version)
         next unless prod_deploy
 
-        { app: app, deploy: dep, prod_deploy: prod_deploy }
+        { app:, deploy: dep, prod_deploy: }
       end
     end
 

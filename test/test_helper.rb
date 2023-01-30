@@ -29,7 +29,7 @@ class ActiveSupport::TestCase
     request.env["warden"] = stub(
       authenticate!: true,
       authenticated?: true,
-      user: user,
+      user:,
     )
   end
 
