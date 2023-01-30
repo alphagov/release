@@ -133,7 +133,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     context "GET show with a production deployment" do
       setup do
         version = "release_42"
-        FactoryBot.create(:deployment, application: @app, version: version)
+        FactoryBot.create(:deployment, application: @app, version:)
         @first_commit = stub_commit
         @second_commit = stub_commit
         @base_commit = stub_commit
