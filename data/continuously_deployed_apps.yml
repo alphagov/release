@@ -31,7 +31,6 @@
 - publisher
 - publishing-api
 - release
-- service-manual-frontend
 - service-manual-publisher
 - short-url-manager
 - sidekiq-monitoring
