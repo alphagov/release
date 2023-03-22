@@ -100,7 +100,7 @@ class Application < ApplicationRecord
   end
 
   def undeployed_commits
-    production_deployment = deployments.last_deploy_to("production")
+    production_deployment = deployments.last_deploy_to(live_environment)
 
     comparison = Services.github.compare(
       repo,

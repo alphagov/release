@@ -27,7 +27,7 @@ class ApplicationsController < ApplicationController
 
         @tag_names_by_commit = @application.tag_names_by_commit
 
-        @commits = if @application.deployments.last_deploy_to("production")
+        @commits = if @application.deployments.last_deploy_to(@application.live_environment)
                      @application.undeployed_commits
                    else
                      @application.commits
@@ -57,7 +57,7 @@ class ApplicationsController < ApplicationController
   def deploy
     @release_tag = params[:tag]
 
-    @production_deploy = @application.deployments.last_deploy_to "production"
+    @production_deploy = @application.deployments.last_deploy_to(@application.live_environment)
 
     if @production_deploy
       comparison = Services.github.compare(
