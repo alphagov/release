@@ -107,4 +107,12 @@ class Application < ApplicationRecord
     # The `compare` API shows commits in forward chronological order
     comparison.commits.reverse + [comparison.base_commit]
   end
+
+  def live_environment
+    if deployed_to_ec2?
+      "production"
+    else
+      "production EKS"
+    end
+  end
 end

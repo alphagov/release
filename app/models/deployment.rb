@@ -46,6 +46,10 @@ class Deployment < ApplicationRecord
     sha.starts_with?(commit_sha)
   end
 
+  def to_live_environment?
+    environment == application.live_environment
+  end
+
 private
 
   # Record the deployment to statsd and thence to graphite
