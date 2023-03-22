@@ -60,6 +60,10 @@ class Application < ApplicationRecord
     "https://github.com/#{repo}/compare/#{from}...#{to}"
   end
 
+  def self.ec2_deployed_apps
+    @ec2_deployed_apps ||= YAML.safe_load_file("data/ec2_deployed_apps.yml")
+  end
+
   def self.cd_statuses
     @cd_statuses ||= YAML.safe_load(open("data/continuously_deployed_apps.yml"))
   end
@@ -67,6 +71,11 @@ class Application < ApplicationRecord
   def cd_enabled?
     key = shortname || fallback_shortname
     Application.cd_statuses.include? key
+  end
+
+  def deployed_to_ec2?
+    key = shortname || fallback_shortname
+    Application.ec2_deployed_apps.include? key
   end
 
   def dependency_pull_requests

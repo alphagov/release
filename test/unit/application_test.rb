@@ -172,4 +172,33 @@ class ApplicationTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context "deployed to EC2" do
+    setup do
+      @atts = {
+        name: "Tron-o-matic",
+        repo: "alphagov/tron-o-matic",
+      }
+    end
+
+    context "when the application is not continuously deployed" do
+      should "return false" do
+        application = Application.new(@atts)
+
+        Application.stub :ec2_deployed_apps, ["something-other-than-tron-o-matic"] do
+          assert_not application.deployed_to_ec2?
+        end
+      end
+    end
+
+    context "when the application is continuously deployed" do
+      should "return true" do
+        application = Application.new(@atts)
+
+        Application.stub :ec2_deployed_apps, ["tron-o-matic"] do
+          assert application.deployed_to_ec2?
+        end
+      end
+    end
+  end
 end
