@@ -42,8 +42,11 @@ class Application < ApplicationRecord
   end
 
   def status
-    return :production_and_staging_not_in_sync unless in_sync?(%w[production staging])
-    return :undeployed_changes_in_integration unless in_sync?(%w[production staging integration])
+    envs = %w[production staging integration]
+    envs = envs.map { |env| "#{env} EKS" } unless deployed_to_ec2?
+
+    return :production_and_staging_not_in_sync unless in_sync?(envs[0, 1])
+    return :undeployed_changes_in_integration unless in_sync?(envs)
 
     :all_environments_match
   end
@@ -60,6 +63,10 @@ class Application < ApplicationRecord
     "https://github.com/#{repo}/compare/#{from}...#{to}"
   end
 
+  def self.ec2_deployed_apps
+    @ec2_deployed_apps ||= YAML.safe_load_file("data/ec2_deployed_apps.yml")
+  end
+
   def self.cd_statuses
     @cd_statuses ||= YAML.safe_load(open("data/continuously_deployed_apps.yml"))
   end
@@ -67,6 +74,11 @@ class Application < ApplicationRecord
   def cd_enabled?
     key = shortname || fallback_shortname
     Application.cd_statuses.include? key
+  end
+
+  def deployed_to_ec2?
+    key = shortname || fallback_shortname
+    Application.ec2_deployed_apps.include? key
   end
 
   def dependency_pull_requests
@@ -88,7 +100,7 @@ class Application < ApplicationRecord
   end
 
   def undeployed_commits
-    production_deployment = deployments.last_deploy_to("production")
+    production_deployment = deployments.last_deploy_to(live_environment)
 
     comparison = Services.github.compare(
       repo,
@@ -97,5 +109,13 @@ class Application < ApplicationRecord
     )
     # The `compare` API shows commits in forward chronological order
     comparison.commits.reverse + [comparison.base_commit]
+  end
+
+  def live_environment
+    if deployed_to_ec2?
+      "production"
+    else
+      "production EKS"
+    end
   end
 end

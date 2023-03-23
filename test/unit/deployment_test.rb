@@ -45,4 +45,18 @@ class DeploymentTest < ActiveSupport::TestCase
       assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
   end
+
+  describe "#to_live_environment?" do
+    should "return true if deployment to application's live environment" do
+      deployment = FactoryBot.create(:deployment, environment: "production EKS")
+
+      assert_equal true, deployment.to_live_environment?
+    end
+
+    should "return false if deployment not to application's live environment" do
+      deployment = FactoryBot.create(:deployment, environment: "test")
+
+      assert_equal false, deployment.to_live_environment?
+    end
+  end
 end
