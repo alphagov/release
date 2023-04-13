@@ -21,6 +21,17 @@
 
 <%= render 'status_notes', application: @application %>
 
+<% if @application.deployed_to_ec2? %>
+  <%= render partial: "ec2_deployment_steps", locals: { application: @application, release_tag: @release_tag } %>
+<% else %>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Deploy this release",
+      href: "https://github.com/#{@application.repo}/actions/workflows/deploy.yml",
+      target: "_blank",
+      margin_bottom: true
+    } %>
+<% end %>
+
 <% if @production_deploy %>
   <p class="govuk-body">Production is on <%= @production_deploy.version %> &mdash; deployed at <%= human_datetime(@production_deploy.created_at) %></p>
 <% else %>
@@ -56,4 +67,3 @@
   <% end %>
 <% end %>
 
-<%= render partial: "ec2_deployment_steps", locals: { application: @application, release_tag: @release_tag } %>
