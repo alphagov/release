@@ -1,0 +1,68 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/heading", {
+      text: "Deploy to Staging",
+      margin_bottom: 4,
+      heading_level: 3
+    } %>
+    <p class="govuk-body">
+      <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= dashboard_url(@application, "integration") %>" class="govuk-link">Integration dashboard</a>:
+      Monitor your deployment to check that it hasn't caused any problems.
+    </p>
+    <p class="govuk-body">
+      <%= octicon "cpu", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= smokey_url("integration") %>" class="govuk-link">Integration smokey</a>:
+      Run Smokey in Integration and check your deploy didn't cause any problems.
+    </p>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Deploy to Staging",
+      href: jenkins_deploy_url(@application, @release_tag, "staging"),
+      target: "_blank",
+      margin_bottom: true
+    } %>
+
+    <%= render "govuk_publishing_components/components/heading", {
+      text: "Deploy to Production",
+      margin_bottom: 4,
+      heading_level: 3
+    } %>
+    <p class="govuk-body">
+      <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= dashboard_url(@application, "staging") %>" class="govuk-link">Staging dashboard</a>:
+      Monitor your deployment to check that it doesn't cause any problems.
+    </p>
+    <p class="govuk-body">
+      <%= octicon "cpu", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= smokey_url("staging") %>" class="govuk-link">Staging smokey</a>:
+      Run Smokey in Staging and check your deploy didn't cause any problems.
+    </p>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Deploy to Production",
+      href: jenkins_deploy_url(@application, @release_tag, "production"),
+      target: "_blank",
+      destructive: true,
+      margin_bottom: true
+    } %>
+
+    <%= render "govuk_publishing_components/components/heading", {
+      text: "Monitor Production",
+      margin_bottom: 4,
+      heading_level: 3
+    } %>
+    <p class="govuk-body">
+      <%= octicon "graph", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= dashboard_url(@application, "production") %>" class="govuk-link">Production dashboard</a>:
+      Monitor your deployment to check that it doesn't cause any problems.
+    </p>
+    <p class="govuk-body">
+      <%= octicon "cpu", height: '20px', style: "vertical-align: middle; margin-right: 4px;", "aria-hidden": "true" %>
+      <a target="_blank" href="<%= smokey_url("production") %>" class="govuk-link">Production smokey</a>:
+      Run Smokey in Production and check your deploy didn't cause any problems.
+    </p>
+  </div>
+
+  <div class="govuk-grid-column-one-third">
+    <img title="Obey the Badger of Deploy" src="<%= asset_path('obey.jpg') %>" alt="Obey the Badger of Deploy" width="229" height="320">
+  </div>
+</div>

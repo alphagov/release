@@ -342,20 +342,9 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
 
-    should "show dashboard links to application's deployment dashboard" do
-      @app.shortname = "whitehall"
-      @app.save!
-      stub_request(:get, "https://grafana_hostname/api/dashboards/file/whitehall.json").to_return(status: "200")
-
+    should "show deployment link" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".govuk-link[href=?]", "https://grafana.blue.staging.govuk.digital/dashboard/file/whitehall.json"
-      assert_select ".govuk-link[href=?]", "https://grafana.blue.production.govuk.digital/dashboard/file/whitehall.json"
-    end
-
-    should "show links to jenkins" do
-      get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".gem-c-button[href=?]", "https://deploy.blue.staging.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
-      assert_select ".gem-c-button[href=?]", "https://deploy.blue.production.govuk.digital/job/Deploy_App/parambuild?TARGET_APPLICATION=#{@app.shortname}&TAG=hot_fix_1"
+      assert_select ".gem-c-button[href=?]", "https://github.com/#{@app.repo}/actions/workflows/deploy.yml"
     end
 
     context "when there is a github API 404 error" do
