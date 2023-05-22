@@ -20,13 +20,14 @@ class Application < ApplicationRecord
 
   default_scope { order("name ASC") }
 
-  def latest_deploy_to_each_environment
-    return @latest_deploy_to_each_environment unless @latest_deploy_to_each_environment.nil?
+  ENVIRONMENTS_ORDER = %w[integration staging production].freeze
 
-    environments = deployments.select("DISTINCT environment").map(&:environment)
-    @latest_deploy_to_each_environment = environments.index_with do |environment|
+  def latest_deploy_to_each_environment
+    envs = deployed_to_ec2? ? ENVIRONMENTS_ORDER : ENVIRONMENTS_ORDER.map { |env| "#{env} EKS" }
+    @latest_deploy_to_each_environment ||= envs.index_with do |environment|
       deployments.last_deploy_to(environment)
     end
+    @latest_deploy_to_each_environment.compact
   end
 
   def latest_deploy_to(*environments)
