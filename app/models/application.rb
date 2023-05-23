@@ -45,7 +45,7 @@ class Application < ApplicationRecord
     envs = %w[production staging integration]
     envs = envs.map { |env| "#{env} EKS" } unless deployed_to_ec2?
 
-    return :production_and_staging_not_in_sync unless in_sync?(envs[0, 1])
+    return :production_and_staging_not_in_sync unless in_sync?(envs.take(2))
     return :undeployed_changes_in_integration unless in_sync?(envs)
 
     :all_environments_match

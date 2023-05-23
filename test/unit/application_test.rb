@@ -211,7 +211,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     context "when the application is not deployed to EC2" do
-      should "returns production EKS" do
+      should "return production EKS" do
         application = Application.new(@atts)
 
         Application.stub :ec2_deployed_apps, ["something-other-than-tron-o-matic"] do
@@ -226,6 +226,77 @@ class ApplicationTest < ActiveSupport::TestCase
 
         Application.stub :ec2_deployed_apps, ["tron-o-matic"] do
           assert_equal "production", application.live_environment
+        end
+      end
+    end
+  end
+
+  describe "#status" do
+    before do
+      @app = FactoryBot.create(:application, name: SecureRandom.hex, repo: "alphagov/#{SecureRandom.hex}")
+      Deployment.delete_all
+    end
+
+    context "when the application is deployed to EC2" do
+      should "return :all_environments_match when deployments are in sync" do
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "integration")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
+
+        @app.stub :deployed_to_ec2?, true do
+          assert_equal :all_environments_match, @app.status
+        end
+      end
+
+      should "return :production_and_staging_not_in_sync when staging and production have different versions" do
+        FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration")
+        FactoryBot.create(:deployment, application: @app, version: "2", environment: "staging")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
+
+        @app.stub :deployed_to_ec2?, true do
+          assert_equal :production_and_staging_not_in_sync, @app.status
+        end
+      end
+
+      should "return :undeployed_changes_in_integration when there are different version across the environments" do
+        FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
+
+        @app.stub :deployed_to_ec2?, true do
+          assert_equal :undeployed_changes_in_integration, @app.status
+        end
+      end
+    end
+
+    context "when the application is deployed to EKS" do
+      should "return :all_environments_match when deployments are in sync" do
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "integration EKS")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging EKS")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production EKS")
+
+        @app.stub :deployed_to_ec2?, false do
+          assert_equal :all_environments_match, @app.status
+        end
+      end
+
+      should "return :production_and_staging_not_in_sync when staging and production have different versions" do
+        FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration EKS")
+        FactoryBot.create(:deployment, application: @app, version: "2", environment: "staging EKS")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production EKS")
+
+        @app.stub :deployed_to_ec2?, false do
+          assert_equal :production_and_staging_not_in_sync, @app.status
+        end
+      end
+
+      should "return :undeployed_changes_in_integration when there are different version across the environments" do
+        FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration EKS")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging EKS")
+        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production EKS")
+
+        @app.stub :deployed_to_ec2?, false do
+          assert_equal :undeployed_changes_in_integration, @app.status
         end
       end
     end
