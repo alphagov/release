@@ -15,6 +15,7 @@ gem "octicons_helper"
 gem "octokit"
 gem "plek"
 gem "sassc-rails"
+gem "sentry-sidekiq"
 gem "sprockets"
 gem "uglifier"
 
