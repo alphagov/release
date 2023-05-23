@@ -365,6 +365,9 @@ GEM
       sentry-ruby (~> 5.9.0)
     sentry-ruby (5.9.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.9.0)
+      sentry-ruby (~> 5.9.0)
+      sidekiq (>= 3.0)
     shoulda-context (2.0.0)
     sidekiq (6.5.8)
       connection_pool (>= 2.2.5, < 3)
@@ -448,6 +451,7 @@ DEPENDENCIES
   rails-controller-testing
   rubocop-govuk
   sassc-rails
+  sentry-sidekiq
   shoulda-context
   simplecov
   sprockets
