@@ -7,7 +7,6 @@ class DeploymentsControllerTest < ActionController::TestCase
 
   context "GET recent" do
     setup do
-      Deployment.delete_all
       @application = FactoryBot.create(:application, name: "Foo")
       @deployments = FactoryBot.create_list(:deployment, 10, application_id: @application.id)
     end
