@@ -9,8 +9,10 @@ require "shoulda-context"
 require "minitest/autorun"
 require "mocha/minitest"
 require "webmock/minitest"
+require "govuk_sidekiq/testing"
 
 DatabaseCleaner.strategy = :transaction
+Sidekiq::Testing.fake!
 
 class ActiveSupport::TestCase
   setup do
@@ -33,8 +35,19 @@ class ActiveSupport::TestCase
     )
   end
 
+  def mock_env(partial_env_hash)
+    old = ENV.to_hash
+    ENV.update partial_env_hash
+    begin
+      yield
+    ensure
+      ENV.replace old
+    end
+  end
+
   teardown do
     DatabaseCleaner.clean
+    Sidekiq::Worker.clear_all
   end
 end
 
