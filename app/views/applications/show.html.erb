@@ -22,7 +22,9 @@
     <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commit log", { caption_classes: "govuk-visually-hidden" }) do |t| %>
       <%= t.head do %>
         <%= t.header "Deployed to" %>
-        <%= t.header "Release tags" %>
+        <% if @application.deployed_to_ec2? %>
+          <%= t.header "Release tags" %>
+        <% end %>
         <%= t.header "Commit" %>
         <%= t.header "Commit SHA" %>
       <% end %>
@@ -43,14 +45,16 @@
             <% end %>
 
             <%= t.cell commit_deployments || "" %>
-
-            <% commit_tags = capture do %>
-              <% tags.each do |tag| %>
-                <a class="govuk-link govuk-body-s" href="<%= deploy_application_path(@application) %>?tag=<%= tag %>"><%= tag %></a>
+            
+            <% if @application.deployed_to_ec2? %>
+              <% commit_tags = capture do %>
+                <% tags.each do |tag| %>
+                  <a class="govuk-link govuk-body-s" href="<%= deploy_application_path(@application) %>?tag=<%= tag %>"><%= tag %></a>
+                <% end %>
               <% end %>
-            <% end %>
 
-            <%= t.cell commit_tags || "" %>
+              <%= t.cell commit_tags || "" %>
+            <% end %>
 
             <% commit_message = capture do %>
               <p class="govuk-body-s govuk-!-margin-bottom-0">
