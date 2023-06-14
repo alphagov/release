@@ -28,6 +28,6 @@ private
   end
 
   def app_info(app)
-    "- <#{Plek.find('release')}/applications/#{app[:shortname]}|#{app[:name]}> – #{app[:status].to_s.humanize} (<https://github.com/#{app[:repo]}/actions/workflows/deploy.yml|Deploy GitHub action>)"
+    "- <#{Plek.external_url_for('release')}/applications/#{app[:shortname]}|#{app[:name]}> – #{app[:status].to_s.humanize} (<https://github.com/#{app[:repo]}/actions/workflows/deploy.yml|Deploy GitHub action>)"
   end
 end
