@@ -63,6 +63,24 @@
       }
     ]
   } %>
+  
+  <% hint_text = capture do %>
+    <% if @application.deployed_to_ec2? %>
+      Disables automatic deployments. Our deploy jobs will query the value of this flag in the API and abort if it is set. Manual deploy job builds will continue to work.
+    <% else %>
+      Adds 'Automatic deployments disabled' badge in the Release app.
+      
+      <% unless current_page?(action: 'new') %>
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+              Continious deployment between each environment has to be disabled or enabled via <%= link_to "GitHub action", "https://github.com/#{@application.repo}/actions/workflows/set-automatic-deploys.yml", class: "govuk-link" %>.
+          </strong>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
 
   <input type="hidden" name="application[deploy_freeze]" value="0" />
   <%= render "govuk_publishing_components/components/checkboxes", {
@@ -72,7 +90,7 @@
         label: "Freeze deployments?",
         value: "1",
         checked: @application.deploy_freeze?,
-        hint: "Disables automatic deployments. Our deploy jobs will query the value of this flag in the API and abort if it is set. Manual deploy job builds will continue to work."
+        hint: hint_text,
       }
     ]
   } %>
