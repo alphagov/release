@@ -3,7 +3,7 @@ require "test_helper"
 class RepoTest < ActiveSupport::TestCase
   describe ".all" do
     should "return an array of repositories" do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/repos.json").to_return(
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(
         status: 200,
         body: '[{"name": "repo1"}, {"name": "repo2"}]',
       )
@@ -14,7 +14,7 @@ class RepoTest < ActiveSupport::TestCase
     end
 
     should "handle HTTParty errors gracefully" do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/repos.json").to_return(status: 404)
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 404)
 
       HTTParty.stub(:get, -> { raise HTTParty::Error }) do
         repos = Repo.all

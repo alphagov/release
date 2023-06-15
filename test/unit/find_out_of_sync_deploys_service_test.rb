@@ -14,7 +14,7 @@ class FindOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
         { "app_name" => "authenticating-proxy", "team" => "#govuk-navigation-tech" },
       ].to_json
 
-      stub_request(:get, "http://docs.publishing.service.gov.uk/repos.json").to_return(status: 200, body: response_body)
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
       FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
@@ -79,7 +79,7 @@ class FindOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
 
     should "return general dev slack channel when it can't find team (because app names don't match)" do
       response_body = [{ "app_name" => "content-data-admin", "team" => "#govuk-platform-security-reliability-team" }].to_json
-      stub_request(:get, "http://docs.publishing.service.gov.uk/repos.json").to_return(status: 200, body: response_body)
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Content Data", shortname: "content-data")
       FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
