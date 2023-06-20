@@ -255,7 +255,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show warning that an EKS deployed app has have deployments disabled via GitHub action" do
       get :edit, params: { id: @app.id }
-      assert_select ".govuk-warning-text__text", /Continious deployment between each environment has to be disabled or enabled * via GitHub action/
+      assert_select ".govuk-warning-text__text", /Continuous deployment between each environment has to be disabled or enabled * via GitHub action/
     end
   end
 
