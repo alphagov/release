@@ -12,7 +12,8 @@
   <%= render partial: "shared/badges", locals: { application: application } %>
 </div>
 
-<%= render "components/tabs", {
+<%= render "govuk_publishing_components/components/tabs", {
+  as_links: true,
   tabs: [
     {
       href: application,
