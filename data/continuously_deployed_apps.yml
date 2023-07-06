@@ -2,7 +2,6 @@
 - asset-manager
 - authenticating-proxy
 - bouncer
-- cache-clearing-service
 - collections
 - collections-publisher
 - contacts
