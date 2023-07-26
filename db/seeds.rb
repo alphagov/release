@@ -9,7 +9,6 @@ applications = [
   { name: "Feedback",                               repo: "alphagov/feedback" },
   { name: "Frontend",                               repo: "alphagov/frontend", status_notes: example_note },
   { name: "Imminence",                              repo: "alphagov/imminence" },
-  { name: "Licence finder",                         repo: "alphagov/licence-finder", shortname: "licencefinder" },
   { name: "Licensify",                              repo: "alphagov/licensify" },
   { name: "Publisher",                              repo: "alphagov/publisher" },
   { name: "Rummager",                               repo: "alphagov/rummager" },
