@@ -1093,7 +1093,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.npmjs.org/lodash.truncate/-/lodash.truncate-4.4.2.tgz"
   integrity "sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM= sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw=="
 
-lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.21:
+lodash@^4.17.14, lodash@^4.17.19:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
 
@@ -1452,18 +1452,18 @@ postcss-safe-parser@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmjs.org/postcss-safe-parser/-/postcss-safe-parser-6.0.0.tgz"
 
-postcss-scss@^4.0.2:
-  version "4.0.4"
-  resolved "https://registry.npmjs.org/postcss-scss/-/postcss-scss-4.0.4.tgz"
+postcss-scss@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/postcss-scss/-/postcss-scss-4.0.6.tgz#5d62a574b950a6ae12f2aa89b60d63d9e4432bfd"
 
-postcss-selector-parser@^6.0.13, postcss-selector-parser@^6.0.6:
+postcss-selector-parser@^6.0.13:
   version "6.0.13"
   resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.13.tgz#d05d8d76b1e8e173257ef9d60b706a8e5e99bf1b"
   dependencies:
     cssesc "^3.0.0"
     util-deprecate "^1.0.2"
 
-postcss-value-parser@^4.1.0, postcss-value-parser@^4.2.0:
+postcss-value-parser@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz"
 
@@ -1783,47 +1783,56 @@ style-search@^0.1.0:
   resolved "https://registry.npmjs.org/style-search/-/style-search-0.1.0.tgz"
   integrity "sha1-eVjHk+R+MuB9K1yv5cC/jhLneQI= sha512-Dj1Okke1C3uKKwQcetra4jSuk0DqbzbYtXipzFlFMZtowbF1x7BKJwB9AayVMyFARvU8EDrZdcax4At/452cAg=="
 
-stylelint-config-gds@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/stylelint-config-gds/-/stylelint-config-gds-0.3.0.tgz"
+stylelint-config-gds@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-gds/-/stylelint-config-gds-1.0.0.tgz#ac372880c11643e704f8ac6f0a0ecc4f32ef0f24"
   dependencies:
-    stylelint-config-standard "^29.0.0"
-    stylelint-config-standard-scss "^6.1.0"
+    stylelint-config-standard "^34.0.0"
+    stylelint-config-standard-scss "^10.0.0"
 
-stylelint-config-recommended-scss@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.npmjs.org/stylelint-config-recommended-scss/-/stylelint-config-recommended-scss-8.0.0.tgz"
+stylelint-config-recommended-scss@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-recommended-scss/-/stylelint-config-recommended-scss-12.0.0.tgz#9d9e82c46012649f11bfebcbc788f58e61860f33"
   dependencies:
-    postcss-scss "^4.0.2"
-    stylelint-config-recommended "^9.0.0"
-    stylelint-scss "^4.0.0"
+    postcss-scss "^4.0.6"
+    stylelint-config-recommended "^12.0.0"
+    stylelint-scss "^5.0.0"
 
-stylelint-config-recommended@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/stylelint-config-recommended/-/stylelint-config-recommended-9.0.0.tgz"
+stylelint-config-recommended@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-recommended/-/stylelint-config-recommended-12.0.0.tgz#d0993232fca017065fd5acfcb52dd8a188784ef4"
 
-stylelint-config-standard-scss@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.npmjs.org/stylelint-config-standard-scss/-/stylelint-config-standard-scss-6.1.0.tgz"
+stylelint-config-recommended@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-recommended/-/stylelint-config-recommended-13.0.0.tgz#c48a358cc46b629ea01f22db60b351f703e00597"
+
+stylelint-config-standard-scss@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-standard-scss/-/stylelint-config-standard-scss-10.0.0.tgz#159a54a01b80649bf0143fa7ba086b676a1a749e"
   dependencies:
-    stylelint-config-recommended-scss "^8.0.0"
-    stylelint-config-standard "^29.0.0"
+    stylelint-config-recommended-scss "^12.0.0"
+    stylelint-config-standard "^33.0.0"
 
-stylelint-config-standard@^29.0.0:
-  version "29.0.0"
-  resolved "https://registry.npmjs.org/stylelint-config-standard/-/stylelint-config-standard-29.0.0.tgz"
+stylelint-config-standard@^33.0.0:
+  version "33.0.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-standard/-/stylelint-config-standard-33.0.0.tgz#1f7bb299153a53874073e93829e37a475842f0f9"
   dependencies:
-    stylelint-config-recommended "^9.0.0"
+    stylelint-config-recommended "^12.0.0"
 
-stylelint-scss@^4.0.0:
-  version "4.3.0"
-  resolved "https://registry.npmjs.org/stylelint-scss/-/stylelint-scss-4.3.0.tgz"
+stylelint-config-standard@^34.0.0:
+  version "34.0.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-standard/-/stylelint-config-standard-34.0.0.tgz#309f3c48118a02aae262230c174282e40e766cf4"
   dependencies:
-    lodash "^4.17.21"
+    stylelint-config-recommended "^13.0.0"
+
+stylelint-scss@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-5.0.1.tgz#b33a6580b5734eace083cfc2cc3021225e28547f"
+  dependencies:
     postcss-media-query-parser "^0.2.3"
     postcss-resolve-nested-selector "^0.1.1"
-    postcss-selector-parser "^6.0.6"
-    postcss-value-parser "^4.1.0"
+    postcss-selector-parser "^6.0.13"
+    postcss-value-parser "^4.2.0"
 
 stylelint@^15.10.2:
   version "15.10.2"
