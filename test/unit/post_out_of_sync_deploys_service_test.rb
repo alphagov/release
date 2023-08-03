@@ -12,10 +12,10 @@ class PostOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
              team: "#govuk-publishing-platform" }],
       }
 
-      find_service_mock = MiniTest::Mock.new
+      find_service_mock = Minitest::Mock.new
       find_service_mock.expect(:call, teams_out_of_sync_deploys)
 
-      slack_poster_mock = MiniTest::Mock.new
+      slack_poster_mock = Minitest::Mock.new
       expected_args = [
         "Hello :paw_prints:, this is your regular badgering to deploy!\n" \
         "\n" \
@@ -55,7 +55,7 @@ class PostOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
       }
       FindOutOfSyncDeploysService.any_instance.stubs(:call).returns(teams_out_of_sync_deploys)
 
-      slack_poster_mock = MiniTest::Mock.new
+      slack_poster_mock = Minitest::Mock.new
       expected_message_one_args = [
         "Hello :paw_prints:, this is your regular badgering to deploy!\n" \
         "\n" \
