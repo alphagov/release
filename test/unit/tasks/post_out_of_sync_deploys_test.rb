@@ -7,7 +7,7 @@ class PostOutOfSyncDeploysTest < ActiveSupport::TestCase
   end
 
   test "it should call PostOutOfSyncDeploysService" do
-    post_out_of_sync_deploys_service_mock = MiniTest::Mock.new
+    post_out_of_sync_deploys_service_mock = Minitest::Mock.new
     post_out_of_sync_deploys_service_mock.expect(:call, nil)
 
     PostOutOfSyncDeploysService.stub(:call, post_out_of_sync_deploys_service_mock) do
