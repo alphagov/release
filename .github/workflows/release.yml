@@ -1,0 +1,15 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    name: Release
+    # TODO: switch this to track main branch
+    uses: alphagov/govuk-infrastructure/.github/workflows/release.yml@add-version-tag

@@ -19,16 +19,15 @@ on:
         - staging
         - production
         default: 'integration'
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
-    branches: [main]
+  release:
+    types: [released]
 
 jobs:
   build-and-publish-image:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.tag_name, 'v') 
     name: Build and publish image
-    uses: alphagov/govuk-infrastructure/.github/workflows/build-and-push-image.yml@main
+    # TODO: switch this to track main branch
+    uses: alphagov/govuk-infrastructure/.github/workflows/build-and-push-image.yml@add-version-tag
     with:
       gitRef: ${{ inputs.gitRef || github.ref }}
     secrets:
