@@ -6,13 +6,17 @@
   title: "Settings"
 } %>
 
+
 <%= form_for site_settings, url: site_path, method: 'patch' do |f| %>
   <%= render "govuk_publishing_components/components/character_count", {
     textarea: {
       label: {
-        text: "Notes"
+        is_page_heading: true,
+        heading_size: "l",
+        text: "Global status note"
       },
       name: "site[status_notes]",
+      hint: "Display a note on all application pages",
       value: site_settings.status_notes,
       error_message: site_settings.errors[:status_notes].first,
     },
@@ -20,8 +24,8 @@
   } %>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Save status notes",
-    value: "Save status notes",
+    text: "Save",
+    value: "Save",
     name: "commit"
   } %>
 <% end %>
