@@ -1,13 +1,5 @@
 <% content_for :page_title, 'Settings' %>
 
-<%= render "govuk_publishing_components/components/breadcrumbs", {
-  breadcrumbs: [
-    {
-      title: "Settings"
-    }
-  ]
-} %>
-
 <%= render "shared/form_errors", resource: site_settings %>
 
 <%= render "govuk_publishing_components/components/title", {
