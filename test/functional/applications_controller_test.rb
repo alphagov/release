@@ -130,13 +130,50 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
 
+    context "with manual deployment" do
+      setup do
+        version = "release_42"
+        @first_commit = stub_commit
+        @base_commit = stub_commit
+        @deployed_sha = @first_commit[:sha]
+        @manual_deploy = SecureRandom.hex(40)
+        @latest_commit = { sha: @manual_deploy, commit: { author: { name: "Winston Churchill" }, message: "We shall fight on the beaches" } }
+
+        FactoryBot.create(:deployment, application: @app, environment: "production EKS", version:, deployed_sha: @deployed_sha)
+        FactoryBot.create(:deployment, application: @app, environment: "staging EKS", version:, deployed_sha: @deployed_sha)
+        FactoryBot.create(:deployment, application: @app, environment: "integration EKS", version: @manual_deploy)
+
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits/#{@manual_deploy}").to_return(headers: { "Content-Type" => "application/json" }, body: JSON.generate(@latest_commit))
+
+        Octokit::Client.any_instance.stubs(:compare)
+          .with(@app.repo, version, @app.default_branch)
+          .returns(stub(
+                     "comparison",
+                     commits: [@first_commit],
+                     base_commit: @base_commit,
+                   ))
+      end
+
+      should "show the manual deployment commit" do
+        get :show, params: { id: @app.id }
+        assert_select ".release__commits-label", { text: "Integration eks", count: 1 }
+        assert_select "p", text: @latest_commit[:message]
+        assert_select ".release__commit-hash", { text: @manual_deploy.first(9), count: 1 }
+      end
+
+      should "show 'not on default branch' status" do
+        get :show, params: { id: @app.id }
+        assert_select ".release__badge--orange", { text: "Not on default branch", count: 1 }
+      end
+    end
+
     context "GET show with a production deployment" do
       setup do
         version = "release_42"
-        FactoryBot.create(:deployment, application: @app, version:)
         @first_commit = stub_commit
         @second_commit = stub_commit
         @base_commit = stub_commit
+        FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit[:sha])
         Octokit::Client.any_instance.stubs(:compare)
           .with(@app.repo, version, @app.default_branch)
           .returns(stub(

@@ -28,12 +28,14 @@
       <% end %>
 
       <%= t.body do %>
+        <% latest_deploy_on_default_branch = [] %>
         <% @commits.each do |commit| %>
           <%= t.row do %>
             <% tags = @tag_names_by_commit.fetch(commit[:sha], []) %>
             <% commit_deployments = capture do %>
-              <% @application.latest_deploy_to_each_environment.each do |_, deployment| %>
+              <% @application.latest_deploy_to_each_environment.each do |environment, deployment| %>
                 <% if tags.include?(deployment.version) || deployment.commit_match?(commit[:sha]) %>
+                  <% latest_deploy_on_default_branch << environment %>
                   <p class="govuk-body-xs govuk-!-margin-bottom-1 release__commits-message">
                     <span class="release__commits-label release__commits-label--<%= 'production' if deployment.to_live_environment? %>"><%= deployment.environment.humanize %></span>
                     <span>at <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %></span>
@@ -65,6 +67,36 @@
 
             <%= t.cell commit_message %>
             <%= t.cell link_to(commit[:sha][0..8], "#{@application.repo_url}/commit/#{commit[:sha]}", target: "_blank", class: "release__commit-hash govuk-link govuk-body-s") %>
+          <% end %>
+        <% end %>
+        <% @application.latest_deploy_to_each_environment.each do |environment, deployment| %>
+          <% if !latest_deploy_on_default_branch.include?(environment) %>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <p class="govuk-body-xs govuk-!-margin-bottom-1 release__commits-message">
+                  <span class="release__commits-label release__commits-label--<%= 'production' if deployment.to_live_environment? %>"><%= environment.humanize %></span>
+                    <span>at <%= time_tag(deployment.created_at, human_datetime(deployment.created_at)) %></span>
+                </p>
+                <span class="release__badge release__badge--orange">Not on default branch</span>
+              </td>
+              <td class="govuk-table__cell"/>
+              <td class="govuk-table__cell">
+                <p class="govuk-body-s govuk-!-margin-bottom-0">
+                  <% latest_deployed_commit = @application.latest_commit(@application, deployment.version) %>
+                  <%= latest_deployed_commit[:commit][:message] %>
+                  <% if latest_deployed_commit[:commit][:author] %>
+                    <span class="release__commits-author">
+                      <%= latest_deployed_commit[:commit][:author][:name] %>
+                    </span>
+                  <% end %>
+                </p>
+              </td>
+              <td class="govuk-table__cell">
+                <p class="govuk-body-s govuk-!-margin-bottom-1">
+                  <%= link_to(deployment.version[0..8], "#{@application.repo_url}/commit/#{deployment.version}", target: "_blank", class: "release__commit-hash govuk-link govuk-body-s") %>
+                </p>
+              </td>
+            </tr>
           <% end %>
         <% end %>
       <% end %>
