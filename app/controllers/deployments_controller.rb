@@ -15,7 +15,10 @@ class DeploymentsController < ApplicationController
   end
 
   def recent
-    @deployments = Deployment.includes(:application).newest_first.limit(25)
+    env = recent_deployment_params[:environment_filter]
+
+    filtered_deployments = env ? Deployment.where(environment: [env, "#{env} EKS"]) : Deployment
+    @deployments = filtered_deployments.includes(:application).newest_first.limit(25)
   end
 
   def new
@@ -129,6 +132,12 @@ private
     params.permit(
       :application_id,
       :environment,
+    )
+  end
+
+  def recent_deployment_params
+    params.permit(
+      :environment_filter,
     )
   end
 end

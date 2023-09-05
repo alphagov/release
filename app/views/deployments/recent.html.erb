@@ -13,5 +13,27 @@
   title: "Recent deployments"
 } %>
 
+<%= form_tag(activity_path, method: :get) do %>
+  <div class="govuk-form-group">
+    <%= render "govuk_publishing_components/components/label", {
+      text: "Filter environment",
+      html_for: "deployment-environment-filter",
+      bold: true
+    } %>
+
+    <%= select_tag "environment_filter",
+      options_for_select(Application::ENVIRONMENTS_ORDER.map(&:capitalize), [params[:environment_filter]]),
+      include_blank: true,
+      id: "deployment-environment-filter",
+      class: "govuk-select"
+    %>
+  </div>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Filter",
+    margin_bottom: true
+  } %>
+<% end %>
+
   <%= render "deployments_list", deploys: @deployments %>
 </section>

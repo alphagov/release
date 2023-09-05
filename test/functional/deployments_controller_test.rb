@@ -24,6 +24,15 @@ class DeploymentsControllerTest < ActionController::TestCase
 
       assert_equal 10, assigns(:deployments).size
     end
+
+    should "assign only filtered environments" do
+      FactoryBot.create(:deployment, application_id: @application.id, environment: "integration EKS")
+      FactoryBot.create(:deployment, application_id: @application.id, environment: "integration")
+
+      get :recent, params: { environment_filter: "Integration" }
+
+      assert_equal 2, assigns(:deployments).size
+    end
   end
 
   context "GET new" do
