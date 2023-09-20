@@ -27,7 +27,9 @@
     <%= yield %>
   </main>
 
-  <p class="govuk-body-s">Version: <%= CURRENT_RELEASE_SHA %></p>
+  <% if !CURRENT_RELEASE_TAG.nil? %>
+    <p class="govuk-body-s">Version: <%= CURRENT_RELEASE_TAG %></p>
+  <% end %>
 </div>
 
   <%= render "govuk_publishing_components/components/layout_footer", {} %>
