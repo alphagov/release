@@ -21,6 +21,10 @@ jobs:
     permissions:
       security-events: write
 
+  dependency-review:
+    name: Dependency Review scan
+    uses: alphagov/govuk-infrastructure/.github/workflows/dependency-review.yml@main
+
   lint-scss:
     name: Lint SCSS
     uses: alphagov/govuk-infrastructure/.github/workflows/stylelint.yml@main
