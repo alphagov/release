@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "7.1.1"
+gem "rails", "7.1.2"
 
 gem "active_model_serializers"
 gem "bootsnap", require: false
