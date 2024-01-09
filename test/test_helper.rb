@@ -47,7 +47,6 @@ class ActiveSupport::TestCase
 
   teardown do
     DatabaseCleaner.clean
-    Sidekiq::Worker.clear_all
   end
 end
 

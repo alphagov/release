@@ -1,17 +1,16 @@
 require "test_helper"
 
-class SlackPosterTest < ActiveSupport::TestCase
+class SlackPosterJobTest < ActiveJob::TestCase
   context "#perform" do
     setup do
       @webhook_url = "https://hooks.slack.com/services/T000/B00/XXX"
     end
 
     should "enqueue a job" do
-      assert_equal 0, SlackPosterWorker.jobs.size
-
-      mock_env({ "SLACK_WEBHOOK_URL" => @webhook_url }) do
-        SlackPosterWorker.perform_async("Hello", "#testchannel")
-        assert_equal 1, SlackPosterWorker.jobs.size
+      assert_enqueued_with job: SlackPosterJob do
+        mock_env({ "SLACK_WEBHOOK_URL" => @webhook_url }) do
+          SlackPosterJob.perform_later("Hello", "#testchannel")
+        end
       end
     end
 
@@ -21,8 +20,7 @@ class SlackPosterTest < ActiveSupport::TestCase
           body: "{\"username\":\"Release app\",\"icon_emoji\":\":govuk:\",\"mrkdwn\":\"true\",\"text\":\"Hello\",\"channel\":\"#testchannel\"}",
         ).to_return(status: 200, body: "ok", headers: {})
 
-        SlackPosterWorker.perform_async("Hello", "#testchannel")
-        SlackPosterWorker.drain
+        SlackPosterJob.perform_now("Hello", "#testchannel")
 
         assert_requested(stub_post)
       end
@@ -34,17 +32,17 @@ class SlackPosterTest < ActiveSupport::TestCase
           body: "{\"username\":\"Release app\",\"icon_emoji\":\":badger:\",\"mrkdwn\":\"true\",\"text\":\"Hello\",\"channel\":\"#testchannel\"}",
         ).to_return(status: 200, body: "ok", headers: {})
 
-        SlackPosterWorker.perform_async("Hello", "#testchannel", { "icon_emoji" => ":badger:" })
-        SlackPosterWorker.drain
+        SlackPosterJob.perform_now("Hello", "#testchannel", { "icon_emoji" => ":badger:" })
 
         assert_requested(stub_post)
       end
     end
 
     should "not accept invalid options" do
-      assert_raises(StandardError, 'Invalid options, only "username", "icon_emoji", "mrkdown" are permitted') do
-        SlackPosterWorker.perform_async("Hello", "#testchannel", { "name" => "Slack poster", "icon_emoji" => ":badger:" })
-        SlackPosterWorker.drain
+      perform_enqueued_jobs do
+        assert_raises(StandardError, 'Invalid options, only "username", "icon_emoji", "mrkdown" are permitted') do
+          SlackPosterJob.perform_later("Hello", "#testchannel", { "name" => "Slack poster", "icon_emoji" => ":badger:" })
+        end
       end
     end
   end

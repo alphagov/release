@@ -1,8 +1,8 @@
 require "httparty"
 
-class SlackPosterWorker
-  include Sidekiq::Worker
-  sidekiq_options retry: 1
+class SlackPosterJob < ApplicationJob
+  queue_as :default
+  retry_on Exception, attempts: 2
 
   VALID_OPTIONS = %w[username icon_emoji mrkdown].freeze
 
