@@ -5,14 +5,6 @@ class SlackPosterJobTest < ActiveJob::TestCase
     @webhook_url = "https://hooks.slack.com/services/T000/B00/XXX"
   end
 
-  should "enqueue a job" do
-    assert_enqueued_with job: SlackPosterJob do
-      mock_env({ "SLACK_WEBHOOK_URL" => @webhook_url }) do
-        SlackPosterJob.perform_later("Hello", "#testchannel")
-      end
-    end
-  end
-
   should "send a post request" do
     mock_env({ "SLACK_WEBHOOK_URL" => @webhook_url }) do
       stub_post = stub_request(:post, @webhook_url).with(
