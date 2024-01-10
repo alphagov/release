@@ -4,8 +4,6 @@ class FindOutOfSyncDeploysService
   end
 
   def call
-    return {} if Application.out_of_sync.empty?
-
     out_of_sync_apps_info.group_by { |app| app[:team] }
   end
 
