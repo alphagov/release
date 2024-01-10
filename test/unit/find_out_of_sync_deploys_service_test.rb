@@ -76,27 +76,5 @@ class FindOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
 
       assert_equal({}, FindOutOfSyncDeploysService.call)
     end
-
-    should "return general dev slack channel when it can't find team (because app names don't match)" do
-      response_body = [{ "app_name" => "content-data-admin", "team" => "#govuk-platform-security-reliability-team" }].to_json
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
-
-      app = FactoryBot.create(:application, name: "Content Data", shortname: "content-data")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
-
-      expected_hash = {
-        "#govuk-developers" => [
-          { name: app.name,
-            shortname: app.shortname,
-            repo: app.repo,
-            status: app.status,
-            team: "#govuk-developers" },
-        ],
-      }
-
-      assert_equal(expected_hash, FindOutOfSyncDeploysService.call)
-    end
   end
 end

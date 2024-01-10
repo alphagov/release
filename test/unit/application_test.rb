@@ -356,4 +356,24 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
     end
   end
+
+  describe "#team_name" do
+    should "return the name of the team that owns the app" do
+      response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
+
+      assert_equal "#tech-content-interactions-on-platform-govuk", app.team_name
+    end
+
+    should "return general dev slack channel when it can't find team (because app names don't match)" do
+      response_body = [{ "app_name" => "content-data-admin", "team" => "#govuk-platform-security-reliability-team" }].to_json
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+      app = FactoryBot.create(:application, name: "Content Data", shortname: "content-data")
+
+      assert_equal "#govuk-developers", app.team_name
+    end
+  end
 end

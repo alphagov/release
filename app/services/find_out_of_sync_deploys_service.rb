@@ -25,12 +25,8 @@ private
         shortname: app.shortname,
         repo: app.repo,
         status: app.status,
-        team: find_team(app.name) || "#govuk-developers",
+        team: app.team_name,
       }
     end
-  end
-
-  def find_team(app_name)
-    Repo.all.find { |app| app["app_name"] == app_name.parameterize }&.dig("team")
   end
 end

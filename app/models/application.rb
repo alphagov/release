@@ -118,4 +118,8 @@ class Application < ApplicationRecord
       "production EKS"
     end
   end
+
+  def team_name
+    Repo.find_by(app_name: name)&.dig("team") || "#govuk-developers"
+  end
 end
