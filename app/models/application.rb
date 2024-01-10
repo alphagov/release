@@ -30,12 +30,9 @@ class Application < ApplicationRecord
     @latest_deploy_to_each_environment.compact
   end
 
-  def latest_deploy_to(*environments)
-    latest_deploy_to_each_environment.select { |env, _deploy| environments.include?(env) }
-  end
-
   def in_sync?(environments)
-    latest_deploy_to(*environments)
+    latest_deploy_to_each_environment
+      .slice(*environments)
       .values
       .map(&:version)
       .uniq
