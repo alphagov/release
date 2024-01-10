@@ -22,16 +22,16 @@ class Application < ApplicationRecord
 
   ENVIRONMENTS_ORDER = %w[integration staging production].freeze
 
-  def latest_deploy_to_each_environment
+  def latest_deploys_by_environment
     envs = deployed_to_ec2? ? ENVIRONMENTS_ORDER : ENVIRONMENTS_ORDER.map { |env| "#{env} EKS" }
-    @latest_deploy_to_each_environment ||= envs.index_with do |environment|
+    @latest_deploys_by_environment ||= envs.index_with do |environment|
       deployments.last_deploy_to(environment)
     end
-    @latest_deploy_to_each_environment.compact
+    @latest_deploys_by_environment.compact
   end
 
   def in_sync?(environments)
-    latest_deploy_to_each_environment
+    latest_deploys_by_environment
       .slice(*environments)
       .values
       .map(&:version)

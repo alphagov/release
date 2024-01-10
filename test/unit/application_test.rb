@@ -302,7 +302,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  describe "#latest_deploy_to_each_environment" do
+  describe "#latest_deploys_by_environment" do
     should "orders main environments" do
       Deployment.delete_all
       Application.delete_all
@@ -319,7 +319,7 @@ class ApplicationTest < ActiveSupport::TestCase
         "production EKS" => production,
       }
 
-      assert_equal(expected.keys, app.latest_deploy_to_each_environment.keys)
+      assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
     end
 
     should "ignores non-main environments" do
@@ -340,7 +340,7 @@ class ApplicationTest < ActiveSupport::TestCase
         "production EKS" => production,
       }
 
-      assert_equal(expected.keys, app.latest_deploy_to_each_environment.keys)
+      assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
     end
 
     should "handle applications with only one environment" do
@@ -353,7 +353,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
       expected = { "production EKS" => production }
 
-      assert_equal(expected.keys, app.latest_deploy_to_each_environment.keys)
+      assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
     end
   end
 end

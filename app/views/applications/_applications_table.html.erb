@@ -45,7 +45,7 @@
 
           <% @environments.each do |environment| %>
             <% environment = environment + " EKS" unless application.deployed_to_ec2? %>
-            <% latest_deploy = application.latest_deploy_to_each_environment[environment] %>
+            <% latest_deploy = application.latest_deploys_by_environment[environment] %>
             <% env_deploy = capture do %>
               <% if latest_deploy %>
                 <p class="govuk-body-s govuk-!-margin-bottom-1"><%= github_tag_link_to(application, latest_deploy.version) %></p>
