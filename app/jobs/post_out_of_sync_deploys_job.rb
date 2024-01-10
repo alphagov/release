@@ -1,9 +1,5 @@
-class PostOutOfSyncDeploysService
-  class << self
-    delegate :call, to: :new
-  end
-
-  def call
+class PostOutOfSyncDeploysJob < ApplicationJob
+  def perform
     FindOutOfSyncDeploysService.call.each do |team_channel, apps|
       SlackPosterJob.perform_later(
         formatted_slack_message(apps),
