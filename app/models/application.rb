@@ -67,6 +67,12 @@ class Application < ApplicationRecord
     @cd_statuses ||= YAML.safe_load(open("data/continuously_deployed_apps.yml"))
   end
 
+  def self.out_of_sync
+    where(archived: false).reject do |app|
+      app.deployed_to_ec2? || app.status == :all_environments_match
+    end
+  end
+
   def cd_enabled?
     key = shortname || fallback_shortname
     Application.cd_statuses.include? key

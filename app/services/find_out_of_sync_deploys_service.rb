@@ -4,22 +4,15 @@ class FindOutOfSyncDeploysService
   end
 
   def call
-    return {} if out_of_sync_apps.empty?
+    return {} if Application.out_of_sync.empty?
 
     out_of_sync_apps_info.group_by { |app| app[:team] }
   end
 
 private
 
-  def out_of_sync_apps
-    Application.where(archived: false).reject do |app|
-      app.deployed_to_ec2? ||
-        app.status == :all_environments_match
-    end
-  end
-
   def out_of_sync_apps_info
-    out_of_sync_apps.map do |app|
+    Application.out_of_sync.map do |app|
       {
         name: app.name,
         shortname: app.shortname,

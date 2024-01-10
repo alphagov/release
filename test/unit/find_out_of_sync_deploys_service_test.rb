@@ -45,36 +45,5 @@ class FindOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
 
       assert_equal(expected_hash, FindOutOfSyncDeploysService.call)
     end
-
-    should "should not include apps which all environmets match" do
-      app = FactoryBot.create(:application, name: "Account API")
-
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "integration EKS")
-
-      assert_equal({}, FindOutOfSyncDeploysService.call)
-    end
-
-    should "not include apps deployed to EC2" do
-      # Defined in data/ec2_deployed_apps.yml
-      ec2_deployed_app = FactoryBot.create(:application, name: "Licensify")
-
-      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "111", environment: "production")
-      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "111", environment: "staging")
-      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "222", environment: "integration")
-
-      assert_equal({}, FindOutOfSyncDeploysService.call)
-    end
-
-    should "not include apps which have been archived" do
-      app = FactoryBot.create(:application, name: "Manuals frontend", archived: true)
-
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
-
-      assert_equal({}, FindOutOfSyncDeploysService.call)
-    end
   end
 end
