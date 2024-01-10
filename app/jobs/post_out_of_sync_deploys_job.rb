@@ -1,6 +1,6 @@
 class PostOutOfSyncDeploysJob < ApplicationJob
   def perform
-    FindOutOfSyncDeploysService.call.each do |team_channel, apps|
+    Application.out_of_sync.group_by(&:team_name).each do |team_channel, apps|
       SlackPosterJob.perform_later(
         formatted_slack_message(apps),
         team_channel,
@@ -20,6 +20,6 @@ private
   end
 
   def app_info(app)
-    "- <#{Plek.external_url_for('release')}/applications/#{app[:shortname]}|#{app[:name]}> – #{app[:status].to_s.humanize} (<https://github.com/#{app[:repo]}/actions/workflows/deploy.yml|Deploy GitHub action>)"
+    "- <#{Plek.external_url_for('release')}/applications/#{app.shortname}|#{app.name}> – #{app.status.to_s.humanize} (<https://github.com/#{app.repo}/actions/workflows/deploy.yml|Deploy GitHub action>)"
   end
 end
