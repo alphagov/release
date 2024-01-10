@@ -4,11 +4,7 @@ class PostOutOfSyncDeploysService
   end
 
   def call
-    teams_out_of_sync_deploys = FindOutOfSyncDeploysService.call
-
-    return if teams_out_of_sync_deploys.empty?
-
-    teams_out_of_sync_deploys.each do |team_channel, apps|
+    FindOutOfSyncDeploysService.call.each do |team_channel, apps|
       SlackPosterJob.perform_later(
         formatted_slack_message(apps),
         team_channel,
