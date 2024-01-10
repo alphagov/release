@@ -9,7 +9,7 @@ class PostOutOfSyncDeploysService
     return if teams_out_of_sync_deploys.empty?
 
     teams_out_of_sync_deploys.each do |team_channel, apps|
-      SlackPosterWorker.perform_async(
+      SlackPosterJob.perform_later(
         formatted_slack_message(apps),
         team_channel,
         { "icon_emoji" => ":badger:" },

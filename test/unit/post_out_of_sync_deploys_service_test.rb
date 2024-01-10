@@ -26,14 +26,14 @@ class PostOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
       slack_poster_mock.expect(:call, nil, expected_args)
 
       FindOutOfSyncDeploysService.stub(:call, find_service_mock) do
-        SlackPosterWorker.stub(:perform_async, slack_poster_mock) do
+        SlackPosterJob.stub(:perform_later, slack_poster_mock) do
           PostOutOfSyncDeploysService.call
           assert_mock find_service_mock
         end
       end
     end
 
-    should "call SlackPosterWorker to post messages with correct payload for each team with out-of-sync deploys" do
+    should "call SlackPosterJob to post messages with correct payload for each team with out-of-sync deploys" do
       teams_out_of_sync_deploys = {
         "#govuk-publishing-platform" =>
           [{ name: "Asset manager",
@@ -75,17 +75,17 @@ class PostOutOfSyncDeploysServiceTest < ActiveSupport::TestCase
       slack_poster_mock.expect(:call, nil, expected_message_one_args)
       slack_poster_mock.expect(:call, nil, expected_message_two_args)
 
-      SlackPosterWorker.stub(:perform_async, slack_poster_mock) do
+      SlackPosterJob.stub(:perform_later, slack_poster_mock) do
         PostOutOfSyncDeploysService.call
         assert_mock slack_poster_mock
       end
     end
 
-    should "not call the SlackPosterWorker when no teams have out-of-sync deploys" do
+    should "not call the SlackPosterJob when no teams have out-of-sync deploys" do
       FindOutOfSyncDeploysService.any_instance.stubs(:call).returns({})
 
       PostOutOfSyncDeploysService.call
-      SlackPosterWorker.any_instance.expects(:perform_async).never
+      SlackPosterJob.expects(:perform_later).never
     end
   end
 end
