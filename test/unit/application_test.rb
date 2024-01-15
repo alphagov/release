@@ -302,7 +302,7 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  describe "#latest_deploy_to_each_environment" do
+  describe "#latest_deploys_by_environment" do
     should "orders main environments" do
       Deployment.delete_all
       Application.delete_all
@@ -319,7 +319,7 @@ class ApplicationTest < ActiveSupport::TestCase
         "production EKS" => production,
       }
 
-      assert_equal(expected.keys, app.latest_deploy_to_each_environment.keys)
+      assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
     end
 
     should "ignores non-main environments" do
@@ -340,7 +340,7 @@ class ApplicationTest < ActiveSupport::TestCase
         "production EKS" => production,
       }
 
-      assert_equal(expected.keys, app.latest_deploy_to_each_environment.keys)
+      assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
     end
 
     should "handle applications with only one environment" do
@@ -353,7 +353,79 @@ class ApplicationTest < ActiveSupport::TestCase
 
       expected = { "production EKS" => production }
 
-      assert_equal(expected.keys, app.latest_deploy_to_each_environment.keys)
+      assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
+    end
+  end
+
+  describe "#team_name" do
+    before do
+      Application.delete_all
+      Deployment.delete_all
+    end
+
+    should "return the name of the team that owns the app" do
+      response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
+
+      assert_equal "#tech-content-interactions-on-platform-govuk", app.team_name
+    end
+
+    should "return general dev slack channel when it can't find team (because app names don't match)" do
+      response_body = [{ "app_name" => "content-data-admin", "team" => "#govuk-platform-security-reliability-team" }].to_json
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+      app = FactoryBot.create(:application, name: "Content Data", shortname: "content-data")
+
+      assert_equal "#govuk-developers", app.team_name
+    end
+  end
+
+  describe "out_of_sync" do
+    before do
+      Application.delete_all
+      Deployment.delete_all
+    end
+
+    should "return the apps that are out of sync" do
+      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging EKS")
+      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
+
+      app2 = FactoryBot.create(:application, name: "Asset manager", shortname: "asset-manager")
+      FactoryBot.create(:deployment, application: app2, version: "111", environment: "production EKS")
+      FactoryBot.create(:deployment, application: app2, version: "222", environment: "staging EKS")
+      FactoryBot.create(:deployment, application: app2, version: "222", environment: "integration EKS")
+
+      app3 = FactoryBot.create(:application, name: "Release", shortname: "release")
+      FactoryBot.create(:deployment, application: app3, version: "222", environment: "production EKS")
+      FactoryBot.create(:deployment, application: app3, version: "222", environment: "staging EKS")
+      FactoryBot.create(:deployment, application: app3, version: "222", environment: "integration EKS")
+
+      assert_equal [app, app2], Application.out_of_sync
+    end
+
+    should "not include apps that are on EC2" do
+      # Defined in data/ec2_deployed_apps.yml
+      ec2_deployed_app = FactoryBot.create(:application, name: "Licensify")
+
+      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "111", environment: "production")
+      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "111", environment: "staging")
+      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "222", environment: "integration")
+
+      assert_equal [], Application.out_of_sync
+    end
+
+    should "not include apps which have been archived" do
+      app = FactoryBot.create(:application, name: "Manuals frontend", archived: true)
+
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging EKS")
+      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
+
+      assert_equal [], Application.out_of_sync
     end
   end
 end

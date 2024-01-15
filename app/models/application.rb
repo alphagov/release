@@ -22,20 +22,15 @@ class Application < ApplicationRecord
 
   ENVIRONMENTS_ORDER = %w[integration staging production].freeze
 
-  def latest_deploy_to_each_environment
-    envs = deployed_to_ec2? ? ENVIRONMENTS_ORDER : ENVIRONMENTS_ORDER.map { |env| "#{env} EKS" }
-    @latest_deploy_to_each_environment ||= envs.index_with do |environment|
-      deployments.last_deploy_to(environment)
-    end
-    @latest_deploy_to_each_environment.compact
-  end
-
-  def latest_deploy_to(*environments)
-    latest_deploy_to_each_environment.select { |env, _deploy| environments.include?(env) }
+  def latest_deploys_by_environment
+    @latest_deploys_by_environment ||= (deployed_to_ec2? ? ENVIRONMENTS_ORDER : ENVIRONMENTS_ORDER.map { |env| "#{env} EKS" })
+      .index_with { |environment| deployments.last_deploy_to(environment) }
+      .compact
   end
 
   def in_sync?(environments)
-    latest_deploy_to(*environments)
+    latest_deploys_by_environment
+      .slice(*environments)
       .values
       .map(&:version)
       .uniq
@@ -70,6 +65,12 @@ class Application < ApplicationRecord
 
   def self.cd_statuses
     @cd_statuses ||= YAML.safe_load(open("data/continuously_deployed_apps.yml"))
+  end
+
+  def self.out_of_sync
+    where(archived: false).reject do |app|
+      app.deployed_to_ec2? || app.status == :all_environments_match
+    end
   end
 
   def cd_enabled?
@@ -122,5 +123,9 @@ class Application < ApplicationRecord
     else
       "production EKS"
     end
+  end
+
+  def team_name
+    Repo.find_by(app_name: name)&.dig("team") || "#govuk-developers"
   end
 end

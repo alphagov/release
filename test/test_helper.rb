@@ -9,10 +9,8 @@ require "shoulda-context"
 require "minitest/autorun"
 require "mocha/minitest"
 require "webmock/minitest"
-require "govuk_sidekiq/testing"
 
 DatabaseCleaner.strategy = :transaction
-Sidekiq::Testing.fake!
 
 class ActiveSupport::TestCase
   setup do

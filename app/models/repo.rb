@@ -9,4 +9,8 @@ class Repo
     Rails.logger.debug "Error fetching govuk repos: #{e.message}"
     []
   end
+
+  def self.find_by(app_name:)
+    all.find { |app| app["app_name"] == app_name.parameterize }
+  end
 end
