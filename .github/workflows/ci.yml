@@ -5,9 +5,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "Jenkinsfile"
-      - ".git**"
   pull_request:
 
 jobs:
@@ -55,7 +52,9 @@ jobs:
         uses: alphagov/govuk-infrastructure/.github/actions/setup-mysql@main
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
