@@ -44,7 +44,7 @@
           <%= t.cell application_status %>
 
           <% @environments.each do |environment| %>
-            <% environment = environment + " EKS" unless application.deployed_to_ec2? %>
+            <% environment = environment + " EKS" %>
             <% latest_deploy = application.latest_deploys_by_environment[environment] %>
             <% env_deploy = capture do %>
               <% if latest_deploy %>

@@ -7,7 +7,6 @@
       <p class="activity-list__deployment-release govuk-body"><%= deployment.previous_version || "unknown release" %> to <%= deployment.version %></p>
       <ul class="activity-list__metadata govuk-body-s govuk-!-margin-bottom-0">
         <li class="activity-list__metadata-item">At: <%= human_datetime deployment.created_at %></li>
-        <li class="activity-list__metadata-item">By: <%= deployment.jenkins_user_name || "<em>unknown user</em>".html_safe %></li>
       </ul>
     </li>
   <% end %>

@@ -28,11 +28,4 @@ module UrlHelper
       "blue.#{environment}.govuk.digital"
     end
   end
-
-  def jenkins_deploy_url(application, release_tag, environment)
-    suffix = govuk_domain_suffix(environment)
-    job_name = application.shortname == "puppet" ? "Deploy_Puppet" : "Deploy_App"
-    escaped_release_tag = CGI.escape(release_tag)
-    "https://deploy.#{suffix}/job/#{job_name}/parambuild?TARGET_APPLICATION=#{application.shortname}&TAG=#{escaped_release_tag}".html_safe
-  end
 end

@@ -121,8 +121,6 @@ private
       :deployed_sha,
       :environment,
       :id,
-      :jenkins_user_email,
-      :jenkins_user_name,
       :repo,
       :version,
     )

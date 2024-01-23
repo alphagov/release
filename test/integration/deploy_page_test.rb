@@ -40,14 +40,13 @@ class DeployPageTest < ActionDispatch::IntegrationTest
       .to_return(headers: { "content-type" => "application/json" }, body: { commits: }.to_json)
 
     FactoryBot.create(:deployment, application:, environment: "production", version: "release_70")
-    deployment = FactoryBot.create(:deployment, application:, environment: "production", version: "release_80", jenkins_user_name: "A Deployer")
+    deployment = FactoryBot.create(:deployment, application:, environment: "production", version: "release_80")
 
     visit deployment_path(deployment)
 
     assert page.has_content?("##{deployment.id}")
     assert page.has_content?("release_70")
     assert page.has_content?("release_80")
-    assert page.has_content?("A Deployer")
     assert page.has_content?("Made a change to a thing. WIP! DO NOT DEPLOY!")
   end
 end

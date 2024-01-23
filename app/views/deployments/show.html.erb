@@ -18,7 +18,6 @@
 <div class="govuk-body">
   <p><span class="govuk-!-font-weight-bold">Application:</span> <%= @deployment.application.name %></p>
   <p><span class="govuk-!-font-weight-bold">Environment:</span> <%= @deployment.environment %></p>
-  <p><span class="govuk-!-font-weight-bold">Deployed by:</span> <%= @deployment.jenkins_user_name || "<em>Not recorded</em>".html_safe %></p>
   <p><span class="govuk-!-font-weight-bold">Deployed at:</span> <%= @deployment.created_at %></p>
 
   <% if @deployment.previous_deployment %>

@@ -173,100 +173,10 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  context "deployed to EC2" do
-    setup do
-      @atts = {
-        name: "Tron-o-matic",
-        repo: "alphagov/tron-o-matic",
-      }
-    end
-
-    context "when the application is not deployed to EC2" do
-      should "return false" do
-        application = Application.new(@atts)
-
-        Application.stub :ec2_deployed_apps, ["something-other-than-tron-o-matic"] do
-          assert_not application.deployed_to_ec2?
-        end
-      end
-    end
-
-    context "when the application is deployed to EC2" do
-      should "return true" do
-        application = Application.new(@atts)
-
-        Application.stub :ec2_deployed_apps, ["tron-o-matic"] do
-          assert application.deployed_to_ec2?
-        end
-      end
-    end
-  end
-
-  context "live environment" do
-    setup do
-      @atts = {
-        name: "Tron-o-matic",
-        repo: "alphagov/tron-o-matic",
-      }
-    end
-
-    context "when the application is not deployed to EC2" do
-      should "return production EKS" do
-        application = Application.new(@atts)
-
-        Application.stub :ec2_deployed_apps, ["something-other-than-tron-o-matic"] do
-          assert_equal "production EKS", application.live_environment
-        end
-      end
-    end
-
-    context "when the application is deployed to EC2" do
-      should "return production" do
-        application = Application.new(@atts)
-
-        Application.stub :ec2_deployed_apps, ["tron-o-matic"] do
-          assert_equal "production", application.live_environment
-        end
-      end
-    end
-  end
-
   describe "#status" do
     before do
       @app = FactoryBot.create(:application, name: SecureRandom.hex, repo: "alphagov/#{SecureRandom.hex}")
       Deployment.delete_all
-    end
-
-    context "when the application is deployed to EC2" do
-      should "return :all_environments_match when deployments are in sync" do
-        FactoryBot.create(:deployment, application: @app, version: "1", environment: "integration")
-        FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging")
-        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
-
-        @app.stub :deployed_to_ec2?, true do
-          assert_equal :all_environments_match, @app.status
-        end
-      end
-
-      should "return :production_and_staging_not_in_sync when staging and production have different versions" do
-        FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration")
-        FactoryBot.create(:deployment, application: @app, version: "2", environment: "staging")
-        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
-
-        @app.stub :deployed_to_ec2?, true do
-          assert_equal :production_and_staging_not_in_sync, @app.status
-        end
-      end
-
-      should "return :undeployed_changes_in_integration when there are different version across the environments" do
-        FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration")
-        FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging")
-        FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
-
-        @app.stub :deployed_to_ec2?, true do
-          assert_equal :undeployed_changes_in_integration, @app.status
-        end
-      end
     end
 
     context "when the application is deployed to EKS" do
@@ -405,17 +315,6 @@ class ApplicationTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, application: app3, version: "222", environment: "integration EKS")
 
       assert_equal [app, app2], Application.out_of_sync
-    end
-
-    should "not include apps that are on EC2" do
-      # Defined in data/ec2_deployed_apps.yml
-      ec2_deployed_app = FactoryBot.create(:application, name: "Licensify")
-
-      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "111", environment: "production")
-      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "111", environment: "staging")
-      FactoryBot.create(:deployment, application: ec2_deployed_app, version: "222", environment: "integration")
-
-      assert_equal [], Application.out_of_sync
     end
 
     should "not include apps which have been archived" do

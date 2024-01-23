@@ -65,20 +65,15 @@
   } %>
   
   <% hint_text = capture do %>
-    <% if @application.deployed_to_ec2? %>
-      Disables automatic deployments. Our deploy jobs will query the value of this flag in the API and abort if it is set. Manual deploy job builds will continue to work.
-    <% else %>
-      Adds 'Automatic deployments disabled' badge in the Release app.
-      
-      <% unless current_page?(action: 'new') %>
-        <div class="govuk-warning-text">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-          <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">Warning</span>
-              Continuous deployment between each environment has to be disabled or enabled via <%= link_to "GitHub action", "https://github.com/#{@application.repo}/actions/workflows/set-automatic-deploys.yml", class: "govuk-link" %>.
-          </strong>
-        </div>
-      <% end %>
+    Adds 'Automatic deployments disabled' badge in the Release app.
+    <% unless current_page?(action: 'new') %>
+      <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+          <span class="govuk-warning-text__assistive">Warning</span>
+            Continuous deployment between each environment has to be disabled or enabled via <%= link_to "GitHub action", "https://github.com/#{@application.repo}/actions/workflows/set-automatic-deploys.yml", class: "govuk-link" %>.
+        </strong>
+      </div>
     <% end %>
   <% end %>
 
