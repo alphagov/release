@@ -35,20 +35,6 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
   end
 
-  context "GET new" do
-    should "preselect the application" do
-      FactoryBot.create(
-        :application,
-        repo: "org/app",
-        name: "Application",
-      )
-
-      get :new, params: { application_id: "app" }
-
-      assert_select "#deployment_application_id option[selected]", "Application"
-    end
-  end
-
   context "POST create" do
     context "manually recording a deployment" do
       should "create a deployment record" do
@@ -67,13 +53,6 @@ class DeploymentsControllerTest < ActionController::TestCase
         post :create, params: { deployment: { application_id: app.id, version: "release_123", environment: "staging", created_at: "18/01/2013 11:57" } }
 
         assert_redirected_to application_path(app)
-      end
-
-      should "redisplay the form and respond with a 422 when there is an error" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        post :create, params: { deployment: { application_id: app.id, version: "", environment: "staging", created_at: "18/01/2013 11:57" } }
-        assert_template :new
-        assert_response :unprocessable_entity
       end
 
       should "unarchive an archived application" do

@@ -2,10 +2,4 @@
 
 <%= render partial: "shared/application_header", locals: { application: @application, tab: "deploys" } %>
 
-<%= render "govuk_publishing_components/components/button", {
-  text: "Record a missing deployment",
-  href: new_application_deployment_path(@application),
-  margin_bottom: true
-} %>
-
 <%= render "deployments_list", deploys: @deployments %>

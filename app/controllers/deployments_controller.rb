@@ -21,20 +21,6 @@ class DeploymentsController < ApplicationController
     @deployments = filtered_deployments.includes(:application).newest_first.limit(25)
   end
 
-  def new
-    default_deploy_time = Time.zone.now.strftime("%e/%m/%Y %H:%M")
-
-    shortname = new_deployment_params[:application_id]
-
-    application_id = Application.where(shortname:).pick(:id)
-
-    @deployment = Deployment.new(
-      application_id:,
-      environment: new_deployment_params[:environment],
-      created_at: default_deploy_time,
-    )
-  end
-
   def create
     if push_notification?
 

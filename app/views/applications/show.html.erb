@@ -136,12 +136,6 @@
   margin_bottom: 4,
 } %>
 
-<%= render "govuk_publishing_components/components/button", {
-  text: "Record a missing deployment",
-  href: new_application_deployment_path(@application),
-  margin_bottom: true
-} %>
-
 <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's where?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
   <%= t.head do %>
     <%= t.header "Environment" %>
