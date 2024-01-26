@@ -22,33 +22,14 @@ class DeploymentsController < ApplicationController
   end
 
   def create
-    if push_notification?
+    application = application_by_repo
 
-      application = if use_application_by_name
-                      application_by_name
-                    else
-                      application_by_repo
-                    end
+    return if application.nil?
 
-      return if application.nil?
-
-      application.archived = false
-      application.save!
-      Deployment.create!(deployment_params.merge(application:))
-      head :ok
-    else
-      @deployment = Deployment.new(deployment_params)
-      if @deployment.save
-        application = Application.find(deployment_params[:application_id])
-        application.archived = false
-        application.save!
-
-        redirect_to application_path(application), notice: "Deployment created for #{application.name}"
-      else
-        render :new, status: :unprocessable_entity
-      end
-
-    end
+    application.archived = false
+    application.save!
+    Deployment.create!(deployment_params.merge(application:))
+    head :ok
   end
 
 private
@@ -63,16 +44,6 @@ private
       existing_apps[0]
     else
       raise ApplicationConflictError
-    end
-  end
-
-  def application_by_name
-    existing_apps = Application.where(name: normalize_app_name(params[:application_name]))
-
-    if existing_apps.empty?
-      Application.create!(name: normalize_app_name(params[:application_name]), repo: repo_path)
-    elsif existing_apps.length == 1
-      existing_apps[0]
     end
   end
 
@@ -93,10 +64,6 @@ private
 
   def push_notification?
     params[:repo].present?
-  end
-
-  def use_application_by_name
-    params.fetch(:application_by_name, nil) == "true"
   end
 
   def deployment_params
