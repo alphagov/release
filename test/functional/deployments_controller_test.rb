@@ -35,145 +35,75 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
   end
 
-  context "GET new" do
-    should "preselect the application" do
-      FactoryBot.create(
-        :application,
-        repo: "org/app",
-        name: "Application",
-      )
-
-      get :new, params: { application_id: "app" }
-
-      assert_select "#deployment_application_id option[selected]", "Application"
-    end
-  end
-
   context "POST create" do
-    context "manually recording a deployment" do
-      should "create a deployment record" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        post :create, params: { deployment: { application_id: app.id, version: "release_123", environment: "staging", created_at: "18/01/2013 11:57" } }
+    should "create a deployment record" do
+      app = FactoryBot.create(:application, repo: "org/app")
+      post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
 
-        deployment = app.reload.deployments.last
-        assert_not_nil deployment
-        assert_equal "release_123", deployment.version
-        assert_equal "staging", deployment.environment
-        assert_equal "2013-01-18 11:57:00 +0000", deployment.created_at.to_s
+      deployment = app.reload.deployments.last
+      assert_not_nil deployment
+      assert_equal "release_123", deployment.version
+      assert_equal "staging", deployment.environment
+      assert_equal "user@example.org", deployment.jenkins_user_email
+      assert_equal "A User", deployment.jenkins_user_name
+      assert_equal "02a570885766dc43d5e2432855bbffb342543906", deployment.deployed_sha
+    end
+
+    should "unarchive an archived application" do
+      app = FactoryBot.create(:application, repo: "org/app", archived: true)
+      post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
+      app.reload
+      assert_equal false, app.archived
+    end
+
+    context "accepting different 'repo' formats" do
+      should "accept a repo specified as a full URL" do
+        app = FactoryBot.create(:application, repo: "org/app")
+        assert_difference -> { app.deployments.count }, 1 do
+          post :create, params: { repo: "https://github.com/org/app", deployment: { version: "release_123", environment: "staging" } }
+        end
       end
 
-      should "redirect to the application on a successful create" do
+      should "accept a repo specified as a git address" do
         app = FactoryBot.create(:application, repo: "org/app")
-        post :create, params: { deployment: { application_id: app.id, version: "release_123", environment: "staging", created_at: "18/01/2013 11:57" } }
-
-        assert_redirected_to application_path(app)
-      end
-
-      should "redisplay the form and respond with a 422 when there is an error" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        post :create, params: { deployment: { application_id: app.id, version: "", environment: "staging", created_at: "18/01/2013 11:57" } }
-        assert_template :new
-        assert_response :unprocessable_entity
-      end
-
-      should "unarchive an archived application" do
-        app = FactoryBot.create(:application, repo: "org/app", archived: true)
-        post :create, params: { deployment: { application_id: app.id, version: "release_345", environment: "staging", created_at: "18/01/2013 11:57" } }
-        app.reload
-        assert_equal false, app.archived
+        assert_difference -> { app.deployments.count }, 1 do
+          post :create, params: { repo: "git@github.com:org/app.git", deployment: { version: "release_123", environment: "staging" } }
+        end
       end
     end
 
-    context "notification API" do
-      should "create a deployment record" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
-
-        deployment = app.reload.deployments.last
-        assert_not_nil deployment
-        assert_equal "release_123", deployment.version
-        assert_equal "staging", deployment.environment
-        assert_equal "user@example.org", deployment.jenkins_user_email
-        assert_equal "A User", deployment.jenkins_user_name
-        assert_equal "02a570885766dc43d5e2432855bbffb342543906", deployment.deployed_sha
-      end
-
-      should "create a deployment record for correct app when multiple apps share same repo name" do
-        FactoryBot.create(:application, repo: "org/app", name: "test-app-1")
-        app2 = FactoryBot.create(:application, repo: "org/app", name: "test app 2")
-        post :create, params: { repo: "org/app", application_by_name: true, application_name: "test-app-2", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
-        deployment = app2.reload.deployments.last
-        assert_not_nil deployment
-        assert_equal "release_123", deployment.version
-        assert_equal "staging", deployment.environment
-        assert_equal "user@example.org", deployment.jenkins_user_email
-        assert_equal "A User", deployment.jenkins_user_name
-        assert_equal "02a570885766dc43d5e2432855bbffb342543906", deployment.deployed_sha
-      end
-
-      should "unarchive an archived application" do
-        app = FactoryBot.create(:application, repo: "org/app", archived: true)
-        post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
-        app.reload
-        assert_equal false, app.archived
-      end
-
-      context "accepting different 'repo' formats" do
-        should "accept a repo specified as a full URL" do
-          app = FactoryBot.create(:application, repo: "org/app")
-          assert_difference -> { app.deployments.count }, 1 do
-            post :create, params: { repo: "https://github.com/org/app", deployment: { version: "release_123", environment: "staging" } }
-          end
-        end
-
-        should "accept a repo specified as a git address" do
-          app = FactoryBot.create(:application, repo: "org/app")
-          assert_difference -> { app.deployments.count }, 1 do
-            post :create, params: { repo: "git@github.com:org/app.git", deployment: { version: "release_123", environment: "staging" } }
-          end
-        end
-      end
-
-      context "application doesn't exist" do
-        should "create an application" do
-          assert_difference [-> { Deployment.count }, -> { Application.count }], 1 do
-            post :create, params: { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
-          end
-        end
-
-        should "create an application by name" do
-          FactoryBot.create(:application, repo: "org/duplicate_repo", name: "test-app-1")
-          assert_difference [-> { Deployment.count }, -> { Application.count }], 1 do
-            post :create, params: { repo: "org/duplicate_repo", application_by_name: true, application_name: "test-app-2", deployment: { version: "release_1", environment: "staging" } }
-          end
-        end
-
-        should "generate a friendly name" do
+    context "application doesn't exist" do
+      should "create an application" do
+        assert_difference [-> { Deployment.count }, -> { Application.count }], 1 do
           post :create, params: { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
-          app = Application.unscoped.last
-          assert_equal "New App", app.name
-        end
-
-        should "inflect API correctly" do
-          post :create, params: { repo: "org/devops_api", deployment: { version: "release_1", environment: "staging" } }
-          app = Application.unscoped.last
-          assert_equal "Devops API", app.name
-        end
-
-        should "generate a friendly name from a name with a dash in it" do
-          post :create, params: { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
-          app = Application.unscoped.last
-          assert_equal "New App", app.name
         end
       end
 
-      context "handling multiple applications with the same repo" do
-        should "return a conflict response" do
-          FactoryBot.create(:application, name: "app 1", repo: "org/app")
-          FactoryBot.create(:application, name: "app 2", repo: "org/app")
-          post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
-          assert_response :conflict
-        end
+      should "generate a friendly name" do
+        post :create, params: { repo: "org/new_app", deployment: { version: "release_1", environment: "staging" } }
+        app = Application.unscoped.last
+        assert_equal "New App", app.name
+      end
+
+      should "inflect API correctly" do
+        post :create, params: { repo: "org/devops_api", deployment: { version: "release_1", environment: "staging" } }
+        app = Application.unscoped.last
+        assert_equal "Devops API", app.name
+      end
+
+      should "generate a friendly name from a name with a dash in it" do
+        post :create, params: { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
+        app = Application.unscoped.last
+        assert_equal "New App", app.name
+      end
+    end
+
+    context "handling multiple applications with the same repo" do
+      should "return a conflict response" do
+        FactoryBot.create(:application, name: "app 1", repo: "org/app")
+        FactoryBot.create(:application, name: "app 2", repo: "org/app")
+        post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
+        assert_response :conflict
       end
     end
   end
