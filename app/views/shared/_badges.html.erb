@@ -5,7 +5,3 @@
 <% unless application.cd_enabled? %>
   <span class="release__badge release__badge--orange">Manually deployed</span>
 <% end %>
-
-<% if application.deployed_to_ec2? %>
-  <span class="release__badge release__badge--red">Not migrated to EKS</span>
-<% end %>
