@@ -7,6 +7,9 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET index" do
     setup do
+      response_body = [{ "app_name" => "app1",
+                         "links" => { "repo_url" => "https://github.com/user/app1" } }].to_json
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body, headers: {})
       @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1", default_branch: "main")
       @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
       @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
@@ -42,6 +45,10 @@ class ApplicationsControllerTest < ActionController::TestCase
   end
 
   context "POST create" do
+    setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+    end
+
     context "valid request" do
       should "create an application" do
         assert_difference "Application.count", 1 do
@@ -83,6 +90,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET show" do
     setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
       stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
@@ -209,6 +217,8 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "when format is json" do
       setup do
+        response_body = [{ "app_name" => "application-1", "links" => { "repo_url" => "https://github.com/alphagov/application-1" } }].to_json
+        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body, headers: {})
         @app = FactoryBot.create(:application, name: "Application 1", repo: "alphagov/application-1")
       end
 
@@ -277,6 +287,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET edit" do
     setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application, name: "monkeys", repo: "org/monkeys")
     end
 
@@ -298,6 +309,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "PUT update" do
     setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application)
     end
 
@@ -344,6 +356,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET deploy" do
     setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application, status_notes: "Do not deploy this without talking to core team first!")
       @deployment = FactoryBot.create(:deployment, application_id: @app.id, created_at: "18/01/2013 11:57")
       @release_tag = "hot_fix_1"
@@ -386,7 +399,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show deployment link" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".gem-c-button[href=?]", "https://github.com/#{@app.repo}/actions/workflows/deploy.yml"
+      assert_select ".gem-c-button[href=?]", "#{@app.repo_url}/actions/workflows/deploy.yml"
     end
 
     context "when there is a github API 404 error" do

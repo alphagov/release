@@ -72,7 +72,7 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
           <span class="govuk-warning-text__assistive">Warning</span>
-            Continuous deployment between each environment has to be disabled or enabled via <%= link_to "GitHub action", "https://github.com/#{@application.repo}/actions/workflows/set-automatic-deploys.yml", class: "govuk-link" %>.
+            Continuous deployment between each environment has to be disabled or enabled via <%= link_to "GitHub action", "#{@application.repo_url}/actions/workflows/set-automatic-deploys.yml", class: "govuk-link" %>.
         </strong>
       </div>
     <% end %>

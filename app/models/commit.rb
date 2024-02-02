@@ -7,7 +7,7 @@ class Commit
   end
 
   def github_url
-    "#{application.repo_url}/commit/#{commit_data[:sha]}"
+    "#{Repo.url(app_name: application.name)}/commit/#{commit_data[:sha]}"
   end
 
   def sha

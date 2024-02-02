@@ -65,12 +65,6 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal "giraffe", application.shortname
     end
 
-    should "know its location on the internet" do
-      application = Application.new(@atts)
-
-      assert_equal "https://github.com/alphagov/tron-o-matic", application.repo_url
-    end
-
     should "default to not being archived" do
       application = Application.new(@atts)
 
@@ -278,6 +272,28 @@ class ApplicationTest < ActiveSupport::TestCase
       expected = { "production EKS" => production }
 
       assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
+    end
+  end
+
+  context "existing application details from the Developer Docs" do
+    describe "#repo_url" do
+      should "return the repository url for the apps" do
+        response_body = [{ "app_name" => "account-api", "links" => { "repo_url" => "https://github.com/alphagov/account-api" } }].to_json
+        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+        app = FactoryBot.create(:application, name: "Account API")
+
+        assert_equal "https://github.com/alphagov/account-api", app.repo_url
+      end
+
+      should "create the repository url using the app name of the url is not provided or empty" do
+        response_body = [{ "app_name" => "account-api" }].to_json
+        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+        app = FactoryBot.create(:application, name: "Account API")
+
+        assert_equal "https://github.com/alphagov/account-api", app.repo_url
+      end
     end
   end
 

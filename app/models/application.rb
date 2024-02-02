@@ -52,11 +52,11 @@ class Application < ApplicationRecord
   end
 
   def repo_url
-    "https://github.com/#{repo}"
+    Repo.url(app_name: name).nil? ? "https://github.com/#{repo_path}" : Repo.url(app_name: name)
   end
 
   def repo_compare_url(from, to)
-    "https://github.com/#{repo}/compare/#{from}...#{to}"
+    "#{repo_url}/compare/#{from}...#{to}"
   end
 
   def self.cd_statuses

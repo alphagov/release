@@ -15,6 +15,7 @@ class DeployPageTest < ActionDispatch::IntegrationTest
   end
 
   test "page handles a deployment with a previous deployment" do
+    stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     application = FactoryBot.create(:application)
 
     commits = [

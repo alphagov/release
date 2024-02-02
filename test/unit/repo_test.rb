@@ -23,4 +23,14 @@ class RepoTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe ".url" do
+    should "get the GitHub URL for a repository" do
+      response_body = [{ "app_name" => "account-api",
+                         "links" => { "repo_url" => "https://github.com/alphagov/account-api" } }].to_json
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+      assert_equal "https://github.com/alphagov/account-api", Repo.url(app_name: "Account API")
+    end
+  end
 end
