@@ -148,7 +148,7 @@ GEM
       null_logger
       plek (>= 1.9.0)
       rest-client (~> 2.0)
-    gds-sso (18.1.0)
+    gds-sso (19.0.0)
       oauth2 (~> 2.0)
       omniauth (~> 2.1)
       omniauth-oauth2 (~> 1.8)
@@ -239,7 +239,7 @@ GEM
     mysql2 (0.5.5)
     net-http (0.4.1)
       uri
-    net-imap (0.4.9.1)
+    net-imap (0.4.10)
       date
       net-protocol
     net-pop (0.1.2)
@@ -250,7 +250,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.0)
-    nokogiri (1.16.0)
+    nokogiri (1.16.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     null_logger (0.0.1)
