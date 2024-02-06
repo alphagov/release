@@ -7,7 +7,6 @@ class ApplicationTest < ActiveSupport::TestCase
     setup do
       @atts = {
         name: "Tron-o-matic",
-        repo: "alphagov/tron-o-matic",
       }
     end
 
@@ -35,26 +34,6 @@ class ApplicationTest < ActiveSupport::TestCase
       assert application.errors[:name].include?("has already been taken")
     end
 
-    should "be invalid with an invalid repo" do
-      application = Application.new(@atts)
-
-      application.repo = "noslashes"
-      assert_not application.valid?
-      assert application.errors[:repo].include?("is invalid")
-
-      application.repo = "too/many/slashes"
-      assert_not application.valid?
-      assert application.errors[:repo].include?("is invalid")
-
-      application.repo = "/slashatfront"
-      assert_not application.valid?
-      assert application.errors[:repo].include?("is invalid")
-
-      application.repo = "slashatback/"
-      assert_not application.valid?
-      assert application.errors[:repo].include?("is invalid")
-    end
-
     should "use the second half of the repo name as shortname if shortname not provided or empty" do
       application = Application.create!(@atts)
       assert_equal "tron-o-matic", application.shortname
@@ -79,12 +58,6 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
-
-      assert_not application.valid?
-    end
-
-    should "be invalid with a repo that is too long" do
-      application = Application.new(@atts.merge(repo: "alphagov/my-r#{'e' * 243}po"))
 
       assert_not application.valid?
     end
@@ -141,7 +114,6 @@ class ApplicationTest < ActiveSupport::TestCase
     setup do
       @atts = {
         name: "Tron-o-matic",
-        repo: "alphagov/tron-o-matic",
       }
     end
 
@@ -176,10 +148,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   context "live environment" do
     setup do
-      @atts = {
-        name: "Tron-o-matic",
-        repo: "alphagov/tron-o-matic",
-      }
+      @atts = { name: "Tron-o-matic" }
     end
 
     should "return production EKS" do
@@ -191,7 +160,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "#status" do
     before do
-      @app = FactoryBot.create(:application, name: SecureRandom.hex, repo: "alphagov/#{SecureRandom.hex}")
+      @app = FactoryBot.create(:application, name: SecureRandom.hex)
       Deployment.delete_all
     end
 

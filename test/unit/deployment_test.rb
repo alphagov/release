@@ -3,7 +3,7 @@ require "test_helper"
 class DeploymentTest < ActiveSupport::TestCase
   describe "#previous_deployment" do
     should "should return the previous version" do
-      app = FactoryBot.create(:application, name: SecureRandom.hex, repo: "alphagov/#{SecureRandom.hex}")
+      app = FactoryBot.create(:application, name: SecureRandom.hex)
 
       previous = FactoryBot.create(:deployment, application: app, environment: "staging")
       FactoryBot.create(:deployment, application: app, environment: "production")

@@ -4,11 +4,8 @@ class Application < ApplicationRecord
   friendly_id :fallback_shortname, use: :slugged, slug_column: :shortname
 
   validates :name, presence: { message: "is required" }
-  validates :repo, presence: { message: "is required" }
 
-  validates :name, :repo, :status_notes, :shortname, length: { maximum: 255 }
-
-  validates :repo, format: { with: /\A[^\s\/]+\/[^\s\/]+\Z/i }, allow_blank: true
+  validates :name, :status_notes, :shortname, length: { maximum: 255 }
 
   validates :name, uniqueness: { case_sensitive: true }
 
@@ -48,7 +45,11 @@ class Application < ApplicationRecord
   end
 
   def fallback_shortname
-    repo.split("/")[-1] unless repo.nil?
+    repo_path.split("/")[-1] unless repo_path.nil?
+  end
+
+  def repo_path
+    "alphagov/#{name.parameterize}"
   end
 
   def repo_url
@@ -79,19 +80,19 @@ class Application < ApplicationRecord
   end
 
   def dependency_pull_requests
-    Services.github.search_issues("repo:#{repo} is:pr state:open label:dependencies")
+    Services.github.search_issues("repo:#{repo_path} is:pr state:open label:dependencies")
   end
 
   def commits
-    Services.github.commits(repo)
+    Services.github.commits(repo_path)
   end
 
   def latest_commit(application, commit_sha)
-    Services.github.commit(application.repo, commit_sha)
+    Services.github.commit(application.repo_path, commit_sha)
   end
 
   def tag_names_by_commit
-    tags = Services.github.tags(repo)
+    tags = Services.github.tags(repo_path)
 
     tags.each_with_object({}) do |tag, hash|
       sha = tag[:commit][:sha]
@@ -104,7 +105,7 @@ class Application < ApplicationRecord
     production_deployment = deployments.last_deploy_to(live_environment)
 
     comparison = Services.github.compare(
-      repo,
+      repo_path,
       production_deployment.version,
       default_branch,
     )

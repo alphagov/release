@@ -58,19 +58,19 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
   end
 
   def stub_deploy_and_release_page_api_requests_for(application, tag)
-    stub_request(:get, "https://api.github.com/repos/#{application.repo}/tags").to_return(body:
+    stub_request(:get, "https://api.github.com/repos/#{application.repo_path}/tags").to_return(body:
       [
         {
           "name": tag,
-          "zipball_url": "https://api.github.com/repos/#{application.repo}/zipball/#{tag}",
-          "tarball_url": "https://api.github.com/repos/#{application.repo}/tarball/#{tag}",
+          "zipball_url": "https://api.github.com/repos/#{application.repo_path}/zipball/#{tag}",
+          "tarball_url": "https://api.github.com/repos/#{application.repo_path}/tarball/#{tag}",
           "commit": {
             "sha": "1234567890",
-            "url": "https://api.github.com/repos/#{application.repo}/commits/f45771538251b6ec0d2cc88982797f28916a7878",
+            "url": "https://api.github.com/repos/#{application.repo_path}/commits/f45771538251b6ec0d2cc88982797f28916a7878",
           },
         },
       ])
-    stub_request(:get, "https://api.github.com/repos/#{application.repo}/commits").to_return(body:
+    stub_request(:get, "https://api.github.com/repos/#{application.repo_path}/commits").to_return(body:
       [
         {
           "sha": "1234567890",
@@ -81,18 +81,18 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
               "date": "2017-11-16T11:55:21Z",
             },
             "message": "Made a change to a thing. WIP! DO NOT DEPLOY!",
-            "url": "https://api.github.com/repos/#{application.repo}/git/commits/1234567890",
+            "url": "https://api.github.com/repos/#{application.repo_path}/git/commits/1234567890",
             "comment_count": 0,
           },
-          "url": "https://api.github.com/repos/#{application.repo}/commits/1234567890",
-          "html_url": "https://github.com/alphagov/#{application.repo}/1234567890",
-          "comments_url": "https://api.github.com/repos/#{application.repo}/commits/1234567890/comments",
+          "url": "https://api.github.com/repos/#{application.repo_path}/commits/1234567890",
+          "html_url": "https://github.com/alphagov/#{application.repo_path}/1234567890",
+          "comments_url": "https://api.github.com/repos/#{application.repo_path}/commits/1234567890/comments",
         },
       ])
     stub_request(:get, "https://grafana.dev.gov.uk:80/api/dashboards/file/#{application.shortname}.json").to_return(status: 200, body: "")
 
     Octokit::Client.any_instance.stubs(:search_issues)
-        .with("repo:#{application.repo} is:pr state:open label:dependencies")
+        .with("repo:#{application.repo_path} is:pr state:open label:dependencies")
         .returns({
           "total_count": 5,
         })

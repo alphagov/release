@@ -10,9 +10,9 @@ class ApplicationsControllerTest < ActionController::TestCase
       response_body = [{ "app_name" => "app1",
                          "links" => { "repo_url" => "https://github.com/user/app1" } }].to_json
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body, headers: {})
-      @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1", default_branch: "main")
-      @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
-      @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
+      @app1 = FactoryBot.create(:application, name: "app1", default_branch: "main")
+      @app2 = FactoryBot.create(:application, name: "app2")
+      @app3 = FactoryBot.create(:application, name: "app3", archived: true)
       @deploy1 = FactoryBot.create(
         :deployment,
         application: @app1,
@@ -56,7 +56,6 @@ class ApplicationsControllerTest < ActionController::TestCase
                params: {
                  application: {
                    name: "My First App",
-                   repo: "org/my_first_app",
                  },
                }
         end
@@ -67,7 +66,6 @@ class ApplicationsControllerTest < ActionController::TestCase
              params: {
                application: {
                  name: "My First App",
-                 repo: "org/my_first_app",
                },
              }
         assert_redirected_to application_path(Application.last)
@@ -76,12 +74,12 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "invalid request" do
       should "render an error message" do
-        post :create, params: { application: { name: "", repo: "org/my_first_app" } }
+        post :create, params: { application: { name: "" } }
         assert_select ".gem-c-error-summary__list-item", text: "Name is required"
       end
 
       should "rerender the form and respond with an unprocessable entity status" do
-        post :create, params: { application: { name: "", repo: "org/my_first_app" } }
+        post :create, params: { application: { name: "" } }
         assert_template :new
         assert_response :unprocessable_entity
       end
@@ -92,11 +90,11 @@ class ApplicationsControllerTest < ActionController::TestCase
     setup do
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application)
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_return(body: [])
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits").to_return(body: [])
 
       Octokit::Client.any_instance.stubs(:search_issues)
-        .with("repo:#{@app.repo} is:pr state:open label:dependencies")
+        .with("repo:#{@app.repo_path} is:pr state:open label:dependencies")
         .returns({
           "total_count": 5,
         })
@@ -151,10 +149,10 @@ class ApplicationsControllerTest < ActionController::TestCase
         FactoryBot.create(:deployment, application: @app, environment: "staging EKS", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "integration EKS", version: @manual_deploy)
 
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits/#{@manual_deploy}").to_return(headers: { "Content-Type" => "application/json" }, body: JSON.generate(@latest_commit))
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits/#{@manual_deploy}").to_return(headers: { "Content-Type" => "application/json" }, body: JSON.generate(@latest_commit))
 
         Octokit::Client.any_instance.stubs(:compare)
-          .with(@app.repo, version, @app.default_branch)
+          .with(@app.repo_path, version, @app.default_branch)
           .returns(stub(
                      "comparison",
                      commits: [@first_commit],
@@ -183,7 +181,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         @base_commit = stub_commit
         FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit[:sha])
         Octokit::Client.any_instance.stubs(:compare)
-          .with(@app.repo, version, @app.default_branch)
+          .with(@app.repo_path, version, @app.default_branch)
           .returns(stub(
                      "comparison",
                      commits: [@first_commit, @second_commit],
@@ -219,7 +217,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       setup do
         response_body = [{ "app_name" => "application-1", "links" => { "repo_url" => "https://github.com/alphagov/application-1" } }].to_json
         stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body, headers: {})
-        @app = FactoryBot.create(:application, name: "Application 1", repo: "alphagov/application-1")
+        @app = FactoryBot.create(:application, name: "Application 1")
       end
 
       should "return a successful response" do
@@ -241,7 +239,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "when there is a github API 404 error" do
       setup do
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::NotFound.new)
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_raise(Octokit::NotFound.new)
         get :show, params: { id: @app.id }
       end
 
@@ -255,7 +253,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "when there is a github rate limit error" do
       setup do
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::TooManyRequests.new)
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_raise(Octokit::TooManyRequests.new)
         stub_request(:get, "https://api.github.com/rate_limit").to_return(
           headers: { "X-RateLimit-Reset" => 5.minutes.from_now.to_i },
           body: "",
@@ -272,7 +270,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "when there is another github error" do
       setup do
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_raise(Octokit::Error.new)
+        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_raise(Octokit::Error.new)
         get :show, params: { id: @app.id }
       end
 
@@ -288,7 +286,7 @@ class ApplicationsControllerTest < ActionController::TestCase
   context "GET edit" do
     setup do
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
-      @app = FactoryBot.create(:application, name: "monkeys", repo: "org/monkeys")
+      @app = FactoryBot.create(:application, name: "monkeys")
     end
 
     should "show the form" do
@@ -315,26 +313,26 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "valid request" do
       should "update the application" do
-        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", deploy_freeze: true } }
+        put :update, params: { id: @app.id, application: { name: "new name", deploy_freeze: true } }
         @app.reload
         assert_equal "new name", @app.name
         assert_equal true, @app.deploy_freeze?
       end
 
       should "redirect to the application" do
-        put :update, params: { id: @app.id, application: { name: "new name", repo: "new/repo", deploy_freeze: true } }
+        put :update, params: { id: @app.id, application: { name: "new name", deploy_freeze: true } }
         assert_redirected_to application_path(@app)
       end
     end
 
     context "invalid request" do
       should "render an error message" do
-        put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
+        put :update, params: { id: @app.id, application: { name: "" } }
         assert_select ".gem-c-error-summary__list-item", text: "Name is required"
       end
 
       should "rerender the form and respond with an unprocessable entity status" do
-        put :update, params: { id: @app.id, application: { name: "", repo: "new/repo" } }
+        put :update, params: { id: @app.id, application: { name: "" } }
         assert_template :edit
         assert_response :unprocessable_entity
       end
@@ -343,9 +341,9 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET archived" do
     setup do
-      @app1 = FactoryBot.create(:application, name: "app1", repo: "user/app1")
-      @app2 = FactoryBot.create(:application, name: "app2", repo: "user/app2")
-      @app3 = FactoryBot.create(:application, name: "app3", repo: "user/app3", archived: true)
+      @app1 = FactoryBot.create(:application, name: "app1")
+      @app2 = FactoryBot.create(:application, name: "app2")
+      @app3 = FactoryBot.create(:application, name: "app3", archived: true)
     end
 
     should "show only archived applications" do
@@ -357,14 +355,15 @@ class ApplicationsControllerTest < ActionController::TestCase
   context "GET deploy" do
     setup do
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
-      @app = FactoryBot.create(:application, status_notes: "Do not deploy this without talking to core team first!")
+      @app = FactoryBot.create(:application, name: "app1", status_notes: "Do not deploy this without talking to core team first!")
       @deployment = FactoryBot.create(:deployment, application_id: @app.id, created_at: "18/01/2013 11:57")
       @release_tag = "hot_fix_1"
       stub_request(:get, %r{grafana_hostname/api/dashboards/file/#{@app.shortname}.json}).to_return(status: 404)
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/tags").to_return(body: [])
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo}/commits").to_return(body: [])
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_return(body: [])
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits").to_return(body: [])
+
       Octokit::Client.any_instance.stubs(:compare)
-        .with(@app.repo, @deployment.version, @release_tag)
+        .with(@app.repo_path, @deployment.version, @release_tag)
         .returns(stub(
                    "comparison",
                    commits: [],
@@ -405,7 +404,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     context "when there is a github API 404 error" do
       setup do
         Octokit::Client.any_instance.stubs(:compare)
-          .with(@app.repo, @deployment.version, @release_tag)
+          .with(@app.repo_path, @deployment.version, @release_tag)
           .raises(Octokit::NotFound.new)
       end
 

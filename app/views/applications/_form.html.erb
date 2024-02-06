@@ -8,16 +8,6 @@
     error_message: @application.errors[:name].first,
   } %>
 
-  <%= render "govuk_publishing_components/components/input", {
-    label: {
-      text: "GitHub repository path"
-    },
-    name: "application[repo]",
-    hint: "Example: alphagov/publisher",
-    value: @application.repo,
-    error_message: @application.errors[:repo].first,
-  } %>
-
   <%= render "govuk_publishing_components/components/select", {
     id: "default_branch",
     label: "GitHub repository default branch",

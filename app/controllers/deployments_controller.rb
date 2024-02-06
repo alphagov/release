@@ -39,7 +39,7 @@ private
 
     case existing_apps.length
     when 0
-      Application.create!(name: normalize_app_name(repo_path), repo: repo_path)
+      Application.create!(name: normalize_app_name(repo_path))
     when 1
       existing_apps[0]
     else

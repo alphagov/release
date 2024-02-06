@@ -37,7 +37,7 @@ class DeploymentsControllerTest < ActionController::TestCase
 
   context "POST create" do
     should "create a deployment record" do
-      app = FactoryBot.create(:application, repo: "org/app")
+      app = FactoryBot.create(:application, name: "App")
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
 
       deployment = app.reload.deployments.last
@@ -50,7 +50,7 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
 
     should "unarchive an archived application" do
-      app = FactoryBot.create(:application, repo: "org/app", archived: true)
+      app = FactoryBot.create(:application, name: "App", archived: true)
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
       app.reload
       assert_equal false, app.archived
@@ -95,15 +95,6 @@ class DeploymentsControllerTest < ActionController::TestCase
         post :create, params: { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
         app = Application.unscoped.last
         assert_equal "New App", app.name
-      end
-    end
-
-    context "handling multiple applications with the same repo" do
-      should "return a conflict response" do
-        FactoryBot.create(:application, name: "app 1", repo: "org/app")
-        FactoryBot.create(:application, name: "app 2", repo: "org/app")
-        post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
-        assert_response :conflict
       end
     end
   end
