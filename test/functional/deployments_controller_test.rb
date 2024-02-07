@@ -37,6 +37,25 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "POST create" do
+    context "when forgery protection is enabled" do
+      setup do
+        @controller.allow_forgery_protection = true
+      end
+
+      should "enable forgery protection for non-API requests" do
+        assert_raises(ActionController::InvalidAuthenticityToken) do
+          post :create, params: { repo: "org/app", deployment: { version: "1", environment: "env" } }
+        end
+      end
+
+      should "skip forgery protection for API requests" do
+        request.headers["Authorization"] = "Bearer <token>"
+        post :create, params: { repo: "org/app", deployment: { version: "1", environment: "env" } }
+
+        assert_response :ok
+      end
+    end
+
     setup do
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     end
