@@ -35,7 +35,7 @@ class DeploymentsController < ApplicationController
 private
 
   def application_by_repo
-    existing_apps = Application.where(repo: repo_path)
+    existing_apps = Application.where(name: repo_path)
 
     case existing_apps.length
     when 0
@@ -48,22 +48,12 @@ private
   end
 
   def repo_path
-    if params[:repo].start_with?("http")
-      URI.parse(params[:repo]).path.gsub(%r{^/}, "")
-    elsif params[:repo].start_with?("git@")
-      params[:repo].split(":")[-1].gsub(/.git$/, "")
-    else
-      params[:repo]
-    end
+    params[:repo].split("/")[-1]
   end
 
   def normalize_app_name(unnormalized_app_name)
     normalized_app_name = unnormalized_app_name.split("/")[-1].tr("-", " ").humanize.titlecase
     normalized_app_name.gsub(/\bApi\b/, "API")
-  end
-
-  def push_notification?
-    params[:repo].present?
   end
 
   def deployment_params
@@ -78,13 +68,6 @@ private
       :jenkins_user_name,
       :repo,
       :version,
-    )
-  end
-
-  def new_deployment_params
-    params.permit(
-      :application_id,
-      :environment,
     )
   end
 

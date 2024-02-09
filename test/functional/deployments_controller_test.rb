@@ -35,7 +35,7 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
   end
 
-  context "POST create" do
+  context "POST create using deployment information from Argo" do
     should "create a deployment record" do
       app = FactoryBot.create(:application, name: "App")
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
@@ -54,22 +54,6 @@ class DeploymentsControllerTest < ActionController::TestCase
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
       app.reload
       assert_equal false, app.archived
-    end
-
-    context "accepting different 'repo' formats" do
-      should "accept a repo specified as a full URL" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        assert_difference -> { app.deployments.count }, 1 do
-          post :create, params: { repo: "https://github.com/org/app", deployment: { version: "release_123", environment: "staging" } }
-        end
-      end
-
-      should "accept a repo specified as a git address" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        assert_difference -> { app.deployments.count }, 1 do
-          post :create, params: { repo: "git@github.com:org/app.git", deployment: { version: "release_123", environment: "staging" } }
-        end
-      end
     end
 
     context "application doesn't exist" do
