@@ -114,7 +114,6 @@ private
       :id,
       :name,
       :default_branch,
-      :shortname,
       :status_notes,
       :task,
       :deploy_freeze,

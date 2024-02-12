@@ -34,16 +34,6 @@ class ApplicationTest < ActiveSupport::TestCase
       assert application.errors[:name].include?("has already been taken")
     end
 
-    should "use the second half of the repo name as shortname if shortname not provided or empty" do
-      application = Application.create!(@atts)
-      assert_equal "tron-o-matic", application.shortname
-    end
-
-    should "use the provided shortname if not empty" do
-      application = Application.create!(@atts.merge(shortname: "giraffe"))
-      assert_equal "giraffe", application.shortname
-    end
-
     should "default to not being archived" do
       application = Application.new(@atts)
 
@@ -58,12 +48,6 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
-
-      assert_not application.valid?
-    end
-
-    should "be invalid with a shortname that is too long" do
-      application = Application.new(@atts.merge(shortname: ("a" * 256)))
 
       assert_not application.valid?
     end

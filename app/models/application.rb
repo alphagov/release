@@ -5,7 +5,7 @@ class Application < ApplicationRecord
 
   validates :name, presence: { message: "is required" }
 
-  validates :name, :status_notes, :shortname, length: { maximum: 255 }
+  validates :name, :status_notes, length: { maximum: 255 }
 
   validates :name, uniqueness: { case_sensitive: true }
 

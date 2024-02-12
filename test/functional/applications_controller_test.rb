@@ -294,11 +294,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select "form.edit_application input[name='application[name]'][value='#{@app.name}']"
     end
 
-    should "allow editing of the shortname in the form" do
-      get :edit, params: { id: @app.id }
-      assert_select "form.edit_application input[name='application[shortname]'][value='#{@app.shortname}']"
-    end
-
     should "show warning that an EKS deployed app has have deployments disabled via GitHub action" do
       get :edit, params: { id: @app.id }
       assert_select ".govuk-warning-text__text", /Continuous deployment between each environment has to be disabled or enabled * via GitHub action/

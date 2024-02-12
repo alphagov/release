@@ -22,16 +22,6 @@
     end
   } %>
 
-  <%= render "govuk_publishing_components/components/input", {
-    label: {
-      text: "Short name"
-    },
-    name: "application[shortname]",
-    hint: "For use in graphite metrics. Example: whitehall",
-    value: @application.shortname,
-    error_message: @application.errors[:shortname].first,
-  } %>
-
   <%= render "govuk_publishing_components/components/textarea", {
     label: {
       text: "Status notes"
