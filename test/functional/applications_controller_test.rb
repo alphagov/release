@@ -179,6 +179,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         @first_commit = stub_commit
         @second_commit = stub_commit
         @base_commit = stub_commit
+        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
         FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit[:sha])
         Octokit::Client.any_instance.stubs(:compare)
           .with(@app.repo_path, version, @app.default_branch)
@@ -336,6 +337,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET archived" do
     setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app1 = FactoryBot.create(:application, name: "app1")
       @app2 = FactoryBot.create(:application, name: "app2")
       @app3 = FactoryBot.create(:application, name: "app3", archived: true)

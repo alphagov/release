@@ -45,7 +45,7 @@ class Application < ApplicationRecord
   end
 
   def fallback_shortname
-    repo_path.split("/")[-1] unless repo_path.nil?
+    Repo.shortname(app_name: name).nil? ? name.parameterize : Repo.shortname(app_name: name)
   end
 
   def repo_path

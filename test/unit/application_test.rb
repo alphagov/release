@@ -8,6 +8,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
       }
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     end
 
     context "given valid attributes" do
@@ -99,6 +100,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
       }
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     end
 
     context "when the application is not continuously deployed" do
@@ -125,6 +127,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   context "deployed to EC2" do
     should "return false" do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       application = Application.new(@atts)
       assert_not application.deployed_to_ec2?
     end
@@ -133,6 +136,7 @@ class ApplicationTest < ActiveSupport::TestCase
   context "live environment" do
     setup do
       @atts = { name: "Tron-o-matic" }
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     end
 
     should "return production EKS" do
@@ -144,6 +148,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "#status" do
     before do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application, name: SecureRandom.hex)
       Deployment.delete_all
     end
@@ -174,6 +179,10 @@ class ApplicationTest < ActiveSupport::TestCase
   end
 
   describe "#latest_deploys_by_environment" do
+    before do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+    end
+
     should "orders main environments" do
       Deployment.delete_all
       Application.delete_all
@@ -248,6 +257,26 @@ class ApplicationTest < ActiveSupport::TestCase
         assert_equal "https://github.com/alphagov/account-api", app.repo_url
       end
     end
+
+    describe "#fallback_shortname" do
+      should "return the shortname for the app" do
+        response_body = [{ "app_name" => "account-api", "shortname" => "account_api" }].to_json
+        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+        app = FactoryBot.create(:application, name: "Account API")
+
+        assert_equal "account_api", app.shortname
+      end
+
+      should "create the shortname using the app name if the shortname is not provided or empty" do
+        response_body = [{ "app_name" => "account-api" }].to_json
+        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+
+        app = FactoryBot.create(:application, name: "Account API")
+
+        assert_equal "account-api", app.shortname
+      end
+    end
   end
 
   describe "#team_name" do
@@ -279,6 +308,7 @@ class ApplicationTest < ActiveSupport::TestCase
     before do
       Application.delete_all
       Deployment.delete_all
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     end
 
     should "return the apps that are out of sync" do

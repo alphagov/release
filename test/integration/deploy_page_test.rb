@@ -3,6 +3,7 @@ require "integration_test_helper"
 class DeployPageTest < ActionDispatch::IntegrationTest
   setup do
     login_as_stub_user
+    stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
   end
 
   test "page handles a single deployment without a previous deployment" do

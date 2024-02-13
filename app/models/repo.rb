@@ -19,4 +19,8 @@ class Repo
   def self.url(app_name:)
     find_by(app_name:)&.dig("links", "repo_url")
   end
+
+  def self.shortname(app_name:)
+    find_by(app_name:)&.dig("shortname")
+  end
 end

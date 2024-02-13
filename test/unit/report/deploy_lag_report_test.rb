@@ -3,6 +3,7 @@ require "report/deploy_lag_report"
 
 class Report::DeployLagReportTest < ActiveSupport::TestCase
   setup do
+    stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     @app = FactoryBot.create(:application)
     @start_date = 1.year.ago.strftime("%Y-%m-%d")
     @end_date = (Time.zone.today + 1).to_s

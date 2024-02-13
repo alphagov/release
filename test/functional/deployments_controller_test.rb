@@ -7,6 +7,7 @@ class DeploymentsControllerTest < ActionController::TestCase
 
   context "GET recent" do
     setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       Deployment.delete_all
       @application = FactoryBot.create(:application, name: "Foo")
       @deployments = FactoryBot.create_list(:deployment, 10, application_id: @application.id)
@@ -36,6 +37,10 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "POST create using deployment information from Argo" do
+    setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+    end
+
     should "create a deployment record" do
       app = FactoryBot.create(:application, name: "App")
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
