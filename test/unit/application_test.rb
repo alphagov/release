@@ -238,6 +238,11 @@ class ApplicationTest < ActiveSupport::TestCase
   end
 
   context "existing application details from the Developer Docs" do
+    setup do
+      Application.delete_all
+      Application.delete_all
+    end
+
     describe "#repo_url" do
       should "return the repository url for the apps" do
         response_body = [{ "app_name" => "account-api", "links" => { "repo_url" => "https://github.com/alphagov/account-api" } }].to_json
@@ -259,6 +264,11 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     describe "#fallback_shortname" do
+      before do
+        Application.delete_all
+        Application.delete_all
+      end
+
       should "return the shortname for the app" do
         response_body = [{ "app_name" => "account-api", "shortname" => "account_api" }].to_json
         stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
