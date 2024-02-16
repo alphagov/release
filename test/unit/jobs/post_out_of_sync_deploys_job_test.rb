@@ -14,12 +14,12 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
 
     stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
 
-    app = FactoryBot.create(:application, name: "Account API", shortname: "account-api", repo: "alphagov/account-api")
+    app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
     FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
     FactoryBot.create(:deployment, application: app, version: "222", environment: "staging EKS")
     FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
 
-    app2 = FactoryBot.create(:application, name: "Asset manager", shortname: "asset-manager", repo: "alphagov/asset-manager")
+    app2 = FactoryBot.create(:application, name: "Asset manager", shortname: "asset-manager")
     FactoryBot.create(:deployment, application: app2, version: "111", environment: "production EKS")
     FactoryBot.create(:deployment, application: app2, version: "111", environment: "staging EKS")
     FactoryBot.create(:deployment, application: app2, version: "222", environment: "integration EKS")
@@ -41,7 +41,7 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
     response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
     stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
 
-    app = FactoryBot.create(:application, name: "Account API", shortname: "account-api", repo: "alphagov/account-api")
+    app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
     FactoryBot.create(:deployment, application: app, version: "222", environment: "production EKS")
     FactoryBot.create(:deployment, application: app, version: "222", environment: "staging EKS")
     FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")

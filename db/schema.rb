@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2022_09_23_151609) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_08_111830) do
   create_table "applications", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
-    t.string "repo"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "status_notes"
@@ -22,7 +21,6 @@ ActiveRecord::Schema[7.1].define(version: 2022_09_23_151609) do
     t.boolean "deploy_freeze", default: false, null: false
     t.string "default_branch", default: "main", null: false
     t.index ["name"], name: "index_applications_on_name", unique: true
-    t.index ["repo"], name: "index_applications_on_repo"
     t.index ["shortname"], name: "index_applications_on_shortname"
   end
 

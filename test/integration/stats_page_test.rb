@@ -12,6 +12,8 @@ class StatsPageTest < ActionDispatch::IntegrationTest
   end
 
   test "page with stats for an application" do
+    stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+
     application = FactoryBot.create(:application)
 
     visit stats_application_path(application)

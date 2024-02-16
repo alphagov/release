@@ -7,6 +7,7 @@ class DeploymentsControllerTest < ActionController::TestCase
 
   context "GET recent" do
     setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       Deployment.delete_all
       @application = FactoryBot.create(:application, name: "Foo")
       @deployments = FactoryBot.create_list(:deployment, 10, application_id: @application.id)
@@ -35,9 +36,13 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
   end
 
-  context "POST create" do
+  context "POST create using deployment information from Argo" do
+    setup do
+      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+    end
+
     should "create a deployment record" do
-      app = FactoryBot.create(:application, repo: "org/app")
+      app = FactoryBot.create(:application, name: "App")
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
 
       deployment = app.reload.deployments.last
@@ -50,26 +55,10 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
 
     should "unarchive an archived application" do
-      app = FactoryBot.create(:application, repo: "org/app", archived: true)
+      app = FactoryBot.create(:application, name: "App", archived: true)
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
       app.reload
       assert_equal false, app.archived
-    end
-
-    context "accepting different 'repo' formats" do
-      should "accept a repo specified as a full URL" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        assert_difference -> { app.deployments.count }, 1 do
-          post :create, params: { repo: "https://github.com/org/app", deployment: { version: "release_123", environment: "staging" } }
-        end
-      end
-
-      should "accept a repo specified as a git address" do
-        app = FactoryBot.create(:application, repo: "org/app")
-        assert_difference -> { app.deployments.count }, 1 do
-          post :create, params: { repo: "git@github.com:org/app.git", deployment: { version: "release_123", environment: "staging" } }
-        end
-      end
     end
 
     context "application doesn't exist" do
@@ -95,15 +84,6 @@ class DeploymentsControllerTest < ActionController::TestCase
         post :create, params: { repo: "org/new-app", deployment: { version: "release_1", environment: "staging" } }
         app = Application.unscoped.last
         assert_equal "New App", app.name
-      end
-    end
-
-    context "handling multiple applications with the same repo" do
-      should "return a conflict response" do
-        FactoryBot.create(:application, name: "app 1", repo: "org/app")
-        FactoryBot.create(:application, name: "app 2", repo: "org/app")
-        post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
-        assert_response :conflict
       end
     end
   end

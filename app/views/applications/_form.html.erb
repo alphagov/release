@@ -8,16 +8,6 @@
     error_message: @application.errors[:name].first,
   } %>
 
-  <%= render "govuk_publishing_components/components/input", {
-    label: {
-      text: "GitHub repository path"
-    },
-    name: "application[repo]",
-    hint: "Example: alphagov/publisher",
-    value: @application.repo,
-    error_message: @application.errors[:repo].first,
-  } %>
-
   <%= render "govuk_publishing_components/components/select", {
     id: "default_branch",
     label: "GitHub repository default branch",
@@ -30,16 +20,6 @@
         selected: @application.default_branch == label,
       }
     end
-  } %>
-
-  <%= render "govuk_publishing_components/components/input", {
-    label: {
-      text: "Short name"
-    },
-    name: "application[shortname]",
-    hint: "For use in graphite metrics. Example: whitehall",
-    value: @application.shortname,
-    error_message: @application.errors[:shortname].first,
   } %>
 
   <%= render "govuk_publishing_components/components/textarea", {
@@ -72,7 +52,7 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
           <span class="govuk-warning-text__assistive">Warning</span>
-            Continuous deployment between each environment has to be disabled or enabled via <%= link_to "GitHub action", "https://github.com/#{@application.repo}/actions/workflows/set-automatic-deploys.yml", class: "govuk-link" %>.
+            Continuous deployment between each environment has to be disabled or enabled via <%= link_to "GitHub action", "#{@application.repo_url}/actions/workflows/set-automatic-deploys.yml", class: "govuk-link" %>.
         </strong>
       </div>
     <% end %>

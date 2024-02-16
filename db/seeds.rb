@@ -4,20 +4,20 @@
 example_note = "Here is a note that will hopefully demonstrate how somebody might use the notes field to write a long note."
 
 applications = [
-  { name: "Calendars",                              repo: "alphagov/calendars" },
-  { name: "Content store",                          repo: "alphagov/content-store" },
-  { name: "Feedback",                               repo: "alphagov/feedback" },
-  { name: "Frontend",                               repo: "alphagov/frontend", status_notes: example_note },
-  { name: "Imminence",                              repo: "alphagov/imminence" },
-  { name: "Licensify",                              repo: "alphagov/licensify" },
-  { name: "Publisher",                              repo: "alphagov/publisher" },
-  { name: "Rummager",                               repo: "alphagov/rummager" },
-  { name: "Signon",                                 repo: "alphagov/signon" },
-  { name: "Smart answers",                          repo: "alphagov/smart-answers", shortname: "smartanswers" },
-  { name: "Static",                                 repo: "alphagov/static" },
-  { name: "Support",                                repo: "alphagov/support" },
-  { name: "Whitehall",                              repo: "alphagov/whitehall" },
-  { name: "Data insight non-govuk reach collector", repo: "alphagov/datainsight-nongovuk-reach-collector", archived: true },
+  { name: "Calendars" },
+  { name: "Content store" },
+  { name: "Feedback" },
+  { name: "Frontend", status_notes: example_note },
+  { name: "Imminence" },
+  { name: "Licensify" },
+  { name: "Publisher" },
+  { name: "Rummager" },
+  { name: "Signon" },
+  { name: "Smart answers", shortname: "smartanswers" },
+  { name: "Static" },
+  { name: "Support" },
+  { name: "Whitehall" },
+  { name: "Data insight non-govuk reach collector", archived: true },
 ]
 
 applications.each do |application_hash|

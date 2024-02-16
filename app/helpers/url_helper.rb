@@ -9,16 +9,20 @@ module UrlHelper
     "https://deploy.#{suffix}/job/Smokey"
   end
 
+  def github_repo_url(app)
+    Repo.url(app_name: app.name).nil? ? "https://github.com/alphagov/#{app.name.parameterize}" : Repo.url(app_name: app.name)
+  end
+
   def github_dependency_link_to(app, text)
-    link_to(text, "#{app.repo_url}/pulls?q=is%3Apr+state%3Aopen+label%3Adependencies", target: "_blank", rel: "noopener", class: "govuk-link")
+    link_to(text, "#{github_repo_url(app)}/pulls?q=is%3Apr+state%3Aopen+label%3Adependencies", target: "_blank", rel: "noopener", class: "govuk-link")
   end
 
   def github_tag_link_to(app, git_ref)
-    link_to(git_ref.truncate(15), "#{app.repo_url}/tree/#{git_ref}", target: "_blank", rel: "noopener", class: "govuk-link")
+    link_to(git_ref.truncate(15), "#{github_repo_url(app)}/tree/#{git_ref}", target: "_blank", rel: "noopener", class: "govuk-link")
   end
 
-  def github_compare_to_default(application, deploy)
-    "#{application.repo_url}/compare/#{deploy.version}...#{application.default_branch}"
+  def github_compare_to_default(app, deploy)
+    "#{github_repo_url(app)}/compare/#{deploy.version}...#{app.default_branch}"
   end
 
   def govuk_domain_suffix(environment)

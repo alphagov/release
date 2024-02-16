@@ -61,7 +61,7 @@ class ApplicationsController < ApplicationController
 
     if @production_deploy
       comparison = Services.github.compare(
-        @application.repo,
+        @application.repo_path,
         @production_deploy.version,
         @release_tag,
       )
@@ -113,9 +113,7 @@ private
       :archived,
       :id,
       :name,
-      :repo,
       :default_branch,
-      :shortname,
       :status_notes,
       :task,
       :deploy_freeze,

@@ -27,7 +27,7 @@ class Deployment < ApplicationRecord
   def commits
     @commits ||=
       begin
-        Services.github.compare(application.repo, previous_version, version).commits.reverse.map do |commit|
+        Services.github.compare(application.repo_path, previous_version, version).commits.reverse.map do |commit|
           Commit.new(commit.to_h, application)
         end
       rescue Octokit::NotFound

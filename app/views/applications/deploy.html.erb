@@ -23,7 +23,7 @@
 
 <%= render "govuk_publishing_components/components/button", {
   text: "Deploy this release",
-  href: "https://github.com/#{@application.repo}/actions/workflows/deploy.yml",
+  href: "#{@application.repo_url}/actions/workflows/deploy.yml",
   target: "_blank",
   margin_bottom: true
 } %>
