@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
 
-  protect_from_forgery
+  protect_from_forgery with: :exception
 
   def error_400
     error 400

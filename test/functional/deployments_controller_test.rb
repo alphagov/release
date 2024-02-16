@@ -36,6 +36,25 @@ class DeploymentsControllerTest < ActionController::TestCase
   end
 
   context "POST create" do
+    context "when forgery protection is enabled" do
+      setup do
+        @controller.allow_forgery_protection = true
+      end
+
+      should "enable forgery protection for non-API requests" do
+        assert_raises(ActionController::InvalidAuthenticityToken) do
+          post :create, params: { repo: "org/app", deployment: { version: "1", environment: "env" } }
+        end
+      end
+
+      should "skip forgery protection for API requests" do
+        request.headers["Authorization"] = "Bearer <token>"
+        post :create, params: { repo: "org/app", deployment: { version: "1", environment: "env" } }
+
+        assert_response :ok
+      end
+    end
+
     should "create a deployment record" do
       app = FactoryBot.create(:application, repo: "org/app")
       post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
