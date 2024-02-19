@@ -35,7 +35,7 @@ class DeploymentsController < ApplicationController
 private
 
   def application_by_repo
-    existing_apps = Application.where(name: repo_path)
+    existing_apps = Application.where(name: normalize_app_name(repo_path))
 
     case existing_apps.length
     when 0
@@ -64,8 +64,6 @@ private
       :deployed_sha,
       :environment,
       :id,
-      :jenkins_user_email,
-      :jenkins_user_name,
       :repo,
       :version,
     )
