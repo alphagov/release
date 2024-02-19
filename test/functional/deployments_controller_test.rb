@@ -36,22 +36,20 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
   end
 
-  context "POST create using deployment information from Argo" do
+  context "POST create" do
     setup do
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     end
 
     should "create a deployment record" do
-      app = FactoryBot.create(:application, name: "App")
-      post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging", jenkins_user_email: "user@example.org", jenkins_user_name: "A User", deployed_sha: "02a570885766dc43d5e2432855bbffb342543906" } }
+      app = FactoryBot.create(:application, name: "App Name")
+      post :create, params: { repo: "org/app-name", deployment: { version: "v123", environment: "staging", deployed_sha: "v123" } }
 
       deployment = app.reload.deployments.last
       assert_not_nil deployment
-      assert_equal "release_123", deployment.version
+      assert_equal "v123", deployment.version
       assert_equal "staging", deployment.environment
-      assert_equal "user@example.org", deployment.jenkins_user_email
-      assert_equal "A User", deployment.jenkins_user_name
-      assert_equal "02a570885766dc43d5e2432855bbffb342543906", deployment.deployed_sha
+      assert_equal "v123", deployment.deployed_sha
     end
 
     should "unarchive an archived application" do
