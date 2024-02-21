@@ -20,7 +20,7 @@ class Application < ApplicationRecord
   ENVIRONMENTS_ORDER = %w[integration staging production].freeze
 
   def latest_deploys_by_environment
-    @latest_deploys_by_environment ||= ENVIRONMENTS_ORDER.map { |env| "#{env} EKS" }
+    @latest_deploys_by_environment ||= ENVIRONMENTS_ORDER
       .index_with { |environment| deployments.last_deploy_to(environment) }
       .compact
   end
@@ -36,7 +36,6 @@ class Application < ApplicationRecord
 
   def status
     envs = %w[production staging integration]
-    envs = envs.map { |env| "#{env} EKS" }
 
     return :production_and_staging_not_in_sync unless in_sync?(envs.take(2))
     return :undeployed_changes_in_integration unless in_sync?(envs)
@@ -110,7 +109,7 @@ class Application < ApplicationRecord
   end
 
   def live_environment
-    "production EKS"
+    "production"
   end
 
   def team_name
