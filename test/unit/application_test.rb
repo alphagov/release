@@ -125,14 +125,6 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  context "deployed to EC2" do
-    should "return false" do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
-      application = Application.new(@atts)
-      assert_not application.deployed_to_ec2?
-    end
-  end
-
   context "live environment" do
     setup do
       @atts = { name: "Tron-o-matic" }
