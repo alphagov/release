@@ -27,7 +27,7 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
 
     should "assign only filtered environments" do
-      FactoryBot.create(:deployment, application_id: @application.id, environment: "integration EKS")
+      FactoryBot.create(:deployment, application_id: @application.id, environment: "integration")
       FactoryBot.create(:deployment, application_id: @application.id, environment: "integration")
 
       get :recent, params: { environment_filter: "Integration" }

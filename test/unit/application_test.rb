@@ -125,24 +125,16 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  context "deployed to EC2" do
-    should "return false" do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
-      application = Application.new(@atts)
-      assert_not application.deployed_to_ec2?
-    end
-  end
-
   context "live environment" do
     setup do
       @atts = { name: "Tron-o-matic" }
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
     end
 
-    should "return production EKS" do
+    should "return production" do
       application = Application.new(@atts)
 
-      assert_equal "production EKS", application.live_environment
+      assert_equal "production", application.live_environment
     end
   end
 
@@ -154,25 +146,25 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "return :all_environments_match when deployments are in sync" do
-      FactoryBot.create(:deployment, application: @app, version: "1", environment: "integration EKS")
-      FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: @app, version: "1", environment: "production EKS")
+      FactoryBot.create(:deployment, application: @app, version: "1", environment: "integration")
+      FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging")
+      FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
 
       assert_equal :all_environments_match, @app.status
     end
 
     should "return :production_and_staging_not_in_sync when staging and production have different versions" do
-      FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration EKS")
-      FactoryBot.create(:deployment, application: @app, version: "2", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: @app, version: "1", environment: "production EKS")
+      FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration")
+      FactoryBot.create(:deployment, application: @app, version: "2", environment: "staging")
+      FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
 
       assert_equal :production_and_staging_not_in_sync, @app.status
     end
 
     should "return :undeployed_changes_in_integration when there are different version across the environments" do
-      FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration EKS")
-      FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: @app, version: "1", environment: "production EKS")
+      FactoryBot.create(:deployment, application: @app, version: "2", environment: "integration")
+      FactoryBot.create(:deployment, application: @app, version: "1", environment: "staging")
+      FactoryBot.create(:deployment, application: @app, version: "1", environment: "production")
 
       assert_equal :undeployed_changes_in_integration, @app.status
     end
@@ -189,14 +181,14 @@ class ApplicationTest < ActiveSupport::TestCase
 
       app = FactoryBot.create(:application)
 
-      production = FactoryBot.create(:deployment, application: app, environment: "production EKS")
-      staging = FactoryBot.create(:deployment, application: app, environment: "staging EKS")
-      integration = FactoryBot.create(:deployment, application: app, environment: "integration EKS")
+      production = FactoryBot.create(:deployment, application: app, environment: "production")
+      staging = FactoryBot.create(:deployment, application: app, environment: "staging")
+      integration = FactoryBot.create(:deployment, application: app, environment: "integration")
 
       expected = {
-        "integration EKS" => integration,
-        "staging EKS" => staging,
-        "production EKS" => production,
+        "integration" => integration,
+        "staging" => staging,
+        "production" => production,
       }
 
       assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
@@ -210,14 +202,14 @@ class ApplicationTest < ActiveSupport::TestCase
 
       FactoryBot.create(:deployment, application: app, environment: "training")
       FactoryBot.create(:deployment, application: app, environment: "preview")
-      production = FactoryBot.create(:deployment, application: app, environment: "production EKS")
-      staging = FactoryBot.create(:deployment, application: app, environment: "staging EKS")
-      integration = FactoryBot.create(:deployment, application: app, environment: "integration EKS")
+      production = FactoryBot.create(:deployment, application: app, environment: "production")
+      staging = FactoryBot.create(:deployment, application: app, environment: "staging")
+      integration = FactoryBot.create(:deployment, application: app, environment: "integration")
 
       expected = {
-        "integration EKS" => integration,
-        "staging EKS" => staging,
-        "production EKS" => production,
+        "integration" => integration,
+        "staging" => staging,
+        "production" => production,
       }
 
       assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
@@ -229,9 +221,9 @@ class ApplicationTest < ActiveSupport::TestCase
 
       app = FactoryBot.create(:application)
 
-      production = FactoryBot.create(:deployment, application: app, environment: "production EKS")
+      production = FactoryBot.create(:deployment, application: app, environment: "production")
 
-      expected = { "production EKS" => production }
+      expected = { "production" => production }
 
       assert_equal(expected.keys, app.latest_deploys_by_environment.keys)
     end
@@ -323,19 +315,19 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "return the apps that are out of sync" do
       app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "production")
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging")
+      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration")
 
       app2 = FactoryBot.create(:application, name: "Asset manager", shortname: "asset-manager")
-      FactoryBot.create(:deployment, application: app2, version: "111", environment: "production EKS")
-      FactoryBot.create(:deployment, application: app2, version: "222", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: app2, version: "222", environment: "integration EKS")
+      FactoryBot.create(:deployment, application: app2, version: "111", environment: "production")
+      FactoryBot.create(:deployment, application: app2, version: "222", environment: "staging")
+      FactoryBot.create(:deployment, application: app2, version: "222", environment: "integration")
 
       app3 = FactoryBot.create(:application, name: "Release", shortname: "release")
-      FactoryBot.create(:deployment, application: app3, version: "222", environment: "production EKS")
-      FactoryBot.create(:deployment, application: app3, version: "222", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: app3, version: "222", environment: "integration EKS")
+      FactoryBot.create(:deployment, application: app3, version: "222", environment: "production")
+      FactoryBot.create(:deployment, application: app3, version: "222", environment: "staging")
+      FactoryBot.create(:deployment, application: app3, version: "222", environment: "integration")
 
       assert_equal [app, app2], Application.out_of_sync
     end
@@ -343,9 +335,9 @@ class ApplicationTest < ActiveSupport::TestCase
     should "not include apps which have been archived" do
       app = FactoryBot.create(:application, name: "Manuals frontend", archived: true)
 
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging EKS")
-      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "production")
+      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging")
+      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration")
 
       assert_equal [], Application.out_of_sync
     end

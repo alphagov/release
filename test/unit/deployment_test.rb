@@ -57,7 +57,7 @@ class DeploymentTest < ActiveSupport::TestCase
     end
 
     should "return true if deployment to application's live environment" do
-      deployment = FactoryBot.create(:deployment, environment: "production EKS")
+      deployment = FactoryBot.create(:deployment, environment: "production")
 
       assert_equal true, deployment.to_live_environment?
     end

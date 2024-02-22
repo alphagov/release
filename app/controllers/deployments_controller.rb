@@ -17,7 +17,7 @@ class DeploymentsController < ApplicationController
   def recent
     env = recent_deployment_params[:environment_filter]
 
-    filtered_deployments = env ? Deployment.where(environment: [env, "#{env} EKS"]) : Deployment
+    filtered_deployments = env ? Deployment.where(environment: env) : Deployment
     @deployments = filtered_deployments.includes(:application).newest_first.limit(25)
   end
 

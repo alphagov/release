@@ -16,7 +16,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       @deploy1 = FactoryBot.create(
         :deployment,
         application: @app1,
-        environment: "staging EKS",
+        environment: "staging",
         version: "release_x",
       )
     end
@@ -145,9 +145,9 @@ class ApplicationsControllerTest < ActionController::TestCase
         @manual_deploy = SecureRandom.hex(40)
         @latest_commit = { sha: @manual_deploy, commit: { author: { name: "Winston Churchill" }, message: "We shall fight on the beaches" } }
 
-        FactoryBot.create(:deployment, application: @app, environment: "production EKS", version:, deployed_sha: @deployed_sha)
-        FactoryBot.create(:deployment, application: @app, environment: "staging EKS", version:, deployed_sha: @deployed_sha)
-        FactoryBot.create(:deployment, application: @app, environment: "integration EKS", version: @manual_deploy)
+        FactoryBot.create(:deployment, application: @app, environment: "production", version:, deployed_sha: @deployed_sha)
+        FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
+        FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
 
         stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits/#{@manual_deploy}").to_return(headers: { "Content-Type" => "application/json" }, body: JSON.generate(@latest_commit))
 
@@ -162,7 +162,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the manual deployment commit" do
         get :show, params: { id: @app.id }
-        assert_select ".release__commits-label", { text: "Integration eks", count: 1 }
+        assert_select ".release__commits-label", { text: "Integration", count: 1 }
         assert_select "p", text: @latest_commit[:message]
         assert_select ".release__commit-hash", { text: @manual_deploy.first(9), count: 1 }
       end
@@ -295,7 +295,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select "form.edit_application input[name='application[name]'][value='#{@app.name}']"
     end
 
-    should "show warning that an EKS deployed app has have deployments disabled via GitHub action" do
+    should "show warning that an deployed app has have deployments disabled via GitHub action" do
       get :edit, params: { id: @app.id }
       assert_select ".govuk-warning-text__text", /Continuous deployment between each environment has to be disabled or enabled * via GitHub action/
     end

@@ -15,14 +15,14 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
     stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
 
     app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
-    FactoryBot.create(:deployment, application: app, version: "111", environment: "production EKS")
-    FactoryBot.create(:deployment, application: app, version: "222", environment: "staging EKS")
-    FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
+    FactoryBot.create(:deployment, application: app, version: "111", environment: "production")
+    FactoryBot.create(:deployment, application: app, version: "222", environment: "staging")
+    FactoryBot.create(:deployment, application: app, version: "222", environment: "integration")
 
     app2 = FactoryBot.create(:application, name: "Asset manager", shortname: "asset-manager")
-    FactoryBot.create(:deployment, application: app2, version: "111", environment: "production EKS")
-    FactoryBot.create(:deployment, application: app2, version: "111", environment: "staging EKS")
-    FactoryBot.create(:deployment, application: app2, version: "222", environment: "integration EKS")
+    FactoryBot.create(:deployment, application: app2, version: "111", environment: "production")
+    FactoryBot.create(:deployment, application: app2, version: "111", environment: "staging")
+    FactoryBot.create(:deployment, application: app2, version: "222", environment: "integration")
 
     PostOutOfSyncDeploysJob.perform_now
 
@@ -42,9 +42,9 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
     stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
 
     app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
-    FactoryBot.create(:deployment, application: app, version: "222", environment: "production EKS")
-    FactoryBot.create(:deployment, application: app, version: "222", environment: "staging EKS")
-    FactoryBot.create(:deployment, application: app, version: "222", environment: "integration EKS")
+    FactoryBot.create(:deployment, application: app, version: "222", environment: "production")
+    FactoryBot.create(:deployment, application: app, version: "222", environment: "staging")
+    FactoryBot.create(:deployment, application: app, version: "222", environment: "integration")
 
     assert_no_enqueued_jobs do
       PostOutOfSyncDeploysJob.perform_now
