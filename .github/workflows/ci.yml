@@ -12,7 +12,11 @@ jobs:
     name: SNYK security analysis
     uses: alphagov/govuk-infrastructure/.github/workflows/snyk-security.yml@main
     secrets: inherit
-  
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
   security-analysis:
     name: Security Analysis
     uses: alphagov/govuk-infrastructure/.github/workflows/brakeman.yml@main
