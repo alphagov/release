@@ -29,3 +29,7 @@
 /yarn-error.log
 
 /public/assets
+
+# dartsass-rails
+/app/assets/builds/*
+!/app/assets/builds/.keep
