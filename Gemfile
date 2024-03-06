@@ -5,6 +5,7 @@ gem "rails", "7.1.3.2"
 gem "active_model_serializers"
 gem "bootsnap", require: false
 gem "chartkick"
+gem "dartsass-rails"
 gem "friendly_id"
 gem "gds-sso"
 gem "govuk_app_config"
@@ -15,9 +16,9 @@ gem "mysql2"
 gem "octicons_helper"
 gem "octokit"
 gem "plek"
-gem "sassc-rails"
 gem "sentry-sidekiq"
 gem "sprockets"
+gem "sprockets-rails"
 gem "uglifier"
 
 group :test, :development do
