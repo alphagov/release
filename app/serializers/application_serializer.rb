@@ -1,5 +1,5 @@
 class ApplicationSerializer < ActiveModel::Serializer
-  attributes :name, :shortname, :archived, :deploy_freeze
+  attributes :name, :shortname, :deploy_freeze
   attribute :status_notes, key: :notes
   attribute :repo_url, key: :repository_url
   attribute :default_branch, key: :repository_default_branch

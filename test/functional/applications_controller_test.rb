@@ -12,7 +12,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body, headers: {})
       @app1 = FactoryBot.create(:application, name: "app1", default_branch: "main")
       @app2 = FactoryBot.create(:application, name: "app2")
-      @app3 = FactoryBot.create(:application, name: "app3", archived: true)
       @deploy1 = FactoryBot.create(
         :deployment,
         application: @app1,
@@ -21,7 +20,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       )
     end
 
-    should "list unarchived applications" do
+    should "list applications" do
       get :index
       assert_select ".release__application-link", count: 2
     end
@@ -231,7 +230,6 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_equal "Application 1", body["name"]
         assert_equal "application-1", body["shortname"]
         assert_equal "", body["notes"]
-        assert_equal false, body["archived"]
         assert_equal false, body["deploy_freeze"]
         assert_equal false, body["continuously_deployed"]
         assert_equal "https://github.com/alphagov/application-1", body["repository_url"]
@@ -332,20 +330,6 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_template :edit
         assert_response :unprocessable_entity
       end
-    end
-  end
-
-  context "GET archived" do
-    setup do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
-      @app1 = FactoryBot.create(:application, name: "app1")
-      @app2 = FactoryBot.create(:application, name: "app2")
-      @app3 = FactoryBot.create(:application, name: "app3", archived: true)
-    end
-
-    should "show only archived applications" do
-      get :archived
-      assert_select ".gem-c-table .govuk-table__body .govuk-table__row", count: 1
     end
   end
 

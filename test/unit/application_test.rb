@@ -35,12 +35,6 @@ class ApplicationTest < ActiveSupport::TestCase
       assert application.errors[:name].include?("has already been taken")
     end
 
-    should "default to not being archived" do
-      application = Application.new(@atts)
-
-      assert_equal false, application.archived
-    end
-
     should "default to not be in deploy freeze" do
       application = Application.new(@atts)
 
@@ -330,16 +324,6 @@ class ApplicationTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, application: app3, version: "222", environment: "integration")
 
       assert_equal [app, app2], Application.out_of_sync
-    end
-
-    should "not include apps which have been archived" do
-      app = FactoryBot.create(:application, name: "Manuals frontend", archived: true)
-
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "production")
-      FactoryBot.create(:deployment, application: app, version: "111", environment: "staging")
-      FactoryBot.create(:deployment, application: app, version: "222", environment: "integration")
-
-      assert_equal [], Application.out_of_sync
     end
   end
 end

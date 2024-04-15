@@ -6,12 +6,7 @@ class ApplicationsController < ApplicationController
   ENVIRONMENTS = %w[production staging integration].freeze
 
   def index
-    @applications = Application.where(archived: false)
-    @environments = ENVIRONMENTS
-  end
-
-  def archived
-    @applications = Application.where(archived: true)
+    @applications = Application.all
     @environments = ENVIRONMENTS
   end
 
@@ -110,7 +105,6 @@ private
 
   def application_params
     params.require(:application).permit(
-      :archived,
       :id,
       :name,
       :default_branch,

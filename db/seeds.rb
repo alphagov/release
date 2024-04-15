@@ -17,7 +17,6 @@ applications = [
   { name: "Static" },
   { name: "Support" },
   { name: "Whitehall" },
-  { name: "Data insight non-govuk reach collector", archived: true },
 ]
 
 applications.each do |application_hash|

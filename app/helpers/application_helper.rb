@@ -37,7 +37,6 @@ module ApplicationHelper
 
     items << { text: "Applications", href: applications_path, active: is_current?(applications_path) }
     items << { text: "Deploys", href: activity_path, active: is_current?(activity_path) }
-    items << { text: "Archived", href: archived_applications_path, active: is_current?(archived_applications_path) }
     items << { text: "Settings", href: site_path, active: is_current?(site_path) }
     items << { text: "Stats", href: stats_path, active: is_current?(stats_path) }
 
