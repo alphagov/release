@@ -1,9 +1,5 @@
 ReleaseApp::Application.routes.draw do
   resources :applications do
-    collection do
-      get "archived", to: "applications#archived"
-    end
-
     member do
       get :deploy
       get :stats

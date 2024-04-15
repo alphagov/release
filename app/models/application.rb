@@ -64,7 +64,7 @@ class Application < ApplicationRecord
   end
 
   def self.out_of_sync
-    where(archived: false).reject do |app|
+    all.reject do |app|
       app.status == :all_environments_match
     end
   end

@@ -26,7 +26,6 @@ class DeploymentsController < ApplicationController
 
     return if application.nil?
 
-    application.archived = false
     application.save!
     Deployment.create!(deployment_params.merge(application:))
     head :ok

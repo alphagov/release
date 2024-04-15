@@ -2,13 +2,6 @@
 
 <%= render partial: "shared/application_header", locals: { application: @application, tab: "status" } %>
 
-<% if @application.archived %>
-  <%= render "govuk_publishing_components/components/notice", {
-    title: "This application has been marked as archived.",
-    margin_bottom: 4,
-  } %>
-<% end %>
-
 <%= render 'status_notes', application: @application %>
 
 <%= render "govuk_publishing_components/components/heading", {

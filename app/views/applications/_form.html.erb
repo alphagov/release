@@ -32,18 +32,6 @@
     error_message: @application.errors[:status_notes].first,
   } %>
 
-  <input type="hidden" name="application[archived]" value="0" />
-  <%= render "govuk_publishing_components/components/checkboxes", {
-    name: "application[archived]",
-    items: [
-      {
-        label: "Archived?",
-        value: "1",
-        checked: @application.archived
-      }
-    ]
-  } %>
-  
   <% hint_text = capture do %>
     Adds 'Automatic deployments disabled' badge in the Release app.
     

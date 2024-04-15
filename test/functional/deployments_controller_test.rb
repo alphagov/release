@@ -52,13 +52,6 @@ class DeploymentsControllerTest < ActionController::TestCase
       assert_equal "v123", deployment.deployed_sha
     end
 
-    should "unarchive an archived application" do
-      app = FactoryBot.create(:application, name: "App", archived: true)
-      post :create, params: { repo: "org/app", deployment: { version: "release_123", environment: "staging" } }
-      app.reload
-      assert_equal false, app.archived
-    end
-
     context "application doesn't exist" do
       should "create an application" do
         assert_difference [-> { Deployment.count }, -> { Application.count }], 1 do

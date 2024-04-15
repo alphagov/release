@@ -18,7 +18,6 @@ Examples:
 {
    "name": "Smart Answers",
    "shortname": "smartanswers",
-   "archived": false,
    "deploy_freeze": true,
    "notes": "",
    "repository_url": "https://github.com/alphagov/smart-answers",
