@@ -82,10 +82,6 @@ class Application < ApplicationRecord
     Services.github.commits(repo_path)
   end
 
-  def latest_commit(application, commit_sha)
-    Services.github.commit(application.repo_path, commit_sha)
-  end
-
   def tag_names_by_commit
     tags = Services.github.tags(repo_path)
 
