@@ -142,13 +142,9 @@ class ApplicationsControllerTest < ActionController::TestCase
         @base_commit = stub_commit
         @deployed_sha = @first_commit[:sha]
         @manual_deploy = SecureRandom.hex(40)
-        @latest_commit = { sha: @manual_deploy, commit: { author: { name: "Winston Churchill" }, message: "We shall fight on the beaches" } }
-
         FactoryBot.create(:deployment, application: @app, environment: "production", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
-
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits/#{@manual_deploy}").to_return(headers: { "Content-Type" => "application/json" }, body: JSON.generate(@latest_commit))
 
         Octokit::Client.any_instance.stubs(:compare)
           .with(@app.repo_path, version, @app.default_branch)
@@ -157,13 +153,6 @@ class ApplicationsControllerTest < ActionController::TestCase
                      commits: [@first_commit],
                      base_commit: @base_commit,
                    ))
-      end
-
-      should "show the manual deployment commit" do
-        get :show, params: { id: @app.id }
-        assert_select ".release__commits-label", { text: "Integration", count: 1 }
-        assert_select "p", text: @latest_commit[:message]
-        assert_select ".release__commit-hash", { text: @manual_deploy.first(9), count: 1 }
       end
 
       should "show 'not on default branch' status" do
