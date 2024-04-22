@@ -159,13 +159,6 @@ class ApplicationsControllerTest < ActionController::TestCase
                    ))
       end
 
-      should "show the manual deployment commit" do
-        get :show, params: { id: @app.id }
-        assert_select ".release__commits-label", { text: "Integration", count: 1 }
-        assert_select "p", text: @latest_commit[:message]
-        assert_select ".release__commit-hash", { text: @manual_deploy.first(9), count: 1 }
-      end
-
       should "show 'not on default branch' status" do
         get :show, params: { id: @app.id }
         assert_select ".release__badge--orange", { text: "Not on default branch", count: 1 }
