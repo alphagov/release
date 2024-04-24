@@ -10,8 +10,6 @@
   margin_bottom: 4,
 } %>
 
-<% latest_deploy_on_default_branch = [] %>
-
 <% if @github_available %>
   <div class="release__commits-table">
     <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Commit log", { caption_classes: "govuk-visually-hidden" }) do |t| %>
