@@ -79,7 +79,41 @@ class Application < ApplicationRecord
   end
 
   def commits
-    Services.github.commits(repo_path)
+    @commits ||= Services.github.commits(repo_path, { per_page: 50 })
+  end
+
+  def commit_history
+    commit_older_than_live_environment = false
+    tags_by_commit = tag_names_by_commit
+
+    commits.filter_map do |commit|
+      unless commit_older_than_live_environment
+        tags = tags_by_commit.fetch(commit[:sha], [])
+        deployed_to = []
+
+        latest_deploys_by_environment.each do |environment, deployment|
+          if tags.include?(deployment.version) || deployment.commit_match?(commit[:sha])
+            commit_older_than_live_environment = true if environment == live_environment
+            deployed_to << deployment
+          end
+        end
+
+        {
+          deployed_to:,
+          tags:,
+          message: commit[:commit][:message].split(/\n/)[0],
+          author: commit.dig(:commit, :author, :name),
+          sha: commit[:sha],
+          github_url: "#{repo_url}/commit/#{commit[:sha]}",
+        }
+      end
+    end
+  end
+
+  def environment_on_default_branch(environment)
+    commit_history.any? do |commit|
+      commit[:deployed_to].map(&:environment).include?(environment)
+    end
   end
 
   def tag_names_by_commit
@@ -90,18 +124,6 @@ class Application < ApplicationRecord
       hash[sha] ||= []
       hash[sha] << tag[:name]
     end
-  end
-
-  def undeployed_commits
-    production_deployment = deployments.last_deploy_to(live_environment)
-
-    comparison = Services.github.compare(
-      repo_path,
-      production_deployment.version,
-      default_branch,
-    )
-    # The `compare` API shows commits in forward chronological order
-    comparison.commits.reverse + [comparison.base_commit]
   end
 
   def live_environment

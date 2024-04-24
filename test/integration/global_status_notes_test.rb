@@ -70,7 +70,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
           },
         },
       ])
-    stub_request(:get, "https://api.github.com/repos/#{application.repo_path}/commits").to_return(body:
+    stub_request(:get, "https://api.github.com/repos/#{application.repo_path}/commits?per_page=50").to_return(body:
       [
         {
           "sha": "1234567890",

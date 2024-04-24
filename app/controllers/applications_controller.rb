@@ -19,14 +19,7 @@ class ApplicationsController < ApplicationController
       format.json { render json: @application }
       format.html do
         @outstanding_dependency_pull_requests = @application.dependency_pull_requests[:total_count]
-
-        @tag_names_by_commit = @application.tag_names_by_commit
-
-        @commits = if @application.deployments.last_deploy_to(@application.live_environment)
-                     @application.undeployed_commits
-                   else
-                     @application.commits
-                   end
+        @commits = @application.commit_history
 
         @github_available = true
       rescue Octokit::TooManyRequests

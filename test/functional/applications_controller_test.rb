@@ -90,7 +90,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application)
       stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_return(body: [])
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits").to_return(body: [])
+      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits").with(query: { "per_page": "50" }).to_return(body: [])
 
       Octokit::Client.any_instance.stubs(:search_issues)
         .with("repo:#{@app.repo_path} is:pr state:open label:dependencies")
@@ -146,13 +146,9 @@ class ApplicationsControllerTest < ActionController::TestCase
         FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
 
-        Octokit::Client.any_instance.stubs(:compare)
-          .with(@app.repo_path, version, @app.default_branch)
-          .returns(stub(
-                     "comparison",
-                     commits: [@first_commit],
-                     base_commit: @base_commit,
-                   ))
+        Octokit::Client.any_instance.stubs(:commits)
+          .with(@app.repo_path, { per_page: 50 })
+          .returns([@first_commit, @base_commit])
       end
 
       should "show 'not on default branch' status" do
@@ -169,13 +165,9 @@ class ApplicationsControllerTest < ActionController::TestCase
         @base_commit = stub_commit
         stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
         FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit[:sha])
-        Octokit::Client.any_instance.stubs(:compare)
-          .with(@app.repo_path, version, @app.default_branch)
-          .returns(stub(
-                     "comparison",
-                     commits: [@first_commit, @second_commit],
-                     base_commit: @base_commit,
-                   ))
+        Octokit::Client.any_instance.stubs(:commits)
+          .with(@app.repo_path, { per_page: 50 })
+          .returns([@second_commit, @first_commit, @base_commit])
       end
 
       should "show the application" do
@@ -198,7 +190,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       should "include the base commit" do
         get :show, params: { id: @app.id }
 
-        assert_equal @base_commit[:sha], assigns[:commits].last[:sha]
+        assert_equal @first_commit[:sha], assigns[:commits].last[:sha]
       end
     end
 
