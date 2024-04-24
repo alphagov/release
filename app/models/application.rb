@@ -69,6 +69,21 @@ class Application < ApplicationRecord
     end
   end
 
+  def github_data
+    @github_data ||= begin
+      response = Github::Client.query(
+        Github::ApplicationQuery,
+        variables: { owner: "alphagov", name: name.parameterize },
+      )
+
+      if response.errors.any?
+        raise Github::QueryError, response.errors[:data].join(", ")
+      else
+        response.data
+      end
+    end
+  end
+
   def cd_enabled?
     key = shortname || fallback_shortname
     Application.cd_statuses.include? key

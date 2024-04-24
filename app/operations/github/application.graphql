@@ -1,0 +1,43 @@
+query($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    pullRequests(labels: "dependencies", states: [OPEN], first: 1) {
+      totalCount
+    }
+    refs(
+      refPrefix: "refs/tags/"
+      first: 20
+      orderBy: {field: TAG_COMMIT_DATE, direction: DESC}
+    ) {
+      edges {
+        node {
+          name
+          target {
+            ... on Commit {
+              oid
+              committedDate
+            }
+          }
+        }
+      }
+    }
+    defaultBranchRef {
+      target {
+        ... on Commit {
+          history(first: 40) {
+            edges {
+              node {
+                message
+                oid
+                committedDate
+                author {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
