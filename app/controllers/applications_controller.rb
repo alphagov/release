@@ -18,20 +18,14 @@ class ApplicationsController < ApplicationController
     respond_to do |format|
       format.json { render json: @application }
       format.html do
-        @outstanding_dependency_pull_requests = @application.dependency_pull_requests[:total_count]
+        @outstanding_dependency_pull_requests = @application.dependency_pull_requests_count
         @commits = @application.commit_history
 
         @github_available = true
-      rescue Octokit::TooManyRequests
-        @github_available = false
-        @github_error = github_rate_limited_error_message
-      rescue Octokit::NotFound => e
+      rescue Github::QueryError => e
         @github_available = false
         @github_error = e.message
-      rescue Octokit::Error => e
         GovukError.notify(e.message)
-        @github_available = false
-        @github_error = e.message
       end
     end
   end
@@ -81,16 +75,6 @@ class ApplicationsController < ApplicationController
   end
 
 private
-
-  def github_rate_limited_error_message
-    message = "Github API rate limit exceeded. "
-    resets_at = Services.github.rate_limit.try(:resets_at)
-    if resets_at
-      time_until_reset = time_ago_in_words(resets_at)
-      message << "Rate limit will reset in #{time_until_reset}."
-    end
-    message
-  end
 
   def find_application
     @application = Application.friendly.find(params[:id])
