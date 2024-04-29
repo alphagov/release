@@ -4,6 +4,7 @@ SimpleCov.start "rails"
 ENV["RAILS_ENV"] = "test"
 
 require File.expand_path("../config/environment", __dir__)
+require "artemis/test_helper"
 require "rails/test_help"
 require "shoulda-context"
 require "minitest/autorun"
@@ -13,8 +14,12 @@ require "webmock/minitest"
 DatabaseCleaner.strategy = :transaction
 
 class ActiveSupport::TestCase
+  include Artemis::TestHelper
+
   setup do
     DatabaseCleaner.start
+    graphql_requests.clear
+    graphql_responses.clear
   end
 
   def stub_user
