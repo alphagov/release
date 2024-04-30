@@ -1,0 +1,21 @@
+---
+default: &default
+  adapter: :net_http
+  timeout: 10
+  pool_size: 25
+
+development:
+  github:
+    <<: *default
+    url: https://api.github.com/graphql
+
+test:
+  github:
+    <<: *default
+    url: https://api.github.com/graphql
+    adapter: :test
+
+production:
+  github:
+    <<: *default
+    url: https://api.github.com/graphql

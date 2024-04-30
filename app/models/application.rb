@@ -69,17 +69,29 @@ class Application < ApplicationRecord
     end
   end
 
+  def github_data
+    @github_data ||= begin
+      response = Github.application(owner: "alphagov", name: name.parameterize)
+
+      if response.errors.any?
+        raise Github::QueryError, response.errors[:data].join(", ")
+      else
+        response.data
+      end
+    end
+  end
+
   def cd_enabled?
     key = shortname || fallback_shortname
     Application.cd_statuses.include? key
   end
 
-  def dependency_pull_requests
-    Services.github.search_issues("repo:#{repo_path} is:pr state:open label:dependencies")
+  def dependency_pull_requests_count
+    github_data&.repository&.pull_requests&.total_count || 0
   end
 
   def commits
-    @commits ||= Services.github.commits(repo_path, { per_page: 50 })
+    @commits ||= github_data&.repository&.default_branch_ref&.target&.history&.edges&.map(&:node) || []
   end
 
   def commit_history
@@ -88,11 +100,11 @@ class Application < ApplicationRecord
 
     commits.filter_map do |commit|
       unless commit_older_than_live_environment
-        tags = tags_by_commit.fetch(commit[:sha], [])
+        tags = tags_by_commit.fetch(commit.oid, [])
         deployed_to = []
 
         latest_deploys_by_environment.each do |environment, deployment|
-          if tags.include?(deployment.version) || deployment.commit_match?(commit[:sha])
+          if tags.include?(deployment.version) || deployment.commit_match?(commit.oid)
             commit_older_than_live_environment = true if environment == live_environment
             deployed_to << deployment
           end
@@ -101,10 +113,10 @@ class Application < ApplicationRecord
         {
           deployed_to:,
           tags:,
-          message: commit[:commit][:message].split(/\n/)[0],
-          author: commit.dig(:commit, :author, :name),
-          sha: commit[:sha],
-          github_url: "#{repo_url}/commit/#{commit[:sha]}",
+          message: commit.message.split("\n")[0],
+          author: commit.author.name,
+          sha: commit.oid,
+          github_url: "#{repo_url}/commit/#{commit.oid}",
         }
       end
     end
@@ -117,12 +129,12 @@ class Application < ApplicationRecord
   end
 
   def tag_names_by_commit
-    tags = Services.github.tags(repo_path)
+    tags = github_data&.repository&.refs&.edges || []
 
     tags.each_with_object({}) do |tag, hash|
-      sha = tag[:commit][:sha]
+      sha = tag.node.target.oid
       hash[sha] ||= []
-      hash[sha] << tag[:name]
+      hash[sha] << tag.node.name
     end
   end
 

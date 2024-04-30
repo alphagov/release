@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem "rails", "7.1.3.2"
 
 gem "active_model_serializers"
+gem "artemis"
 gem "bootsnap", require: false
 gem "chartkick"
 gem "dartsass-rails"

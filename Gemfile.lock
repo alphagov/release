@@ -82,6 +82,11 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
+    artemis (1.0.0)
+      activesupport (>= 4.0.0)
+      graphql
+      graphql-client (>= 0.13.0)
+      railties (>= 4.0.0)
     ast (2.4.2)
     base64 (0.2.0)
     better_errors (2.10.1)
@@ -192,6 +197,11 @@ GEM
       govuk_app_config (>= 1.1)
       redis-namespace (~> 1.6)
       sidekiq (~> 6.5, >= 6.5.12)
+    graphql (2.3.1)
+      base64
+    graphql-client (0.22.0)
+      activesupport (>= 3.0)
+      graphql (>= 1.13.0)
     hashdiff (1.1.0)
     hashie (5.0.0)
     http-accept (1.7.0)
@@ -676,6 +686,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  artemis
   better_errors
   binding_of_caller
   bootsnap

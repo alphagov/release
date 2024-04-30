@@ -88,15 +88,10 @@ class ApplicationsControllerTest < ActionController::TestCase
   context "GET show" do
     setup do
       stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
-      @app = FactoryBot.create(:application)
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_return(body: [])
-      stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/commits").with(query: { "per_page": "50" }).to_return(body: [])
 
-      Octokit::Client.any_instance.stubs(:search_issues)
-        .with("repo:#{@app.repo_path} is:pr state:open label:dependencies")
-        .returns({
-          "total_count": 5,
-        })
+      @app = FactoryBot.create(:application)
+      stub_graphql(Github, :application, owner: "alphagov", name: @app.name.parameterize)
+        .to_return(:application)
     end
 
     should "show the application name" do
@@ -138,17 +133,11 @@ class ApplicationsControllerTest < ActionController::TestCase
     context "with manual deployment" do
       setup do
         version = "release_42"
-        @first_commit = stub_commit
-        @base_commit = stub_commit
-        @deployed_sha = @first_commit[:sha]
+        @deployed_sha = "1dac538d10b181e9b7b46766bc3a72d001a1f703"
         @manual_deploy = SecureRandom.hex(40)
         FactoryBot.create(:deployment, application: @app, environment: "production", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
-
-        Octokit::Client.any_instance.stubs(:commits)
-          .with(@app.repo_path, { per_page: 50 })
-          .returns([@first_commit, @base_commit])
       end
 
       should "show 'not on default branch' status" do
@@ -160,14 +149,11 @@ class ApplicationsControllerTest < ActionController::TestCase
     context "GET show with a production deployment" do
       setup do
         version = "release_42"
-        @first_commit = stub_commit
-        @second_commit = stub_commit
-        @base_commit = stub_commit
+        @first_commit = "ee37124a286a0b8501776d9bbe55dcb18ccab645"
+        @second_commit = "1dac538d10b181e9b7b46766bc3a72d001a1f703"
+        @base_commit = "974d1aedf82c068b42dace07984025fd70dfb240"
         stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
-        FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit[:sha])
-        Octokit::Client.any_instance.stubs(:commits)
-          .with(@app.repo_path, { per_page: 50 })
-          .returns([@second_commit, @first_commit, @base_commit])
+        FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit)
       end
 
       should "show the application" do
@@ -182,7 +168,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         # HashWithIndifferentAccess instances, so we can't simply compare for
         # equality on the objects themselves
         assert_equal(
-          [@second_commit[:sha], @first_commit[:sha]],
+          [@second_commit, @first_commit],
           assigns[:commits].take(2).map { |commit| commit[:sha] },
         )
       end
@@ -190,7 +176,7 @@ class ApplicationsControllerTest < ActionController::TestCase
       should "include the base commit" do
         get :show, params: { id: @app.id }
 
-        assert_equal @first_commit[:sha], assigns[:commits].last[:sha]
+        assert_equal @first_commit, assigns[:commits].last[:sha]
       end
     end
 
@@ -217,47 +203,20 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
     end
 
-    context "when there is a github API 404 error" do
+    context "when there is a github error" do
       setup do
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_raise(Octokit::NotFound.new)
+        graphql_requests.clear
+        graphql_responses.clear
+        stub_graphql(Github, :application, owner: "alphagov", name: @app.name.parameterize)
+          .to_return(:errors)
+
         get :show, params: { id: @app.id }
       end
 
       should "show the error message" do
         assert_select ".application-notice.help-notice" do
           assert_select "p", "Couldn't get data from GitHub:"
-          assert_select "p", "Octokit::NotFound"
-        end
-      end
-    end
-
-    context "when there is a github rate limit error" do
-      setup do
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_raise(Octokit::TooManyRequests.new)
-        stub_request(:get, "https://api.github.com/rate_limit").to_return(
-          headers: { "X-RateLimit-Reset" => 5.minutes.from_now.to_i },
-          body: "",
-        )
-        get :show, params: { id: @app.id }
-      end
-
-      should "show the rate limit message" do
-        assert_select ".application-notice.help-notice" do
-          assert_select "p", "Couldn't get data from GitHub:"
-        end
-      end
-    end
-
-    context "when there is another github error" do
-      setup do
-        stub_request(:get, "https://api.github.com/repos/#{@app.repo_path}/tags").to_raise(Octokit::Error.new)
-        get :show, params: { id: @app.id }
-      end
-
-      should "show the error message" do
-        assert_select ".application-notice.help-notice" do
-          assert_select "p", "Couldn't get data from GitHub:"
-          assert_select "p", "Octokit::Error"
+          assert_select "p", "API rate limit exceeded."
         end
       end
     end
