@@ -1,6 +1,8 @@
 class DeploymentsController < ApplicationController
   class ApplicationConflictError < RuntimeError; end
 
+  skip_forgery_protection if: :api_request_to_create_deployment?
+
   rescue_from ApplicationConflictError do
     head :conflict
   end
@@ -72,5 +74,9 @@ private
     params.permit(
       :environment_filter,
     )
+  end
+
+  def api_request_to_create_deployment?
+    GDS::SSO::ApiAccess.api_call?(request.env) && action_name == "create"
   end
 end
