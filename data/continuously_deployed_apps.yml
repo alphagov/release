@@ -21,13 +21,13 @@
 - govuk-account-manager-prototype
 - govuk-attribute-service-prototype
 - hmrc-manuals-api
-- imminence
 - info-frontend
 - link-checker-api
 - local-links-manager
 - locations-api
 - manuals-publisher
 - maslow
+- places-manager
 - publisher
 - publishing-api
 - release
