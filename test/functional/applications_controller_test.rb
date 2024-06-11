@@ -182,9 +182,9 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "when format is json" do
       setup do
-        response_body = [{ "app_name" => "application-1", "links" => { "repo_url" => "https://github.com/alphagov/application-1" } }].to_json
+        response_body = [{ "app_name" => "application-2", "links" => { "repo_url" => "https://github.com/alphagov/application-2" } }].to_json
         stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body, headers: {})
-        @app = FactoryBot.create(:application, name: "Application 1")
+        @app = FactoryBot.create(:application, name: "Application 2")
       end
 
       should "return a successful response" do
@@ -194,12 +194,12 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_response :success
         assert_equal "application/json", response.media_type
 
-        assert_equal "Application 1", body["name"]
-        assert_equal "application-1", body["shortname"]
+        assert_equal "Application 2", body["name"]
+        assert_equal "application-2", body["shortname"]
         assert_equal "", body["notes"]
         assert_equal false, body["deploy_freeze"]
         assert_equal false, body["continuously_deployed"]
-        assert_equal "https://github.com/alphagov/application-1", body["repository_url"]
+        assert_equal "https://github.com/alphagov/application-2", body["repository_url"]
       end
     end
 
