@@ -185,7 +185,7 @@ GEM
     govuk_personalisation (0.16.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (38.4.1)
+    govuk_publishing_components (38.4.2)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -585,8 +585,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.2.8)
-      strscan (>= 3.0.9)
+    rexml (3.3.0)
+      strscan
     rouge (4.2.1)
     rubocop (1.64.1)
       json (~> 2.3)
