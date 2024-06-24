@@ -1,15 +1,13 @@
 require "test_helper"
 
 class SlackPosterJobTest < ActiveJob::TestCase
-  setup do
-    @webhook_url = "https://hooks.slack.com/services/T000/B00/XXX"
-  end
+  FAKE_WEBHOOK_URL = "https://hooks.slack.com/services/T000/B00/XX".freeze
 
   should "send a post request" do
-    mock_env({ "SLACK_WEBHOOK_URL" => @webhook_url }) do
-      stub_post = stub_request(:post, @webhook_url).with(
+    mock_env({ "SLACK_WEBHOOK_URL" => FAKE_WEBHOOK_URL }) do
+      stub_post = stub_request(:post, FAKE_WEBHOOK_URL).with(
         body: "{\"username\":\"Release app\",\"icon_emoji\":\":govuk:\",\"mrkdwn\":\"true\",\"text\":\"Hello\",\"channel\":\"#testchannel\"}",
-      ).to_return(status: 200, body: "ok", headers: {})
+      ).to_return(status: 200, body: "ok")
 
       SlackPosterJob.perform_now("Hello", "#testchannel")
 
@@ -18,10 +16,10 @@ class SlackPosterJobTest < ActiveJob::TestCase
   end
 
   should "send a post request when called with vaild options" do
-    mock_env({ "SLACK_WEBHOOK_URL" => @webhook_url }) do
-      stub_post = stub_request(:post, @webhook_url).with(
+    mock_env({ "SLACK_WEBHOOK_URL" => FAKE_WEBHOOK_URL }) do
+      stub_post = stub_request(:post, FAKE_WEBHOOK_URL).with(
         body: "{\"username\":\"Release app\",\"icon_emoji\":\":badger:\",\"mrkdwn\":\"true\",\"text\":\"Hello\",\"channel\":\"#testchannel\"}",
-      ).to_return(status: 200, body: "ok", headers: {})
+      ).to_return(status: 200, body: "ok")
 
       SlackPosterJob.perform_now("Hello", "#testchannel", { "icon_emoji" => ":badger:" })
 
