@@ -707,6 +707,7 @@ DEPENDENCIES
   dartsass-rails
   database_cleaner
   factory_bot_rails
+  faraday
   faraday-multipart
   faraday-retry
   friendly_id
