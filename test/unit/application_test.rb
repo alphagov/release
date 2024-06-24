@@ -8,7 +8,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
       }
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
     end
 
     context "given valid attributes" do
@@ -94,7 +94,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
       }
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
     end
 
     context "when the application is not continuously deployed" do
@@ -122,7 +122,7 @@ class ApplicationTest < ActiveSupport::TestCase
   context "live environment" do
     setup do
       @atts = { name: "Tron-o-matic" }
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
     end
 
     should "return production" do
@@ -134,7 +134,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "#status" do
     before do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
       @app = FactoryBot.create(:application, name: SecureRandom.hex)
       Deployment.delete_all
     end
@@ -166,7 +166,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "#latest_deploys_by_environment" do
     before do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
     end
 
     should "orders main environments" do
@@ -232,7 +232,7 @@ class ApplicationTest < ActiveSupport::TestCase
     describe "#repo_url" do
       should "return the repository url for the apps" do
         response_body = [{ "app_name" => "account-api", "links" => { "repo_url" => "https://github.com/alphagov/account-api" } }].to_json
-        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
 
@@ -241,7 +241,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
       should "create the repository url using the app name of the url is not provided or empty" do
         response_body = [{ "app_name" => "account-api" }].to_json
-        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
 
@@ -257,7 +257,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
       should "return the shortname for the app" do
         response_body = [{ "app_name" => "account-api", "shortname" => "account_api" }].to_json
-        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
 
@@ -266,7 +266,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
       should "create the shortname using the app name if the shortname is not provided or empty" do
         response_body = [{ "app_name" => "account-api" }].to_json
-        stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
 
@@ -283,7 +283,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "return the name of the team that owns the app" do
       response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
 
@@ -292,7 +292,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "return general dev slack channel when it can't find team (because app names don't match)" do
       response_body = [{ "app_name" => "content-data-admin", "team" => "#govuk-platform-security-reliability-team" }].to_json
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Content Data", shortname: "content-data")
 
@@ -304,7 +304,7 @@ class ApplicationTest < ActiveSupport::TestCase
     before do
       Application.delete_all
       Deployment.delete_all
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
     end
 
     should "return the apps that are out of sync" do

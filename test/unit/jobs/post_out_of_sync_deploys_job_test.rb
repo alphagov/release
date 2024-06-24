@@ -12,7 +12,7 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
       { "app_name" => "asset-manager", "team" => "#govuk-publishing-platform" },
     ].to_json
 
-    stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
     app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
     FactoryBot.create(:deployment, application: app, version: "111", environment: "production")
@@ -39,7 +39,7 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
 
   should "not enqueue a SlackPosterJob if no teams have out-of-sync apps" do
     response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
-    stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: response_body)
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
     app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
     FactoryBot.create(:deployment, application: app, version: "222", environment: "production")
