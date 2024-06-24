@@ -7,6 +7,8 @@ gem "artemis"
 gem "bootsnap", require: false
 gem "chartkick"
 gem "dartsass-rails"
+gem "faraday-multipart"
+gem "faraday-retry"
 gem "friendly_id"
 gem "gds-sso"
 gem "govuk_app_config"
