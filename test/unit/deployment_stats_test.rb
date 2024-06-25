@@ -5,7 +5,7 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     should "return correct data" do
       Deployment.delete_all
 
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
       app = FactoryBot.create(:application, name: SecureRandom.hex)
 
       # Don't include deploys from this month (it skews the graph)
@@ -32,7 +32,7 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     should "return correct data" do
       Deployment.delete_all
 
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
       app = FactoryBot.create(:application, name: SecureRandom.hex)
 
       # Don't include staging deploys
@@ -60,7 +60,7 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     should "scope the results" do
       Deployment.delete_all
 
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
       other_app = FactoryBot.create(:application, name: SecureRandom.hex)
       app = FactoryBot.create(:application, name: SecureRandom.hex)
 

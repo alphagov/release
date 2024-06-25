@@ -7,15 +7,11 @@ default: &default
 development:
   <<: *default
   database: release_development
-  username: release
-  password: release
   url: <%= ENV['DATABASE_URL'] %>
 
-test: &test
+test:
   <<: *default
   database: release_test
-  username: release
-  password: release
   url: <%= ENV["TEST_DATABASE_URL"].try(:sub, /([-_]development)?$/, '_test') %>
 
 production:

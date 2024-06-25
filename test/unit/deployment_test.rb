@@ -3,7 +3,7 @@ require "test_helper"
 class DeploymentTest < ActiveSupport::TestCase
   describe "#previous_deployment" do
     should "should return the previous version" do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
       app = FactoryBot.create(:application, name: SecureRandom.hex)
 
       previous = FactoryBot.create(:deployment, application: app, environment: "staging")
@@ -17,7 +17,7 @@ class DeploymentTest < ActiveSupport::TestCase
 
   describe "#commit_match?" do
     before do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
     end
 
     should "return true when SHAs are the same" do
@@ -53,7 +53,7 @@ class DeploymentTest < ActiveSupport::TestCase
 
   describe "#to_live_environment?" do
     before do
-      stub_request(:get, "http://docs.publishing.service.gov.uk/apps.json").to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
     end
 
     should "return true if deployment to application's live environment" do

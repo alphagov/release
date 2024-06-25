@@ -122,7 +122,6 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    csv (3.3.0)
     dartsass-rails (0.5.0)
       railties (>= 6.0.0)
       sass-embedded (~> 1.63)
@@ -216,10 +215,6 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.6)
       domain_name (~> 0.5)
-    httparty (0.22.0)
-      csv
-      mini_mime (>= 1.0.0)
-      multi_xml (>= 0.5.2)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
@@ -715,7 +710,6 @@ DEPENDENCIES
   govuk_app_config
   govuk_publishing_components
   govuk_sidekiq
-  httparty
   minitest
   mocha
   mysql2
