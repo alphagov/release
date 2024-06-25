@@ -9,8 +9,8 @@ class SlackPosterJob < ApplicationJob
   def perform(text, channel, options = {})
     raise "Invalid options, only #{VALID_OPTIONS.join(', ')} are permitted" unless valid_options?(options)
 
-    @webhook_url = ENV.fetch("SLACK_WEBHOOK_URL", nil)
-    post_to_slack(payload(text, channel, options)) if @webhook_url
+    @webhook_url = ENV["SLACK_WEBHOOK_URL"]
+    post_to_slack(payload(text, channel, options)) if @webhook_url.present?
   end
 
 private
