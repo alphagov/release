@@ -22,7 +22,7 @@ gem "plek"
 gem "sentry-sidekiq"
 gem "sprockets"
 gem "sprockets-rails"
-gem "uglifier"
+gem "terser"
 
 group :test, :development do
   gem "better_errors"
