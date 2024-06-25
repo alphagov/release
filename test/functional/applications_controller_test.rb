@@ -163,14 +163,9 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "set the commit history in reverse order" do
         get :show, params: { id: @app.id }
-
-        # `assigns` in Rails silently converts hashes to
-        # HashWithIndifferentAccess instances, so we can't simply compare for
-        # equality on the objects themselves
-        assert_equal(
-          [@second_commit, @first_commit],
-          assigns[:commits].take(2).map { |commit| commit[:sha] },
-        )
+        expected = [@second_commit, @first_commit]
+        actual = assigns[:commits].pluck(:sha)
+        assert_equal(expected, actual)
       end
 
       should "include the base commit" do
