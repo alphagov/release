@@ -9,7 +9,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     setup do
       response_body = [{ "app_name" => "app1",
                          "links" => { "repo_url" => "https://github.com/user/app1" } }].to_json
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body, headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
       @app1 = FactoryBot.create(:application, name: "app1", default_branch: "main")
       @app2 = FactoryBot.create(:application, name: "app2")
       @deploy1 = FactoryBot.create(
@@ -45,7 +45,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "POST create" do
     setup do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     context "valid request" do
@@ -87,7 +87,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET show" do
     setup do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
 
       @app = FactoryBot.create(:application)
       stub_graphql(Github, :application, owner: "alphagov", name: @app.name.parameterize)
@@ -152,7 +152,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         @first_commit = "ee37124a286a0b8501776d9bbe55dcb18ccab645"
         @second_commit = "1dac538d10b181e9b7b46766bc3a72d001a1f703"
         @base_commit = "974d1aedf82c068b42dace07984025fd70dfb240"
-        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
         FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit)
       end
 
@@ -183,7 +183,7 @@ class ApplicationsControllerTest < ActionController::TestCase
     context "when format is json" do
       setup do
         response_body = [{ "app_name" => "application-2", "links" => { "repo_url" => "https://github.com/alphagov/application-2" } }].to_json
-        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body, headers: {})
+        stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body:)
         @app = FactoryBot.create(:application, name: "Application 2")
       end
 
@@ -224,7 +224,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET edit" do
     setup do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       @app = FactoryBot.create(:application, name: "monkeys")
     end
 
@@ -241,7 +241,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "PUT update" do
     setup do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       @app = FactoryBot.create(:application)
     end
 
@@ -275,7 +275,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET deploy" do
     setup do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       @app = FactoryBot.create(:application, name: "app1", status_notes: "Do not deploy this without talking to core team first!")
       @deployment = FactoryBot.create(:deployment, application_id: @app.id, created_at: "18/01/2013 11:57")
       @release_tag = "hot_fix_1"

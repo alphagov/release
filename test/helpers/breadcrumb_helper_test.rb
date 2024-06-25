@@ -2,7 +2,7 @@ require "test_helper"
 
 class BreadcrumbHelperTest < ActionView::TestCase
   should "return a hash of title and url" do
-    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     app_name = SecureRandom.hex
     app = FactoryBot.create(:application, name: app_name)
 

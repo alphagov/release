@@ -3,7 +3,7 @@ require "integration_test_helper"
 class DeployPageTest < ActionDispatch::IntegrationTest
   setup do
     login_as_stub_user
-    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
   end
 
   test "page handles a single deployment without a previous deployment" do
@@ -16,7 +16,7 @@ class DeployPageTest < ActionDispatch::IntegrationTest
   end
 
   test "page handles a deployment with a previous deployment" do
-    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     application = FactoryBot.create(:application)
 
     commits = [

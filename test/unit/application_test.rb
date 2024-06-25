@@ -8,7 +8,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
       }
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     context "given valid attributes" do
@@ -94,7 +94,7 @@ class ApplicationTest < ActiveSupport::TestCase
       @atts = {
         name: "Tron-o-matic",
       }
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     context "when the application is not continuously deployed" do
@@ -122,7 +122,7 @@ class ApplicationTest < ActiveSupport::TestCase
   context "live environment" do
     setup do
       @atts = { name: "Tron-o-matic" }
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     should "return production" do
@@ -134,7 +134,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "#status" do
     before do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       @app = FactoryBot.create(:application, name: SecureRandom.hex)
       Deployment.delete_all
     end
@@ -166,7 +166,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "#latest_deploys_by_environment" do
     before do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     should "orders main environments" do
@@ -304,7 +304,7 @@ class ApplicationTest < ActiveSupport::TestCase
     before do
       Application.delete_all
       Deployment.delete_all
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     should "return the apps that are out of sync" do

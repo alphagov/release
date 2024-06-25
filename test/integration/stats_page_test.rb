@@ -12,7 +12,7 @@ class StatsPageTest < ActionDispatch::IntegrationTest
   end
 
   test "page with stats for an application" do
-    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
 
     application = FactoryBot.create(:application)
 

@@ -7,7 +7,7 @@ class DeploymentsControllerTest < ActionController::TestCase
 
   context "GET recent" do
     setup do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       Deployment.delete_all
       @application = FactoryBot.create(:application, name: "Foo")
       @deployments = FactoryBot.create_list(:deployment, 10, application_id: @application.id)
@@ -57,7 +57,7 @@ class DeploymentsControllerTest < ActionController::TestCase
     end
 
     setup do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     should "create a deployment record" do
