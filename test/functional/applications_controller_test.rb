@@ -250,7 +250,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         put :update, params: { id: @app.id, application: { name: "new name", deploy_freeze: true } }
         @app.reload
         assert_equal "new name", @app.name
-        assert_equal true, @app.deploy_freeze?
+        assert @app.deploy_freeze?
       end
 
       should "redirect to the application" do

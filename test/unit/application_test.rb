@@ -23,7 +23,6 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "be invalid with an empty name" do
       application = Application.new(@atts.merge(name: ""))
-
       assert_not application.valid?
     end
 
@@ -37,13 +36,11 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "default to not be in deploy freeze" do
       application = Application.new(@atts)
-
-      assert_equal false, application.deploy_freeze?
+      assert_not application.deploy_freeze?
     end
 
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
-
       assert_not application.valid?
     end
 
