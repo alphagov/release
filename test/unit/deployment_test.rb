@@ -21,32 +21,31 @@ class DeploymentTest < ActiveSupport::TestCase
     end
 
     should "return true when SHAs are the same" do
-      deployment = FactoryBot.create(:deployment, deployed_sha: "c579613e5f0335ecf409fed881fa7919c150c1af")
-
+      deployment = FactoryBot.create(
+        :deployment, deployed_sha: "c579613e5f0335ecf409fed881fa7919c150c1af"
+      )
       assert deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
 
     should "return false when SHAs are the different" do
-      deployment = FactoryBot.create(:deployment, deployed_sha: "0fa90a3bc5b1c91e9355de3507244e11d8a2d68c")
-
+      deployment = FactoryBot.create(
+        :deployment, deployed_sha: "0fa90a3bc5b1c91e9355de3507244e11d8a2d68c"
+      )
       assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
 
     should "return true if deployed_sha is a short SHA" do
       deployment = FactoryBot.create(:deployment, deployed_sha: "c579613")
-
       assert deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
 
     should "return false if deployed_sha is nil" do
       deployment = FactoryBot.create(:deployment, deployed_sha: nil)
-
       assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
 
     should "return false if deployed_sha too short" do
       deployment = FactoryBot.create(:deployment, deployed_sha: "c5")
-
       assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
   end
@@ -58,13 +57,11 @@ class DeploymentTest < ActiveSupport::TestCase
 
     should "return true if deployment to application's live environment" do
       deployment = FactoryBot.create(:deployment, environment: "production")
-
       assert deployment.to_live_environment?
     end
 
     should "return false if deployment not to application's live environment" do
       deployment = FactoryBot.create(:deployment, environment: "test")
-
       assert_equal false, deployment.to_live_environment?
     end
   end

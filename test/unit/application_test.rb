@@ -5,9 +5,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   context "creating an application" do
     setup do
-      @atts = {
-        name: "Tron-o-matic",
-      }
+      @atts = { name: "Tron-o-matic" }
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
@@ -45,16 +43,18 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "be invalid with status_notes that are too long" do
-      application = Application.new(@atts.merge(status_notes: "This app is n#{'o' * 233}t working!"))
-
-      assert_not application.valid?
+      application = Application.new(
+        @atts.merge(status_notes: "This app is n#{'o' * 233}t working!"),
+      )
+      assert_equal false, application.valid?
     end
   end
 
   context "display datetimes" do
     should "use the word today if the release was today" do
-      assert_equal "10:02am today",
-                   human_datetime(Time.zone.now.change(hour: 10, min: 2))
+      assert_equal "10:02am today", human_datetime(
+        Time.zone.now.change(hour: 10, min: 2),
+      )
     end
 
     should "use the word yesterday if the release was yesterday" do
@@ -79,9 +79,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   context "continuous deployment" do
     setup do
-      @atts = {
-        name: "Tron-o-matic",
-      }
+      @atts = { name: "Tron-o-matic" }
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
@@ -115,7 +113,6 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "return production" do
       application = Application.new(@atts)
-
       assert_equal "production", application.live_environment
     end
   end
@@ -219,7 +216,10 @@ class ApplicationTest < ActiveSupport::TestCase
 
     describe "#repo_url" do
       should "return the repository url for the apps" do
-        response_body = [{ "app_name" => "account-api", "links" => { "repo_url" => "https://github.com/alphagov/account-api" } }].to_json
+        response_body = [{
+          "app_name" => "account-api",
+          "links" => { "repo_url" => "https://github.com/alphagov/account-api" },
+        }].to_json
         stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
@@ -244,7 +244,10 @@ class ApplicationTest < ActiveSupport::TestCase
       end
 
       should "return the shortname for the app" do
-        response_body = [{ "app_name" => "account-api", "shortname" => "account_api" }].to_json
+        response_body = [{
+          "app_name" => "account-api",
+          "shortname" => "account_api",
+        }].to_json
         stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
@@ -270,7 +273,10 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "return the name of the team that owns the app" do
-      response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
+      response_body = [{
+        "app_name" => "account-api",
+        "team" => "#tech-content-interactions-on-platform-govuk",
+      }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
@@ -279,7 +285,10 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "return general dev slack channel when it can't find team (because app names don't match)" do
-      response_body = [{ "app_name" => "content-data-admin", "team" => "#govuk-platform-security-reliability-team" }].to_json
+      response_body = [{
+        "app_name" => "content-data-admin",
+        "team" => "#govuk-platform-security-reliability-team",
+      }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Content Data", shortname: "content-data")

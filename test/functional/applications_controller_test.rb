@@ -7,8 +7,10 @@ class ApplicationsControllerTest < ActionController::TestCase
 
   context "GET index" do
     setup do
-      response_body = [{ "app_name" => "app1",
-                         "links" => { "repo_url" => "https://github.com/user/app1" } }].to_json
+      response_body = [{
+        "app_name" => "app1",
+        "links" => { "repo_url" => "https://github.com/user/app1" },
+      }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
       @app1 = FactoryBot.create(:application, name: "app1", default_branch: "main")
       @app2 = FactoryBot.create(:application, name: "app2")
@@ -52,21 +54,13 @@ class ApplicationsControllerTest < ActionController::TestCase
       should "create an application" do
         assert_difference "Application.count", 1 do
           post :create,
-               params: {
-                 application: {
-                   name: "My First App",
-                 },
-               }
+               params: { application: { name: "My First App" } }
         end
       end
 
       should "redirect to the application" do
         post :create,
-             params: {
-               application: {
-                 name: "My First App",
-               },
-             }
+             params: { application: { name: "My First App" } }
         assert_redirected_to application_path(Application.last)
       end
     end
@@ -170,14 +164,16 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "include the base commit" do
         get :show, params: { id: @app.id }
-
         assert_equal @first_commit, assigns[:commits].last[:sha]
       end
     end
 
     context "when format is json" do
       setup do
-        response_body = [{ "app_name" => "application-2", "links" => { "repo_url" => "https://github.com/alphagov/application-2" } }].to_json
+        body = [{
+          "app_name" => "application-2",
+          "links" => { "repo_url" => "https://github.com/alphagov/application-2" },
+        }].to_json
         stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body:)
         @app = FactoryBot.create(:application, name: "Application 2")
       end
@@ -280,16 +276,11 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       Octokit::Client.any_instance.stubs(:compare)
         .with(@app.repo_path, @deployment.version, @release_tag)
-        .returns(stub(
-                   "comparison",
-                   commits: [],
-                   base_commit: nil,
-                 ))
+        .returns(stub("comparison", commits: [], base_commit: nil))
       Plek.any_instance
         .stubs(:external_url_for)
         .with("signon")
         .returns("https://signon_hostname")
-
       Plek.any_instance
         .stubs(:external_url_for)
         .with("grafana")
@@ -348,9 +339,7 @@ private
     {
       sha: random_sha,
       login: "winston",
-      commit: {
-        message: "Hi",
-      },
+      commit: { message: "Hi" },
     }
   end
 end

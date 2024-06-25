@@ -70,13 +70,8 @@ class DeploymentStatsTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
       FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
 
-      expected = {
-        "2018-02" => 2,
-      }
-
       stats = DeploymentStats.new(Deployment.where(application_id: app.id)).per_month
-
-      assert_equal(expected, stats)
+      assert_equal({ "2018-02" => 2 }, stats)
     end
   end
 end

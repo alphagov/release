@@ -24,8 +24,10 @@ class RepoTest < ActiveSupport::TestCase
 
   describe ".url" do
     should "get the GitHub URL for a repository" do
-      response_body = [{ "app_name" => "account-api",
-                         "links" => { "repo_url" => "https://github.com/alphagov/account-api" } }].to_json
+      response_body = [{
+        "app_name" => "account-api",
+        "links" => { "repo_url" => "https://github.com/alphagov/account-api" },
+      }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       assert_equal "https://github.com/alphagov/account-api", Repo.url(app_name: "Account API")
@@ -34,8 +36,10 @@ class RepoTest < ActiveSupport::TestCase
 
   describe ".shortname" do
     should "get the shortname for a repository" do
-      response_body = [{ "app_name" => "account-api",
-                         "shortname" => "account_api" }].to_json
+      response_body = [{
+        "app_name" => "account-api",
+        "shortname" => "account_api",
+      }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       assert_equal "account_api", Repo.shortname(app_name: "account-api")
