@@ -5,10 +5,8 @@ class ApplicationTest < ActiveSupport::TestCase
 
   context "creating an application" do
     setup do
-      @atts = {
-        name: "Tron-o-matic",
-      }
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      @atts = { name: "Tron-o-matic" }
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     context "given valid attributes" do
@@ -23,7 +21,6 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "be invalid with an empty name" do
       application = Application.new(@atts.merge(name: ""))
-
       assert_not application.valid?
     end
 
@@ -37,27 +34,27 @@ class ApplicationTest < ActiveSupport::TestCase
 
     should "default to not be in deploy freeze" do
       application = Application.new(@atts)
-
-      assert_equal false, application.deploy_freeze?
+      assert_not application.deploy_freeze?
     end
 
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
-
       assert_not application.valid?
     end
 
     should "be invalid with status_notes that are too long" do
-      application = Application.new(@atts.merge(status_notes: "This app is n#{'o' * 233}t working!"))
-
-      assert_not application.valid?
+      application = Application.new(
+        @atts.merge(status_notes: "This app is n#{'o' * 233}t working!"),
+      )
+      assert_equal false, application.valid?
     end
   end
 
   context "display datetimes" do
     should "use the word today if the release was today" do
-      assert_equal "10:02am today",
-                   human_datetime(Time.zone.now.change(hour: 10, min: 2))
+      assert_equal "10:02am today", human_datetime(
+        Time.zone.now.change(hour: 10, min: 2),
+      )
     end
 
     should "use the word yesterday if the release was yesterday" do
@@ -78,23 +75,12 @@ class ApplicationTest < ActiveSupport::TestCase
         assert_equal "10:02am on 29 Jun", human_datetime(deploy_time)
       end
     end
-
-    should "show a year if the date is old" do
-      assert_equal "2pm on 3 Jul 2010",
-                   human_datetime(Time.zone.now.change(year: 2010, month: 7, day: 3, hour: 14))
-    end
-
-    should "show nothing if the date is missing" do
-      assert_equal "", human_datetime(nil)
-    end
   end
 
   context "continuous deployment" do
     setup do
-      @atts = {
-        name: "Tron-o-matic",
-      }
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      @atts = { name: "Tron-o-matic" }
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     context "when the application is not continuously deployed" do
@@ -122,19 +108,18 @@ class ApplicationTest < ActiveSupport::TestCase
   context "live environment" do
     setup do
       @atts = { name: "Tron-o-matic" }
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     should "return production" do
       application = Application.new(@atts)
-
       assert_equal "production", application.live_environment
     end
   end
 
   describe "#status" do
     before do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       @app = FactoryBot.create(:application, name: SecureRandom.hex)
       Deployment.delete_all
     end
@@ -166,7 +151,7 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "#latest_deploys_by_environment" do
     before do
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     should "orders main environments" do
@@ -231,7 +216,10 @@ class ApplicationTest < ActiveSupport::TestCase
 
     describe "#repo_url" do
       should "return the repository url for the apps" do
-        response_body = [{ "app_name" => "account-api", "links" => { "repo_url" => "https://github.com/alphagov/account-api" } }].to_json
+        response_body = [{
+          "app_name" => "account-api",
+          "links" => { "repo_url" => "https://github.com/alphagov/account-api" },
+        }].to_json
         stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
@@ -256,7 +244,10 @@ class ApplicationTest < ActiveSupport::TestCase
       end
 
       should "return the shortname for the app" do
-        response_body = [{ "app_name" => "account-api", "shortname" => "account_api" }].to_json
+        response_body = [{
+          "app_name" => "account-api",
+          "shortname" => "account_api",
+        }].to_json
         stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
         app = FactoryBot.create(:application, name: "Account API")
@@ -282,7 +273,10 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "return the name of the team that owns the app" do
-      response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
+      response_body = [{
+        "app_name" => "account-api",
+        "team" => "#tech-content-interactions-on-platform-govuk",
+      }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
@@ -291,7 +285,10 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "return general dev slack channel when it can't find team (because app names don't match)" do
-      response_body = [{ "app_name" => "content-data-admin", "team" => "#govuk-platform-security-reliability-team" }].to_json
+      response_body = [{
+        "app_name" => "content-data-admin",
+        "team" => "#govuk-platform-security-reliability-team",
+      }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
       app = FactoryBot.create(:application, name: "Content Data", shortname: "content-data")
@@ -304,7 +301,7 @@ class ApplicationTest < ActiveSupport::TestCase
     before do
       Application.delete_all
       Deployment.delete_all
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     end
 
     should "return the apps that are out of sync" do

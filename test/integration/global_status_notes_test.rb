@@ -2,7 +2,7 @@ require "integration_test_helper"
 
 class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
   setup do
-    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     @app1 = FactoryBot.create(:application)
     @app2 = FactoryBot.create(:application)
     login_as_stub_user

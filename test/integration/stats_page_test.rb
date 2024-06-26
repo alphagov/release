@@ -7,13 +7,11 @@ class StatsPageTest < ActionDispatch::IntegrationTest
 
   test "page with global stats" do
     visit stats_path
-
     assert page.has_selector?(".gem-c-title__text", text: "Deployments per month")
   end
 
   test "page with stats for an application" do
-    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
-
+    stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
     application = FactoryBot.create(:application)
 
     visit stats_application_path(application)

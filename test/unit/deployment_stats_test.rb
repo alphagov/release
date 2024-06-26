@@ -5,7 +5,7 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     should "return correct data" do
       Deployment.delete_all
 
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       app = FactoryBot.create(:application, name: SecureRandom.hex)
 
       # Don't include deploys from this month (it skews the graph)
@@ -32,7 +32,7 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     should "return correct data" do
       Deployment.delete_all
 
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       app = FactoryBot.create(:application, name: SecureRandom.hex)
 
       # Don't include staging deploys
@@ -60,7 +60,7 @@ class DeploymentStatsTest < ActiveSupport::TestCase
     should "scope the results" do
       Deployment.delete_all
 
-      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: "", headers: {})
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
       other_app = FactoryBot.create(:application, name: SecureRandom.hex)
       app = FactoryBot.create(:application, name: SecureRandom.hex)
 
@@ -70,13 +70,8 @@ class DeploymentStatsTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
       FactoryBot.create(:deployment, created_at: "2018-02-01", application: app, environment: "production")
 
-      expected = {
-        "2018-02" => 2,
-      }
-
       stats = DeploymentStats.new(Deployment.where(application_id: app.id)).per_month
-
-      assert_equal(expected, stats)
+      assert_equal({ "2018-02" => 2 }, stats)
     end
   end
 end

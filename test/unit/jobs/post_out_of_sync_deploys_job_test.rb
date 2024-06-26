@@ -29,16 +29,27 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
     expected_message = "Hello :paw_prints:, this is your regular badgering to deploy!\n" \
       "\n" \
       "- <http://release.dev.gov.uk/applications/account-api|Account API> – Production and staging not in sync (<https://github.com/alphagov/account-api/actions/workflows/deploy.yml|Deploy GitHub action>)"
-    assert_enqueued_with job: SlackPosterJob, args: [expected_message, "#tech-content-interactions-on-platform-govuk", { "icon_emoji" => ":badger:" }]
+    assert_enqueued_with job: SlackPosterJob, args: [
+      expected_message,
+      "#tech-content-interactions-on-platform-govuk",
+      { "icon_emoji" => ":badger:" },
+    ]
 
     expected_message = "Hello :paw_prints:, this is your regular badgering to deploy!\n" \
       "\n" \
       "- <http://release.dev.gov.uk/applications/asset-manager|Asset manager> – Undeployed changes in integration (<https://github.com/alphagov/asset-manager/actions/workflows/deploy.yml|Deploy GitHub action>)"
-    assert_enqueued_with job: SlackPosterJob, args: [expected_message, "#govuk-publishing-platform", { "icon_emoji" => ":badger:" }]
+    assert_enqueued_with job: SlackPosterJob, args: [
+      expected_message,
+      "#govuk-publishing-platform",
+      { "icon_emoji" => ":badger:" },
+    ]
   end
 
   should "not enqueue a SlackPosterJob if no teams have out-of-sync apps" do
-    response_body = [{ "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" }].to_json
+    response_body = [{
+      "app_name" => "account-api",
+      "team" => "#tech-content-interactions-on-platform-govuk",
+    }].to_json
     stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
     app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
