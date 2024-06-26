@@ -170,7 +170,7 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (4.27.1)
+    google-protobuf (4.27.2)
       bigdecimal
       rake (>= 13)
     googleapis-common-protos-types (1.15.0)
@@ -190,7 +190,7 @@ GEM
     govuk_personalisation (0.16.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (39.0.0)
+    govuk_publishing_components (39.1.0)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -579,7 +579,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.3.0)
+    rexml (3.3.1)
       strscan
     rouge (4.3.0)
     rubocop (1.64.1)
