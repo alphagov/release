@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <%= csrf_meta_tag %>
   <%= javascript_include_tag "admin" %>
+  <%= javascript_include_tag 'es6-components', type: "module" %>
 <% end %>
 
 <%= render "govuk_publishing_components/components/layout_for_admin", {
