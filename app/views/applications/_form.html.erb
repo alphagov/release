@@ -61,5 +61,17 @@
 
   <%= render "govuk_publishing_components/components/button", {
     text: @application.new_record? ? "Create Application" : "Update application",
+    margin_bottom: 4,
   } %>
+<% end %>
+
+<% unless current_page?(action: 'new') %>
+  <%= form_for @application, method: :delete do |f| %>
+    <%= render "govuk_publishing_components/components/button", {
+        text: "Delete application",
+        destructive: true,
+        data_attributes: { confirm: "Are you sure you wish to delete this application?" },
+        info_text: "You can remove this app if it is retired.",
+      } %>
+  <% end %>
 <% end %>
