@@ -1,5 +1,5 @@
 class ApplicationsController < ApplicationController
-  before_action :find_application, only: %i[show edit update deploy stats]
+  before_action :find_application, only: %i[show edit update deploy stats destroy]
 
   include ActionView::Helpers::DateHelper
 
@@ -72,6 +72,11 @@ class ApplicationsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @application.destroy!
+    redirect_to applications_path, notice: "Successfully deleted application"
   end
 
 private

@@ -326,6 +326,24 @@ class ApplicationsControllerTest < ActionController::TestCase
     end
   end
 
+  context "POST destroy" do
+    setup do
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
+      @app = FactoryBot.create(:application)
+    end
+
+    should "delete the application" do
+      assert_difference "Application.count", -1 do
+        post :destroy, params: { id: @app.id }
+      end
+    end
+
+    should "redirect to the index page" do
+      post :destroy, params: { id: @app.id }
+      assert_redirected_to applications_path
+    end
+  end
+
 private
 
   def random_sha
