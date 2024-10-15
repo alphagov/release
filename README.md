@@ -1,4 +1,4 @@
-# Release
+# Releases
 
 An application to make managing releases to specific environments easier.
 
