@@ -35,7 +35,7 @@ jobs:
   trigger-deploy:
     name: Trigger deploy to ${{ inputs.environment || 'integration' }}
     needs: build-and-publish-image
-    uses: alphagov/govuk-infrastructure/.github/workflows/deploy.yml@main
+    uses: alphagov/govuk-infrastructure/.github/workflows/deploy.yml@testing-ci
     with:
       imageTag: ${{ needs.build-and-publish-image.outputs.imageTag }}
       environment: ${{ inputs.environment || 'integration' }}
