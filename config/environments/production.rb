@@ -77,7 +77,7 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    /release\..*gov.uk$/,
+    /release\..*\.gov.uk$/,
     /^release$/,
   ]
 
