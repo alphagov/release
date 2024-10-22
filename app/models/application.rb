@@ -143,6 +143,6 @@ class Application < ApplicationRecord
   end
 
   def team_name
-    Repo.find_by(app_name: name)&.dig("team") || "#govuk-developers"
+    Repo.find_by(app_name: name)&.dig("alerts_team") || "#govuk-developers"
   end
 end

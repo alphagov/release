@@ -8,8 +8,8 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
 
   should "enqueue a SlackPosterJob for each team with out-of-sync apps" do
     response_body = [
-      { "app_name" => "account-api", "team" => "#tech-content-interactions-on-platform-govuk" },
-      { "app_name" => "asset-manager", "team" => "#govuk-publishing-platform" },
+      { "app_name" => "account-api", "alerts_team" => "#tech-content-interactions-on-platform-govuk" },
+      { "app_name" => "asset-manager", "alerts_team" => "#govuk-publishing-platform" },
     ].to_json
 
     stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
@@ -48,7 +48,7 @@ class PostOutOfSyncDeploysJobTest < ActiveJob::TestCase
   should "not enqueue a SlackPosterJob if no teams have out-of-sync apps" do
     response_body = [{
       "app_name" => "account-api",
-      "team" => "#tech-content-interactions-on-platform-govuk",
+      "alerts_team" => "#tech-content-interactions-on-platform-govuk",
     }].to_json
     stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 

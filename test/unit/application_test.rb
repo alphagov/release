@@ -275,7 +275,7 @@ class ApplicationTest < ActiveSupport::TestCase
     should "return the name of the team that owns the app" do
       response_body = [{
         "app_name" => "account-api",
-        "team" => "#tech-content-interactions-on-platform-govuk",
+        "alerts_team" => "#tech-content-interactions-on-platform-govuk",
       }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
@@ -287,7 +287,7 @@ class ApplicationTest < ActiveSupport::TestCase
     should "return general dev slack channel when it can't find team (because app names don't match)" do
       response_body = [{
         "app_name" => "content-data-admin",
-        "team" => "#govuk-platform-security-reliability-team",
+        "alerts_team" => "#govuk-platform-security-reliability-team",
       }].to_json
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200, body: response_body)
 
