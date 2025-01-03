@@ -17,7 +17,6 @@
       <% @environments.each do |environment| %>
         <%= t.header environment.humanize %>
       <% end %>
-      <%= t.header "Notes" %>
     <% end %>
 
     <%= t.body do %>
@@ -26,13 +25,6 @@
           <% application_name = capture do %>
             <%= link_to application.name, application, class: "govuk-link release__application-link", data: { "filter-applications-link": "" } %> </br>
             <%= render partial: "shared/badges", locals: { application: application } %>
-          <% end %>
-
-          <% application_notes = capture do %>
-            <p class="govuk-body-s release__application-notes">
-              <%= application.status_notes %>
-              <%= link_to "edit", edit_application_path(application), class: "govuk-link" %>
-            </p>
           <% end %>
 
           <%= t.cell application_name %>
@@ -58,7 +50,6 @@
             <% end %>
             <%= t.cell env_deploy %>
           <% end %>
-          <%= t.cell application_notes %>
         <% end %>
       <% end %>
     <% end %>
