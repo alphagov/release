@@ -206,7 +206,7 @@ GEM
     govuk_personalisation (1.1.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (47.0.0)
+    govuk_publishing_components (50.0.1)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -235,7 +235,8 @@ GEM
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
-    irb (1.14.3)
+    irb (1.15.1)
+      pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.9.1)
@@ -542,6 +543,9 @@ GEM
       capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
+    pp (0.6.2)
+      prettyprint
+    prettyprint (0.2.0)
     prometheus_exporter (2.2.0)
       webrick
     pry (0.15.2)
