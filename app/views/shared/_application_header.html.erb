@@ -3,10 +3,12 @@
     breadcrumbs: [ root_crumb, { title: application.name, } ]
   } %>
 
-  <%= render "govuk_publishing_components/components/title", {
-    title: "#{application.name}",
+  <%= render "govuk_publishing_components/components/heading", {
+    text: "#{application.name}",
     context: application.shortname,
-    margin_bottom: 2
+    margin_bottom: 2,
+    font_size: "xl",
+    heading_level: 1
   } %>
 
   <%= render partial: "shared/badges", locals: { application: application } %>

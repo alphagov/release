@@ -11,8 +11,11 @@
   ]
 } %>
 
-<%= render "govuk_publishing_components/components/title", {
-  title: "Deploy ##{@deployment.id}"
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Deploy ##{@deployment.id}",
+  font_size: "xl",
+  heading_level: 1,
+  margin_bottom: 8
 } %>
 
 <div class="govuk-body">

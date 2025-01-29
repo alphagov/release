@@ -9,8 +9,11 @@
     ]
   } %>
 
-<%= render "govuk_publishing_components/components/title", {
-  title: "Recent deployments"
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Recent deployments",
+  font_size: "xl",
+  heading_level: 1,
+  margin_bottom: 8
 } %>
 
 <%= form_tag(activity_path, method: :get) do %>

@@ -6,8 +6,11 @@
   ]
 } %>
 
-<%= render "govuk_publishing_components/components/title", {
-  title: "Applications"
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Applications",
+  font_size: "xl",
+  heading_level: 1,
+  margin_bottom: 8
 } %>
 
 <%= render partial: "applications_table", locals: { applications: @applications, environments: @environments } %>

@@ -11,10 +11,12 @@
     ]
   } %>
 
-  <%= render "govuk_publishing_components/components/title", {
-    title: "Deploy #{@release_tag}",
+  <%= render "govuk_publishing_components/components/heading", {
+    text: "Deploy #{@release_tag}",
     context: @application.name,
-    margin_bottom: 2
+    margin_bottom: 2,
+    font_size: "xl",
+    heading_level: 1
   } %>
   <%= render partial: "shared/badges", locals: { application: @application } %>
 </div>
@@ -37,7 +39,9 @@
 <% if @production_deploy %>
   <%= render "govuk_publishing_components/components/heading", {
     text: "Release changes",
-    margin_bottom: 4
+    margin_bottom: 4,
+    font_size: "xl",
+    heading_level: 1
   } %>
 
   <div class="release__view-diff">
