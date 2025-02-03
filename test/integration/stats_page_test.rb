@@ -7,7 +7,7 @@ class StatsPageTest < ActionDispatch::IntegrationTest
 
   test "page with global stats" do
     visit stats_path
-    assert page.has_selector?(".gem-c-title__text", text: "Deployments per month")
+    assert page.has_selector?(".gem-c-heading__text", text: "Deployments per month")
   end
 
   test "page with stats for an application" do
