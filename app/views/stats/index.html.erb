@@ -8,20 +8,24 @@
   ]
 } %>
 
-<%= render "govuk_publishing_components/components/heading", {
-  text: "Deployments per month",
-  font_size: "xl",
-  heading_level: 1,
-  margin_bottom: 8
-} %>
+<div class="deployment__stats">
+  <%= render "govuk_publishing_components/components/heading", {
+    text: "Deployments per month",
+    font_size: "xl",
+    heading_level: 1,
+    margin_bottom: 8
+  } %>
 
-<%= line_chart @stats.per_month, width: "100%", height: "450px", legend: false, download: true %>
+  <%= line_chart @stats.per_month, width: "100%", height: "450px", legend: false, download: true %>
+</div>
 
-<%= render "govuk_publishing_components/components/heading", {
-  text: "Deployments per year",
-  font_size: "xl",
-  heading_level: 1,
-  margin_bottom: 8
-} %>
+<div class="deployment__stats">
+  <%= render "govuk_publishing_components/components/heading", {
+    text: "Deployments per year",
+    font_size: "xl",
+    heading_level: 1,
+    margin_bottom: 8
+  } %>
 
-<%= column_chart @stats.per_year, width: "100%", height: "250px", legend: false, download: true %>
+  <%= column_chart @stats.per_year, width: "100%", height: "250px", legend: false, download: true %>
+</div>
