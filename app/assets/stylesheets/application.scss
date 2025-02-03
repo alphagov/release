@@ -67,3 +67,7 @@ $govuk-typography-use-rem: false;
     color: govuk-colour("white");
   }
 }
+
+.deployment__stats {
+  margin-bottom: govuk-spacing(8);
+}
