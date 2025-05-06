@@ -11,7 +11,7 @@ class Application < ApplicationRecord
 
   validates :default_branch, presence: true
 
-  enum default_branch: { master: "master", main: "main" }, _prefix: true
+  enum :default_branch, { master: "master", main: "main" }, prefix: true
 
   has_many :deployments, dependent: :destroy
 
