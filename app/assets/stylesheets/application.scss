@@ -16,10 +16,10 @@ $govuk-typography-use-rem: false;
 
 // Add some table overrides to prevent overflow
 .release__applications-table .gem-c-table {
-  @include govuk-font(16);
   width: 100%;
   display: block;
   overflow: scroll;
+  @include govuk-font(16);
 }
 
 .release__application-header {
@@ -31,7 +31,6 @@ $govuk-typography-use-rem: false;
 }
 
 .release__badge {
-  @include govuk-font(14, $weight: "bold");
   background-color: govuk-colour("light-blue");
   padding: 3px 5px;
   border-radius: 20px;
@@ -39,6 +38,7 @@ $govuk-typography-use-rem: false;
   white-space: nowrap;
   display: inline-block;
   margin-bottom: govuk-spacing(1);
+  @include govuk-font(14, $weight: "bold");
 }
 
 .release__badge--orange {
@@ -54,7 +54,6 @@ $govuk-typography-use-rem: false;
 }
 
 .release__non-production-banner {
-  @include govuk-font(16);
   margin: govuk-spacing(3);
   margin-top: 0;
   padding: govuk-spacing(3);
@@ -62,6 +61,7 @@ $govuk-typography-use-rem: false;
   background-color: govuk-colour("red");
   color: govuk-colour("white");
   font-weight: bold;
+  @include govuk-font(16);
 
   .govuk-link {
     color: govuk-colour("white");
