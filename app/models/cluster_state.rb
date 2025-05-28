@@ -69,11 +69,15 @@ class ClusterState
   end
 
   def self.get_pods_by_status(environment:, repo_name:, status:)
-    k8s = create_client(environment)
-    pods = k8s.api("v1").resource("pods", namespace: "apps").list(labelSelector: { "app.kubernetes.io/instance" => repo_name }, fieldSelector: { "status.phase": status })
-
-    # require "json"
-    # pods = JSON.parse(File.read('test/fixtures/k8s/running.json'))
+    Rails.logger.debug "Debug cluster_state: #{environment}, #{repo_name}, #{status}"
+    ## just for demo purposes until the assume role permissions is fixed
+    if repo_name == "Asset Manager"
+      require "json"
+      pods = JSON.parse(File.read('app/models/running.json'))
+    else
+        k8s = create_client(environment)
+      pods = k8s.api("v1").resource("pods", namespace: "apps").list(labelSelector: { "app.kubernetes.io/instance" => repo_name }, fieldSelector: { "status.phase": status })
+    end
 
     res = []
     pods.each do |pod|

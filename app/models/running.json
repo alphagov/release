@@ -1,0 +1,2673 @@
+[
+    {
+        "metadata": {
+            "name": "asset-manager-5c4df8b559-fnp66",
+            "generateName": "asset-manager-5c4df8b559-",
+            "namespace": "apps",
+            "uid": "6e9003bf-7dc7-4e1f-bdba-b6a96adcaa97",
+            "resourceVersion": "694022546",
+            "creationTimestamp": "2025-05-14T08:52:29Z",
+            "labels": {
+                "app": "asset-manager",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "app",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "pod-template-hash": "5c4df8b559"
+            },
+            "annotations": {
+                "reloader.stakater.com/last-reloaded-from": "{\"type\":\"CONFIGMAP\",\"name\":\"asset-manager-nginx-conf\",\"namespace\":\"apps\",\"hash\":\"c8ffedffecae1a58a0779be6f86901f1e9cb25c1\",\"containerRefs\":[\"nginx\"],\"observedAt\":1741881599}"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "apps/v1",
+                    "kind": "ReplicaSet",
+                    "name": "asset-manager-5c4df8b559",
+                    "uid": "8effe944-cd8c-49ed-8983-377543365efe",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "asset-manager-nginx-conf",
+                    "configMap": {
+                        "name": "asset-manager-nginx-conf",
+                        "defaultMode": 420
+                    }
+                },
+                {
+                    "name": "app-tmp",
+                    "emptyDir": {}
+                },
+                {
+                    "name": "nginx-tmp",
+                    "emptyDir": {}
+                },
+                {
+                    "name": "asset-manager-efs",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-efs"
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "app",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "ports": [
+                        {
+                            "name": "http",
+                            "containerPort": 3000,
+                            "protocol": "TCP"
+                        },
+                        {
+                            "name": "metrics",
+                            "containerPort": 9394,
+                            "protocol": "TCP"
+                        }
+                    ],
+                    "envFrom": [
+                        {
+                            "configMapRef": {
+                                "name": "govuk-apps-env"
+                            }
+                        }
+                    ],
+                    "env": [
+                        {
+                            "name": "GOVUK_UPLOADS_ROOT",
+                            "value": "/mnt/asset-manager"
+                        },
+                        {
+                            "name": "PORT",
+                            "value": "3000"
+                        },
+                        {
+                            "name": "SECRET_KEY_BASE",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "asset-manager-rails-secret-key-base",
+                                    "key": "secret-key-base"
+                                }
+                            }
+                        },
+                        {
+                            "name": "SENTRY_DSN",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "asset-manager-sentry",
+                                    "key": "dsn"
+                                }
+                            }
+                        },
+                        {
+                            "name": "SENTRY_RELEASE",
+                            "value": "v490"
+                        },
+                        {
+                            "name": "REDIS_URL",
+                            "value": "redis://asset-manager-redis"
+                        },
+                        {
+                            "name": "ASSET_MANAGER_CLAMSCAN_PATH",
+                            "value": "/usr/local/bin/clamdscan"
+                        },
+                        {
+                            "name": "GDS_SSO_OAUTH_ID",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "signon-app-asset-manager",
+                                    "key": "oauth_id"
+                                }
+                            }
+                        },
+                        {
+                            "name": "GDS_SSO_OAUTH_SECRET",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "signon-app-asset-manager",
+                                    "key": "oauth_secret"
+                                }
+                            }
+                        },
+                        {
+                            "name": "JWT_AUTH_SECRET",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "authenticating-proxy-jwt-auth-secret",
+                                    "key": "JWT_AUTH_SECRET"
+                                }
+                            }
+                        },
+                        {
+                            "name": "MONGODB_URI",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "asset-manager-docdb",
+                                    "key": "MONGODB_URI"
+                                }
+                            }
+                        },
+                        {
+                            "name": "AWS_S3_BUCKET_NAME",
+                            "value": "govuk-assets-integration"
+                        }
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1536Mi"
+                        },
+                        "requests": {
+                            "cpu": "10m",
+                            "memory": "320Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "app-tmp",
+                            "mountPath": "/tmp"
+                        },
+                        {
+                            "name": "asset-manager-efs",
+                            "mountPath": "/mnt/asset-manager"
+                        }
+                    ],
+                    "livenessProbe": {
+                        "httpGet": {
+                            "path": "/healthcheck/live",
+                            "port": "http",
+                            "scheme": "HTTP"
+                        },
+                        "timeoutSeconds": 5,
+                        "periodSeconds": 5,
+                        "successThreshold": 1,
+                        "failureThreshold": 3
+                    },
+                    "readinessProbe": {
+                        "httpGet": {
+                            "path": "/healthcheck/live",
+                            "port": "http",
+                            "scheme": "HTTP"
+                        },
+                        "timeoutSeconds": 5,
+                        "periodSeconds": 5,
+                        "successThreshold": 1,
+                        "failureThreshold": 2
+                    },
+                    "startupProbe": {
+                        "httpGet": {
+                            "path": "/healthcheck/live",
+                            "port": "http",
+                            "scheme": "HTTP"
+                        },
+                        "timeoutSeconds": 5,
+                        "periodSeconds": 3,
+                        "successThreshold": 1,
+                        "failureThreshold": 10
+                    },
+                    "lifecycle": {
+                        "preStop": {
+                            "exec": {
+                                "command": [
+                                    "sleep",
+                                    "15"
+                                ]
+                            }
+                        }
+                    },
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "runAsUser": 2899,
+                        "runAsGroup": 2899,
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                },
+                {
+                    "name": "nginx",
+                    "image": "public.ecr.aws/nginx/nginx:stable",
+                    "ports": [
+                        {
+                            "name": "http",
+                            "containerPort": 8080,
+                            "protocol": "TCP"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "asset-manager-nginx-conf",
+                            "mountPath": "/etc/nginx/nginx.conf",
+                            "subPath": "nginx.conf"
+                        },
+                        {
+                            "name": "nginx-tmp",
+                            "mountPath": "/tmp"
+                        }
+                    ],
+                    "livenessProbe": {
+                        "httpGet": {
+                            "path": "/readyz",
+                            "port": "http",
+                            "scheme": "HTTP"
+                        },
+                        "initialDelaySeconds": 2,
+                        "timeoutSeconds": 20,
+                        "periodSeconds": 5,
+                        "successThreshold": 1,
+                        "failureThreshold": 3
+                    },
+                    "readinessProbe": {
+                        "httpGet": {
+                            "path": "/readyz",
+                            "port": "http",
+                            "scheme": "HTTP"
+                        },
+                        "initialDelaySeconds": 2,
+                        "timeoutSeconds": 15,
+                        "periodSeconds": 5,
+                        "successThreshold": 1,
+                        "failureThreshold": 2
+                    },
+                    "lifecycle": {
+                        "preStop": {
+                            "exec": {
+                                "command": [
+                                    "sleep",
+                                    "15"
+                                ]
+                            }
+                        }
+                    },
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-28-99.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "fsGroup": 2899,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "readinessGates": [
+                {
+                    "conditionType": "target-health.elbv2.k8s.aws/k8s-apps-assetman-3be7f32502"
+                }
+            ],
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Running",
+            "conditions": [
+                {
+                    "type": "target-health.elbv2.k8s.aws/k8s-apps-assetman-3be7f32502",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:48Z"
+                },
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:37Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:29Z"
+                },
+                {
+                    "type": "Ready",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:48Z"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:42Z"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:29Z"
+                }
+            ],
+            "hostIP": "10.1.28.99",
+            "hostIPs": [
+                {
+                    "ip": "10.1.28.99"
+                }
+            ],
+            "podIP": "10.1.29.15",
+            "podIPs": [
+                {
+                    "ip": "10.1.29.15"
+                }
+            ],
+            "startTime": "2025-05-14T08:52:29Z",
+            "containerStatuses": [
+                {
+                    "name": "app",
+                    "state": {
+                        "running": {
+                            "startedAt": "2025-05-14T08:52:36Z"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": true,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:00be0d0f74df9fc5c1ff8f8e21ce63183be6cbb887f5f9c5bf50913259896bd5",
+                    "containerID": "containerd://4bd6e70ffae652d8cf8546077223a338204b1c60b402f62c2d302f1dd1ba3805",
+                    "started": true,
+                    "volumeMounts": [
+                        {
+                            "name": "app-tmp",
+                            "mountPath": "/tmp"
+                        },
+                        {
+                            "name": "asset-manager-efs",
+                            "mountPath": "/mnt/asset-manager"
+                        }
+                    ]
+                },
+                {
+                    "name": "nginx",
+                    "state": {
+                        "running": {
+                            "startedAt": "2025-05-14T08:52:37Z"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": true,
+                    "restartCount": 0,
+                    "image": "public.ecr.aws/nginx/nginx:stable",
+                    "imageID": "public.ecr.aws/nginx/nginx@sha256:beabce8f1782671ba500ddff99dd260fbf9c5ec85fb9c3162e35a3c40bafd023",
+                    "containerID": "containerd://9fb3631dbfbe111f5746f49cf64af4aa2da49f2a98fedb5d36445ef377a2994d",
+                    "started": true,
+                    "volumeMounts": [
+                        {
+                            "name": "asset-manager-nginx-conf",
+                            "mountPath": "/etc/nginx/nginx.conf"
+                        },
+                        {
+                            "name": "nginx-tmp",
+                            "mountPath": "/tmp"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-freshclam-29001019-q4tr4",
+            "generateName": "asset-manager-freshclam-29001019-",
+            "namespace": "apps",
+            "uid": "8aa6e502-13c9-404c-90dc-1c143ffe59ae",
+            "resourceVersion": "645864442",
+            "creationTimestamp": "2025-02-20T14:50:36Z",
+            "labels": {
+                "app": "asset-manager-freshclam",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "freshclam",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-freshclam",
+                "batch.kubernetes.io/controller-uid": "0f73e3e2-7cc2-4a42-81ad-7992e2ed7661",
+                "batch.kubernetes.io/job-name": "asset-manager-freshclam-29001019",
+                "controller-uid": "0f73e3e2-7cc2-4a42-81ad-7992e2ed7661",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "job-name": "asset-manager-freshclam-29001019"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "batch/v1",
+                    "kind": "Job",
+                    "name": "asset-manager-freshclam-29001019",
+                    "uid": "0f73e3e2-7cc2-4a42-81ad-7992e2ed7661",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "freshclam",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v427",
+                    "command": [
+                        "freshclam"
+                    ],
+                    "args": [
+                        "--foreground",
+                        "--stdout"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "requests": {
+                            "cpu": "200m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Never",
+            "terminationGracePeriodSeconds": 30,
+            "activeDeadlineSeconds": 1800,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-1-1.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Failed",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:50:36Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:50:36Z"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:50:36Z",
+                    "reason": "PodFailed"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:50:36Z",
+                    "reason": "PodFailed"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:50:36Z"
+                }
+            ],
+            "message": "Pod was active on the node longer than the specified deadline",
+            "reason": "DeadlineExceeded",
+            "hostIP": "10.1.31.83",
+            "hostIPs": [
+                {
+                    "ip": "10.1.31.83"
+                }
+            ],
+            "startTime": "2025-02-20T14:50:36Z",
+            "containerStatuses": [
+                {
+                    "name": "freshclam",
+                    "state": {
+                        "terminated": {
+                            "exitCode": 137,
+                            "reason": "ContainerStatusUnknown",
+                            "message": "The container could not be located when the pod was terminated",
+                            "startedAt": null,
+                            "finishedAt": null
+                        }
+                    },
+                    "lastState": {},
+                    "ready": false,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v427",
+                    "imageID": "",
+                    "started": false,
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-freshclam-29001019-q9h69",
+            "generateName": "asset-manager-freshclam-29001019-",
+            "namespace": "apps",
+            "uid": "415e712d-937b-433c-8d3f-f5eaed780778",
+            "resourceVersion": "645848701",
+            "creationTimestamp": "2025-02-20T14:19:00Z",
+            "labels": {
+                "app": "asset-manager-freshclam",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "freshclam",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-freshclam",
+                "batch.kubernetes.io/controller-uid": "0f73e3e2-7cc2-4a42-81ad-7992e2ed7661",
+                "batch.kubernetes.io/job-name": "asset-manager-freshclam-29001019",
+                "controller-uid": "0f73e3e2-7cc2-4a42-81ad-7992e2ed7661",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "job-name": "asset-manager-freshclam-29001019"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "batch/v1",
+                    "kind": "Job",
+                    "name": "asset-manager-freshclam-29001019",
+                    "uid": "0f73e3e2-7cc2-4a42-81ad-7992e2ed7661",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "freshclam",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v427",
+                    "command": [
+                        "freshclam"
+                    ],
+                    "args": [
+                        "--foreground",
+                        "--stdout"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "requests": {
+                            "cpu": "200m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Never",
+            "terminationGracePeriodSeconds": 30,
+            "activeDeadlineSeconds": 1800,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-1-1.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Failed",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:19:00Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:19:00Z"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:19:00Z",
+                    "reason": "PodFailed"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:19:00Z",
+                    "reason": "PodFailed"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-02-20T14:19:00Z"
+                }
+            ],
+            "message": "Pod was active on the node longer than the specified deadline",
+            "reason": "DeadlineExceeded",
+            "hostIP": "10.1.31.83",
+            "hostIPs": [
+                {
+                    "ip": "10.1.31.83"
+                }
+            ],
+            "startTime": "2025-02-20T14:19:00Z",
+            "containerStatuses": [
+                {
+                    "name": "freshclam",
+                    "state": {
+                        "terminated": {
+                            "exitCode": 137,
+                            "reason": "ContainerStatusUnknown",
+                            "message": "The container could not be located when the pod was terminated",
+                            "startedAt": null,
+                            "finishedAt": null
+                        }
+                    },
+                    "lastState": {},
+                    "ready": false,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v427",
+                    "imageID": "",
+                    "started": false,
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-freshclam-29120179-2wkfs",
+            "generateName": "asset-manager-freshclam-29120179-",
+            "namespace": "apps",
+            "uid": "d2d8cfee-3fbb-480b-9ec8-2b121a2315f3",
+            "resourceVersion": "694007300",
+            "creationTimestamp": "2025-05-14T08:19:00Z",
+            "labels": {
+                "app": "asset-manager-freshclam",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "freshclam",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-freshclam",
+                "batch.kubernetes.io/controller-uid": "2b183585-e33f-4d36-a77e-5be5cd3109a2",
+                "batch.kubernetes.io/job-name": "asset-manager-freshclam-29120179",
+                "controller-uid": "2b183585-e33f-4d36-a77e-5be5cd3109a2",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "job-name": "asset-manager-freshclam-29120179"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "batch/v1",
+                    "kind": "Job",
+                    "name": "asset-manager-freshclam-29120179",
+                    "uid": "2b183585-e33f-4d36-a77e-5be5cd3109a2",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "freshclam",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v489",
+                    "command": [
+                        "freshclam"
+                    ],
+                    "args": [
+                        "--foreground",
+                        "--stdout"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "requests": {
+                            "cpu": "200m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Never",
+            "terminationGracePeriodSeconds": 30,
+            "activeDeadlineSeconds": 1800,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-28-99.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Succeeded",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:19:02Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:19:00Z"
+                }
+            ],
+            "hostIP": "10.1.28.99",
+            "hostIPs": [
+                {
+                    "ip": "10.1.28.99"
+                }
+            ],
+            "podIP": "10.1.31.111",
+            "podIPs": [
+                {
+                    "ip": "10.1.31.111"
+                }
+            ],
+            "startTime": "2025-05-14T08:19:00Z",
+            "containerStatuses": [
+                {
+                    "name": "freshclam",
+                    "state": {
+                        "terminated": {
+                            "exitCode": 0,
+                            "reason": "Completed",
+                            "startedAt": "2025-05-14T08:19:00Z",
+                            "finishedAt": "2025-05-14T08:19:00Z",
+                            "containerID": "containerd://4181a56f0809473dd4c3f585036441676055ddf5b14555e57a0aa8a830b7785a"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": false,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v489",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:54073c4208d6e1ad7a5049b1b92522a3fb99534d8f529659d218c4005b2d29bc",
+                    "containerID": "containerd://4181a56f0809473dd4c3f585036441676055ddf5b14555e57a0aa8a830b7785a",
+                    "started": false,
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-freshclam-29120239-szchr",
+            "generateName": "asset-manager-freshclam-29120239-",
+            "namespace": "apps",
+            "uid": "dde3deda-9d50-4c1f-839f-b9995206f717",
+            "resourceVersion": "694035092",
+            "creationTimestamp": "2025-05-14T09:19:00Z",
+            "labels": {
+                "app": "asset-manager-freshclam",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "freshclam",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-freshclam",
+                "batch.kubernetes.io/controller-uid": "1f98e263-0671-4ff6-b588-792040d14515",
+                "batch.kubernetes.io/job-name": "asset-manager-freshclam-29120239",
+                "controller-uid": "1f98e263-0671-4ff6-b588-792040d14515",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "job-name": "asset-manager-freshclam-29120239"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "batch/v1",
+                    "kind": "Job",
+                    "name": "asset-manager-freshclam-29120239",
+                    "uid": "1f98e263-0671-4ff6-b588-792040d14515",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "freshclam",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "command": [
+                        "freshclam"
+                    ],
+                    "args": [
+                        "--foreground",
+                        "--stdout"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "requests": {
+                            "cpu": "200m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Never",
+            "terminationGracePeriodSeconds": 30,
+            "activeDeadlineSeconds": 1800,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-28-99.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Succeeded",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T09:19:08Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T09:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T09:19:07Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T09:19:07Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T09:19:00Z"
+                }
+            ],
+            "hostIP": "10.1.28.99",
+            "hostIPs": [
+                {
+                    "ip": "10.1.28.99"
+                }
+            ],
+            "podIP": "10.1.30.239",
+            "podIPs": [
+                {
+                    "ip": "10.1.30.239"
+                }
+            ],
+            "startTime": "2025-05-14T09:19:00Z",
+            "containerStatuses": [
+                {
+                    "name": "freshclam",
+                    "state": {
+                        "terminated": {
+                            "exitCode": 0,
+                            "reason": "Completed",
+                            "startedAt": "2025-05-14T09:19:00Z",
+                            "finishedAt": "2025-05-14T09:19:06Z",
+                            "containerID": "containerd://f17d8f00fbed91679b7f9f537ac4478cc011b70e6376d1c0e95fcb2c902df60b"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": false,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:00be0d0f74df9fc5c1ff8f8e21ce63183be6cbb887f5f9c5bf50913259896bd5",
+                    "containerID": "containerd://f17d8f00fbed91679b7f9f537ac4478cc011b70e6376d1c0e95fcb2c902df60b",
+                    "started": false,
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-freshclam-29120299-2mmjd",
+            "generateName": "asset-manager-freshclam-29120299-",
+            "namespace": "apps",
+            "uid": "270741a8-6184-4905-ba74-1cfe1019e611",
+            "resourceVersion": "694060360",
+            "creationTimestamp": "2025-05-14T10:19:00Z",
+            "labels": {
+                "app": "asset-manager-freshclam",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "freshclam",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-freshclam",
+                "batch.kubernetes.io/controller-uid": "f01e6968-ff58-4211-9d15-c88878c47a3e",
+                "batch.kubernetes.io/job-name": "asset-manager-freshclam-29120299",
+                "controller-uid": "f01e6968-ff58-4211-9d15-c88878c47a3e",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "job-name": "asset-manager-freshclam-29120299"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "batch/v1",
+                    "kind": "Job",
+                    "name": "asset-manager-freshclam-29120299",
+                    "uid": "f01e6968-ff58-4211-9d15-c88878c47a3e",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "freshclam",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "command": [
+                        "freshclam"
+                    ],
+                    "args": [
+                        "--foreground",
+                        "--stdout"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "requests": {
+                            "cpu": "200m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Never",
+            "terminationGracePeriodSeconds": 30,
+            "activeDeadlineSeconds": 1800,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-1-1.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Succeeded",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:02Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z"
+                }
+            ],
+            "hostIP": "10.1.31.83",
+            "hostIPs": [
+                {
+                    "ip": "10.1.31.83"
+                }
+            ],
+            "podIP": "10.1.29.34",
+            "podIPs": [
+                {
+                    "ip": "10.1.29.34"
+                }
+            ],
+            "startTime": "2025-05-14T10:19:00Z",
+            "containerStatuses": [
+                {
+                    "name": "freshclam",
+                    "state": {
+                        "terminated": {
+                            "exitCode": 0,
+                            "reason": "Completed",
+                            "startedAt": "2025-05-14T10:19:00Z",
+                            "finishedAt": "2025-05-14T10:19:00Z",
+                            "containerID": "containerd://dbea664f11dfed28fcc570e411600c3b3ef787deba0796a1d404dc0b13085789"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": false,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:00be0d0f74df9fc5c1ff8f8e21ce63183be6cbb887f5f9c5bf50913259896bd5",
+                    "containerID": "containerd://dbea664f11dfed28fcc570e411600c3b3ef787deba0796a1d404dc0b13085789",
+                    "started": false,
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-freshclam-29120299-2mmjd",
+            "generateName": "asset-manager-freshclam-29120299-",
+            "namespace": "apps",
+            "uid": "270741a8-6184-4905-ba74-1cfe1019e611",
+            "resourceVersion": "694060360",
+            "creationTimestamp": "2025-05-14T10:19:00Z",
+            "labels": {
+                "app": "asset-manager-freshclam",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "freshclam",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-freshclam",
+                "batch.kubernetes.io/controller-uid": "f01e6968-ff58-4211-9d15-c88878c47a3e",
+                "batch.kubernetes.io/job-name": "asset-manager-freshclam-29120299",
+                "controller-uid": "f01e6968-ff58-4211-9d15-c88878c47a3e",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "job-name": "asset-manager-freshclam-29120299"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "batch/v1",
+                    "kind": "Job",
+                    "name": "asset-manager-freshclam-29120299",
+                    "uid": "f01e6968-ff58-4211-9d15-c88878c47a3e",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "freshclam",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "command": [
+                        "freshclam"
+                    ],
+                    "args": [
+                        "--foreground",
+                        "--stdout"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "requests": {
+                            "cpu": "200m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Never",
+            "terminationGracePeriodSeconds": 30,
+            "activeDeadlineSeconds": 1800,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-1-1.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Succeeded",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:02Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T10:19:00Z"
+                }
+            ],
+            "hostIP": "10.1.31.83",
+            "hostIPs": [
+                {
+                    "ip": "10.1.31.83"
+                }
+            ],
+            "podIP": "10.1.29.34",
+            "podIPs": [
+                {
+                    "ip": "10.1.29.34"
+                }
+            ],
+            "startTime": "2025-05-14T10:19:00Z",
+            "containerStatuses": [
+                {
+                    "name": "freshclam",
+                    "state": {
+                        "terminated": {
+                            "exitCode": 0,
+                            "reason": "Completed",
+                            "startedAt": "2025-05-14T10:19:00Z",
+                            "finishedAt": "2025-05-14T10:19:00Z",
+                            "containerID": "containerd://dbea664f11dfed28fcc570e411600c3b3ef787deba0796a1d404dc0b13085789"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": false,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:00be0d0f74df9fc5c1ff8f8e21ce63183be6cbb887f5f9c5bf50913259896bd5",
+                    "containerID": "containerd://dbea664f11dfed28fcc570e411600c3b3ef787deba0796a1d404dc0b13085789",
+                    "started": false,
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-freshclam-wljnk",
+            "generateName": "asset-manager-freshclam-",
+            "namespace": "apps",
+            "uid": "acae5704-6e26-44d6-922e-5171895c7b3e",
+            "resourceVersion": "694021799",
+            "creationTimestamp": "2025-05-14T08:52:15Z",
+            "labels": {
+                "app": "asset-manager-freshclam",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "freshclam",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-freshclam",
+                "batch.kubernetes.io/controller-uid": "cf3b8cde-1a48-48b4-ad41-7abc107eb8e2",
+                "batch.kubernetes.io/job-name": "asset-manager-freshclam",
+                "controller-uid": "cf3b8cde-1a48-48b4-ad41-7abc107eb8e2",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "job-name": "asset-manager-freshclam"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "batch/v1",
+                    "kind": "Job",
+                    "name": "asset-manager-freshclam",
+                    "uid": "cf3b8cde-1a48-48b4-ad41-7abc107eb8e2",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "freshclam",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "command": [
+                        "freshclam"
+                    ],
+                    "args": [
+                        "--foreground",
+                        "--stdout"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "requests": {
+                            "cpu": "200m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Never",
+            "terminationGracePeriodSeconds": 30,
+            "activeDeadlineSeconds": 1800,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-1-1.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Succeeded",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:28Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:15Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:26Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:26Z",
+                    "reason": "PodCompleted"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:15Z"
+                }
+            ],
+            "hostIP": "10.1.31.83",
+            "hostIPs": [
+                {
+                    "ip": "10.1.31.83"
+                }
+            ],
+            "podIP": "10.1.31.94",
+            "podIPs": [
+                {
+                    "ip": "10.1.31.94"
+                }
+            ],
+            "startTime": "2025-05-14T08:52:15Z",
+            "containerStatuses": [
+                {
+                    "name": "freshclam",
+                    "state": {
+                        "terminated": {
+                            "exitCode": 0,
+                            "reason": "Completed",
+                            "startedAt": "2025-05-14T08:52:23Z",
+                            "finishedAt": "2025-05-14T08:52:23Z",
+                            "containerID": "containerd://d43871ad36e2e90067afb70bce328ec03f172e941b995be212f408ed31c8804f"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": false,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:00be0d0f74df9fc5c1ff8f8e21ce63183be6cbb887f5f9c5bf50913259896bd5",
+                    "containerID": "containerd://d43871ad36e2e90067afb70bce328ec03f172e941b995be212f408ed31c8804f",
+                    "started": false,
+                    "volumeMounts": [
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-redis-68d568d546-9r7xf",
+            "generateName": "asset-manager-redis-68d568d546-",
+            "namespace": "apps",
+            "uid": "909888e6-b370-4ffa-aefa-25977bc6bde9",
+            "resourceVersion": "634288509",
+            "creationTimestamp": "2025-01-30T09:35:21Z",
+            "labels": {
+                "app": "asset-manager-redis",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "redis",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-redis",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "pod-template-hash": "68d568d546"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "apps/v1",
+                    "kind": "ReplicaSet",
+                    "name": "asset-manager-redis-68d568d546",
+                    "uid": "03e440b5-518e-42d3-af57-a8bba9c8f8b0",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "config",
+                    "configMap": {
+                        "name": "asset-manager-redis-conf",
+                        "defaultMode": 420
+                    }
+                },
+                {
+                    "name": "storage",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-redis"
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "redis",
+                    "image": "redis:7.4",
+                    "command": [
+                        "redis-server",
+                        "/etc/redis/redis.conf"
+                    ],
+                    "ports": [
+                        {
+                            "name": "redis",
+                            "containerPort": 6379,
+                            "protocol": "TCP"
+                        }
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "1000Mi"
+                        },
+                        "requests": {
+                            "cpu": "500m",
+                            "memory": "500Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "config",
+                            "mountPath": "/etc/redis/redis.conf",
+                            "subPath": "redis.conf"
+                        },
+                        {
+                            "name": "storage",
+                            "mountPath": "/data"
+                        }
+                    ],
+                    "livenessProbe": {
+                        "tcpSocket": {
+                            "port": 6379
+                        },
+                        "timeoutSeconds": 20,
+                        "periodSeconds": 5,
+                        "successThreshold": 1,
+                        "failureThreshold": 3
+                    },
+                    "readinessProbe": {
+                        "tcpSocket": {
+                            "port": 6379
+                        },
+                        "timeoutSeconds": 20,
+                        "periodSeconds": 5,
+                        "successThreshold": 1,
+                        "failureThreshold": 3
+                    },
+                    "startupProbe": {
+                        "tcpSocket": {
+                            "port": 6379
+                        },
+                        "timeoutSeconds": 20,
+                        "periodSeconds": 5,
+                        "successThreshold": 1,
+                        "failureThreshold": 5
+                    },
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "Always",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-1-1.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "fsGroup": 1001,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Running",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-01-30T09:35:46Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-01-30T09:35:21Z"
+                },
+                {
+                    "type": "Ready",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-01-30T09:35:49Z"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-01-30T09:35:49Z"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-01-30T09:35:21Z"
+                }
+            ],
+            "hostIP": "10.1.31.83",
+            "hostIPs": [
+                {
+                    "ip": "10.1.31.83"
+                }
+            ],
+            "podIP": "10.1.31.105",
+            "podIPs": [
+                {
+                    "ip": "10.1.31.105"
+                }
+            ],
+            "startTime": "2025-01-30T09:35:21Z",
+            "containerStatuses": [
+                {
+                    "name": "redis",
+                    "state": {
+                        "running": {
+                            "startedAt": "2025-01-30T09:35:45Z"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": true,
+                    "restartCount": 0,
+                    "image": "docker.io/library/redis:7.4",
+                    "imageID": "docker.io/library/redis@sha256:ca65ea36ae16e709b0f1c7534bc7e5b5ac2e5bb3c97236e4fec00e3625eb678d",
+                    "containerID": "containerd://61419a43c08e09d8c8cb2a8af491b5c381d1c0e57a0179dd07fc6fb24a99c44b",
+                    "started": true,
+                    "volumeMounts": [
+                        {
+                            "name": "config",
+                            "mountPath": "/etc/redis/redis.conf"
+                        },
+                        {
+                            "name": "storage",
+                            "mountPath": "/data"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    },
+    {
+        "metadata": {
+            "name": "asset-manager-worker-558dd6c986-l9xht",
+            "generateName": "asset-manager-worker-558dd6c986-",
+            "namespace": "apps",
+            "uid": "0b1cc3a2-1138-4488-9fcd-d60a34109489",
+            "resourceVersion": "694021864",
+            "creationTimestamp": "2025-05-14T08:52:29Z",
+            "labels": {
+                "app": "asset-manager-worker",
+                "app.kubernetes.io/arch": "arm64",
+                "app.kubernetes.io/component": "worker",
+                "app.kubernetes.io/instance": "asset-manager",
+                "app.kubernetes.io/managed-by": "Helm",
+                "app.kubernetes.io/name": "asset-manager-worker",
+                "helm.sh/chart": "asset-manager-0.1.4",
+                "pod-template-hash": "558dd6c986"
+            },
+            "annotations": {
+                "kubectl.kubernetes.io/restartedAt": "2025-03-05T18:11:02Z"
+            },
+            "ownerReferences": [
+                {
+                    "apiVersion": "apps/v1",
+                    "kind": "ReplicaSet",
+                    "name": "asset-manager-worker-558dd6c986",
+                    "uid": "08f448ad-ecc2-4a38-aa0e-bbcd471237be",
+                    "controller": true,
+                    "blockOwnerDeletion": true
+                }
+            ]
+        },
+        "spec": {
+            "volumes": [
+                {
+                    "name": "app-tmp",
+                    "emptyDir": {}
+                },
+                {
+                    "name": "clamd-tmp",
+                    "emptyDir": {}
+                },
+                {
+                    "name": "asset-manager-efs",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-efs"
+                    }
+                },
+                {
+                    "name": "clam-virus-db",
+                    "persistentVolumeClaim": {
+                        "claimName": "asset-manager-clamav-db"
+                    }
+                },
+                {
+                    "name": "etc-clamav",
+                    "configMap": {
+                        "name": "asset-manager-etc-clamav",
+                        "defaultMode": 420
+                    }
+                }
+            ],
+            "containers": [
+                {
+                    "name": "app",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "command": [
+                        "sidekiq",
+                        "-C",
+                        "config/sidekiq.yml"
+                    ],
+                    "ports": [
+                        {
+                            "name": "metrics",
+                            "containerPort": 9394,
+                            "protocol": "TCP"
+                        }
+                    ],
+                    "envFrom": [
+                        {
+                            "configMapRef": {
+                                "name": "govuk-apps-env"
+                            }
+                        }
+                    ],
+                    "env": [
+                        {
+                            "name": "GOVUK_UPLOADS_ROOT",
+                            "value": "/mnt/asset-manager"
+                        },
+                        {
+                            "name": "SENTRY_DSN",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "asset-manager-sentry",
+                                    "key": "dsn"
+                                }
+                            }
+                        },
+                        {
+                            "name": "SENTRY_RELEASE",
+                            "value": "v490"
+                        },
+                        {
+                            "name": "SECRET_KEY_BASE",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "asset-manager-rails-secret-key-base",
+                                    "key": "secret-key-base"
+                                }
+                            }
+                        },
+                        {
+                            "name": "REDIS_URL",
+                            "value": "redis://asset-manager-redis"
+                        },
+                        {
+                            "name": "ASSET_MANAGER_CLAMSCAN_PATH",
+                            "value": "/usr/local/bin/clamdscan"
+                        },
+                        {
+                            "name": "GDS_SSO_OAUTH_ID",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "signon-app-asset-manager",
+                                    "key": "oauth_id"
+                                }
+                            }
+                        },
+                        {
+                            "name": "GDS_SSO_OAUTH_SECRET",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "signon-app-asset-manager",
+                                    "key": "oauth_secret"
+                                }
+                            }
+                        },
+                        {
+                            "name": "JWT_AUTH_SECRET",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "authenticating-proxy-jwt-auth-secret",
+                                    "key": "JWT_AUTH_SECRET"
+                                }
+                            }
+                        },
+                        {
+                            "name": "MONGODB_URI",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "asset-manager-docdb",
+                                    "key": "MONGODB_URI"
+                                }
+                            }
+                        },
+                        {
+                            "name": "AWS_S3_BUCKET_NAME",
+                            "value": "govuk-assets-integration"
+                        }
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "4Gi"
+                        },
+                        "requests": {
+                            "cpu": "10m",
+                            "memory": "2Gi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "app-tmp",
+                            "mountPath": "/tmp"
+                        },
+                        {
+                            "name": "asset-manager-efs",
+                            "mountPath": "/mnt/asset-manager"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "runAsUser": 2899,
+                        "runAsGroup": 2899,
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                },
+                {
+                    "name": "clamd",
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "command": [
+                        "clamd"
+                    ],
+                    "args": [
+                        "--foreground"
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "2",
+                            "memory": "4Gi"
+                        },
+                        "requests": {
+                            "cpu": "500m",
+                            "memory": "2000Mi"
+                        }
+                    },
+                    "volumeMounts": [
+                        {
+                            "name": "asset-manager-efs",
+                            "mountPath": "/mnt/asset-manager"
+                        },
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "clamd-tmp",
+                            "mountPath": "/tmp"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "securityContext": {
+                        "capabilities": {
+                            "drop": [
+                                "ALL"
+                            ]
+                        },
+                        "readOnlyRootFilesystem": true,
+                        "allowPrivilegeEscalation": false
+                    }
+                }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+                "kubernetes.io/arch": "arm64"
+            },
+            "serviceAccountName": "default",
+            "serviceAccount": "default",
+            "automountServiceAccountToken": false,
+            "nodeName": "ip-10-1-1-1.eu-west-1.compute.internal",
+            "securityContext": {
+                "runAsUser": 1001,
+                "runAsGroup": 1001,
+                "runAsNonRoot": true,
+                "fsGroup": 2899,
+                "seccompProfile": {
+                    "type": "RuntimeDefault"
+                }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "arch",
+                    "operator": "Equal",
+                    "value": "arm64",
+                    "effect": "NoSchedule"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "tolerationSeconds": 300
+                }
+            ],
+            "priority": 0,
+            "enableServiceLinks": false,
+            "preemptionPolicy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Running",
+            "conditions": [
+                {
+                    "type": "PodReadyToStartContainers",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:30Z"
+                },
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:29Z"
+                },
+                {
+                    "type": "Ready",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:30Z"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:30Z"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "lastProbeTime": null,
+                    "lastTransitionTime": "2025-05-14T08:52:29Z"
+                }
+            ],
+            "hostIP": "10.1.31.83",
+            "hostIPs": [
+                {
+                    "ip": "10.1.31.83"
+                }
+            ],
+            "podIP": "10.1.28.242",
+            "podIPs": [
+                {
+                    "ip": "10.1.28.242"
+                }
+            ],
+            "startTime": "2025-05-14T08:52:29Z",
+            "containerStatuses": [
+                {
+                    "name": "app",
+                    "state": {
+                        "running": {
+                            "startedAt": "2025-05-14T08:52:30Z"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": true,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:00be0d0f74df9fc5c1ff8f8e21ce63183be6cbb887f5f9c5bf50913259896bd5",
+                    "containerID": "containerd://4d80d6c624c1c1bae028a9c35535c1e8bd22e48fee5f4326a38b5d0289afb51f",
+                    "started": true,
+                    "volumeMounts": [
+                        {
+                            "name": "app-tmp",
+                            "mountPath": "/tmp"
+                        },
+                        {
+                            "name": "asset-manager-efs",
+                            "mountPath": "/mnt/asset-manager"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                },
+                {
+                    "name": "clamd",
+                    "state": {
+                        "running": {
+                            "startedAt": "2025-05-14T08:52:30Z"
+                        }
+                    },
+                    "lastState": {},
+                    "ready": true,
+                    "restartCount": 0,
+                    "image": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager:v490",
+                    "imageID": "111.dkr.ecr.eu-west-1.amazonaws.com/github/alphagov/govuk/asset-manager@sha256:00be0d0f74df9fc5c1ff8f8e21ce63183be6cbb887f5f9c5bf50913259896bd5",
+                    "containerID": "containerd://62694e0853647cdf61e1925d6a6bb19ee4ab59985af1530f232caf8d138344fa",
+                    "started": true,
+                    "volumeMounts": [
+                        {
+                            "name": "asset-manager-efs",
+                            "mountPath": "/mnt/asset-manager"
+                        },
+                        {
+                            "name": "clam-virus-db",
+                            "mountPath": "/var/lib/clamav"
+                        },
+                        {
+                            "name": "clamd-tmp",
+                            "mountPath": "/tmp"
+                        },
+                        {
+                            "name": "etc-clamav",
+                            "mountPath": "/usr/local/etc"
+                        }
+                    ]
+                }
+            ],
+            "qosClass": "Burstable"
+        },
+        "apiVersion": "v1",
+        "kind": "Pod"
+    }
+]
