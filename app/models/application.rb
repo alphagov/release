@@ -25,6 +25,12 @@ class Application < ApplicationRecord
       .compact
   end
 
+  def current_image_deployed_by_environment(repo_name:)
+    @current_image_deployed_by_environment ||= ENVIRONMENTS_ORDER
+      .index_with { |environment| ClusterState.get_image_tag(repo_name: repo_name, environment: environment) }
+      .compact
+  end
+
   def in_sync?(environments)
     latest_deploys_by_environment
       .slice(*environments)
@@ -42,6 +48,10 @@ class Application < ApplicationRecord
 
     :all_environments_match
   end
+
+  # def name
+  #   Repo.shortname(app_name: name)
+  # end
 
   def fallback_shortname
     Repo.shortname(app_name: name).nil? ? name.parameterize : Repo.shortname(app_name: name)

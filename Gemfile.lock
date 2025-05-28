@@ -87,6 +87,25 @@ GEM
     ast (2.4.3)
     base64 (0.3.0)
     benchmark (0.4.1)
+    aws-eventstream (1.3.2)
+    aws-partitions (1.1107.0)
+    aws-sdk-core (3.224.0)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      base64
+      jmespath (~> 1, >= 1.6.1)
+      logger
+    aws-sdk-eks (1.137.0)
+      aws-sdk-core (~> 3, >= 3.216.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-sts (1.11.0)
+      aws-sdk-core (~> 3, >= 3.110.0)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.11.0)
+      aws-eventstream (~> 1, >= 1.0.2)
+    base64 (0.2.0)
+    benchmark (0.4.0)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
@@ -134,8 +153,34 @@ GEM
     docile (1.4.0)
     domain_name (0.6.20240107)
     drb (2.2.3)
+    dry-configurable (1.3.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-core (1.1.0)
+      concurrent-ruby (~> 1.0)
+      logger
+      zeitwerk (~> 2.6)
+    dry-inflector (1.2.0)
+    dry-logic (1.6.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-struct (1.8.0)
+      dry-core (~> 1.1)
+      dry-types (~> 1.8, >= 1.8.2)
+      ice_nine (~> 0.11)
+      zeitwerk (~> 2.6)
+    dry-types (1.8.2)
+      bigdecimal (~> 3.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
+      zeitwerk (~> 2.6)
     erb (5.0.1)
     erubi (1.13.1)
+    excon (0.112.0)
     execjs (2.10.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
@@ -244,15 +289,30 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    ice_nine (0.11.2)
     io-console (0.8.0)
     irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
+    jmespath (1.6.2)
     json (2.12.2)
     jsonapi-renderer (0.2.2)
+    jsonpath (1.1.5)
+      multi_json
     jwt (2.10.1)
       base64
+    k8s-ruby (0.17.2)
+      base64
+      dry-configurable
+      dry-struct
+      dry-types
+      excon (~> 0.71)
+      hashdiff (~> 1.0)
+      jsonpath (~> 1.1)
+      recursive-open-struct (~> 1.1, >= 1.1.3)
+      yajl-ruby (~> 1.4)
+      yaml-safe_load_stream3
     kramdown (2.5.1)
       rexml (>= 3.3.9)
     language_server-protocol (3.17.0.5)
@@ -283,6 +343,7 @@ GEM
     mocha (2.7.1)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.8.0)
+    multi_json (1.15.0)
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
@@ -636,6 +697,8 @@ GEM
     rdoc (6.14.0)
       erb
       psych (>= 4.0.0)
+    recursive-open-struct (1.3.1)
+      ostruct
     redis-client (0.24.0)
       connection_pool
     regexp_parser (2.10.0)
@@ -775,6 +838,8 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yajl-ruby (1.4.3)
+    yaml-safe_load_stream3 (0.1.2)
     zeitwerk (2.7.3)
 
 PLATFORMS
@@ -795,6 +860,9 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   artemis
+  aws-sdk-core
+  aws-sdk-eks
+  aws-sdk-sts
   better_errors
   binding_of_caller
   bootsnap
@@ -813,6 +881,7 @@ DEPENDENCIES
   govuk_app_config
   govuk_publishing_components
   govuk_sidekiq
+  k8s-ruby
   minitest
   mocha
   mysql2

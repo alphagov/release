@@ -89,12 +89,12 @@
 <% end %>
 
 <%= render "govuk_publishing_components/components/heading", {
-  text: "What's where?",
+  text: "Github releases",
   heading_level: 2,
   margin_bottom: 4,
 } %>
 
-<%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's where?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
+<%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Github releases", { caption_classes: "govuk-visually-hidden" }) do |t| %>
   <%= t.head do %>
     <%= t.header "Environment" %>
     <%= t.header "Current version" %>
@@ -113,6 +113,37 @@
         <%= t.cell "#{github_tag_link_to(@application, deployment.version)} at #{human_datetime(deployment.created_at)}#{not_on_default_branch}".html_safe() %>
         <% previous_version = deployment.previous_deployment ? "#{github_tag_link_to(@application, deployment.previous_deployment.version)} at #{human_datetime(deployment.previous_deployment.created_at)}".html_safe() : "N/A" %>
         <%= t.cell previous_version %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render "govuk_publishing_components/components/heading", {
+  text: "What's running?",
+  heading_level: 2,
+  margin_bottom: 4,
+} %>
+
+<%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's running?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
+  <%= t.head do %>
+    <%= t.header "Environment" %>
+    <%= t.header "Deployed version" %>
+  <% end %>
+
+  <%= t.body do %>
+    <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+    <% if current_environment != "production" %>
+      <%= t.row do %>
+        <%= t.header current_environment.humanize  %>
+        <% image_tag = get_cluster_image_tag(current_environment, @application.name) %>
+        <%= t.cell "#{argo_app_link_to(@application.shortname, current_environment, image_tag["image"])} at #{human_datetime(image_tag["created_at"])}".html_safe()  %>
+      <% end %>
+    <% else %>
+      <% @application.current_image_deployed_by_environment(repo_name: @application.name).each do |environment, image_tag| %>
+        <%= t.row do %>
+          <%= t.header environment.humanize  %>
+          <%= t.cell "#{argo_app_link_to(@application.shortname, environment, image_tag["image"])} at #{human_datetime(image_tag["created_at"])}".html_safe()  %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
