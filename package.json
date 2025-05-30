@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "standardx": "^7.0.0",
-    "stylelint": "^16.19.1",
+    "stylelint": "^16.20.0",
     "stylelint-config-gds": "^2.0.0"
   },
   "packageManager": "yarn@4.2.2"
