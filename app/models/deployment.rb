@@ -1,5 +1,4 @@
 class Deployment < ApplicationRecord
-  after_create :record_to_statsd
   belongs_to :application
 
   validates :version, :environment, :application_id, presence: true
@@ -48,16 +47,5 @@ class Deployment < ApplicationRecord
 
   def to_live_environment?
     environment == application.live_environment
-  end
-
-private
-
-  # Record the deployment to statsd and thence to graphite
-  def record_to_statsd
-    # Only record production deployments in production graphite
-    if environment == "production"
-      key = "deploys.#{application.shortname}"
-      GovukStatsd.increment(key)
-    end
   end
 end
