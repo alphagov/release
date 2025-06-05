@@ -77,6 +77,8 @@ private
   end
 
   def api_request_to_create_deployment?
+    # Requests from Argo Workflow:
+    # https://github.com/alphagov/govuk-helm-charts/blob/main/charts/argo-services/templates/workflows/notify-release/workflow.yaml
     GDS::SSO::ApiAccess.api_call?(request.env) && action_name == "create"
   end
 end
