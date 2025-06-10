@@ -75,7 +75,7 @@ class ClusterState
     def get_pods_by_status(environment:, repo_name:, status:)
       Rails.logger.debug "Debug cluster_state: #{environment}, #{repo_name}, #{status}"
       ## just for demo purposes until the assume role permissions is fixed
-      if repo_name == "Asset Manager"
+      if repo_name == "asset-manager"
         require "json"
         JSON.parse(File.read("app/models/running.json"))
       else
