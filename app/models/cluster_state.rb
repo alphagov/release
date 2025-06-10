@@ -31,6 +31,8 @@ class ClusterState
     end
 
     def create_client(environment)
+      print("Start create_client")
+
       sts = Aws::STS::Client.new
 
       caller_identity = sts.get_caller_identity
