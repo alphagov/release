@@ -141,12 +141,14 @@
         <% else %>
           <%= t.cell "#{argo_app_link_to(@application.shortname, current_environment, image_tag["image"])} at #{human_datetime(image_tag["created_at"])}".html_safe()  %>
         <% end %>
-        <%= t.header "Staging"  %>
-        <% image_tag = get_cluster_image_tag("staging", @application.shortname) %>
-        <% if image_tag["image"] == "None" %>
-          <%= t.cell "No running pods" %>
-        <% else %>
-          <%= t.cell "#{argo_app_link_to(@application.shortname, "staging", image_tag["image"])} at #{human_datetime(image_tag["created_at"])}".html_safe()  %>
+        <% if @application.name == "Asset Manager" %>
+          <%= t.header "Staging"  %>
+          <% image_tag = get_cluster_image_tag("staging", @application.shortname) %>
+          <% if image_tag["image"] == "None" %>
+            <%= t.cell "No running pods" %>
+          <% else %>
+            <%= t.cell "#{argo_app_link_to(@application.shortname, "staging", image_tag["image"])} at #{human_datetime(image_tag["created_at"])}".html_safe()  %>
+          <% end %>
         <% end %>
       <% end %>
     <% else %>
