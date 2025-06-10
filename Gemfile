@@ -4,6 +4,8 @@ gem "rails", "7.2.2.1"
 
 gem "active_model_serializers"
 gem "artemis"
+gem "aws-sdk-core"
+gem "aws-sigv4"
 gem "bootsnap", require: false
 gem "chartkick"
 gem "dartsass-rails"
@@ -15,6 +17,7 @@ gem "gds-sso"
 gem "govuk_app_config"
 gem "govuk_publishing_components"
 gem "govuk_sidekiq"
+gem "kubeclient"
 gem "mysql2"
 gem "octicons_helper"
 gem "octokit"
@@ -22,6 +25,7 @@ gem "plek"
 gem "sentry-sidekiq"
 gem "sprockets"
 gem "sprockets-rails"
+
 gem "terser"
 
 group :test, :development do
