@@ -49,10 +49,6 @@ class Application < ApplicationRecord
     :all_environments_match
   end
 
-  # def name
-  #   Repo.shortname(app_name: name)
-  # end
-
   def fallback_shortname
     Repo.shortname(app_name: name).nil? ? name.parameterize : Repo.shortname(app_name: name)
   end
