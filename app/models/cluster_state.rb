@@ -33,6 +33,8 @@ class ClusterState
     def create_client(environment)
       sts = Aws::STS::Client.new
 
+      caller_identity = sts.get_caller_identity
+
       assumed_role = sts.assume_role({
         role_arn: ROLES_TO_ASSUME[environment],
         role_session_name: "govuk-release-role",
