@@ -102,10 +102,17 @@ class ClusterState
 
     def get_image_tag(repo_name:, environment: "integration")
       pods = get_running_pods(repo_name: repo_name, environment: environment)
-      {
-        "image" => pods[0]["images"][0]["image"].split(":")[-1],
-        "created_at" => pods[0]["createdAt"],
-      }
+      if pods != []
+        {
+          "image" => pods[0]["images"][0]["image"].split(":")[-1],
+          "created_at" => pods[0]["createdAt"],
+        }
+      else
+        {
+          "image" => "None",
+          "created_at" => "",
+        }
+      end
     end
   end
 
