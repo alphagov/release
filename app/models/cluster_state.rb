@@ -6,6 +6,7 @@ require "k8s-ruby"
 
 class ClusterState
   ROLES_TO_ASSUME = {
+    "development" => "arn:aws:iam::210287912431:role/release-assumed",
     "integration" => "arn:aws:iam::210287912431:role/release-assumed",
     "staging" => "arn:aws:iam::696911096973:role/release-assumed",
     "production" => "arn:aws:iam::172025368201:role/release-assumed",
