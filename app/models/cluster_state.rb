@@ -70,13 +70,11 @@ class ClusterState
 
     ## Not currrently used as there were permission probnlems getting the deploy metadata
     ## If the permissions have been resolved then might be worth considering using deployment metadata
-    # def get_deploy(repo_name:)
-    #   k8s = create_client(environment)
+    def get_deploy(repo_name:, environment: "integration")
+      k8s = create_client(environment)
 
-    #   deploys = k8s.api("v1").resource("deploy", namespace: "apps")
-    #   k8s.api("v1").resource("deployments", namespace: "apps").list
-    #   k8s.api("apps/v1/deployments").resource("signon").list
-    # end
+      k8s.api("apps/v1").resource("deployments", namespace: "apps").list(labelSelector: { "app.kubernetes.io/name" => repo_name })
+    end
 
     def get_pods_by_status(environment:, repo_name:, status:)
       Rails.logger.debug "Debug cluster_state: #{environment}, #{repo_name}, #{status}"
@@ -120,3 +118,5 @@ class ClusterState
     get_pods_by_status(repo_name: repo_name, status: "Succeeded")
   end
 end
+
+print ClusterState.get_deploy(repo_name: "asset-manager")
