@@ -5,6 +5,7 @@ gem "rails", "7.2.2.1"
 gem "active_model_serializers"
 gem "artemis"
 gem "aws-sdk-core"
+gem "aws-sdk-eks"
 gem "aws-sigv4"
 gem "bootsnap", require: false
 gem "chartkick"
