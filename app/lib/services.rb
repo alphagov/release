@@ -13,14 +13,14 @@ module Services
       @github ||= Octokit::Client.new(credentials)
     end
 
-    AWS_REGION = "eu-west-1".freeze # TODO probably not needed
-    # https://github.com/alphagov/govuk-infrastructure/blob/main/terraform/deployments/release/assumed.tf
+    AWS_REGION = "eu-west-1".freeze
     ASSUMED_ROLE_ARN = {
       "development" => "arn:aws:iam::210287912431:role/release-assumed",
       "integration" => "arn:aws:iam::210287912431:role/release-assumed",
       "staging" => "arn:aws:iam::696911096973:role/release-assumed",
       "production" => "arn:aws:iam::172025368201:role/release-assumed",
     }.freeze
+    CALLER_IDENTITY_URL = "https://sts.eu-west-1.amazonaws.com/?Action=GetCallerIdentity&Version=2011-06-15".freeze
     EKS_CLUSTER_NAME = "govuk".freeze
 
     def generate_eks_token(credentials)
@@ -32,7 +32,7 @@ module Services
 
       url = signer.presign_url(
         http_method: "GET",
-        url: "https://sts.eu-west-1.amazonaws.com/?Action=GetCallerIdentity&Version=2011-06-15",
+        url: CALLER_IDENTITY_URL,
         headers: { "x-k8s-aws-id" => CLUSTER_NAME },
       )
 
@@ -43,7 +43,7 @@ module Services
       credentials = Aws::AssumeRoleCredentials.new({ 
         client: Aws::STS::Client.new(region: AWS_REGION), 
         role_arn: ASSUMED_ROLE_ARN[environment], 
-        role_session_name: "release-app-test"
+        role_session_name: "release-app"
       })
 
       eks = Aws::EKS::Client.new(credentials: credentials)
@@ -70,14 +70,18 @@ module Services
       )
     end
 
-    def get_pods_by_status(environment:, repo_name:, status:)
+    def pods_by_status(environment:, repo_name:, status:)
       client = k8s(environment: environment)
-      client.get_pods(namespace: 'apps', label_selector: "app.kubernetes.io/name=#{repo_name}", field_selector: { "status.phase": status })
+      client.get_pods(
+        namespace: 'apps',
+        label_selector: "app.kubernetes.io/name=#{repo_name}",
+        field_selector: { "status.phase": status }
+      )
     end
 
-    def get_running_pods(repo_name:, environment: "integration")
+    def running_pods(repo_name:, environment: "integration")
       res = []
-      pods = get_pods_by_status(environment: environment, repo_name: repo_name, status: "Running")
+      pods = pods_by_status(environment: environment, repo_name: repo_name, status: "Running")
       pods.each do |pod|
         images = []
         pod["spec"]["containers"].each { |c| images.append({ "image" => c["image"] }) }
@@ -85,14 +89,14 @@ module Services
         res.append({
           "name" => pod["metadata"]["name"],
           "images" => images,
-          "createdAt" => creation_timestamp,
+          "created_at" => creation_timestamp,
         })
       end
       res
     end
 
-    def get_k8s_image_tag(environment, repo_name)
-      pods = get_running_pods(repo_name: repo_name, environment: environment)
+    def k8s_image_tag(environment, repo_name)
+      pods = running_pods(repo_name: repo_name, environment: environment)
       if pods != []
         {
           "image" => pods[0]["images"][0]["image"].split(":")[-1],
@@ -107,10 +111,3 @@ module Services
     end
   end
 end
-
-# puts "======integration======"
-# puts Services.get_running_pods(environment: "integration", repo_name: "signon")
-# puts Services.get_k8s_image_tag("integration", "signon")
-
-# # puts "======staging======"
-# # puts Services.get_image_tag(repo_name: "asset-manager", environment: "staging")

@@ -27,7 +27,7 @@ class Application < ApplicationRecord
 
   def current_image_deployed_by_environment(repo_name:)
     @current_image_deployed_by_environment ||= ENVIRONMENTS_ORDER
-      .index_with { |environment| Services.get_running_pods(repo_name: repo_name, environment: environment) }
+      .index_with { |environment| Services.k8s_image_tag(environment, repo_name) }
       .compact
   end
 
