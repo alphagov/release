@@ -7,6 +7,22 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
     @app2 = FactoryBot.create(:application)
     login_as_stub_user
 
+    mock_resp = [{
+      "spec" => {
+        "containers" => [
+          {
+            "image" => "govuk.storage.com/test:v111",
+          },
+        ],
+      },
+      "metadata" => {
+        "name" => "Application 1",
+        "creationTimestamp" => "2025-01-29T14:27:01Z",
+      },
+    }]
+
+    K8sHelper.stubs(:pods_by_status).returns(mock_resp)
+
     stub_graphql(Github, :application, owner: "alphagov", name: @app1.name.parameterize)
       .to_return(:application)
     stub_graphql(Github, :application, owner: "alphagov", name: @app2.name.parameterize)

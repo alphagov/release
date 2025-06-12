@@ -83,6 +83,22 @@ class ApplicationsControllerTest < ActionController::TestCase
     setup do
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
 
+      mock_resp = [{
+        "spec" => {
+          "containers" => [
+            {
+              "image" => "govuk.storage.com/test:v111",
+            },
+          ],
+        },
+        "metadata" => {
+          "name" => "Application 1",
+          "creationTimestamp" => "2025-01-29T14:27:01Z",
+        },
+      }]
+
+      K8sHelper.stubs(:pods_by_status).returns(mock_resp)
+
       @app = FactoryBot.create(:application)
       stub_graphql(Github, :application, owner: "alphagov", name: @app.name.parameterize)
         .to_return(:application)
@@ -122,6 +138,42 @@ class ApplicationsControllerTest < ActionController::TestCase
       @app.update!(status_notes: "Do not deploy this without talking to core team first!")
       get :show, params: { id: @app.id }
       assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
+    end
+
+    context "for no pods running found" do
+      setup do
+        K8sHelper.unstub(:pods_by_status)
+        K8sHelper.stubs(:pods_by_status).returns([])
+      end
+
+      should "show no running pods message" do
+        get :show, params: { id: @app.id }
+        assert_select "td", "No running pods"
+      end
+    end
+
+    context "on non-production environment" do
+      setup do
+        GovukPublishingComponents::AppHelpers::Environment.stubs(:current_acceptance_environment).returns("integration")
+      end
+
+      should "show Integration and Staging versions of running pods for non-prod environments" do
+        get :show, params: { id: @app.id }
+        assert_select "a", { count: 1, text: "Integration" }
+        assert_select "a", { count: 1, text: "Staging" }
+        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan" }
+      end
+    end
+
+    context "on production environment" do
+      setup do
+        GovukPublishingComponents::AppHelpers::Environment.stubs(:current_acceptance_environment).returns("production")
+      end
+
+      should "show the version of running pods for each environment" do
+        get :show, params: { id: @app.id }
+        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan" }
+      end
     end
 
     context "with manual deployment" do
