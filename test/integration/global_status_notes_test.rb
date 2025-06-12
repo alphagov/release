@@ -16,6 +16,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
         ],
       },
       "metadata" => {
+        "name" => "Application 1",
         "creationTimestamp" => "2025-01-29T14:27:01Z",
       },
     }]
