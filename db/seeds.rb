@@ -11,7 +11,6 @@ applications = [
   { name: "Licensify" },
   { name: "Places Manager", shortname: "places-manager" },
   { name: "Publisher" },
-  { name: "Rummager" },
   { name: "Signon" },
   { name: "Smart answers", shortname: "smartanswers" },
   { name: "Static" },
