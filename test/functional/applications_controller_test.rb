@@ -97,7 +97,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         },
       }]
 
-      Services.stubs(:get_pods_by_status).returns(mock_resp)
+      Services.stubs(:pods_by_status).returns(mock_resp)
 
       @app = FactoryBot.create(:application)
       stub_graphql(Github, :application, owner: "alphagov", name: @app.name.parameterize)

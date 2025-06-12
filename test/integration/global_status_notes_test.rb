@@ -21,7 +21,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
       },
     }]
 
-    Services.stubs(:get_pods_by_status).returns(mock_resp)
+    Services.stubs(:pods_by_status).returns(mock_resp)
 
     stub_graphql(Github, :application, owner: "alphagov", name: @app1.name.parameterize)
       .to_return(:application)
