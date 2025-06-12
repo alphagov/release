@@ -100,7 +100,7 @@ module Services
       if pods != []
         {
           "image" => pods[0]["images"][0]["image"].split(":")[-1],
-          "created_at" => pods[0]["createdAt"],
+          "created_at" => pods[0]["created_at"],
         }
       else
         {
