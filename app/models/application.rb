@@ -26,7 +26,8 @@ class Application < ApplicationRecord
   end
 
   def current_image_deployed_by_environment(repo_name:)
-    @current_image_deployed_by_environment ||= ENVIRONMENTS_ORDER
+    current_env = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment
+    @current_image_deployed_by_environment ||= (current_env == "production" ? ENVIRONMENTS_ORDER : (ENVIRONMENTS_ORDER.first 2))
       .index_with { |environment| Services.k8s_image_tag(environment, repo_name) }
       .compact
   end

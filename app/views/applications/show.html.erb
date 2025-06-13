@@ -132,26 +132,14 @@
 
   <%= t.body do %>
     <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
-    <% if current_environment != "production" %>
+    <% @application.current_image_deployed_by_environment(repo_name: @application.shortname).each do |environment, image_tag| %>
       <%= t.row do %>
-        <%= t.header "#{argo_app_link_to(@application.shortname, current_environment.humanize)}".html_safe()  %>
-        <% image_tag = Services.k8s_image_tag(current_environment, @application.shortname) %>
+        <%= t.header "#{argo_app_link_to(@application.shortname, environment.humanize)}".html_safe()  %>
+
         <% if image_tag["image"] == "None" %>
           <%= t.cell "No running pods" %>
         <% else %>
           <%= t.cell "#{image_tag["image"]} at #{human_datetime(image_tag["created_at"])}"  %>
-        <% end %>
-      <% end %>
-    <% else %>
-      <% @application.current_image_deployed_by_environment(repo_name: @application.shortname).each do |environment, image_tag| %>
-        <%= t.row do %>
-          <%= t.header "#{argo_app_link_to(@application.shortname, current_environment.humanize)}".html_safe()  %>
-
-          <% if image_tag["image"] == "None" %>
-            <%= t.cell "No running pods" %>
-          <% else %>
-            <%= t.cell "#{image_tag["image"]} at #{human_datetime(image_tag["created_at"])}"  %>
-          <% end %>
         <% end %>
       <% end %>
     <% end %>

@@ -142,7 +142,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "show the version of running pods" do
       get :show, params: { id: @app.id }
-      assert_select "a", "v111"
+      assert_select "td", "v111 at 2:27pm on 29 Jan"
     end
 
     context "on non-production environment" do
@@ -150,9 +150,16 @@ class ApplicationsControllerTest < ActionController::TestCase
         %w[integration staging].each do |env|
           GovukPublishingComponents::AppHelpers::Environment.stub(:current_acceptance_environment, env) do
             get :show, params: { id: @app.id }
-            assert_select "a", { count: 1, text: "v111" }
+            assert_select "td", "v111 at 2:27pm on 29 Jan"
           end
         end
+      end
+
+      should "show Integration and Staging versions of running pods for non-prod environments" do
+        get :show, params: { id: @app.id }
+        assert_select "a", { count: 1, text: "Integration" }
+        assert_select "a", { count: 1, text: "Staging" }
+        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan" }
       end
     end
 
@@ -163,7 +170,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "a", { count: 3, text: "v111" }
+        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan" }
       end
     end
 
