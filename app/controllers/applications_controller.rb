@@ -27,6 +27,14 @@ class ApplicationsController < ApplicationController
         @github_error = e.message
         GovukError.notify(e.message)
       end
+      begin
+        @k8s_available = true
+        @k8s_images = @application.current_image_deployed_by_environment
+      rescue Aws::STS::Errors::ServiceError, Kubeclient::HttpError => e
+        @k8s_available = false
+        @k8s_error = e.message
+        GovukError.notify(e.message)
+      end
     end
   end
 
