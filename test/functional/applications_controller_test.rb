@@ -263,6 +263,47 @@ class ApplicationsControllerTest < ActionController::TestCase
         end
       end
     end
+
+    context "when there is a kubernetes API response error" do
+      setup do
+        error = -> (environment: "test", repo_name: "Application", status: "Running") {
+          raise Kubeclient::HttpError.new(408, "Timeout message", "Timeout response")
+        }
+        K8sHelper.unstub(:pods_by_status)
+        K8sHelper.stub(:pods_by_status, error) do
+          get :show, params: { id: @app.id }
+        end
+      end
+
+      should "show the error message" do
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from kubernetes API:"
+          assert_select "p", "Timeout message"
+        end
+      end
+    end
+
+    context "when there is a AWS STS error" do
+      setup do
+        error = -> (environment: "test", repo_name: "Application", status: "Running") {
+          raise Aws::STS::Errors::ExpiredTokenException.new(
+            mock,
+            "The security token included in the request is expired"
+            ) 
+        }
+        K8sHelper.unstub(:pods_by_status)
+        K8sHelper.stub(:pods_by_status, error) do
+          get :show, params: { id: @app.id }
+        end
+      end
+
+      should "show the error message" do
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from kubernetes API:"
+          assert_select "p", "The security token included in the request is expired"
+        end
+      end
+    end
   end
 
   context "GET edit" do
