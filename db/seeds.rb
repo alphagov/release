@@ -4,14 +4,13 @@
 example_note = "Here is a note that will hopefully demonstrate how somebody might use the notes field to write a long note."
 
 applications = [
-  { name: "Calendars" },
-  { name: "Content store" },
+  { name: "Asset Manager", shortname: "asset-manager" },
+  { name: "Content store", shortname: "content-store" },
   { name: "Feedback" },
   { name: "Frontend", status_notes: example_note },
   { name: "Licensify" },
-  { name: "Places Manager" },
+  { name: "Places Manager", shortname: "places-manager" },
   { name: "Publisher" },
-  { name: "Rummager" },
   { name: "Signon" },
   { name: "Smart answers", shortname: "smartanswers" },
   { name: "Static" },

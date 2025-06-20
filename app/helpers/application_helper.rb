@@ -1,5 +1,6 @@
 module ApplicationHelper
   def human_datetime(date)
+    date = date.is_a?(String) ? Time.zone.parse(date) : date
     if date
       if date.today?
         date.strftime("%-l:%M%P today")
