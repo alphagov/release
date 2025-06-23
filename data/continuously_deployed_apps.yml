@@ -18,6 +18,7 @@
 - frontend
 - govuk-chat
 - govuk-dependency-checker
+- govuk-e2e-tests
 - government-frontend
 - govuk-account-manager-prototype
 - govuk-attribute-service-prototype
