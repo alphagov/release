@@ -8,7 +8,7 @@ This is a Ruby on Rails app, and should follow [our Rails app conventions](https
 
 You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-docker) to run the application and its tests with all the necessary dependencies. Follow [the usage instructions](https://github.com/alphagov/govuk-docker#usage) to get started.
 
-## Testing the k8s API view locally
+## Testing the kubernetes API view locally
 
 * You will need to update the `Trust relationship` for the `release-assumed` role on the AWS `IAM` control panel using your `fulladmin` account on the `integration` environment. The additional trusted entity that you are adding should look like this - 
 
@@ -22,7 +22,8 @@ You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-do
         }
 ```
 
-This step needs to be repeated for the `staging` environment as the app will show the status for both `integration` and `staging` environments.
+This step needs to be repeated for the `staging` environment as the app will show the status for both `integration` and `staging` environments. 
+Note that the `production` environment is not updated in order to reduce the risk of affecting the `production` environment if the allowable actions on the kubernetes API should change in the future.
 
 Note that the `production` environment is not updated in order to reduce the risk of affecting the `production` environment if the allowable actions on the kubernetes API changes in the future.
 
