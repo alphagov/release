@@ -266,7 +266,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "when there is a kubernetes API response error" do
       setup do
-        error = lambda { |environment: "test", repo_name: "Application", status: "Running"| # rubocop:disable Lint/UnusedBlockArgument
+        error = lambda { |_|
           raise Kubeclient::HttpError.new(408, "Timeout message", "Timeout response")
         }
         K8sHelper.unstub(:pods_by_status)
@@ -285,7 +285,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "when there is a AWS STS error" do
       setup do
-        error = lambda { |environment: "test", repo_name: "Application", status: "Running"| # rubocop:disable Lint/UnusedBlockArgument
+        error = lambda { |_|
           raise Aws::STS::Errors::ExpiredTokenException.new(
             mock,
             "The security token included in the request is expired",
