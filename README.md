@@ -29,7 +29,33 @@ This step needs to be repeated for the `staging` environment as the app will sho
 
 Note that the `production` environment is not updated in order to reduce the risk of affecting the `production` environment if the allowable actions on the kubernetes API changes in the future.
 
-* Once the extra trust entity has been added you should be able to run the Release app locally after [assuming your developer account](https://docs.publishing.service.gov.uk/kubernetes/get-started/access-eks-cluster/#obtain-aws-credentials-for-your-role-in-the-clusters-aws-account).
+* Finally on the `AWS console` you will also need to add the following IAM policy to your developer role in `integration`. Under the AWS `IAM` control panel using your `fulladmin` account, select your developer role and then add a new permission using `Create inline policy` and switch to `JSON` so that you can paste the following json block -
+
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"sts:AssumeRole"
+			],
+			"Resource": "arn:aws:iam::210287912431:role/release-assumed"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"sts:AssumeRole"
+			],
+			"Resource": "arn:aws:iam::696911096973:role/release-assumed"
+		}
+	]
+}
+```
+
+Click on `Next` to name your new policy, it should probably be something like `TestAssumeRole` and finally you should be able to click on `Create policy`.
+
+* Once the extra trust entity and IAM policy has been added you should be able to run the Release app locally after [assuming your developer account](https://docs.publishing.service.gov.uk/kubernetes/get-started/access-eks-cluster/#obtain-aws-credentials-for-your-role-in-the-clusters-aws-account).
 
 * Then ensure that you have `mysql server` running on your machine.
 
