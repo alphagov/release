@@ -14,4 +14,8 @@ module UrlHelper
   def github_compare_to_default(app, deploy)
     "#{github_repo_url(app)}/compare/#{deploy.version}...#{app.default_branch}"
   end
+
+  def argo_app_link_to(app_name, environment)
+    link_to(environment, "https://argo.eks.#{environment}.govuk.digital/applications/#{app_name.downcase}", target: "_blank", rel: "noreferrer", class: "govuk-link")
+  end
 end

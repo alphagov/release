@@ -25,6 +25,16 @@ class Application < ApplicationRecord
       .compact
   end
 
+  # Only the production account is allowed to access the kubernetes API in all environments.
+  # Non-prod accounts can only access non-prod environments.
+  # - this reduces the risk if there is a change to the actions permissible with the kubernetes API.
+  def current_image_deployed_by_environment
+    current_env = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment
+    @current_image_deployed_by_environment ||= (current_env == "production" ? ENVIRONMENTS_ORDER : (ENVIRONMENTS_ORDER.first 2))
+      .index_with { |environment| K8sHelper.k8s_image_tag(environment, shortname) }
+      .compact
+  end
+
   def in_sync?(environments)
     latest_deploys_by_environment
       .slice(*environments)
