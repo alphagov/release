@@ -3,7 +3,7 @@ module K8sHelper
     client = Services.k8s(environment: environment)
     client.get_pods(
       namespace: "apps",
-      label_selector: "app.kubernetes.io/name=#{repo_name}",
+      label_selector: "app.govuk/repository-name=#{repo_name}",
       field_selector: { "status.phase": status },
     )
   end
