@@ -22,4 +22,14 @@ class K8sHelperTest < ActionView::TestCase
       assert_equal "{\"image\":\"None\",\"created_at\":\"\"}", K8sHelper.k8s_image_tag("test", "app1").to_json
     end
   end
+
+  context "namespace" do
+    should "returns licensify namespace if licensify" do
+      assert_equal "licensify", K8sHelper.namespace("licensify")
+    end
+
+    should "returns apps namespace if not licensify" do
+      assert_equal "apps", K8sHelper.namespace("app1")
+    end
+  end
 end
