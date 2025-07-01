@@ -1,2 +1,9 @@
-licensify:
+licensify-backend:
+  repo_name: licensify
+  namespace: licensify
+licensify-feed:
+  repo_name: licensify
+  namespace: licensify
+licensify-frontend:
+  repo_name: licensify
   namespace: licensify
