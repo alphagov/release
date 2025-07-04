@@ -323,4 +323,69 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal [app, app2], Application.out_of_sync
     end
   end
+
+  describe "current image deployed by environment" do
+    before do
+      Application.delete_all
+      Deployment.delete_all
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
+
+      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "production")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "staging")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "integration")
+
+      mock_resp = [{
+        "spec" => {
+          "containers" => [
+            {
+              "image" => "govuk.storage.com/test:v111",
+            },
+          ],
+        },
+        "metadata" => {
+          "name" => "Application 1",
+          "creationTimestamp" => "2025-01-29T14:27:01Z",
+        },
+      }]
+
+      K8sHelper.stubs(:pods_by_status).returns(mock_resp)
+    end
+
+    should "return deployed images for integration and staging environment in sync" do
+      assert_equal '{"integration"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z"}, "staging"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z"}}', Application.current_image_deployed_by_environment.to_s
+    end
+  end
+
+  describe "current image deployed by environment" do
+    before do
+      Application.delete_all
+      Deployment.delete_all
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
+
+      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
+      FactoryBot.create(:deployment, application: app, version: "v222", environment: "staging")
+      FactoryBot.create(:deployment, application: app, version: "v222", environment: "integration")
+
+      mock_resp = [{
+        "spec" => {
+          "containers" => [
+            {
+              "image" => "govuk.storage.com/test:v111",
+            },
+          ],
+        },
+        "metadata" => {
+          "name" => "Application 1",
+          "creationTimestamp" => "2025-01-29T14:27:01Z",
+        },
+      }]
+
+      K8sHelper.stubs(:pods_by_status).returns(mock_resp)
+    end
+
+    should "return deployed images for integration and staging environment in sync" do
+      assert_equal '{"integration"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "github"=>"v222"}, "staging"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "github"=>"v222"}}', Application.current_image_deployed_by_environment.to_s
+    end
+  end
 end

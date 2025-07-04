@@ -122,6 +122,47 @@
 
 <% if @k8s_available %>
   <%= render "govuk_publishing_components/components/heading", {
+    text: "Where is my code?",
+    heading_level: 2,
+    margin_bottom: 4,
+  } %>
+
+  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Where is my code?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
+    <%= t.head do %>
+      <%= t.header "Environment" %>
+      <%= t.header "Deployed version" %>
+      <%= t.header "Previous version" %>
+    <% end %>
+
+  <%= t.body do %>
+    <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+    <% @k8s_data.each do |environment, data| %>
+      <%= t.row do %>
+        <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(@application.shortname), environment.humanize)}".html_safe()  %>
+
+        <% if data["image"] == "None" %>
+          <%= t.cell "No running pods" %>
+        <% else %>
+          <% github_version = data.key?("github") ? " (Github on #{data["github"]})" : "" %>
+          <%= t.cell "#{data["image"]} at #{human_datetime(data["created_at"])}#{github_version}"  %>
+          <%= t.cell data.key?("previous") ? data["previous"] : "N/A" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+<% else %>
+  <%= render "govuk_publishing_components/components/govspeak", {
+  } do %>
+    <div class="application-notice help-notice">
+      <p>Couldn't get data from kubernetes API:</p>
+      <p><%= @k8s_error %></p>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @k8s_available %>
+  <%= render "govuk_publishing_components/components/heading", {
     text: "What's running on EKS?",
     heading_level: 2,
     margin_bottom: 4,
