@@ -137,7 +137,7 @@
     <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
     <% @k8s_images.each do |environment, image_tag| %>
       <%= t.row do %>
-        <%= t.header "#{argo_app_link_to(@application.shortname, environment.humanize)}".html_safe()  %>
+        <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(@application.shortname), environment.humanize)}".html_safe()  %>
 
         <% if image_tag["image"] == "None" %>
           <%= t.cell "No running pods" %>

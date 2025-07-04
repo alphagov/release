@@ -22,4 +22,30 @@ class K8sHelperTest < ActionView::TestCase
       assert_equal "{\"image\":\"None\",\"created_at\":\"\"}", K8sHelper.k8s_image_tag("test", "app1").to_json
     end
   end
+
+  LICENSIFY_APPS = %w[licensify-backend licensify-feed licensify-frontend].freeze
+
+  context "namespace" do
+    LICENSIFY_APPS.each do |app_name|
+      should "returns licensify namespace if #{app_name}" do
+        assert_equal "licensify", K8sHelper.namespace(app_name)
+      end
+    end
+
+    should "returns apps namespace if not licensify" do
+      assert_equal "apps", K8sHelper.namespace("app1")
+    end
+  end
+
+  context "repo_name" do
+    LICENSIFY_APPS.each do |app_name|
+      should "returns licensify repo name for #{app_name}" do
+        assert_equal "licensify", K8sHelper.repo_name(app_name)
+      end
+    end
+
+    should "returns test-app if not licensify app name" do
+      assert_equal "test-app", K8sHelper.repo_name("test-app")
+    end
+  end
 end
