@@ -33,6 +33,13 @@ class Application < ApplicationRecord
     @current_image_deployed_by_environment ||= (current_env == "production" ? ENVIRONMENTS_ORDER : (ENVIRONMENTS_ORDER.first 2))
       .index_with { |environment| K8sHelper.k8s_image_tag(environment, shortname) }
       .compact
+
+    @current_image_deployed_by_environment.each do |environment, pod|
+      deployment = deployments.last_deploy_to(environment)
+      if deployment && deployment["version"] != pod["image"]
+        @current_image_deployed_by_environment[environment]["github"] = deployment["version"]
+      end
+    end
   end
 
   def in_sync?(environments)
