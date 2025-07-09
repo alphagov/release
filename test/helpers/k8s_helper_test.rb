@@ -48,4 +48,20 @@ class K8sHelperTest < ActionView::TestCase
       assert_equal "test-app", K8sHelper.repo_name("test-app")
     end
   end
+
+  context "component" do
+    should "returns licensify-admin for licensify-backend" do
+      assert_equal "licensify-admin", K8sHelper.component("licensify-backend")
+    end
+
+    (LICENSIFY_APPS.last 2).each do |app_name|
+      should "returns licensify #{app_name} if not licensify-backend" do
+        assert_equal app_name, K8sHelper.component(app_name)
+      end
+    end
+
+    should "returns app if not licensify app name" do
+      assert_equal "app", K8sHelper.component("test-app")
+    end
+  end
 end
