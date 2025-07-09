@@ -330,11 +330,6 @@ class ApplicationTest < ActiveSupport::TestCase
       Deployment.delete_all
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
 
-      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
-      FactoryBot.create(:deployment, application: app, version: "v111", environment: "production")
-      FactoryBot.create(:deployment, application: app, version: "v111", environment: "staging")
-      FactoryBot.create(:deployment, application: app, version: "v111", environment: "integration")
-
       mock_resp = [{
         "spec" => {
           "containers" => [
@@ -353,7 +348,12 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "return deployed images for integration and staging environment in sync" do
-      assert_equal '{"integration"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z"}, "staging"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z"}}', Application.current_image_deployed_by_environment.to_s
+      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "production")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "staging")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "integration")
+
+      assert_equal '{"integration"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z"}, "staging"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z"}}', app.current_image_deployed_by_environment.to_s
     end
   end
 
@@ -363,10 +363,6 @@ class ApplicationTest < ActiveSupport::TestCase
       Deployment.delete_all
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
 
-      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
-      FactoryBot.create(:deployment, application: app, version: "v222", environment: "staging")
-      FactoryBot.create(:deployment, application: app, version: "v222", environment: "integration")
-
       mock_resp = [{
         "spec" => {
           "containers" => [
@@ -385,7 +381,11 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     should "return deployed images for integration and staging environment in sync" do
-      assert_equal '{"integration"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "github"=>"v222"}, "staging"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "github"=>"v222"}}', Application.current_image_deployed_by_environment.to_s
+      app = FactoryBot.create(:application)
+      FactoryBot.create(:deployment, application: app, version: "v222", environment: "staging")
+      FactoryBot.create(:deployment, application: app, version: "v222", environment: "integration")
+
+      assert_equal '{"integration"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "github"=>"v222"}, "staging"=>{"image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "github"=>"v222"}}', app.current_image_deployed_by_environment.to_s
     end
   end
 end
