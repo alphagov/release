@@ -164,7 +164,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         get :show, params: { id: @app.id }
         assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
         assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
-        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan" }
+        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
       end
     end
 
@@ -175,7 +175,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan" }
+        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
       end
     end
 
