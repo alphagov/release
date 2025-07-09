@@ -1,6 +1,7 @@
 licensify-backend:
   repo_name: licensify
   namespace: licensify
+  component: licensify-admin
 licensify-feed:
   repo_name: licensify
   namespace: licensify

@@ -17,11 +17,22 @@ module K8sHelper
     repo_name
   end
 
+  def self.component(repo_name)
+    if K8sHelper.k8s_apps.include? repo_name
+      component = if K8sHelper.k8s_apps[repo_name].include? "component"
+                    K8sHelper.k8s_apps[repo_name]["component"]
+                  else
+                    repo_name
+                  end
+    end
+    component || "app"
+  end
+
   def self.pods_by_status(environment:, repo_name:, status:)
     client = Services.k8s(environment: environment)
     client.get_pods(
       namespace: K8sHelper.namespace(repo_name),
-      label_selector: "app.govuk/repository-name=#{K8sHelper.repo_name(repo_name)}",
+      label_selector: "app.govuk/repository-name=#{K8sHelper.repo_name(repo_name)},app.kubernetes.io/component=#{K8sHelper.component(repo_name)}",
       field_selector: { "status.phase": status },
     )
   end
