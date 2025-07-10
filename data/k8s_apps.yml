@@ -8,3 +8,5 @@ licensify-feed:
 licensify-frontend:
   repo_name: licensify
   namespace: licensify
+email-alert-service:
+  component: worker
