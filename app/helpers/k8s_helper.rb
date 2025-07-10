@@ -12,7 +12,11 @@ module K8sHelper
 
   def self.repo_name(repo_name)
     if K8sHelper.k8s_apps.include? repo_name
-      repo_name = K8sHelper.k8s_apps[repo_name]["repo_name"]
+      repo_name = if K8sHelper.k8s_apps[repo_name].include? "repo_name"
+                    K8sHelper.k8s_apps[repo_name]["repo_name"]
+                  else
+                    repo_name
+                  end
     end
     repo_name
   end
