@@ -47,21 +47,24 @@ module K8sHelper
       images = pod["spec"]["containers"].map { |c| { "image" => c["image"] } }
       {
         "name" => pod["metadata"]["name"],
+        "app_instance" => pod["metadata"]["labels"]["app.kubernetes.io/instance"],
         "images" => images,
         "created_at" => pod["metadata"]["creationTimestamp"],
       }
     end
   end
 
-  def self.k8s_image_tag(environment, repo_name)
+  def self.k8s_data(environment, repo_name)
     pods = running_pods(repo_name: repo_name, environment: environment)
     if pods.empty?
       {
+        "app_instance" => "",
         "image" => "None",
         "created_at" => "",
       }
     else
       {
+        "app_instance" => pods.first["app_instance"],
         "image" => pods.first["images"].first["image"].split(":").last,
         "created_at" => pods.first["created_at"],
       }

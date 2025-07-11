@@ -16,6 +16,6 @@ module UrlHelper
   end
 
   def argo_app_link_to(app_name, environment)
-    link_to(environment, "https://argo.eks.#{environment}.govuk.digital/applications/#{app_name.downcase}", target: "_blank", rel: "noreferrer", class: "govuk-link")
+    link_to(environment, "https://argo.eks.#{environment}.govuk.digital/applications/#{app_name}", target: "_blank", rel: "noreferrer", class: "govuk-link")
   end
 end

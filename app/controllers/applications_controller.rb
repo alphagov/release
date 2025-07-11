@@ -29,7 +29,7 @@ class ApplicationsController < ApplicationController
       end
       begin
         @k8s_available = true
-        @k8s_images = @application.current_image_deployed_by_environment
+        @k8s_data = @application.current_image_deployed_by_environment
       rescue Aws::STS::Errors::ServiceError, Kubeclient::HttpError => e
         @k8s_available = false
         @k8s_error = e.message
