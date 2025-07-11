@@ -94,6 +94,9 @@ class ApplicationsControllerTest < ActionController::TestCase
         "metadata" => {
           "name" => "Application 1",
           "creationTimestamp" => "2025-01-29T14:27:01Z",
+          "labels" => {
+            "app.kubernetes.io/instance" => "app1",
+          },
         },
       }]
 
@@ -159,8 +162,8 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show Integration and Staging versions of running pods for non-prod environments" do
         get :show, params: { id: @app.id }
-        assert_select "a", { count: 1, text: "Integration" }
-        assert_select "a", { count: 1, text: "Staging" }
+        assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
+        assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
         assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan" }
       end
     end

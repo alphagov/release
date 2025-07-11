@@ -1,7 +1,7 @@
 require "test_helper"
 
 class K8sHelperTest < ActionView::TestCase
-  context "k8s_image_tag" do
+  context "k8s_data" do
     setup do
       filepath = Rails.root.join("test/fixtures/k8s/running.json")
       mock_resp = JSON.parse(File.read(filepath))
@@ -9,17 +9,17 @@ class K8sHelperTest < ActionView::TestCase
     end
 
     should "can parse response from kubernetes API" do
-      assert_equal "{\"image\":\"v490\",\"created_at\":\"2025-05-14T08:52:29Z\"}", K8sHelper.k8s_image_tag("test", "app1").to_json
+      assert_equal "{\"app_instance\":\"app1\",\"image\":\"v490\",\"created_at\":\"2025-05-14T08:52:29Z\"}", K8sHelper.k8s_data("test", "app1").to_json
     end
   end
 
-  context "k8s_image_tag empty" do
+  context "k8s_data empty" do
     setup do
       K8sHelper.stubs(:pods_by_status).returns([])
     end
 
     should "can parse empty response from kubernetes API" do
-      assert_equal "{\"image\":\"None\",\"created_at\":\"\"}", K8sHelper.k8s_image_tag("test", "app1").to_json
+      assert_equal "{\"app_instance\":\"\",\"image\":\"None\",\"created_at\":\"\"}", K8sHelper.k8s_data("test", "app1").to_json
     end
   end
 
