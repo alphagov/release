@@ -31,7 +31,7 @@ class Application < ApplicationRecord
   def current_image_deployed_by_environment
     current_env = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment
     @current_image_deployed_by_environment ||= (current_env == "production" ? ENVIRONMENTS_ORDER : (ENVIRONMENTS_ORDER.first 2))
-      .index_with { |environment| K8sHelper.k8s_image_tag(environment, shortname) }
+      .index_with { |environment| K8sHelper.k8s_data(environment, shortname) }
       .compact
   end
 
