@@ -5,6 +5,57 @@
 <%= render 'status_notes', application: @application %>
 
 <%= render "govuk_publishing_components/components/heading", {
+  text: "Where is my code?",
+  heading_level: 2,
+  margin_bottom: 4,
+} %>
+
+<% if @github_available %>
+  <% if @k8s_available %>
+    <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Where is my code?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
+      <%= t.head do %>
+        <%= t.header "Environment" %>
+        <%= t.header "Deployed version" %>
+        <%= t.header "Previous version" %>
+      <% end %>
+
+      <%= t.body do %>
+        <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+        <% @k8s_data.each do |environment, data| %>
+          <%= t.row do %>
+            <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(data["app_instance"]), environment.humanize)}".html_safe()  %>
+
+            <% if data["image"] == "None" %>
+              <%= t.cell "No running pods" %>
+            <% else %>
+              <% github_version = data.key?("github") ? " (Github on #{github_tag_link_to(@application, data["github"])})" : "" %>
+              <%= t.cell "#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}#{github_version}".html_safe()  %>
+              <%= t.cell data["previous_version"] == "N/A" ? "N/A" : "#{github_tag_link_to(@application, data["previous_version"])}".html_safe() %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= render "govuk_publishing_components/components/govspeak", {
+    } do %>
+      <div class="application-notice help-notice">
+        <p>Couldn't get data from kubernetes API:</p>
+        <p><%= @k8s_error %></p>
+      </div>
+    <% end %>
+  <% end%>
+<% else %>
+  <%= render "govuk_publishing_components/components/govspeak", {
+  } do %>
+    <div class="application-notice help-notice">
+      <p>Couldn't get data from GitHub:</p>
+      <p><%= @github_error %></p>
+    </div>
+  <% end %>
+<% end %>
+
+<%= render "govuk_publishing_components/components/heading", {
   text: "Commit log",
   heading_level: 2,
   margin_bottom: 4,
@@ -86,77 +137,4 @@
       <p class="govuk-body">There are <%= github_dependency_link_to(@application, "#{@outstanding_dependency_pull_requests} outstanding dependency pull requests") %>.</p>
     <% end %>
   </div>
-<% end %>
-
-<% if @github_available %>
-  <%= render "govuk_publishing_components/components/heading", {
-    text: "Github releases",
-    heading_level: 2,
-    margin_bottom: 4,
-  } %>
-
-  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Github releases", { caption_classes: "govuk-visually-hidden" }) do |t| %>
-    <%= t.head do %>
-      <%= t.header "Environment" %>
-      <%= t.header "Current version" %>
-      <%= t.header "Previous version" %>
-    <% end %>
-
-    <%= t.body do %>
-      <% @application.latest_deploys_by_environment.each do |environment, deployment| %>
-        <% not_on_default_branch = capture do %>
-          <% unless @application.environment_on_default_branch(environment)  %>
-            <span class="release__badge release__badge--orange">Not on default branch</span>
-          <% end %>
-        <% end %>
-        <%= t.row do %>
-          <%= t.header environment.humanize %>
-          <%= t.cell "#{github_tag_link_to(@application, deployment.version)} at #{human_datetime(deployment.created_at)}#{not_on_default_branch}".html_safe() %>
-          <% previous_version = deployment.previous_deployment ? "#{github_tag_link_to(@application, deployment.previous_deployment.version)} at #{human_datetime(deployment.previous_deployment.created_at)}".html_safe() : "N/A" %>
-          <%= t.cell previous_version %>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
-
-<% if @k8s_available %>
-  <%= render "govuk_publishing_components/components/heading", {
-    text: "Where is my code?",
-    heading_level: 2,
-    margin_bottom: 4,
-  } %>
-
-  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Where is my code?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
-    <%= t.head do %>
-      <%= t.header "Environment" %>
-      <%= t.header "Deployed version" %>
-      <%= t.header "Previous version" %>
-    <% end %>
-
-  <%= t.body do %>
-    <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
-    <% @k8s_data.each do |environment, data| %>
-      <%= t.row do %>
-        <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(@application.shortname), environment.humanize)}".html_safe()  %>
-
-        <% if data["image"] == "None" %>
-          <%= t.cell "No running pods" %>
-        <% else %>
-          <% github_version = data.key?("github") ? " (Github on #{data["github"]})" : "" %>
-          <%= t.cell "#{data["image"]} at #{human_datetime(data["created_at"])}#{github_version}"  %>
-          <%= t.cell data.key?("previous") ? data["previous"] : "N/A" %>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
-<% else %>
-  <%= render "govuk_publishing_components/components/govspeak", {
-  } do %>
-    <div class="application-notice help-notice">
-      <p>Couldn't get data from kubernetes API:</p>
-      <p><%= @k8s_error %></p>
-    </div>
-  <% end %>
 <% end %>

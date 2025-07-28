@@ -36,7 +36,7 @@ class Application < ApplicationRecord
 
     @current_image_deployed_by_environment.each do |environment, pod|
       deployment = deployments.last_deploy_to(environment)
-      @current_image_deployed_by_environment[environment]["previous"] = deployment ? deployment.previous_version : "N/A"
+      @current_image_deployed_by_environment[environment]["previous_version"] = deployment ? deployment.previous_version : "N/A"
       if deployment && deployment["version"] != pod["image"]
         @current_image_deployed_by_environment[environment]["github"] = deployment["version"]
       end
