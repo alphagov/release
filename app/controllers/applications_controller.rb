@@ -30,6 +30,10 @@ class ApplicationsController < ApplicationController
       begin
         @k8s_available = true
         @k8s_data = @application.current_image_deployed_by_environment
+      rescue Github::QueryError => e
+        @github_available = false
+        @github_error = e.message
+        GovukError.notify(e.message)
       rescue Aws::STS::Errors::ServiceError, Kubeclient::HttpError => e
         @k8s_available = false
         @k8s_error = e.message

@@ -8,7 +8,7 @@ module UrlHelper
   end
 
   def github_tag_link_to(app, git_ref)
-    link_to(git_ref.truncate(15), "#{github_repo_url(app)}/tree/#{git_ref}", target: "_blank", rel: "noopener", class: "govuk-link")
+    link_to(git_ref&.truncate(15), "#{github_repo_url(app)}/tree/#{git_ref}", target: "_blank", rel: "noopener", class: "govuk-link")
   end
 
   def github_compare_to_default(app, deploy)
