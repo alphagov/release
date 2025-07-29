@@ -89,7 +89,7 @@ class Application < ApplicationRecord
 
   def github_data
     @github_data ||= begin
-      response = Github.application(owner: "alphagov", name: name.parameterize)
+      response = Github.application(owner: "alphagov", name: K8sHelper.repo_name(name.parameterize))
 
       if response.errors.any?
         raise Github::QueryError, response.errors[:data].join(", ")
