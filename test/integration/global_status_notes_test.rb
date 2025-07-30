@@ -49,7 +49,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
     visit "/"
     click_on @app1.name
     assert page.has_selector?(".gem-c-error-alert", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 1 deploys page"
-    click_on "v185"
+    all(".govuk-table__cell", text: "v185").last.click
     assert page.has_selector?(".gem-c-error-alert", text: "Christmas deploy freeze in place. Emergency deploys only until 2nd Jan"), "Global status note is missing from Application 1 v185 tag deploy page"
 
     visit "/"
@@ -68,7 +68,7 @@ class GlobalStatusNotesTest < ActionDispatch::IntegrationTest
     visit "/"
     click_on @app1.name
     assert page.has_no_selector?(".gem-c-error-alert")
-    click_on "v185"
+    all(".govuk-table__cell", text: "v185").last.click
     assert page.has_no_selector?(".gem-c-error-alert")
 
     visit "/"

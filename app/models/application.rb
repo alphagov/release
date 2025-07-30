@@ -33,6 +33,14 @@ class Application < ApplicationRecord
     @current_image_deployed_by_environment ||= (current_env == "production" ? ENVIRONMENTS_ORDER : (ENVIRONMENTS_ORDER.first 2))
       .index_with { |environment| K8sHelper.k8s_data(environment, shortname) }
       .compact
+
+    @current_image_deployed_by_environment.each do |environment, pod|
+      deployment = deployments.last_deploy_to(environment)
+      @current_image_deployed_by_environment[environment]["previous_version"] = deployment ? deployment.previous_version : "N/A"
+      if latest_tag != pod["image"]
+        @current_image_deployed_by_environment[environment]["github"] = latest_tag
+      end
+    end
   end
 
   def in_sync?(environments)
@@ -81,7 +89,7 @@ class Application < ApplicationRecord
 
   def github_data
     @github_data ||= begin
-      response = Github.application(owner: "alphagov", name: name.parameterize)
+      response = Github.application(owner: "alphagov", name: K8sHelper.repo_name(name.parameterize))
 
       if response.errors.any?
         raise Github::QueryError, response.errors[:data].join(", ")
@@ -146,6 +154,10 @@ class Application < ApplicationRecord
       hash[sha] ||= []
       hash[sha] << tag.node.name
     end
+  end
+
+  def latest_tag
+    @latest_tag = github_data&.repository&.refs&.edges&.first&.node&.name || ""
   end
 
   def live_environment
