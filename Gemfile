@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "7.2.2.1"
+gem "rails", "8.0.2"
 
 gem "active_model_serializers"
 gem "artemis"
