@@ -164,7 +164,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         get :show, params: { id: @app.id }
         assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
         assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
-        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
+        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan (Github on v185) Not on default branch" }
       end
     end
 
@@ -175,7 +175,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
+        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan (Github on v185) Not on default branch" }
       end
     end
 
@@ -187,6 +187,25 @@ class ApplicationsControllerTest < ActionController::TestCase
         FactoryBot.create(:deployment, application: @app, environment: "production", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
         FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
+
+        mock_resp = [{
+          "spec" => {
+            "containers" => [
+              {
+                "image" => "govuk.storage.com/test:v111",
+              },
+            ],
+          },
+          "metadata" => {
+            "name" => "Application 1",
+            "creationTimestamp" => "2025-01-29T14:27:01Z",
+            "labels" => {
+              "app.kubernetes.io/instance" => "app1",
+            },
+          },
+        }]
+
+        K8sHelper.stubs(:pods_by_status).returns(mock_resp)
       end
 
       should "show 'not on default branch' status" do
