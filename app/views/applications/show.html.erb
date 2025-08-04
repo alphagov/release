@@ -20,8 +20,12 @@
       <% end %>
 
       <%= t.body do %>
-        <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
         <% @k8s_data.each do |environment, data| %>
+          <% not_on_default_branch = capture do %>
+            <% unless @application.environment_on_default_branch(environment)  %>
+              <span class="release__badge release__badge--orange">Not on default branch</span>
+            <% end %>
+          <% end %>        
           <%= t.row do %>
             <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(data["app_instance"]), environment.humanize)}".html_safe()  %>
 
@@ -29,7 +33,7 @@
               <%= t.cell "No running pods" %>
             <% else %>
               <% github_version = data.key?("github") ? " (Github on #{github_tag_link_to(@application, data["github"])})" : "" %>
-              <%= t.cell "#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}#{github_version}".html_safe()  %>
+              <%= t.cell "#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}#{github_version}#{not_on_default_branch}".html_safe()  %>
               <%= t.cell data["previous_version"] == "N/A" ? "N/A" : "#{github_tag_link_to(@application, data["previous_version"])}".html_safe() %>
             <% end %>
           <% end %>
