@@ -87,7 +87,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         "spec" => {
           "containers" => [
             {
-              "image" => "govuk.storage.com/test:v111",
+              "image" => "govuk.storage.com/test:v185",
             },
           ],
         },
@@ -164,7 +164,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         get :show, params: { id: @app.id }
         assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
         assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
-        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
+        assert_select "td", { count: 2, text: "v185 at 2:27pm on 29 Jan" }
       end
     end
 
@@ -175,7 +175,81 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
+        assert_select "td", { count: 3, text: "v185 at 2:27pm on 29 Jan" }
+      end
+    end
+
+    context "with manual deployment" do
+      setup do
+        mock_resp = [{
+          "spec" => {
+            "containers" => [
+              {
+                "image" => "govuk.storage.com/test:v185",
+              },
+            ],
+          },
+          "metadata" => {
+            "name" => "Application 1",
+            "creationTimestamp" => "2025-01-29T14:27:01Z",
+            "labels" => {
+              "app.kubernetes.io/instance" => "app1",
+            },
+          },
+        }]
+
+        version = "release_42"
+        @deployed_sha = "1dac538d10b181e9b7b46766bc3a72d001a1f703"
+        @manual_deploy = SecureRandom.hex(40)
+        FactoryBot.create(:deployment, application: @app, environment: "production", version:, deployed_sha: @deployed_sha)
+        FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
+
+        # mock_app_response = {
+        #   "integration" => {
+        #     "app_instance" => "app1",
+        #     "image" => "v184",
+        #     "created_at" => "2025-01-29T14:27:01Z",
+        #     "previous_version" => "",
+        #   },
+        #   "staging" => {
+        #     "app_instance" => "app1",
+        #     "image" => "v185",
+        #     "created_at" => "2025-01-29T14:27:01Z",
+        #     "previous_version" => "",
+        #   },
+        # }
+
+        # @app_integration = FactoryBot.create(:application, current_image_deployed_by_environment: mock_app_response)
+        FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
+
+        def mock_resp_fn(*args)
+          require "byebug"
+          byebug
+          [{
+            "spec" => {
+              "containers" => [
+                {
+                  "image" => "govuk.storage.com/test:v184",
+                },
+              ],
+            },
+            "metadata" => {
+              "name" => "Application 1",
+              "creationTimestamp" => "2025-01-29T14:27:01Z",
+              "labels" => {
+                "app.kubernetes.io/instance" => "app1",
+              },
+            },
+          }]
+        end
+
+        K8sHelper.stubs(:pods_by_status).returns(mock_resp_fn)
+        K8sHelper.stubs(:pods_by_status).with(environment: "integration", repo_name: "Application 1", status: "Running").returns(mock_resp_fn)
+      end
+
+      should "show 'not on latest release' status" do
+        get :show, params: { id: @app.id }
+        assert_select ".release__badge--orange", { text: "Not on latest release", count: 1 }
       end
     end
 

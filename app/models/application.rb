@@ -36,7 +36,11 @@ class Application < ApplicationRecord
 
     @current_image_deployed_by_environment.each do |environment, pod|
       deployment = deployments.last_deploy_to(environment)
-      @current_image_deployed_by_environment[environment]["previous_version"] = deployment ? deployment.previous_version : "N/A"
+      @current_image_deployed_by_environment[environment]["previous_version"] = if deployment
+                                                                                  deployment.previous_version || ""
+                                                                                else
+                                                                                  "N/A"
+                                                                                end
       if latest_tag != pod["image"]
         @current_image_deployed_by_environment[environment]["github"] = latest_tag
       end
@@ -137,12 +141,6 @@ class Application < ApplicationRecord
           github_url: "#{repo_url}/commit/#{commit.oid}",
         }
       end
-    end
-  end
-
-  def environment_on_default_branch(environment)
-    commit_history.any? do |commit|
-      commit[:deployed_to].map(&:environment).include?(environment)
     end
   end
 

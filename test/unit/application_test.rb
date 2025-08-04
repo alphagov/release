@@ -356,7 +356,7 @@ class ApplicationTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, application: app, version: "v111", environment: "staging")
       FactoryBot.create(:deployment, application: app, version: "v111", environment: "integration")
 
-      assert_equal '{"integration"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>nil, "github"=>""}, "staging"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>nil, "github"=>""}}', app.current_image_deployed_by_environment.to_s
+      assert_equal '{"integration"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>"", "github"=>""}, "staging"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>"", "github"=>""}}', app.current_image_deployed_by_environment.to_s
     end
   end
 
@@ -391,7 +391,7 @@ class ApplicationTest < ActiveSupport::TestCase
       FactoryBot.create(:deployment, application: app, version: "v222", environment: "staging")
       FactoryBot.create(:deployment, application: app, version: "v222", environment: "integration")
 
-      assert_equal '{"integration"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>nil, "github"=>""}, "staging"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>nil, "github"=>""}}', app.current_image_deployed_by_environment.to_s
+      assert_equal '{"integration"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>"", "github"=>""}, "staging"=>{"app_instance"=>"app1", "image"=>"v111", "created_at"=>"2025-01-29T14:27:01Z", "previous_version"=>"", "github"=>""}}', app.current_image_deployed_by_environment.to_s
     end
   end
 end

@@ -28,7 +28,12 @@
               <%= t.cell "No running pods" %>
             <% else %>
               <% github_version = data.key?("github") ? " (Github on #{github_tag_link_to(@application, data["github"])})" : "" %>
-              <%= t.cell "#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}#{github_version}".html_safe()  %>
+              <% not_on_latest_release = capture do %>
+                <% if github_version != "" %>
+                  <span class="release__badge release__badge--orange">Not on latest release</span>
+                <% end %>
+              <% end  %>
+              <%= t.cell "#{not_on_latest_release}#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}#{github_version}".html_safe()  %>
               <%= t.cell data["previous_version"] == "N/A" ? "N/A" : "#{github_tag_link_to(@application, data["previous_version"])}".html_safe() %>
             <% end %>
           <% end %>
