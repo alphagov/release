@@ -307,6 +307,24 @@ class ApplicationsControllerTest < ActionController::TestCase
         end
       end
     end
+
+    context "when there is a Github Query error" do
+      setup do
+        error = lambda { |_|
+          raise Github::QueryError.new, "GitHub error"
+        }
+        Github.stub(:application, error) do
+          get :show, params: { id: @app.id }
+        end
+      end
+
+      should "show the error message" do
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from GitHub:"
+          assert_select "p", "GitHub error"
+        end
+      end
+    end
   end
 
   context "GET edit" do
