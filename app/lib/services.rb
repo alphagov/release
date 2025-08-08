@@ -18,6 +18,7 @@ module Services
   }.freeze
   EKS_CLUSTER_NAME = "govuk".freeze
 
+  # :nocov:
   def self.k8s(environment: "integration", version: "v1")
     credentials = Aws::AssumeRoleCredentials.new({
       client: Aws::STS::Client.new(region: AWS_REGION),
@@ -48,4 +49,5 @@ module Services
       ssl_options: ssl_options,
     )
   end
+  # :nocov:
 end
