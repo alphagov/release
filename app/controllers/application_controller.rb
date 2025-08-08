@@ -5,10 +5,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  def error_400
-    error 400
-  end
-
   def error_404
     error 404
   end
