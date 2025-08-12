@@ -140,12 +140,6 @@ class Application < ApplicationRecord
     end
   end
 
-  def environment_on_default_branch(environment)
-    commit_history.any? do |commit|
-      commit[:deployed_to].map(&:environment).include?(environment)
-    end
-  end
-
   def tag_names_by_commit
     tags = github_data&.repository&.refs&.edges || []
 

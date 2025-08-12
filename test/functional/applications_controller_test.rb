@@ -179,22 +179,6 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
     end
 
-    context "with manual deployment" do
-      setup do
-        version = "release_42"
-        @deployed_sha = "1dac538d10b181e9b7b46766bc3a72d001a1f703"
-        @manual_deploy = SecureRandom.hex(40)
-        FactoryBot.create(:deployment, application: @app, environment: "production", version:, deployed_sha: @deployed_sha)
-        FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
-        FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
-      end
-
-      should "show 'not on default branch' status" do
-        get :show, params: { id: @app.id }
-        assert_select ".release__badge--orange", { text: "Not on default branch", count: 1 }
-      end
-    end
-
     context "GET show with a production deployment" do
       setup do
         version = "release_42"
