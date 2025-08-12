@@ -164,7 +164,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         get :show, params: { id: @app.id }
         assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
         assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
-        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan" }
+        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
       end
     end
 
@@ -175,23 +175,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan" }
-      end
-    end
-
-    context "with manual deployment" do
-      setup do
-        version = "release_42"
-        @deployed_sha = "1dac538d10b181e9b7b46766bc3a72d001a1f703"
-        @manual_deploy = SecureRandom.hex(40)
-        FactoryBot.create(:deployment, application: @app, environment: "production", version:, deployed_sha: @deployed_sha)
-        FactoryBot.create(:deployment, application: @app, environment: "staging", version:, deployed_sha: @deployed_sha)
-        FactoryBot.create(:deployment, application: @app, environment: "integration", version: @manual_deploy)
-      end
-
-      should "show 'not on default branch' status" do
-        get :show, params: { id: @app.id }
-        assert_select ".release__badge--orange", { text: "Not on default branch", count: 1 }
+        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
       end
     end
 
@@ -304,6 +288,24 @@ class ApplicationsControllerTest < ActionController::TestCase
         assert_select ".application-notice.help-notice" do
           assert_select "p", "Couldn't get data from kubernetes API:"
           assert_select "p", "The security token included in the request is expired"
+        end
+      end
+    end
+
+    context "when there is a Github Query error" do
+      setup do
+        error = lambda { |_|
+          raise Github::QueryError.new, "GitHub error"
+        }
+        Github.stub(:application, error) do
+          get :show, params: { id: @app.id }
+        end
+      end
+
+      should "show the error message" do
+        assert_select ".application-notice.help-notice" do
+          assert_select "p", "Couldn't get data from GitHub:"
+          assert_select "p", "GitHub error"
         end
       end
     end
