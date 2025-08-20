@@ -8,7 +8,9 @@ ReleaseApp::Application.routes.draw do
     resources :deployments
   end
 
-  resources :deployments
+  resources :deployments do
+    resource :change_failure
+  end
 
   resource :site, only: %i[show update]
 

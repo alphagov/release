@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_06_151521) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_20_144348) do
   create_table "applications", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: nil, null: false
@@ -19,8 +19,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_06_151521) do
     t.string "shortname"
     t.boolean "deploy_freeze", default: false, null: false
     t.string "default_branch", default: "main", null: false
+    t.boolean "change_failure_tracking"
+    t.string "slack_channel"
     t.index ["name"], name: "index_applications_on_name", unique: true
     t.index ["shortname"], name: "index_applications_on_shortname"
+  end
+
+  create_table "change_failures", charset: "utf8mb3", force: :cascade do |t|
+    t.integer "deployment_id", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deployment_id"], name: "fk_rails_3d9f73351e"
   end
 
   create_table "deployments", id: :integer, charset: "latin1", force: :cascade do |t|
@@ -51,4 +61,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_06_151521) do
     t.boolean "disabled", default: false
     t.string "organisation_content_id", default: ""
   end
+
+  add_foreign_key "change_failures", "deployments", on_delete: :cascade
 end

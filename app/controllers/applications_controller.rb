@@ -105,6 +105,8 @@ private
       :status_notes,
       :task,
       :deploy_freeze,
+      :change_failure_tracking,
+      :slack_channel,
     )
   end
 end

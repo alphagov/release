@@ -1,0 +1,14 @@
+<%= form_for [deployment, change_failure], url: deployment_change_failure_path(deployment) do |f| %>
+  <%= render "govuk_publishing_components/components/textarea", {
+    label: {
+      text: "Description"
+    },
+    hint: "Optional: Describe the change failure.",
+    name: "change_failure[description]",
+    value: change_failure.description,
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: change_failure.new_record? ? "Create Change Failure" : "Update Change Failure",
+  } %>
+<% end %>

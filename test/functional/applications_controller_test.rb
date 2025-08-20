@@ -314,12 +314,14 @@ class ApplicationsControllerTest < ActionController::TestCase
   context "GET edit" do
     setup do
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
-      @app = FactoryBot.create(:application, name: "monkeys")
+      @app = FactoryBot.create(:application, name: "monkeys", slack_channel: "#my-channel", change_failure_tracking: true)
     end
 
     should "show the form" do
       get :edit, params: { id: @app.id }
       assert_select "form.edit_application input[name='application[name]'][value='#{@app.name}']"
+      assert_select "input[type='checkbox'][name='application[change_failure_tracking]'][checked='checked']"
+      assert_select "input[name='application[slack_channel]'][value='#{@app.slack_channel}']"
     end
 
     should "show warning that an deployed app has have deployments disabled via GitHub action" do

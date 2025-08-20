@@ -1,0 +1,19 @@
+<% content_for :page_title, "New Change Failure for Deployment ##{@deployment.id}" %>
+
+<%= render "govuk_publishing_components/components/breadcrumbs", {
+  breadcrumbs: [
+    root_crumb,
+    { title: @deployment.application.name, href: application_path(@deployment.application) },
+    { title: "Deployment ##{@deployment.id}", href: deployment_path(@deployment) },
+    { title: "New Change Failure" }
+  ]
+} %>
+
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Create change failure note for deployment #{@deployment.id}",
+  font_size: "xl",
+  heading_level: 1,
+  margin_bottom: 8
+} %>
+
+<%= render partial: "form", locals: { change_failure: @change_failure, deployment: @deployment } %>

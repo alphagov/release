@@ -1,5 +1,6 @@
 class Deployment < ApplicationRecord
   belongs_to :application
+  has_one :change_failure, dependent: :destroy
 
   validates :version, :environment, :application_id, presence: true
 

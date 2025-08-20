@@ -32,6 +32,27 @@
     error_message: @application.errors[:status_notes].first,
   } %>
 
+  <input type="hidden" name="application[change_failure_tracking]" value="0" />
+  <%= render "govuk_publishing_components/components/checkboxes", {
+    name: "application[change_failure_tracking]",
+    items: [
+      {
+        label: "Enable change failure tracking?",
+        value: "1",
+        checked: @application.change_failure_tracking?,
+      }
+    ]
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "Slack channel for change failure notifications"
+    },
+    name: "application[slack_channel]",
+    value: @application.slack_channel,
+    error_message: @application.errors[:slack_channel].first,
+  } %>
+
   <% hint_text = capture do %>
     Adds 'Automatic deployments disabled' badge in the Release app.
     

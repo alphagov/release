@@ -19,4 +19,9 @@ FactoryBot.define do
   factory :site do
     status_notes { "Don't deploy, we're all at a party!" }
   end
+
+  factory :change_failure do
+    deployment
+    description { "Something went wrong during deployment." }
+  end
 end
