@@ -17,7 +17,7 @@ Examples:
 ```json
 {
    "name": "Smart Answers",
-   "shortname": "smartanswers",
+   "shortname": "smart-answers",
    "deploy_freeze": true,
    "notes": "",
    "repository_url": "https://github.com/alphagov/smart-answers",

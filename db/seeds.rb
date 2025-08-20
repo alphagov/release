@@ -14,7 +14,7 @@ applications = [
   { name: "Publisher" },
   { name: "Search API", shortname: "search-api" },
   { name: "Signon" },
-  { name: "Smart answers", shortname: "smartanswers" },
+  { name: "Smart Answers", shortname: "smart-answers" },
   { name: "Static" },
   { name: "Support" },
   { name: "Whitehall" },
