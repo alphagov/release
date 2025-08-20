@@ -38,6 +38,8 @@ class ChangeFailuresController < ApplicationController
 
   def find_deployment
     @deployment = Deployment.find(params[:deployment_id])
+    error_404 unless @deployment.application.change_failure_tracking?
+    error_404 unless @deployment.to_live_environment?
   end
 
   def change_failure_params
