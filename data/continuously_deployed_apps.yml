@@ -28,7 +28,6 @@
 - local-links-manager
 - locations-api
 - manuals-publisher
-- maslow
 - places-manager
 - publisher
 - publishing-api
@@ -38,7 +37,6 @@
 - sidekiq-monitoring
 - signon
 - smart-answers
-- smokey
 - specialist-publisher
 - support
 - support-api
