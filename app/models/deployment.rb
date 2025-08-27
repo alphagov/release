@@ -39,7 +39,7 @@ class Deployment < ApplicationRecord
   end
 
   def commit_match?(sha)
-    commit_sha = deployed_sha || ""
+    commit_sha = commits.first.sha || ""
     return false if commit_sha.length < 6
 
     sha.starts_with?(commit_sha)
