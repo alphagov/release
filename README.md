@@ -80,21 +80,11 @@ bundle install
 DATABASE_URL="mysql2://root@localhost/release_development" bin/rails db:setup
 ```
 
-```sh
-rails assets:precompile # ensure that you have yarn installed
-```
-
 * Start the Rails server
 
 ```sh
+rails assets:precompile # ensure that you have yarn installed
 DATABASE_URL="mysql2://root@localhost/release_development" rails s
-```
-
-* Run a single test
-
-```sh
-DATABASE_URL="mysql2://root@localhost/release_development" rake db:seed
-DATABASE_URL="mysql2://root@localhost/release_development"  rake test TEST=test/integration/deploy_page_test.rb
 ```
 
 **Use GOV.UK Docker to run any commands that follow.**
@@ -103,6 +93,12 @@ DATABASE_URL="mysql2://root@localhost/release_development"  rake test TEST=test/
 
 ```sh
 bundle exec rake
+```
+
+* Run a single test
+
+```sh
+TEST_DATABASE_URL="mysql2://root@localhost/release_test"  rake test TEST=test/integration/deploy_page_test.rb
 ```
 
 ### Architecture diagrams

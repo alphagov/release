@@ -27,12 +27,12 @@
   <% if @deployment.previous_deployment %>
     <p><span class="govuk-!-font-weight-bold">Previous version:</span>
       <%= @deployment.previous_version %>
-      <% if not @deployment.previous_version.starts_with?(@deployment.previous_deployment.commits.first.sha) %>
+      <% unless @deployment.previous_version.starts_with?(@deployment.previous_deployment.commits.first.sha) %>
         (<%= @deployment.previous_deployment.commits.first.sha || "unknown SHA" %>)
       <% end %>
     <p><span class="govuk-!-font-weight-bold">Deployed version:</span>
         <%= @deployment.version %>
-        <% if not @deployment.version.starts_with?(@deployment.commits.first.sha) %>
+        <% unless @deployment.version.starts_with?(@deployment.commits.first.sha) %>
           (<%= @deployment.commits.first.sha || "unknown SHA" %>)
         <% end %>
     <p><span class="govuk-!-font-weight-bold">Commits:</span>
