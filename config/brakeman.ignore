@@ -2,6 +2,40 @@
   "ignored_warnings": [
     {
       "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "4b15d0e4b2c6f34bdb9d3634a3856c32828fce78ce0aa4371c8062d6e6e2d202",
+      "check_name": "RenderInline",
+      "message": "Unescaped parameter value rendered inline",
+      "file": "app/views/applications/deploy.html.erb",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(text => \"Deploy #{params[:tag]}\", { :context => Application.friendly.find(params[:id]).name, :margin_bottom => 2, :font_size => \"xl\", :heading_level => 1 })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "ApplicationsController",
+          "method": "deploy",
+          "line": 53,
+          "file": "app/controllers/applications_controller.rb",
+          "rendered": {
+            "name": "applications/deploy",
+            "file": "app/views/applications/deploy.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "applications/deploy"
+      },
+      "user_input": "params[:tag]",
+      "confidence": "High",
+      "cwe_id": [
+        79
+      ],
+      "note": "The release tag comes from param in the path. If invalid value is provided 404 will be raised."
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "62a5e98c3e67704e4e0fef7b106bc2c5597ef98c2d931c53cb777e1f10addb55",
       "check_name": "LinkToHref",
@@ -37,33 +71,46 @@
     {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 84,
-      "fingerprint": "76371fa642984acaad63dbda84c3fc32a061d6df8866bb7bab5e93041d879ca9",
+      "fingerprint": "6a07f050a16042e5006955261ee55583dbe933da09a348fbc470028745f23701",
       "check_name": "RenderInline",
-      "message": "Unescaped parameter value rendered inline",
-      "file": "app/views/applications/deploy.html.erb",
-      "line": 28,
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/views/shared/_application_header.html.erb",
+      "line": 7,
       "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
-      "code": "render(text => \"Candidate Release: #{params[:tag]}\", { :margin_bottom => 4 })",
+      "code": "render(text => \"#{Application.friendly.find(params[:id]).name}\", { :context => Application.friendly.find(params[:id]).shortname, :margin_bottom => 2, :font_size => \"xl\", :heading_level => 1 })",
       "render_path": [
         {
           "type": "controller",
           "class": "ApplicationsController",
-          "method": "deploy",
-          "line": 70,
+          "method": "edit",
+          "line": 50,
           "file": "app/controllers/applications_controller.rb",
           "rendered": {
-            "name": "applications/deploy",
-            "file": "app/views/applications/deploy.html.erb"
+            "name": "applications/edit",
+            "file": "app/views/applications/edit.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "applications/edit",
+          "line": 3,
+          "file": "app/views/applications/edit.html.erb",
+          "rendered": {
+            "name": "shared/_application_header",
+            "file": "app/views/shared/_application_header.html.erb"
           }
         }
       ],
       "location": {
         "type": "template",
-        "template": "applications/deploy"
+        "template": "shared/_application_header"
       },
-      "user_input": "params[:tag]",
-      "confidence": "High",
-      "note": ""
+      "user_input": "Application.friendly.find(params[:id]).name",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": "Those values are escaped."
     }
   ],
   "brakeman_version": "7.1.0"
