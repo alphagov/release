@@ -7,7 +7,7 @@
       "check_name": "LinkToHref",
       "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/deployments/show.html.erb",
-      "line": 27,
+      "line": 40,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(\"Diff URL\", Deployment.find(params[:id]).diff_url, :class => \"govuk-link\")",
       "render_path": [
@@ -15,7 +15,7 @@
           "type": "controller",
           "class": "DeploymentsController",
           "method": "show",
-          "line": 9,
+          "line": 17,
           "file": "app/controllers/deployments_controller.rb",
           "rendered": {
             "name": "deployments/show",
@@ -29,7 +29,10 @@
       },
       "user_input": "Deployment.find(params[:id]).diff_url",
       "confidence": "Weak",
-      "note": ""
+      "cwe_id": [
+        79
+      ],
+      "note": "readding ignore as it isn't being respected in gha"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -63,6 +66,5 @@
       "note": ""
     }
   ],
-  "updated": "2019-12-02 16:37:19 +0000",
-  "brakeman_version": "4.7.1"
+  "brakeman_version": "7.1.0"
 }
