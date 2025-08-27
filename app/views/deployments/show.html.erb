@@ -1,36 +1,48 @@
-<%= render "govuk_publishing_components/components/breadcrumbs", {
+<%= render "govuk_publishing_components/components/breadcrumbs",
+{
   breadcrumbs: [
     root_crumb,
-    {
-      title: "Recent deployments",
-      url: activity_path
-    },
-    {
-      title: "Deploy #{@deployment.id} for #{@deployment.application.name}"
-    }
-  ]
+    { title: "Recent deployments", url: activity_path },
+    { title: "Deploy #{@deployment.id} for #{@deployment.application.name}" },
+  ],
 } %>
 
-<%= render "govuk_publishing_components/components/heading", {
+<%= render "govuk_publishing_components/components/heading",
+{
   text: "Deploy ##{@deployment.id}",
   font_size: "xl",
   heading_level: 1,
-  margin_bottom: 8
+  margin_bottom: 8,
 } %>
 
 <div class="govuk-body">
-  <p><span class="govuk-!-font-weight-bold">Application:</span> <%= @deployment.application.name %></p>
-  <p><span class="govuk-!-font-weight-bold">Environment:</span> <%= @deployment.environment %></p>
-  <p><span class="govuk-!-font-weight-bold">Deployed by:</span> <em>Not recorded</em></p>
-  <p><span class="govuk-!-font-weight-bold">Deployed at:</span> <%= @deployment.created_at %></p>
-
+  <p><span class="govuk-!-font-weight-bold">Application:</span>
+    <%= @deployment.application.name %></p>
+  <p><span class="govuk-!-font-weight-bold">Environment:</span>
+    <%= @deployment.environment %></p>
+  <p><span class="govuk-!-font-weight-bold">Deployed by:</span>
+    <em>Not recorded</em></p>
+  <p><span class="govuk-!-font-weight-bold">Deployed at:</span>
+    <%= @deployment.created_at %></p>
   <% if @deployment.previous_deployment %>
-    <p><span class="govuk-!-font-weight-bold">Previous version:</span> <%= @deployment.previous_version %> (<%= @deployment.previous_deployment.deployed_sha || "unknown SHA" %>)</p>
-    <p><span class="govuk-!-font-weight-bold">Deployed version:</span> <%= @deployment.version %> (<%= @deployment.deployed_sha || "unknown SHA" %>)</p>
-    <p><span class="govuk-!-font-weight-bold">Commits:</span> <%= @deployment.commits.count %> (<%= link_to "Diff URL", @deployment.diff_url, class: "govuk-link" %>)</p>
-    <p><span class="govuk-!-font-weight-bold">Pull requests:</span> <%= @deployment.commits.count(&:pr?) %></p>
-    <p><span class="govuk-!-font-weight-bold">Authors:</span> <%= to_sentence @deployment.commits.map(&:author_name).compact.uniq %></p>
+    <p><span class="govuk-!-font-weight-bold">Previous version:</span>
+      <%= @deployment.previous_version %>
+      <% unless @deployment.previous_version.starts_with?(@deployment.previous_deployment.commits.first.sha) %>
+        (<%= @deployment.previous_deployment.commits.first.sha || "unknown SHA" %>)
+      <% end %>
+    <p><span class="govuk-!-font-weight-bold">Deployed version:</span>
+        <%= @deployment.version %>
+        <% unless @deployment.version.starts_with?(@deployment.commits.first.sha) %>
+          (<%= @deployment.commits.first.sha || "unknown SHA" %>)
+        <% end %>
+    <p><span class="govuk-!-font-weight-bold">Commits:</span>
+      <%= @deployment.commits.count %>
+      (<%= link_to "Diff URL", @deployment.diff_url, class: "govuk-link" %>)</p>
+    <p><span class="govuk-!-font-weight-bold">Pull requests:</span>
+      <%= @deployment.commits.count(&:pr?) %></p>
+    <p><span class="govuk-!-font-weight-bold">Authors:</span>
+      <%= to_sentence @deployment.commits.map(&:author_name).compact.uniq %></p>
   <% end %>
 </div>
 
-<%= render 'shared/commits_table', commits: @deployment.commits %>
+<%= render "shared/commits_table", commits: @deployment.commits %>

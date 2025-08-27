@@ -13,9 +13,9 @@ You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-do
 To see the kubernetes API view you will need to run the `Release` app on your machine, not in the `govuk-docker` stack.
 If you are just running the tests you can use `govuk-docker`.
 
-* Before running the app you will need to update the `Trust relationship` for the `release-assumed` role on the AWS `IAM` control panel using your `fulladmin` account on the `integration` environment. The additional trusted entity that you are adding should look like this - 
+* Before running the app you will need to update the `Trust relationship` for the `release-assumed` role on the AWS `IAM` control panel using your `fulladmin` account on the `integration` environment. The additional trusted entity that you are adding should look like this -
 
-```
+```json
         {
             "Effect": "Allow",
             "Principal": {
@@ -25,31 +25,31 @@ If you are just running the tests you can use `govuk-docker`.
         }
 ```
 
-This step needs to be repeated for the `staging` environment as the app will show the status for both `integration` and `staging` environments. 
+This step needs to be repeated for the `staging` environment as the app will show the status for both `integration` and `staging` environments.
 
 Note that the `production` environment is not updated in order to reduce the risk of affecting the `production` environment if the allowable actions on the kubernetes API changes in the future.
 
 * Finally on the `AWS console` you will also need to add the following IAM policy to your developer role in `integration`. Under the AWS `IAM` control panel using your `fulladmin` account, select your developer role and then add a new permission using `Create inline policy` and switch to `JSON` so that you can paste the following json block -
 
-```
+```json
 {
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Effect": "Allow",
-			"Action": [
-				"sts:AssumeRole"
-			],
-			"Resource": "arn:aws:iam::210287912431:role/release-assumed"
-		},
-		{
-			"Effect": "Allow",
-			"Action": [
-				"sts:AssumeRole"
-			],
-			"Resource": "arn:aws:iam::696911096973:role/release-assumed"
-		}
-	]
+ "Version": "2012-10-17",
+ "Statement": [
+  {
+   "Effect": "Allow",
+   "Action": [
+    "sts:AssumeRole"
+   ],
+   "Resource": "arn:aws:iam::210287912431:role/release-assumed"
+  },
+  {
+   "Effect": "Allow",
+   "Action": [
+    "sts:AssumeRole"
+   ],
+   "Resource": "arn:aws:iam::696911096973:role/release-assumed"
+  }
+ ]
 }
 ```
 
@@ -59,43 +59,53 @@ Click on `Next` to name your new policy, it should probably be something like `T
 
 * Then ensure that you have `mysql server` running on your machine.
 
-```
+```sh
 brew install mysql # needed if you don't have mysql installed already
 mysql.server start
 ```
 
 * Install the dependencies
 
+```sh
+npx yarn install # needed if you don't have yarn install already
 ```
+
+```sh
 bundle install
 ```
 
 * Setup the database
 
-```
-bin/rails db:setup
+```sh
+DATABASE_URL="mysql2://root@localhost/release_development" bin/rails db:setup
 ```
 
 * Start the Rails server
 
-```
-rails s
+```sh
+rails assets:precompile # ensure that you have yarn installed
+DATABASE_URL="mysql2://root@localhost/release_development" rails s
 ```
 
 **Use GOV.UK Docker to run any commands that follow.**
 
 ### To the run the tests
 
-```
+```sh
 bundle exec rake
+```
+
+* Run a single test
+
+```sh
+TEST_DATABASE_URL="mysql2://root@localhost/release_test"  rake test TEST=test/integration/deploy_page_test.rb
 ```
 
 ### Architecture diagrams
 
-- [High-level architecture](https://drive.google.com/file/d/12iUDHvNKi_7_dmNC1cE0-cbViB05Cr2o/view)
-- [ERD/Domain model](https://drive.google.com/file/d/1JfPhTwR3IBvBv0O9dCjZhlLgivhkC7aE/view)
+* [High-level architecture](https://drive.google.com/file/d/12iUDHvNKi_7_dmNC1cE0-cbViB05Cr2o/view)
+* [ERD/Domain model](https://drive.google.com/file/d/1JfPhTwR3IBvBv0O9dCjZhlLgivhkC7aE/view)
 
 ## Licence
 
 [MIT License](LICENCE)
-
