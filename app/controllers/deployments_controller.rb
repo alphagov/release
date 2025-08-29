@@ -62,7 +62,6 @@ private
       :application,
       :application_id,
       :created_at,
-      :deployed_sha,
       :environment,
       :id,
       :repo,

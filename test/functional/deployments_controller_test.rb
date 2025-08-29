@@ -65,14 +65,13 @@ class DeploymentsControllerTest < ActionController::TestCase
       app = FactoryBot.create(:application, name: "App Name")
       post :create, params: {
         repo: "org/app-name",
-        deployment: { version: "v123", environment: "staging", deployed_sha: "v123" },
+        deployment: { version: "v123", environment: "staging" },
       }
 
       deployment = app.reload.deployments.last
       assert_not_nil deployment
       assert_equal "v123", deployment.version
       assert_equal "staging", deployment.environment
-      assert_equal "v123", deployment.deployed_sha
     end
 
     context "application doesn't exist" do

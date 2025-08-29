@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_06_151521) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_28_124652) do
   create_table "applications", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: nil, null: false
@@ -29,7 +29,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_06_151521) do
     t.integer "application_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "deployed_sha"
     t.index ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc"
   end
 

@@ -186,15 +186,51 @@ class ApplicationsControllerTest < ActionController::TestCase
         @second_commit = "1dac538d10b181e9b7b46766bc3a72d001a1f703"
         @base_commit = "974d1aedf82c068b42dace07984025fd70dfb240"
         stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
-        FactoryBot.create(:deployment, application: @app, version:, deployed_sha: @first_commit)
+        FactoryBot.create(:deployment, application: @app, version:)
       end
 
       should "show the application" do
+        commits = [
+          {
+            "sha": "ee37124a286a0b8501776d9bbe55dcb18ccab645",
+            "commit": {
+              "author": {
+                "name": "A. Human",
+                "email": "a.human@example.com",
+                "date": "2017-11-16T11:55:21Z",
+              },
+              "message": "Made a change to a thing. WIP! DO NOT DEPLOY!",
+              "comment_count": 0,
+            },
+          },
+        ]
+
+        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/)
+            .to_return(status: 200, body: { commits: }.to_json, headers: { "content-type" => "application/json" })
+
         get :show, params: { id: @app.id }
         assert_select ".gem-c-heading .gem-c-heading__text", text: @app.name
       end
 
       should "set the commit history in reverse order" do
+        commits = [
+          {
+            "sha": "ee37124a286a0b8501776d9bbe55dcb18ccab645",
+            "commit": {
+              "author": {
+                "name": "A. Human",
+                "email": "a.human@example.com",
+                "date": "2017-11-16T11:55:21Z",
+              },
+              "message": "Made a change to a thing. WIP! DO NOT DEPLOY!",
+              "comment_count": 0,
+            },
+          },
+        ]
+
+        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/)
+            .to_return(status: 200, body: { commits: }.to_json, headers: { "content-type" => "application/json" })
+
         get :show, params: { id: @app.id }
         expected = [@second_commit, @first_commit]
         actual = assigns[:commits].pluck(:sha)
@@ -202,6 +238,23 @@ class ApplicationsControllerTest < ActionController::TestCase
       end
 
       should "include the base commit" do
+        commits = [
+          {
+            "sha": "ee37124a286a0b8501776d9bbe55dcb18ccab645",
+            "commit": {
+              "author": {
+                "name": "A. Human",
+                "email": "a.human@example.com",
+                "date": "2017-11-16T11:55:21Z",
+              },
+              "message": "Made a change to a thing. WIP! DO NOT DEPLOY!",
+              "comment_count": 0,
+            },
+          },
+        ]
+
+        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/)
+            .to_return(status: 200, body: { commits: }.to_json, headers: { "content-type" => "application/json" })
         get :show, params: { id: @app.id }
         assert_equal @first_commit, assigns[:commits].last[:sha]
       end
