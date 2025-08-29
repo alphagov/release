@@ -205,8 +205,8 @@ class ApplicationsControllerTest < ActionController::TestCase
           },
         ]
 
-        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/).
-            to_return(status: 200, body: {commits:}.to_json, headers: {"content-type" => "application/json"})
+        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/)
+            .to_return(status: 200, body: { commits: }.to_json, headers: { "content-type" => "application/json" })
 
         get :show, params: { id: @app.id }
         assert_select ".gem-c-heading .gem-c-heading__text", text: @app.name
@@ -228,8 +228,8 @@ class ApplicationsControllerTest < ActionController::TestCase
           },
         ]
 
-        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/).
-            to_return(status: 200, body: {commits:}.to_json, headers: {"content-type" => "application/json"})
+        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/)
+            .to_return(status: 200, body: { commits: }.to_json, headers: { "content-type" => "application/json" })
 
         get :show, params: { id: @app.id }
         expected = [@second_commit, @first_commit]
@@ -253,8 +253,8 @@ class ApplicationsControllerTest < ActionController::TestCase
           },
         ]
 
-        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/).
-            to_return(status: 200, body: {commits:}.to_json, headers: {"content-type" => "application/json"})
+        stub_request(:get, /https:\/\/api.github.com\/repos\/alphagov\/application-.*\/compare\/\.\.\.release_42/)
+            .to_return(status: 200, body: { commits: }.to_json, headers: { "content-type" => "application/json" })
         get :show, params: { id: @app.id }
         assert_equal @first_commit, assigns[:commits].last[:sha]
       end
