@@ -129,6 +129,19 @@ class DeploymentTest < ActiveSupport::TestCase
       )
       assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
+
+    should "return false if there is no sha field returned" do
+      application = FactoryBot.create(:application, name: SecureRandom.hex)
+      stub_commits(application.repo_path, nil, "c57", "release_70", "release_80")
+
+      FactoryBot.create(
+        :deployment, version: "release_70", application:
+      )
+      deployment = FactoryBot.create(
+        :deployment, version: "release_80", application:
+      )
+      assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
+    end
   end
 
   describe "#to_live_environment?" do
