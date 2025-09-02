@@ -129,6 +129,13 @@ class DeploymentTest < ActiveSupport::TestCase
       )
       assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
     end
+
+    should "return false if there are no commits returned by GitHub API" do
+      deployment = FactoryBot.create(:deployment, version: "release_80")
+      deployment.stubs(:commits).returns([])
+
+      assert_equal false, deployment.commit_match?("c579613e5f0335ecf409fed881fa7919c150c1af")
+    end
   end
 
   describe "#to_live_environment?" do
