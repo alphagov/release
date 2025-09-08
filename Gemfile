@@ -42,6 +42,7 @@ group :test, :development do
   gem "poltergeist"
   gem "pry"
   gem "rails-controller-testing"
+  gem "rspec-rails"
   gem "rubocop-govuk"
   gem "shoulda-context", require: false
   gem "simplecov", require: false
