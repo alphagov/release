@@ -261,6 +261,11 @@ GEM
       govuk_app_config (>= 1.1)
       redis-client (>= 0.22.2)
       sidekiq (~> 7.0, < 8)
+    govuk_test (4.1.2)
+      brakeman (>= 5.0.2)
+      capybara (>= 3.36)
+      puma
+      selenium-webdriver (>= 4.0)
     graphql (2.5.11)
       base64
       fiber-storage
@@ -761,6 +766,7 @@ GEM
       rubocop (~> 1.72, >= 1.72.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
+    rubyzip (3.1.0)
     sass-embedded (1.90.0)
       google-protobuf (~> 4.31)
       rake (>= 13)
@@ -784,6 +790,12 @@ GEM
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
     securerandom (0.4.1)
+    selenium-webdriver (4.35.0)
+      base64 (~> 0.2)
+      logger (~> 1.4)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 4.0)
+      websocket (~> 1.0)
     sentry-rails (5.27.0)
       railties (>= 5.0)
       sentry-ruby (~> 5.27.0)
@@ -841,6 +853,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.9.1)
+    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -888,6 +901,7 @@ DEPENDENCIES
   govuk_app_config
   govuk_publishing_components
   govuk_sidekiq
+  govuk_test
   kubeclient
   minitest
   mocha
