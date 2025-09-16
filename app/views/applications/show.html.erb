@@ -20,7 +20,6 @@
       <% end %>
 
       <%= t.body do %>
-        <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
         <% @k8s_data.each do |environment, data| %>
           <%= t.row do %>
             <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(data["app_instance"]), environment.humanize)}".html_safe()  %>
