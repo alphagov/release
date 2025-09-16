@@ -8,6 +8,8 @@ require_relative "../config/environment"
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "rspec/rails"
 require "webmock/rspec"
+require "artemis/rspec"
+Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 
 GovukTest.configure
 WebMock.disable_net_connect!(allow_localhost: true)
@@ -29,6 +31,9 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true # will default to `true` in RSpec 4.
   end
+
+  config.include AuthenticationHelper, type: :request
+  config.include Capybara::RSpecMatchers, type: :request
 
   config.fixture_paths = [Rails.root.join("spec/fixtures")]
   config.infer_spec_type_from_file_location!
