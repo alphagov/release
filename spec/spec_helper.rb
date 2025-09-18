@@ -13,6 +13,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 
 GovukTest.configure
 WebMock.disable_net_connect!(allow_localhost: true)
+Rails.application.load_tasks
 
 RSpec.configure do |config|
   config.before(:suite) do
