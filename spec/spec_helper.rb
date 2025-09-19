@@ -9,9 +9,37 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require "rspec/rails"
 require "webmock/rspec"
 require "artemis/rspec"
+require "capybara/rails"
+require "selenium-webdriver"
 Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 
 GovukTest.configure
+
+# Capybara.register_driver :headless_chrome do |app|
+#   options = GovukTest.headless_chrome_selenium_options
+#     Config tried
+#     options.add_argument("--headless=new") # already configured by GovukTest.configure 
+#     options.add_argument("--no-sandbox")   # already configured by GovukTest.configure 
+#     options.add_argument("--headless")
+#     options.add_argument("--disable-gpu")
+#     options.add_argument("--disable-dev-shm-usage")  # Recommended for Docker
+#     options.add_argument("user-data-dir=#{Dir.mktmpdir}")  # Create a unique temp dir for each session
+#     options.delete_argument("--user-data-dir") # Delete the argument
+
+#     # Enable loggingr
+#     options.add_argument("--remote-debugging-port=9222") # Enable remote debugging
+#     options.add_argument("--enable-logging")
+#     options.add_argument("--v=1") # Set the verbosity level to 1 (info level)
+
+#   Capybara::Selenium::Driver.new(
+#     app,
+#     browser: :chrome,
+#     desired_capabilities: { acceptInsecureCerts: true },
+#     options: options,
+#   )
+# end
+
+
 WebMock.disable_net_connect!(allow_localhost: true)
 Rails.application.load_tasks
 
@@ -27,6 +55,9 @@ RSpec.configure do |config|
 
   config.after do
     DatabaseCleaner.clean
+    # Also tried
+    # Capybara.reset_sessions!
+    # Capybara.use_default_driver
   end
 
   config.mock_with :rspec do |mocks|
