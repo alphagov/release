@@ -37,11 +37,13 @@ group :test, :development do
   gem "capybara"
   gem "database_cleaner"
   gem "factory_bot_rails"
+  gem "govuk_test"
   gem "minitest"
   gem "mocha", require: false
   gem "poltergeist"
   gem "pry"
   gem "rails-controller-testing"
+  gem "rspec-rails"
   gem "rubocop-govuk"
   gem "shoulda-context", require: false
   gem "simplecov", require: false
