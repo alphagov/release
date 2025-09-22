@@ -18,8 +18,8 @@ GovukTest.configure
 # Capybara.register_driver :headless_chrome do |app|
 #   options = GovukTest.headless_chrome_selenium_options
 #     Config tried
-#     options.add_argument("--headless=new") # already configured by GovukTest.configure 
-#     options.add_argument("--no-sandbox")   # already configured by GovukTest.configure 
+#     options.add_argument("--headless=new") # already configured by GovukTest.configure
+#     options.add_argument("--no-sandbox")   # already configured by GovukTest.configure
 #     options.add_argument("--headless")
 #     options.add_argument("--disable-gpu")
 #     options.add_argument("--disable-dev-shm-usage")  # Recommended for Docker
@@ -38,7 +38,6 @@ GovukTest.configure
 #     options: options,
 #   )
 # end
-
 
 WebMock.disable_net_connect!(allow_localhost: true)
 Rails.application.load_tasks
@@ -64,7 +63,7 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true # will default to `true` in RSpec 4.
   end
 
-  config.include AuthenticationHelper, type: :request
+  config.include AuthenticationHelper, type: ->(spec) { spec.in?(%i[request system]) }
   config.include Capybara::RSpecMatchers, type: :request
 
   config.fixture_paths = [Rails.root.join("spec/fixtures")]
