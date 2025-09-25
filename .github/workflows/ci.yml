@@ -48,7 +48,7 @@ jobs:
     uses: alphagov/govuk-infrastructure/.github/workflows/rubocop.yml@main
 
   test-ruby:
-    name: Test Ruby
+    name: Test Ruby (Minitest)
     runs-on: ubuntu-latest
     steps:
       - name: Setup MySQL
@@ -82,3 +82,39 @@ jobs:
           RAILS_ENV: test
           TEST_DATABASE_URL: ${{ steps.setup-mysql.outputs.db-url }}
         run: bundle exec rake test
+
+  test-ruby-rspec:
+    name: Test Ruby
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup MySQL
+        id: setup-mysql
+        uses: alphagov/govuk-infrastructure/.github/actions/setup-mysql@main
+
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          show-progress: false
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@44511735964dcb71245e7e55f72539531f7bc0eb # v1.257.0
+        with:
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: alphagov/govuk-infrastructure/.github/actions/setup-node@main
+
+      - name: Precompile assets
+        uses: alphagov/govuk-infrastructure/.github/actions/precompile-rails-assets@main
+
+      - name: Initialize database
+        env:
+          RAILS_ENV: test
+          TEST_DATABASE_URL: ${{ steps.setup-mysql.outputs.db-url }}
+        run: bundle exec rails db:setup
+
+      - name: Run RSpec
+        env:
+          RAILS_ENV: test
+          TEST_DATABASE_URL: ${{ steps.setup-mysql.outputs.db-url }}
+        run: bundle exec rake spec
