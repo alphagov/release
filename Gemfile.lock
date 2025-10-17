@@ -275,7 +275,7 @@ GEM
       http-form_data (~> 2.2)
       llhttp-ffi (~> 0.5.0)
     http-accept (1.7.0)
-    http-cookie (1.0.8)
+    http-cookie (1.1.0)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     i18n (1.14.7)
@@ -294,7 +294,7 @@ GEM
       base64
     kramdown (2.5.1)
       rexml (>= 3.3.9)
-    kubeclient (4.12.0)
+    kubeclient (4.13.0)
       http (>= 3.0, < 6.0)
       jsonpath (~> 1.0)
       recursive-open-struct (~> 1.1, >= 1.1.1)
@@ -323,7 +323,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0812)
+    mime-types-data (3.2025.0924)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.26.0)
