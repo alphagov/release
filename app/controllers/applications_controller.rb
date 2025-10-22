@@ -25,7 +25,7 @@ class ApplicationsController < ApplicationController
       rescue Github::QueryError => e
         @github_available = false
         @github_error = e.message
-        GovukError.notify(e.message)
+        GovukError.notify(e)
       end
       begin
         @k8s_available = true
@@ -33,11 +33,11 @@ class ApplicationsController < ApplicationController
       rescue Github::QueryError => e
         @github_available = false
         @github_error = e.message
-        GovukError.notify(e.message)
+        GovukError.notify(e)
       rescue Aws::STS::Errors::ServiceError, Kubeclient::HttpError => e
         @k8s_available = false
         @k8s_error = e.message
-        GovukError.notify(e.message)
+        GovukError.notify(e)
       end
     end
   end
