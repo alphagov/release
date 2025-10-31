@@ -245,7 +245,7 @@ GEM
     govuk_personalisation (1.1.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (61.3.1)
+    govuk_publishing_components (61.4.0)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -312,7 +312,8 @@ GEM
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    mail (2.8.1)
+    mail (2.9.0)
+      logger
       mini_mime (>= 0.1.1)
       net-imap
       net-pop
@@ -348,7 +349,7 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     netrc (0.11.0)
-    nio4r (2.7.4)
+    nio4r (2.7.5)
     nokogiri (1.18.10)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -759,7 +760,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     thor (1.4.0)
     timecop (0.9.10)
-    timeout (0.4.3)
+    timeout (0.4.4)
     tsort (0.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
