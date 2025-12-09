@@ -181,7 +181,7 @@ GEM
       ffi (>= 1.15.5)
       rake
     fiber-storage (1.0.1)
-    friendly_id (5.5.1)
+    friendly_id (5.6.0)
       activerecord (>= 4.0.0)
     gds-api-adapters (101.0.0)
       addressable
