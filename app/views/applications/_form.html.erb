@@ -59,6 +59,28 @@
     ]
   } %>
 
+  <input type="hidden" name="application[enable_change_failure_marking]" value="0" />
+  <%= render "govuk_publishing_components/components/checkboxes", {
+    name: "application[enable_change_failure_marking]",
+    items: [
+      {
+        label: "Enable marking deployments as failures?",
+        value: "1",
+        checked: @application.enable_change_failure_marking?,
+        hint: "Allows marking a deployment as 'failed' for production deployments so that the team can track your change failure rate."
+      }
+    ]
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "Deployment Notification Slack Channel"
+    },
+    name: "application[slack_channel_deployment_notification]",
+    value: @application.slack_channel_deployment_notification,
+    error_message: @application.errors[:slack_channel_deployment_notification].first,
+  } %>
+
   <%= render "govuk_publishing_components/components/button", {
     text: @application.new_record? ? "Create Application" : "Update application",
     margin_bottom: 4,
