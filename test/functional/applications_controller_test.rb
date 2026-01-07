@@ -164,7 +164,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         get :show, params: { id: @app.id }
         assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
         assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
-        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
+        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan 2025 (Github on v185)" }
       end
     end
 
@@ -175,7 +175,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan (Github on v185)" }
+        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan 2025 (Github on v185)" }
       end
     end
 
@@ -446,7 +446,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     should "indicate which releases are current and about to be deployed" do
       get :deploy, params: { id: @app.id, tag: @release_tag }
-      assert_select ".govuk-body", "Production is on #{@deployment.version} — deployed at 11am on 18 Jan 2013"
+      assert_select ".govuk-body", "Production is on #{@deployment.version} — deployed at 11:57am on 18 Jan 2013"
     end
 
     should "include status notes as a warning" do
