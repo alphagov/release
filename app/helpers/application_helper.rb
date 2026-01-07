@@ -11,7 +11,7 @@ module ApplicationHelper
       elsif 11.months.ago < date
         date.strftime("%-l:%M%P on %-e %b")
       else
-        date.strftime("%-l%P on %-e %b %Y")
+        date.strftime("%-l:%M%P on %-e %b %Y")
       end
     else
       ""

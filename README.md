@@ -92,7 +92,7 @@ DATABASE_URL="mysql2://root@localhost/release_development" rails s
 ### To the run the tests
 
 ```sh
-bundle exec rake
+DATABASE_URL="mysql2://root@localhost/release_development" bundle exec rake
 ```
 
 * Run a single test
