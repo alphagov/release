@@ -4,11 +4,13 @@ ReleaseApp::Application.routes.draw do
       get :deploy
       get :stats
     end
-
-    resources :deployments
   end
 
-  resources :deployments
+  resources :deployments do
+    member do
+      patch :toggle_change_failure
+    end
+  end
 
   resource :site, only: %i[show update]
 

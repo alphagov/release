@@ -48,4 +48,8 @@ class Deployment < ApplicationRecord
   def to_live_environment?
     environment == application.live_environment
   end
+
+  def can_mark_as_change_failure?
+    application.enable_change_failure_marking? && environment == "production"
+  end
 end
