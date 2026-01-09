@@ -15,6 +15,12 @@
   margin_bottom: 8,
 } %>
 
+<% if @deployment.change_failure? %>
+  <%= render "govuk_publishing_components/components/notice", {
+    title: "This deployment has been marked as a change failure.",
+  } %>
+<% end %>
+
 <div class="govuk-body">
   <p><span class="govuk-!-font-weight-bold">Application:</span>
     <%= @deployment.application.name %></p>
@@ -44,6 +50,24 @@
       <%= @deployment.commits.count(&:pr?) %></p>
     <p><span class="govuk-!-font-weight-bold">Authors:</span>
       <%= to_sentence @deployment.commits.map(&:author_name).compact.uniq %></p>
+  <% end %>
+
+  <% if @deployment.can_mark_as_change_failure? %>
+    <div class="govuk-!-margin-top-6">
+      <%= form_with url: toggle_change_failure_deployment_path(@deployment), method: :patch, local: true do %>
+        <% if @deployment.change_failure? %>
+          <%= render "govuk_publishing_components/components/button", {
+            text: "Unmark as change failure",
+            secondary: true,
+          } %>
+        <% else %>
+          <%= render "govuk_publishing_components/components/button", {
+            text: "Mark as change failure",
+            destructive: true,
+          } %>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
