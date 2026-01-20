@@ -1,6 +1,8 @@
 require "test_helper"
 
 class DeploymentsControllerTest < ActionController::TestCase
+  include ActiveJob::TestHelper
+
   setup do
     login_as_stub_user
   end
@@ -109,6 +111,91 @@ class DeploymentsControllerTest < ActionController::TestCase
         }
         app = Application.unscoped.last
         assert_equal "New App", app.name
+      end
+    end
+  end
+
+  context "PATCH toggle_change_failure" do
+    setup do
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
+    end
+
+    context "when application has change failure marking enabled" do
+      setup do
+        @app = FactoryBot.create(:application, name: SecureRandom.hex, enable_change_failure_marking: true)
+      end
+
+      should "toggle change_failure from false to true for production deployments" do
+        deployment = FactoryBot.create(:deployment, application: @app, change_failure: false)
+
+        patch :toggle_change_failure, params: { id: deployment.id }
+
+        deployment.reload
+        assert deployment.change_failure?
+        assert_redirected_to deployment_path(deployment)
+      end
+
+      should "toggle change_failure from true to false for production deployments" do
+        deployment = FactoryBot.create(:deployment, application: @app, change_failure: true)
+
+        patch :toggle_change_failure, params: { id: deployment.id }
+
+        deployment.reload
+        assert_not deployment.change_failure?
+        assert_redirected_to deployment_path(deployment)
+      end
+
+      should "not allow toggling for non-production deployments" do
+        deployment = FactoryBot.create(:deployment, application: @app, environment: "staging")
+
+        patch :toggle_change_failure, params: { id: deployment.id }
+
+        deployment.reload
+        assert_not deployment.change_failure?
+        assert_redirected_to deployment_path(deployment)
+        assert_equal "Change failure marking is not enabled for this application or this is not a production deployment.", flash[:alert]
+      end
+
+      context "Slack notifications" do
+        should "enqueue a Slack notification when marking as failure and Slack channel is configured" do
+          @app.update!(slack_channel_deployment_notification: "#alerts")
+          deployment = FactoryBot.create(:deployment, application: @app, change_failure: false)
+
+          assert_enqueued_with(job: SlackPosterJob) do
+            patch :toggle_change_failure, params: { id: deployment.id }
+          end
+        end
+
+        should "not enqueue a Slack notification when unmarking as failure" do
+          @app.update!(slack_channel_deployment_notification: "#alerts")
+          deployment = FactoryBot.create(:deployment, application: @app, change_failure: true)
+
+          assert_no_enqueued_jobs(only: SlackPosterJob) do
+            patch :toggle_change_failure, params: { id: deployment.id }
+          end
+        end
+
+        should "not enqueue a Slack notification when no Slack channel is configured" do
+          deployment = FactoryBot.create(:deployment, application: @app, change_failure: false)
+
+          assert_no_enqueued_jobs(only: SlackPosterJob) do
+            patch :toggle_change_failure, params: { id: deployment.id }
+          end
+        end
+      end
+    end
+
+    context "when application does not have change failure marking enabled" do
+      should "not allow toggling even for production deployments" do
+        app = FactoryBot.create(:application, name: SecureRandom.hex, enable_change_failure_marking: false)
+        deployment = FactoryBot.create(:deployment, application: app)
+
+        patch :toggle_change_failure, params: { id: deployment.id }
+
+        deployment.reload
+        assert_not deployment.change_failure?
+        assert_redirected_to deployment_path(deployment)
+        assert_equal "Change failure marking is not enabled for this application or this is not a production deployment.", flash[:alert]
       end
     end
   end

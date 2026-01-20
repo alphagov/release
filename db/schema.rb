@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_28_124652) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_08_120000) do
   create_table "applications", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: nil, null: false
@@ -19,6 +19,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_28_124652) do
     t.string "shortname"
     t.boolean "deploy_freeze", default: false, null: false
     t.string "default_branch", default: "main", null: false
+    t.boolean "enable_change_failure_marking", default: false, null: false
+    t.string "slack_channel_deployment_notification"
     t.index ["name"], name: "index_applications_on_name", unique: true
     t.index ["shortname"], name: "index_applications_on_shortname"
   end
@@ -29,6 +31,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_28_124652) do
     t.integer "application_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "change_failure", default: false, null: false
     t.index ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc"
   end
 

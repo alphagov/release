@@ -150,13 +150,39 @@ class DeploymentTest < ActiveSupport::TestCase
     end
 
     should "return true if deployment to application's live environment" do
-      deployment = FactoryBot.create(:deployment, environment: "production", id: SecureRandom.hex)
+      app = FactoryBot.create(:application, name: SecureRandom.hex)
+      deployment = FactoryBot.create(:deployment, application: app)
       assert deployment.to_live_environment?
     end
 
     should "return false if deployment not to application's live environment" do
-      deployment = FactoryBot.create(:deployment, environment: "test", id: SecureRandom.hex)
+      app = FactoryBot.create(:application, name: SecureRandom.hex)
+      deployment = FactoryBot.create(:deployment, application: app, environment: "test")
       assert_equal false, deployment.to_live_environment?
+    end
+  end
+
+  describe "#can_mark_as_change_failure?" do
+    before do
+      stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
+    end
+
+    should "return true when application has change failure marking enabled and environment is production" do
+      app = FactoryBot.create(:application, name: SecureRandom.hex, enable_change_failure_marking: true)
+      deployment = FactoryBot.create(:deployment, application: app)
+      assert deployment.can_mark_as_change_failure?
+    end
+
+    should "return false when application has change failure marking disabled" do
+      app = FactoryBot.create(:application, name: SecureRandom.hex, enable_change_failure_marking: false)
+      deployment = FactoryBot.create(:deployment, application: app)
+      assert_equal false, deployment.can_mark_as_change_failure?
+    end
+
+    should "return false when environment is not production" do
+      app = FactoryBot.create(:application, name: SecureRandom.hex, enable_change_failure_marking: true)
+      deployment = FactoryBot.create(:deployment, application: app, environment: "staging")
+      assert_equal false, deployment.can_mark_as_change_failure?
     end
   end
 end

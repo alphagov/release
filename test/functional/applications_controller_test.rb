@@ -389,10 +389,11 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "valid request" do
       should "update the application" do
-        put :update, params: { id: @app.id, application: { name: "new name", deploy_freeze: true } }
+        put :update, params: { id: @app.id, application: { name: "new name", deploy_freeze: true, enable_change_failure_marking: true } }
         @app.reload
         assert_equal "new name", @app.name
         assert @app.deploy_freeze?
+        assert @app.enable_change_failure_marking?
       end
 
       should "redirect to the application" do
