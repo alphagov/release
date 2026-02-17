@@ -583,7 +583,7 @@ GEM
     puma (7.2.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.1.19)
+    rack (3.1.20)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -638,7 +638,7 @@ GEM
       tsort
     recursive-open-struct (1.3.1)
       ostruct
-    redis-client (0.26.1)
+    redis-client (0.26.4)
       connection_pool
     regexp_parser (2.11.2)
     reline (0.6.3)
@@ -713,22 +713,23 @@ GEM
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
     securerandom (0.4.1)
-    sentry-rails (5.28.1)
-      railties (>= 5.0)
-      sentry-ruby (~> 5.28.1)
-    sentry-ruby (5.28.1)
+    sentry-rails (6.3.1)
+      railties (>= 5.2.0)
+      sentry-ruby (~> 6.3.1)
+    sentry-ruby (6.3.1)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sentry-sidekiq (5.28.1)
-      sentry-ruby (~> 5.28.1)
-      sidekiq (>= 3.0)
-    shoulda-context (2.0.0)
-    sidekiq (7.3.9)
-      base64
-      connection_pool (>= 2.3.0)
       logger
-      rack (>= 2.2.4)
-      redis-client (>= 0.22.2)
+    sentry-sidekiq (6.3.1)
+      sentry-ruby (~> 6.3.1)
+      sidekiq (>= 5.0)
+    shoulda-context (2.0.0)
+    sidekiq (7.3.10)
+      base64
+      connection_pool (>= 2.3.0, < 3)
+      logger
+      rack (>= 2.2.4, < 3.3)
+      redis-client (>= 0.23.0, < 1)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
