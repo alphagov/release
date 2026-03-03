@@ -33,7 +33,41 @@ class DeploymentsController < ApplicationController
     head :ok
   end
 
+  def toggle_change_failure
+    @deployment = Deployment.find(params[:id])
+
+    unless @deployment.can_mark_as_change_failure?
+      flash[:alert] = "Change failure marking is not enabled for this application or this is not a production deployment."
+      redirect_to deployment_path(@deployment) and return
+    end
+
+    @deployment.update!(change_failure: !@deployment.change_failure)
+
+    if @deployment.change_failure?
+      send_change_failure_slack_notification(@deployment)
+    end
+
+    redirect_to deployment_path(@deployment)
+  end
+
 private
+
+  def send_change_failure_slack_notification(deployment)
+    application = deployment.application
+    channel = application.slack_channel_deployment_notification
+
+    return if channel.blank?
+
+    message = build_change_failure_message(deployment)
+    SlackPosterJob.perform_later(message, channel)
+  end
+
+  def build_change_failure_message(deployment)
+    application = deployment.application
+    "*Change Failure* for *#{application.name}*\n" \
+      "Version: `#{deployment.version}`\n" \
+      "View deployment: #{deployment_url(deployment)}"
+  end
 
   def application_by_repo
     existing_apps = Application.where(name: normalize_app_name(repo_path))

@@ -105,6 +105,8 @@ private
       :status_notes,
       :task,
       :deploy_freeze,
+      :enable_change_failure_marking,
+      :slack_channel_deployment_notification,
     )
   end
 end
