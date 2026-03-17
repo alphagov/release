@@ -22,12 +22,12 @@ class ActiveSupport::TestCase
     graphql_responses.clear
   end
 
-  def stub_user
-    @stub_user ||= FactoryBot.create(:user, name: "Stub User")
+  def stub_user(permissions = [])
+    @stub_user ||= FactoryBot.create(:user, name: "Stub User", permissions: permissions.push("signin"))
   end
 
-  def login_as_stub_user
-    stub_warden_as stub_user
+  def login_as_stub_user(permissions = [])
+    stub_warden_as stub_user(permissions)
   end
 
   def stub_warden_as(user)
