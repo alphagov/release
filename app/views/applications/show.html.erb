@@ -5,55 +5,67 @@
 <%= render 'status_notes', application: @application %>
 
 <%= render "govuk_publishing_components/components/heading", {
-  text: "Where is my code?",
+  text: "Most recent release in GitHub",
   heading_level: 2,
   margin_bottom: 4,
 } %>
 
-<% if @github_available %>
-  <% if @k8s_available %>
-    <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Where is my code?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
-      <%= t.head do %>
-        <%= t.header "Environment" %>
-        <%= t.header "Deployed version" %>
-        <%= t.header "Previous version" %>
-      <% end %>
+<div class="release__application-show-github">
+  <% if @github_available %>
+    <% if @application.latest_tag.length > 0 %>
+      <p class="govuk-body">The latest tagged release in GitHub is <%= github_tag_link_to(@application, @application.latest_tag) %>.</p>
+    <% else %>
+      <p class="govuk-body">There are no tags in GitHub for this application.</p>
+    <% end %>
+  <% else %>
+    <%= render "govuk_publishing_components/components/govspeak", { } do %>
+      <div class="application-notice help-notice">
+        <p>Couldn't get data from GitHub:</p>
+        <p><%= @github_error %></p>
+      </div>
+    <% end %>
+  <% end %>
+</div>
 
-      <%= t.body do %>
-        <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
-        <% @k8s_data.each do |environment, data| %>
-          <%= t.row do %>
-            <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(data["app_instance"]), environment.humanize)}".html_safe()  %>
+<%= render "govuk_publishing_components/components/heading", {
+  text: "What's running in Kubernetes?",
+  heading_level: 2,
+  margin_bottom: 4,
+} %>
 
-            <% if data["image"] == "None" %>
-              <%= t.cell "No running pods" %>
-            <% else %>
-              <% github_version = data.key?("github") ? " (Github on #{github_tag_link_to(@application, data["github"])})" : "" %>
-              <%= t.cell "#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}#{github_version}".html_safe()  %>
-              <%= t.cell data["previous_version"] == "N/A" ? "N/A" : "#{github_tag_link_to(@application, data["previous_version"])}".html_safe() %>
-            <% end %>
+<% if @k8s_available %>
+  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's running in Kubernetes?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
+    <%= t.head do %>
+      <%= t.header "Environment" %>
+      <%= t.header "Deployed version" %>
+      <%= t.header "Previous version" %>
+    <% end %>
+
+    <%= t.body do %>
+      <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+      <% @k8s_data.each do |environment, data| %>
+        <%= t.row do %>
+          <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(data["app_instance"]), environment.humanize)}".html_safe()  %>
+
+          <% if data["image"] == "None" %>
+            <%= t.cell "No running pods" %>
+            <%= t.cell "" %>
+          <% else %>
+            <%= t.cell "#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}".html_safe()  %>
+            <%= t.cell data["previous_version"] == "N/A" ? "N/A" : "#{github_tag_link_to(@application, data["previous_version"])}".html_safe() %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
-  <% else %>
-    <%= render "govuk_publishing_components/components/govspeak", {
-    } do %>
-      <div class="application-notice help-notice">
-        <p>Couldn't get data from kubernetes API:</p>
-        <p><%= @k8s_error %></p>
-      </div>
-    <% end %>
-  <% end%>
+  <% end %>
 <% else %>
-  <%= render "govuk_publishing_components/components/govspeak", {
-  } do %>
+  <%= render "govuk_publishing_components/components/govspeak", { } do %>
     <div class="application-notice help-notice">
-      <p>Couldn't get data from GitHub:</p>
-      <p><%= @github_error %></p>
+      <p>Couldn't get data from kubernetes API:</p>
+      <p><%= @k8s_error %></p>
     </div>
   <% end %>
-<% end %>
+<% end%>
 
 <%= render "govuk_publishing_components/components/heading", {
   text: "Commit log",

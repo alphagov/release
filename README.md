@@ -83,7 +83,7 @@ DATABASE_URL="mysql2://root@localhost/release_development" bin/rails db:setup
 * Start the Rails server
 
 ```sh
-rails assets:precompile # ensure that you have yarn installed
+bin/rails assets:precompile # ensure that you have yarn installed
 DATABASE_URL="mysql2://root@localhost/release_development" rails s
 ```
 

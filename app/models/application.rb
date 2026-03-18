@@ -34,12 +34,9 @@ class Application < ApplicationRecord
       .index_with { |environment| K8sHelper.k8s_data(environment, shortname) }
       .compact
 
-    @current_image_deployed_by_environment.each do |environment, pod|
+    @current_image_deployed_by_environment.each_key do |environment|
       deployment = deployments.last_deploy_to(environment)
       @current_image_deployed_by_environment[environment]["previous_version"] = deployment ? deployment.previous_version : "N/A"
-      if latest_tag != pod["image"]
-        @current_image_deployed_by_environment[environment]["github"] = latest_tag
-      end
     end
   end
 
