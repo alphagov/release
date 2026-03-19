@@ -143,6 +143,11 @@ class ApplicationsControllerTest < ActionController::TestCase
       assert_select ".gem-c-notice", "Do not deploy this without talking to core team first!"
     end
 
+    should "show the latest tag on GitHub" do
+      get :show, params: { id: @app.id }
+      assert_select "div.release__application-show-github > p.govuk-body", "The latest tagged release in GitHub is v185."
+    end
+
     context "for no pods running found" do
       setup do
         K8sHelper.unstub(:pods_by_status)
@@ -164,7 +169,7 @@ class ApplicationsControllerTest < ActionController::TestCase
         get :show, params: { id: @app.id }
         assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
         assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
-        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan 2025 (Github on v185)" }
+        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan 2025" }
       end
     end
 
@@ -175,7 +180,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan 2025 (Github on v185)" }
+        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan 2025" }
       end
     end
 

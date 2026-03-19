@@ -362,14 +362,12 @@ class ApplicationTest < ActiveSupport::TestCase
           "image" => "v111",
           "created_at" => "2025-01-29T14:27:01Z",
           "previous_version" => nil,
-          "github" => "",
         },
         "staging" => {
           "app_instance" => "app1",
           "image" => "v111",
           "created_at" => "2025-01-29T14:27:01Z",
           "previous_version" => nil,
-          "github" => "",
         },
       }
 
@@ -414,14 +412,12 @@ class ApplicationTest < ActiveSupport::TestCase
           "image" => "v111",
           "created_at" => "2025-01-29T14:27:01Z",
           "previous_version" => nil,
-          "github" => "",
         },
         "staging" => {
           "app_instance" => "app1",
           "image" => "v111",
           "created_at" => "2025-01-29T14:27:01Z",
           "previous_version" => nil,
-          "github" => "",
         },
       }
 
