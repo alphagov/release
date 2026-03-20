@@ -336,6 +336,9 @@ class ApplicationTest < ActiveSupport::TestCase
             {
               "image" => "govuk.storage.com/test:v111",
             },
+            {
+              "image" => "govuk.storage.com/nginx:v21",
+            },
           ],
         },
         "metadata" => {
@@ -359,14 +362,18 @@ class ApplicationTest < ActiveSupport::TestCase
       expected = {
         "integration" => {
           "app_instance" => "app1",
-          "image" => "v111",
-          "created_at" => "2025-01-29T14:27:01Z",
+          "pods" => [{
+            "image_tag" => "v111",
+            "created_at" => "2025-01-29T14:27:01Z",
+          }],
           "previous_version" => nil,
         },
         "staging" => {
           "app_instance" => "app1",
-          "image" => "v111",
-          "created_at" => "2025-01-29T14:27:01Z",
+          "pods" => [{
+            "image_tag" => "v111",
+            "created_at" => "2025-01-29T14:27:01Z",
+          }],
           "previous_version" => nil,
         },
       }
@@ -375,53 +382,80 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  describe "current image deployed by environment" do
+  describe "current image deployed by environment while a deployment is ongoing" do
     before do
       Application.delete_all
       Deployment.delete_all
       stub_request(:get, Repo::REPO_JSON_URL).to_return(status: 200)
 
-      mock_resp = [{
-        "spec" => {
-          "containers" => [
-            {
-              "image" => "govuk.storage.com/test:v111",
+      mock_resp = [
+        {
+          "spec" => {
+            "containers" => [
+              {
+                "image" => "govuk.storage.com/test:v111",
+              },
+              {
+                "image" => "govuk.storage.com/nginx:v21",
+              },
+            ],
+          },
+          "metadata" => {
+            "name" => "Application 1",
+            "creationTimestamp" => "2025-01-29T14:27:01Z",
+            "labels" => {
+              "app.kubernetes.io/instance" => "app1",
             },
-          ],
-        },
-        "metadata" => {
-          "name" => "Application 1",
-          "creationTimestamp" => "2025-01-29T14:27:01Z",
-          "labels" => {
-            "app.kubernetes.io/instance" => "app1",
           },
         },
-      }]
+        {
+          "spec" => {
+            "containers" => [
+              {
+                "image" => "govuk.storage.com/test:v112",
+              },
+              {
+                "image" => "govuk.storage.com/nginx:v21",
+              },
+            ],
+          },
+          "metadata" => {
+            "name" => "Application 1",
+            "creationTimestamp" => "2025-01-30T10:11:12Z",
+            "labels" => {
+              "app.kubernetes.io/instance" => "app1",
+            },
+          },
+        },
+      ]
 
       K8sHelper.stubs(:pods_by_status).returns(mock_resp)
     end
 
-    should "return deployed images for integration and staging environment in sync" do
-      app = FactoryBot.create(:application)
-      FactoryBot.create(:deployment, application: app, version: "v222", environment: "staging")
-      FactoryBot.create(:deployment, application: app, version: "v222", environment: "integration")
+    should "return all currently deployed image tags while a deployment is ongoing" do
+      app = FactoryBot.create(:application, name: "Account API", shortname: "account-api")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "production")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "staging")
+      FactoryBot.create(:deployment, application: app, version: "v111", environment: "integration")
 
       expected = {
         "integration" => {
           "app_instance" => "app1",
-          "image" => "v111",
-          "created_at" => "2025-01-29T14:27:01Z",
-          "previous_version" => nil,
-        },
-        "staging" => {
-          "app_instance" => "app1",
-          "image" => "v111",
-          "created_at" => "2025-01-29T14:27:01Z",
+          "pods" => [
+            {
+              "image_tag" => "v111",
+              "created_at" => "2025-01-29T14:27:01Z",
+            },
+            {
+              "image_tag" => "v112",
+              "created_at" => "2025-01-30T10:11:12Z",
+            },
+          ],
           "previous_version" => nil,
         },
       }
 
-      assert_equal expected, app.current_image_deployed_by_environment
+      assert_equal expected["integration"], app.current_image_deployed_by_environment["integration"]
     end
   end
 end

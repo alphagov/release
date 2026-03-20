@@ -33,39 +33,48 @@
   margin_bottom: 4,
 } %>
 
-<% if @k8s_available %>
-  <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's running in Kubernetes?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
-    <%= t.head do %>
-      <%= t.header "Environment" %>
-      <%= t.header "Deployed version" %>
-      <%= t.header "Previous version" %>
-    <% end %>
+<div class="release__application-show-kubernetes">
+  <% if @k8s_available %>
+    <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "What's running in Kubernetes?", { caption_classes: "govuk-visually-hidden" }) do |t| %>
+      <%= t.head do %>
+        <%= t.header "Environment" %>
+        <%= t.header "Deployed version" %>
+        <%= t.header "Previous version" %>
+      <% end %>
 
-    <%= t.body do %>
-      <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
-      <% @k8s_data.each do |environment, data| %>
-        <%= t.row do %>
-          <%= t.header "#{argo_app_link_to(K8sHelper.repo_name(data["app_instance"]), environment.humanize)}".html_safe()  %>
+      <%= t.body do %>
+        <% current_environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+        <% @k8s_data.each do |environment, data| %>
+          <%= t.row do %>
+            <% env_label = capture do %>
+              <%= "#{argo_app_link_to(K8sHelper.repo_name(data["app_instance"]), environment.humanize)}".html_safe() %>
+              <% if data["pods"].length > 1 %>
+                <span class="release__k8s-label--deployment">Currently Deploying</span>
+              <% end %>
+            <% end %>
 
-          <% if data["image"] == "None" %>
-            <%= t.cell "No running pods" %>
-            <%= t.cell "" %>
-          <% else %>
-            <%= t.cell "#{github_tag_link_to(@application, data["image"])} at #{human_datetime(data["created_at"])}".html_safe()  %>
-            <%= t.cell data["previous_version"] == "N/A" ? "N/A" : "#{github_tag_link_to(@application, data["previous_version"])}".html_safe() %>
+            <%= t.header env_label %>
+
+            <% if data["pods"].length == 0 %>
+              <%= t.cell "No running pods" %>
+              <%= t.cell "" %>
+            <% else %>
+              <%= t.cell data["pods"].map { |pod| "#{github_tag_link_to(@application, pod["image_tag"])} at #{human_datetime(pod["created_at"])}" }.join("<br />").html_safe() %>
+              <%= t.cell data["previous_version"] == "N/A" ? "N/A" : "#{github_tag_link_to(@application, data["previous_version"])}".html_safe() %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
-  <% end %>
-<% else %>
-  <%= render "govuk_publishing_components/components/govspeak", { } do %>
-    <div class="application-notice help-notice">
-      <p>Couldn't get data from kubernetes API:</p>
-      <p><%= @k8s_error %></p>
-    </div>
-  <% end %>
-<% end%>
+  <% else %>
+    <%= render "govuk_publishing_components/components/govspeak", { } do %>
+      <div class="application-notice help-notice">
+        <p>Couldn't get data from kubernetes API:</p>
+        <p><%= @k8s_error %></p>
+      </div>
+    <% end %>
+  <% end%>
+</div>
 
 <%= render "govuk_publishing_components/components/heading", {
   text: "Commit log",

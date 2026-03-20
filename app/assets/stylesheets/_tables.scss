@@ -50,3 +50,12 @@
 .release__commits-label--production {
   background-color: govuk-colour("red");
 }
+
+.release__k8s-label--deployment {
+  display: inline-block;
+  padding: 5px;
+  color: govuk-colour("white");
+  border-radius: 5px;
+  background-color: govuk-colour("blue");
+  font-weight: bold;
+}

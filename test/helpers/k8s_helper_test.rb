@@ -9,7 +9,16 @@ class K8sHelperTest < ActionView::TestCase
     end
 
     should "can parse response from kubernetes API" do
-      assert_equal "{\"app_instance\":\"app1\",\"image\":\"v490\",\"created_at\":\"2025-05-14T08:52:29Z\"}", K8sHelper.k8s_data("test", "app1").to_json
+      expected = {
+        "app_instance" => "app1",
+        "pods" => [
+          { "image_tag" => "v490", "created_at" => "2025-05-14T08:52:29Z" },
+          { "image_tag" => "v427", "created_at" => "2025-02-20T14:50:36Z" },
+          { "image_tag" => "v489", "created_at" => "2025-05-14T08:19:00Z" },
+          { "image_tag" => "7.4", "created_at" => "2025-01-30T09:35:21Z" },
+        ],
+      }
+      assert_equal expected, K8sHelper.k8s_data("test", "app1")
     end
   end
 
@@ -19,7 +28,11 @@ class K8sHelperTest < ActionView::TestCase
     end
 
     should "can parse empty response from kubernetes API" do
-      assert_equal "{\"app_instance\":\"\",\"image\":\"None\",\"created_at\":\"\"}", K8sHelper.k8s_data("test", "app1").to_json
+      expected = {
+        "app_instance" => "",
+        "pods" => [],
+      }
+      assert_equal expected, K8sHelper.k8s_data("test", "app1")
     end
   end
 
