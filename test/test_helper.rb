@@ -8,6 +8,7 @@ require "artemis/test_helper"
 require "rails/test_help"
 require "shoulda-context"
 require "minitest/autorun"
+require "minitest/mock"
 require "mocha/minitest"
 require "webmock/minitest"
 
