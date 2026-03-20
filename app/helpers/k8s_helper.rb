@@ -44,7 +44,7 @@ module K8sHelper
   def self.running_pods(repo_name:, environment: "integration")
     pods = pods_by_status(environment: environment, repo_name: repo_name, status: "Running")
     pods.map do |pod|
-      images = pod["spec"]["containers"].map { |c| { "image" => c["image"] } }
+      images = pod["spec"]["containers"].map { |container| container["image"] }
       {
         "name" => pod["metadata"]["name"],
         "app_instance" => pod["metadata"]["labels"]["app.kubernetes.io/instance"],
@@ -56,18 +56,28 @@ module K8sHelper
 
   def self.k8s_data(environment, repo_name)
     pods = running_pods(repo_name: repo_name, environment: environment)
+
     if pods.empty?
-      {
+      return {
         "app_instance" => "",
-        "image" => "None",
-        "created_at" => "",
-      }
-    else
-      {
-        "app_instance" => pods.first["app_instance"],
-        "image" => pods.first["images"].first["image"].split(":").last,
-        "created_at" => pods.first["created_at"],
+        "pods" => [],
       }
     end
+
+    # This assumption that the app container is the first isn't neccessarily sound, but we have
+    # many charts with differing names for the containers, but they all use the 'primary' app
+    # contianer first
+    unique_images = pods.map { |pod| pod["images"].first }.uniq
+    pod_per_image = unique_images.map { |image| pods.find { |pod| pod["images"].first == image } }
+
+    {
+      "app_instance" => pods.first["app_instance"],
+      "pods" => pod_per_image.map do |pod|
+        {
+          "image_tag" => pod["images"].first.split(":").last,
+          "created_at" => pod["created_at"],
+        }
+      end,
+    }
   end
 end

@@ -169,7 +169,68 @@ class ApplicationsControllerTest < ActionController::TestCase
         get :show, params: { id: @app.id }
         assert_select "a[href=?]", "https://argo.eks.Integration.govuk.digital/applications/app1", { count: 1, text: "Integration" }
         assert_select "a[href=?]", "https://argo.eks.Staging.govuk.digital/applications/app1", { count: 1, text: "Staging" }
-        assert_select "td", { count: 2, text: "v111 at 2:27pm on 29 Jan 2025" }
+        assert_select "div.release__application-show-kubernetes td", { count: 2, text: "v111 at 2:27pm on 29 Jan 2025" }
+      end
+
+      context "when there is an ongoing deployment in integration" do
+        setup do
+          mock_responses = [
+            {
+              "spec" => {
+                "containers" => [
+                  {
+                    "image" => "govuk.storage.com/test:v114",
+                  },
+                ],
+              },
+              "metadata" => {
+                "name" => "Application 1",
+                "creationTimestamp" => "2025-01-29T14:27:01Z",
+                "labels" => {
+                  "app.kubernetes.io/instance" => "app1",
+                },
+              },
+            },
+            {
+              "spec" => {
+                "containers" => [
+                  {
+                    "image" => "govuk.storage.com/test:v115",
+                  },
+                ],
+              },
+              "metadata" => {
+                "name" => "Application 1",
+                "creationTimestamp" => "2025-01-30T10:11:12Z",
+                "labels" => {
+                  "app.kubernetes.io/instance" => "app1",
+                },
+              },
+            },
+          ]
+
+          K8sHelper.stubs(:pods_by_status).returns(mock_responses).then.returns(mock_responses[0...1])
+        end
+
+        should "show that integration is currently deploying and show both versions currently live" do
+          get :show, params: { id: @app.id }
+          assert_select "div.release__application-show-kubernetes" do
+            assert_select "tbody tr:nth-of-type(1)" do
+              assert_select "th", { count: 1, text: "Integration Currently Deploying" }
+              assert_select "td", { count: 1, text: "v114 at 2:27pm on 29 Jan 2025v115 at 10:11am on 30 Jan 2025" }
+            end
+          end
+        end
+
+        should "show that staging is not currently deploying and only show a single version" do
+          get :show, params: { id: @app.id }
+          assert_select "div.release__application-show-kubernetes" do
+            assert_select "tbody tr:nth-of-type(2)" do
+              assert_select "th", { count: 1, text: "Staging" }
+              assert_select "td", { count: 1, text: "v114 at 2:27pm on 29 Jan 2025" }
+            end
+          end
+        end
       end
     end
 
@@ -180,7 +241,7 @@ class ApplicationsControllerTest < ActionController::TestCase
 
       should "show the version of running pods for each environment" do
         get :show, params: { id: @app.id }
-        assert_select "td", { count: 3, text: "v111 at 2:27pm on 29 Jan 2025" }
+        assert_select "div.release__application-show-kubernetes td", { count: 3, text: "v111 at 2:27pm on 29 Jan 2025" }
       end
     end
 
