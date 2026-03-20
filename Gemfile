@@ -38,6 +38,7 @@ group :test, :development do
   gem "database_cleaner"
   gem "factory_bot_rails"
   gem "minitest"
+  gem "minitest-mock"
   gem "mocha", require: false
   gem "poltergeist"
   gem "pry"
