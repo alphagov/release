@@ -52,5 +52,10 @@
 }
 
 .release__k8s-label--deployment {
-  background-color: govuk-color("blue");
+  display: inline-block;
+  padding: 5px;
+  color: govuk-colour("white");
+  border-radius: 5px;
+  background-color: govuk-colour("blue");
+  font-weight: bold;
 }
