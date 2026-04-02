@@ -37,6 +37,11 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_not application.deploy_freeze?
     end
 
+    should "default to not have enable change failure marking checked" do
+      application = Application.new(@atts)
+      assert_not application.enable_change_failure_marking?
+    end
+
     should "be invalid with a name that is too long" do
       application = Application.new(@atts.merge(name: ("a" * 256)))
       assert_not application.valid?

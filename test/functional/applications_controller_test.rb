@@ -445,6 +445,25 @@ class ApplicationsControllerTest < ActionController::TestCase
       get :edit, params: { id: @app.id }
       assert_select ".govuk-warning-text__text", /Continuous deployment between each environment has to be disabled or enabled * via GitHub action/
     end
+
+    context "user has preview_features permissions" do
+      setup do
+        @stub_user.permissions.push("preview_features")
+        @app.slack_channel_deployment_notification = "monkey notifications"
+        @app.save!
+      end
+
+      teardown do
+        @stub_user.permissions.delete("preview_features")
+      end
+
+      should "show the form" do
+        get :edit, params: { id: @app.id }
+        assert_select "form.edit_application input[name='application[name]'][value='#{@app.name}']"
+        assert_select "form.edit_application input[name='application[enable_change_failure_marking]'][value='1']"
+        assert_select "form.edit_application input[name='application[slack_channel_deployment_notification]'][value='#{@app.slack_channel_deployment_notification}']"
+      end
+    end
   end
 
   context "PUT update" do
@@ -455,10 +474,12 @@ class ApplicationsControllerTest < ActionController::TestCase
 
     context "valid request" do
       should "update the application" do
-        put :update, params: { id: @app.id, application: { name: "new name", deploy_freeze: true } }
+        put :update, params: { id: @app.id, application: { name: "new name", deploy_freeze: true, enable_change_failure_marking: true, slack_channel_deployment_notification: true } }
         @app.reload
         assert_equal "new name", @app.name
         assert @app.deploy_freeze?
+        assert @app.enable_change_failure_marking?
+        assert @app.slack_channel_deployment_notification?
       end
 
       should "redirect to the application" do
