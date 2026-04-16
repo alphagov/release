@@ -150,12 +150,12 @@ class DeploymentTest < ActiveSupport::TestCase
     end
 
     should "return true if deployment to application's live environment" do
-      deployment = FactoryBot.create(:deployment, environment: "production", id: SecureRandom.hex(6))
+      deployment = FactoryBot.create(:deployment, environment: "production", id: SecureRandom.hex(4))
       assert deployment.to_live_environment?
     end
 
     should "return false if deployment not to application's live environment" do
-      deployment = FactoryBot.create(:deployment, environment: "test", id: SecureRandom.hex(6))
+      deployment = FactoryBot.create(:deployment, environment: "test", id: SecureRandom.hex(4))
       assert_equal false, deployment.to_live_environment?
     end
   end
