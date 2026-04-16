@@ -21,6 +21,7 @@ RUN rails assets:precompile && rm -fr log
 FROM $base_image
 
 ENV GOVUK_APP_NAME=release
+ENV TEST_VAR=test
 
 WORKDIR $APP_HOME
 COPY --from=builder $BUNDLE_PATH $BUNDLE_PATH
