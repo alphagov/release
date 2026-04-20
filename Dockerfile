@@ -10,11 +10,6 @@ RUN bundle install
 COPY package.json yarn.lock ./
 RUN corepack enable && yarn install --immutable
 COPY . .
-RUN bundle binstubs \
-  bootsnap \
-  railties \
-  puma \
-  rake
 RUN bootsnap precompile --gemfile .
 RUN rails assets:precompile && rm -fr log
  
