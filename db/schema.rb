@@ -10,44 +10,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_28_124652) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_22_080225) do
   create_table "applications", id: :integer, charset: "latin1", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "status_notes"
-    t.string "shortname"
-    t.boolean "deploy_freeze", default: false, null: false
     t.string "default_branch", default: "main", null: false
+    t.boolean "deploy_freeze", default: false, null: false
+    t.boolean "enable_change_failure_marking", default: false
+    t.string "name"
+    t.string "shortname"
+    t.string "status_notes"
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "index_applications_on_name", unique: true
     t.index ["shortname"], name: "index_applications_on_shortname"
   end
 
   create_table "deployments", id: :integer, charset: "latin1", force: :cascade do |t|
-    t.string "version"
-    t.string "environment"
     t.integer "application_id"
     t.datetime "created_at", precision: nil, null: false
+    t.string "environment"
     t.datetime "updated_at", precision: nil, null: false
+    t.string "version"
     t.index ["application_id", "environment", "created_at"], name: "index_deployments_on_application_id_etc"
   end
 
   create_table "sites", charset: "utf8mb3", force: :cascade do |t|
-    t.string "status_notes"
     t.datetime "created_at", precision: nil, null: false
+    t.string "status_notes"
     t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "users", id: :integer, charset: "latin1", force: :cascade do |t|
-    t.string "name"
+    t.datetime "created_at", precision: nil, null: false
+    t.boolean "disabled", default: false
     t.string "email"
-    t.string "uid"
+    t.string "name"
+    t.string "organisation_content_id", default: ""
+    t.string "organisation_slug"
     t.text "permissions"
     t.boolean "remotely_signed_out", default: false
-    t.datetime "created_at", precision: nil, null: false
+    t.string "uid"
     t.datetime "updated_at", precision: nil, null: false
-    t.string "organisation_slug"
-    t.boolean "disabled", default: false
-    t.string "organisation_content_id", default: ""
   end
 end
