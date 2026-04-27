@@ -30,7 +30,7 @@ class ApplicationsController < ApplicationController
       begin
         @k8s_available = true
         @k8s_data = @application.current_image_deployed_by_environment
-      rescue Aws::STS::Errors::ServiceError, Kubeclient::HttpError => e
+      rescue Aws::STS::Errors::ServiceError, Aws::Errors::MissingCredentialsError, Kubeclient::HttpError => e
         @k8s_available = false
         @k8s_error = e.message
         GovukError.notify(e)
@@ -101,6 +101,7 @@ private
       :status_notes,
       :task,
       :deploy_freeze,
+      :enable_change_failure_marking,
     )
   end
 end
