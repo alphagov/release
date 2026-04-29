@@ -101,6 +101,7 @@ private
       :status_notes,
       :task,
       :deploy_freeze,
+      :enable_change_failure_marking,
     )
   end
 end
