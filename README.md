@@ -101,6 +101,10 @@ DATABASE_URL="mysql2://root@localhost/release_development" bundle exec rake
 TEST_DATABASE_URL="mysql2://root@localhost/release_test"  rake test TEST=test/integration/deploy_page_test.rb
 ```
 
+### Build workflows
+
+This app is used by [govuk-ruby-images](https://github.com/alphagov/govuk-ruby-images/blob/main/.github/workflows/build-release.yaml) as part of a workflow to test the base and builder Ruby images. Ensure that this is always at the latest Ruby version.
+
 ### Architecture diagrams
 
 * [High-level architecture](https://drive.google.com/file/d/12iUDHvNKi_7_dmNC1cE0-cbViB05Cr2o/view)
