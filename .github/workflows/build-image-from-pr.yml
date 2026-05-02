@@ -12,7 +12,7 @@ on:
 jobs:
   build-image-from-PR:
     name: Build image from PR
-    uses: alphagov/govuk-infrastructure/.github/workflows/build-image-from-pr.yml@main
+    uses: alphagov/govuk-infrastructure/.github/workflows/build-image-from-pr.yml@BAU-Fix-build-image-from-PR-arm-builds
     with:
       gitRef: ${{ inputs.gitRef || github.head_ref }}
     permissions:
