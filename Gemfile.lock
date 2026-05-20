@@ -256,7 +256,7 @@ GEM
       govuk_app_config (>= 1.1)
       redis-client (>= 0.22.2)
       sidekiq (~> 7.0, < 8)
-    graphql (2.5.11)
+    graphql (2.5.26)
       base64
       fiber-storage
       logger
