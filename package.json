@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "standardx": "^7.0.0",
-    "stylelint": "^17.9.0",
+    "stylelint": "^17.11.1",
     "stylelint-config-gds": "^2.0.0"
   },
   "resolutions": {
