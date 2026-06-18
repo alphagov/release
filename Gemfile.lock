@@ -132,7 +132,7 @@ GEM
     chartkick (5.2.1)
     cliver (0.3.2)
     coderay (1.1.3)
-    concurrent-ruby (1.3.6)
+    concurrent-ruby (1.3.7)
     connection_pool (2.5.5)
     crack (1.0.1)
       bigdecimal
@@ -731,8 +731,8 @@ GEM
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       logger
-    sentry-sidekiq (6.6.0)
-      sentry-ruby (~> 6.6.0)
+    sentry-sidekiq (6.6.1)
+      sentry-ruby (~> 6.6.1)
       sidekiq (>= 5.0)
     shoulda-context (2.0.0)
     sidekiq (7.3.10)
