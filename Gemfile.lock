@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    action_text-trix (2.1.18)
+    action_text-trix (2.1.19)
       railties
     actioncable (8.1.3)
       actionpack (= 8.1.3)
@@ -200,7 +200,7 @@ GEM
       rails (>= 7)
       warden (~> 1.2)
       warden-oauth2 (~> 0.0.1)
-    globalid (1.3.0)
+    globalid (1.4.0)
       activesupport (>= 6.1)
     google-protobuf (4.35.1)
       bigdecimal
@@ -238,10 +238,11 @@ GEM
       sentry-rails (>= 5.3, < 7.0)
       sentry-ruby (>= 5.3, < 7.0)
       statsd-ruby (~> 1.5)
-    govuk_personalisation (1.1.0)
+    govuk_personalisation (1.2.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (65.2.2)
+    govuk_publishing_components (66.8.0)
+      chartkick
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -310,13 +311,13 @@ GEM
     loofah (2.25.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    mail (2.9.0)
+    mail (2.9.1)
       logger
       mini_mime (>= 0.1.1)
       net-imap
       net-pop
       net-smtp
-    marcel (1.1.0)
+    marcel (1.2.1)
     matrix (0.4.3)
     method_source (1.1.0)
     mime-types (3.7.0)
@@ -391,11 +392,11 @@ GEM
     omniauth-oauth2 (1.9.0)
       oauth2 (>= 2.0.2, < 3)
       omniauth (~> 2.0)
-    opentelemetry-api (1.10.0)
+    opentelemetry-api (1.11.0)
       logger
-    opentelemetry-common (0.25.0)
+    opentelemetry-common (0.25.1)
       opentelemetry-api (~> 1.0)
-    opentelemetry-exporter-otlp (0.34.0)
+    opentelemetry-exporter-otlp (0.34.1)
       google-protobuf (>= 3.18)
       googleapis-common-protos-types (~> 1.3)
       opentelemetry-api (~> 1.1)
@@ -424,7 +425,7 @@ GEM
       opentelemetry-instrumentation-base (~> 0.25)
     opentelemetry-instrumentation-active_storage (0.5.1)
       opentelemetry-instrumentation-active_support (~> 0.10)
-    opentelemetry-instrumentation-active_support (0.12.0)
+    opentelemetry-instrumentation-active_support (0.12.1)
       opentelemetry-instrumentation-base (~> 0.25)
     opentelemetry-instrumentation-all (0.94.0)
       opentelemetry-instrumentation-active_model_serializers (~> 0.25.0)
@@ -488,13 +489,13 @@ GEM
       opentelemetry-instrumentation-base (~> 0.25)
     opentelemetry-instrumentation-faraday (0.33.0)
       opentelemetry-instrumentation-base (~> 0.25)
-    opentelemetry-instrumentation-grape (0.7.0)
+    opentelemetry-instrumentation-grape (0.7.1)
       opentelemetry-instrumentation-rack (~> 0.29)
     opentelemetry-instrumentation-graphql (0.32.0)
       opentelemetry-instrumentation-base (~> 0.25)
-    opentelemetry-instrumentation-grpc (0.5.1)
+    opentelemetry-instrumentation-grpc (0.5.2)
       opentelemetry-instrumentation-base (~> 0.25)
-    opentelemetry-instrumentation-gruf (0.6.1)
+    opentelemetry-instrumentation-gruf (0.6.2)
       opentelemetry-instrumentation-base (~> 0.25)
     opentelemetry-instrumentation-http (0.30.0)
       opentelemetry-instrumentation-base (~> 0.25)
@@ -556,15 +557,15 @@ GEM
       opentelemetry-helpers-sql-processor
       opentelemetry-instrumentation-base (~> 0.25)
       opentelemetry-semantic_conventions (>= 1.8.0)
-    opentelemetry-registry (0.6.0)
+    opentelemetry-registry (0.6.3)
       opentelemetry-api (~> 1.1)
-    opentelemetry-sdk (1.12.0)
+    opentelemetry-sdk (1.13.0)
       logger
       opentelemetry-api (~> 1.1)
       opentelemetry-common (~> 0.20)
       opentelemetry-registry (~> 0.2)
       opentelemetry-semantic_conventions
-    opentelemetry-semantic_conventions (1.41.0)
+    opentelemetry-semantic_conventions (1.43.0)
       opentelemetry-api (~> 1.0)
     ostruct (0.6.3)
     parallel (1.28.0)
@@ -664,7 +665,8 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.4.4)
-    rouge (4.7.0)
+    rouge (5.0.0)
+      strscan (~> 3.1)
     rubocop (1.86.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -761,6 +763,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     statsd-ruby (1.5.0)
+    strscan (3.1.8)
     terser (1.2.8)
       execjs (>= 0.3.0, < 3)
     thor (1.5.0)
