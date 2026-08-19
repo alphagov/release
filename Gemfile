@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "8.1.3.1"
 
 gem "active_model_serializers"
-gem "artemis"
+gem "artemis", github: "yuki24/artemis", ref: "8b3d76a11bf720e9dba87aba525f2b3980b63e2a"
 gem "aws-sdk-core"
 gem "aws-sdk-eks"
 gem "aws-sigv4"
