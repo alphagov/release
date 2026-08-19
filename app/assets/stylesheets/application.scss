@@ -31,14 +31,14 @@ $govuk-typography-use-rem: false;
 }
 
 .release__badge {
-  background-color: govuk-colour("light-blue");
+  background-color: govuk-colour("blue", $variant: "tint-25");
   padding: 3px 5px;
   border-radius: 20px;
   color: govuk-colour("white");
   white-space: nowrap;
   display: inline-block;
   margin-bottom: govuk-spacing(1);
-  @include govuk-font(14, $weight: "bold");
+  @include govuk-font(16, $weight: bold);
 }
 
 .release__badge--orange {

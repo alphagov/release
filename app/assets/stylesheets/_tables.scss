@@ -1,5 +1,5 @@
 .release__commits-table .release__commits-author {
-  color: govuk-colour("dark-grey");
+  color: govuk-colour("black", $variant: "tint-25");
 }
 
 .release__application-link {
@@ -43,7 +43,7 @@
   padding: 5px;
   color: govuk-colour("white");
   border-radius: 5px;
-  background-color: govuk-colour("dark-grey");
+  background-color: govuk-colour("black", $variant: "tint-25");
   font-weight: bold;
 }
 
