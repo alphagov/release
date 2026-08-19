@@ -6,6 +6,10 @@
 // on browsers that don't support ES6, this script
 // should be included in a `type="module"` script tag
 // which will ensure they are never loaded.
+//
+// This will probably not be needed with modern
+// browsers that support newer JS features.
 
+//= require govuk_publishing_components/initialise-vars
 //= require govuk_publishing_components/components/button
 //= require govuk_publishing_components/components/tabs
