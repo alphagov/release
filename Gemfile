@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "8.1.3.1"
+gem "rails", "8.1.4"
 
 gem "active_model_serializers"
 gem "artemis", github: "yuki24/artemis", ref: "8b3d76a11bf720e9dba87aba525f2b3980b63e2a"
